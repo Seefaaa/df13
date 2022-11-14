@@ -40,6 +40,7 @@
 	new /obj/item/axe(src)
 	new /obj/item/stack/sheet/stone/fifty(src)
 	new /obj/item/stack/sheet/planks/fifty(src)
+	new /obj/item/chisel(src)
 
 /obj/item/stack/sheet/stone/fifty
 	amount = 50
