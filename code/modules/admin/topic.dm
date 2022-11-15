@@ -829,11 +829,10 @@
 			tgui_alert(usr,"The game hasn't started yet!")
 			return
 
-		var/target = locate(href_list["skill"])
+		var/mob/target = locate(href_list["skill"])
 		var/datum/mind/target_mind
 		if(ismob(target))
-			var/mob/target_mob = target
-			target_mind = target_mob.mind
+			target_mind = target.mind
 		else if (istype(target, /datum/mind))
 			target_mind = target
 		else
