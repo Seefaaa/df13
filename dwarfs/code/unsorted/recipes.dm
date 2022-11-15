@@ -103,7 +103,7 @@
 
 /datum/smithing_recipe/torch_fixture
 	name = "torch fixture"
-	result = /obj/item/torch_handle
+	result = /obj/item/sconce
 	max_resulting = 5
 
 /datum/smithing_recipe/shpatel

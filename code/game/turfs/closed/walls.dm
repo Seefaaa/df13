@@ -109,10 +109,10 @@
 
 	return FALSE
 
-/turf/closed/wall/proc/try_wallmount(obj/item/W, mob/user, turf/T)
+/turf/closed/proc/try_wallmount(obj/item/W, mob/user)
 	//Poster stuff
-	if(istype(W, /obj/item/torch_handle))
-		var/obj/item/torch_handle/F = W
+	if(istype(W, /obj/item/sconce))
+		var/obj/item/sconce/F = W
 		if(F.try_build(src, user))
 			F.attach(src, user)
 		return TRUE
