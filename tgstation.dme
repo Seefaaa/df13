@@ -1178,7 +1178,6 @@
 #include "dwarfs\code\modules\blacksmithing\forge.dm"
 #include "dwarfs\code\modules\blacksmithing\sconce.dm"
 #include "dwarfs\code\modules\blacksmithing\smelter.dm"
-#include "dwarfs\code\modules\blacksmithing\waterbarrel.dm"
 #include "dwarfs\code\modules\blacksmithing\weapons.dm"
 #include "dwarfs\code\modules\blacksmithing\workbench.dm"
 #include "dwarfs\code\modules\brewing\barrel.dm"

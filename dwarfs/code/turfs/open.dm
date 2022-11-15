@@ -280,6 +280,11 @@
 	canSmoothWith = list(SMOOTH_GROUP_FLOOR_WATER)
 	slowdown = 2
 
+/turf/open/water/Initialize(mapload)
+	. = ..()
+	create_reagents(100, DRAINABLE)
+	reagents.add_reagent(/datum/reagent/water, 100)
+
 /turf/open/water/attackby(obj/item/C, mob/user, params)
 	if(C.is_refillable())
 		var/obj/item/reagent_containers/CC = C
@@ -289,7 +294,9 @@
 		to_chat(user, span_notice("You fill [CC] with water."))
 		CC.reagents.add_reagent(/datum/reagent/water, CC.volume - CC.reagents.total_volume)
 	else
-		. = ..()
+		reagents.expose(C)
+		for(var/atom/A in C)
+			reagents.expose(A)
 
 /turf/open/water/attack_hand(mob/user)
 	if(ishuman(user))
@@ -301,6 +308,7 @@
 
 /turf/open/water/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	. = ..()
-	if(isliving(arrived))
-		var/mob/living/M = arrived
-		M.extinguish_mob()
+	if(reagents)
+		reagents.expose(arrived)
+		for(var/atom/A in arrived)
+			reagents.expose(A)

@@ -193,6 +193,30 @@
 		W.leather_amount = HH.leather_amount
 		qdel(HH)
 
+	else if(istype(exposed_obj, /obj/item/ingot))
+		var/obj/item/ingot/ingot = exposed_obj
+		if(ingot.progress_current == ingot.progress_need + 1)
+			for(var/i in 1 to rand(1, ingot.recipe.max_resulting))
+				if(ingot.grade >= 5)
+					ingot.grade = 5
+					if(prob(10))
+						ingot.grade = 6
+				var/obj/item/O = new ingot.recipe.result(get_turf(holder.my_atom))
+				O.apply_grade(ingot.grade)
+			var/obj/item/tongs/T = ingot.loc
+			qdel(ingot)
+			if(T)
+				T.update_appearance()
+			playsound(holder.my_atom, 'sound/effects/vaper.ogg', 100)
+	else if(istype(exposed_obj, /obj/item/stack/sheet/bark))
+		var/obj/item/stack/B = exposed_obj
+		B.use(1)
+		var/datum/reagents/h = holder
+		var/vol = volume
+		h.remove_reagent(src.type, vol)
+		h.add_reagent(/datum/reagent/tanin, vol)
+		h.my_atom.visible_message(span_notice("The water in [h.my_atom] turns into tanin!"))
+
 /*
  * Water reaction to a mob
  */

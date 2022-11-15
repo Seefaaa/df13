@@ -1,5 +1,5 @@
 /datum/reagent/tanin
-	name = "taning"
+	name = "tanin"
 	color = "#571d06"
 
 /datum/reagent/tanin/expose_obj(obj/exposed_obj, reac_volume)

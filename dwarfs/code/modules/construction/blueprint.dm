@@ -166,13 +166,6 @@
 	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/ingot=2)
 	cat = "craftsmanship"
 
-// dirty water barrel from smithing (yes, this is a bad solution)
-/obj/structure/blueprint/waterbarrel
-	name = "water barrel"
-	target_structure = /obj/structure/waterbarrel
-	reqs = list(/obj/item/stack/sheet/planks=7, /obj/item/ingot=1)
-	cat = "craftsmanship"
-
 /obj/structure/blueprint/press
 	name = "press"
 	target_structure = /obj/structure/press
