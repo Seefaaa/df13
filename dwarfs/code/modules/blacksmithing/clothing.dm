@@ -123,7 +123,8 @@
 	message_admins("DF: [ADMIN_LOOKUPFLW(user)]: [msg]")
 	for(var/mob/M in GLOB.dwarf_list)
 		to_chat(M, span_revenbignotice("[msg]"))
-		SEND_SOUND(M, 'sound/effects/siren.ogg')
+		var/sound/siren = sound('sound/effects/siren.ogg', volume = 25)
+		SEND_SOUND(M, siren)
 
 /obj/item/clothing/head/helmet/dwarf_crown/attack_self(mob/user)
 	. = ..()
