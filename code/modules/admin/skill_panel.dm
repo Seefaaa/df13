@@ -22,8 +22,8 @@
 
 /datum/skill_panel/ui_data(mob/user) //Sends info about the skills to UI
 	. = list()
-	if(user?.mind)
-		for (var/datum/skill/S in user.mind.known_skills)
+	if(targetmind)
+		for (var/datum/skill/S in targetmind.known_skills)
 			var/lvl_num = S.level
 			var/lvl_name = uppertext(S.name)
 			var/exp = S.experience
