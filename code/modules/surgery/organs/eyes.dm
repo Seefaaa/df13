@@ -22,7 +22,7 @@
 	var/sight_flags = 0
 	/// changes how the eyes overlay is applied, makes it apply over the lighting layer
 	var/overlay_ignore_lighting = FALSE
-	var/see_in_dark = 2
+	var/see_in_dark = 3
 	var/tint = 0
 	var/eye_color = "" //set to a hex code to override a mob's eye color
 	var/eye_icon_state = "eyes"
