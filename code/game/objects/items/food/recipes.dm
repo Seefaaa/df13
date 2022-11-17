@@ -10,6 +10,7 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	var/list/req_reagents = list()
 	var/obj/result
 	var/req_lvl = 12 // what cooking level is required to add this recipe to dwarf's notes
+	var/cooking_text = "Tell admins about me."
 
 ///******************OVEN RECIPES******************///
 /datum/cooking_recipe/oven
@@ -21,22 +22,26 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	req_items = list(/obj/item/food/slice/plump_helmet=3, /obj/item/food/meat/slab=1)
 	result = /obj/item/food/dish/plump_with_steak
 	req_lvl = 2
+	cooking_text = "Put everything on a plate and cook in the oven."
 
 /datum/cooking_recipe/oven/bowl/plump_pie
 	req_items = list(/obj/item/food/dough=1, /obj/item/growable/plump_helmet=3, /obj/item/growable/sweet_pod=2)
 	result = /obj/item/food/dish/plump_pie
 	req_lvl = 4
+	cooking_text = "Put everything ina bowl and cook in the oven."
 
 /datum/cooking_recipe/oven/flat_plate/balanced_roll
 	req_items = list(/obj/item/food/flat_dough=1, /obj/item/food/slice/meat=3, /obj/item/growable/carrot=2, /obj/item/food/slice/plump_helmet=2)
 	result = /obj/item/food/dish/balanced_roll
 	req_lvl = 6
+	cooking_text = "Put everything on a flat plate and cook in the oven."
 
 /datum/cooking_recipe/oven/flat_plate/trolls_delight
 	req_items = list(/obj/item/food/meat/slab/troll=2, /obj/item/food/slice/plump_helmet=3, /obj/item/growable/carrot=1)
 	req_reagents = list(/datum/reagent/consumable/juice/sweet_pod=10)
 	result = /obj/item/food/dish/troll_delight
 	req_lvl = 7
+	cooking_text = "Put everything on a flat plate and cook in the oven."
 
 ///******************POT RECIPES******************///
 /datum/cooking_recipe/pot
@@ -46,6 +51,7 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	req_reagents = list(/datum/reagent/water=15)
 	result = /obj/item/transfer_food/stew
 	req_lvl = 3
+	cooking_text = "Put everything in a pot and cook on the stove."
 
 ///******************PLATE RECIPES******************///
 /datum/cooking_recipe/plate
@@ -57,6 +63,7 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	req_items = list(/obj/item/growable/plump_helmet=3)
 	result = /obj/item/food/dish/plump_skewer
 	req_lvl = 1
+	cooking_text = "Insert all of it onto a stick and apply some fire."
 
 ///******************BOWL RECIPES******************///
 /datum/cooking_recipe/bowl
@@ -65,6 +72,7 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	req_items = list(/obj/item/growable/carrot=1, /obj/item/growable/plump_helmet=1, /obj/item/growable/turnip=1)
 	result = /obj/item/food/dish/salad
 	req_lvl = 2
+	cooking_text = "Throw everything into a bowl and mix with a kitchen knife."
 
 ///******************PAN RECIPES******************///
 /datum/cooking_recipe/pan
@@ -74,24 +82,28 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	req_reagents = list(/datum/reagent/consumable/ethanol/beer/cave_wheat=10)
 	result = /obj/item/transfer_food/beer_wurst
 	req_lvl = 5
+	cooking_text = "Prepare everything on a pan and roast at a stove."
 
 /datum/cooking_recipe/pan/allwurst
 	req_items = list(/obj/item/food/sausage/luxurious=1)
 	req_reagents = list(/datum/reagent/consumable/ethanol/beer/cave_wheat=10, /datum/reagent/consumable/juice/sweet_pod=10)
 	result = /obj/item/transfer_food/allwurst
 	req_lvl = 7
+	cooking_text = "Prepare everything on a pan and roast at a stove."
 
 /datum/cooking_recipe/pan/beer_wurst_alternative
 	req_items = list(/obj/item/food/sausage=1)
 	req_reagents = list(/datum/reagent/consumable/ethanol/beer/barley=10)
 	result = /obj/item/transfer_food/beer_wurst
 	req_lvl = 5
+	cooking_text = "Prepare everything on a pan and roast at a stove."
 
 /datum/cooking_recipe/pan/allwurst_alternative
 	req_items = list(/obj/item/food/sausage/luxurious=1)
 	req_reagents = list(/datum/reagent/consumable/ethanol/beer/barley=10, /datum/reagent/consumable/juice/sweet_pod=10)
 	result = /obj/item/transfer_food/allwurst
 	req_lvl = 7
+	cooking_text = "Prepare everything on a pan and roast at a stove."
 
 ///******************SAUSAGE RECIPES******************///
 /datum/cooking_recipe/sausage
@@ -100,11 +112,13 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	req_items = list(/obj/item/food/slice/meat=3)
 	result = /obj/item/food/sausage
 	req_lvl = 5
+	cooking_text = "Throw everything into casings and tie them up."
 
 /datum/cooking_recipe/sausage/luxurious
 	req_items = list(/obj/item/food/slice/meat/troll=1, /obj/item/food/slice/meat=1, /obj/item/growable/carrot=1, /obj/item/growable/plump_helmet=1, /obj/item/growable/turnip=1)
 	result = /obj/item/food/sausage/luxurious
 	req_lvl = 7
+	cooking_text = "Throw everything into casings and tie them up."
 
 ///Returns either null if no plausable candidates found or a recipe /datum/cooking_recipe/...
 /proc/find_recipe(list/_recipes=list(), list/_contents=list(), list/_reagents=list())
