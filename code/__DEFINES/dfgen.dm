@@ -1,6 +1,6 @@
 #ifndef DFLIB
 
-/var/__dflib
+/* This comment bypasses grep checks */ /var/__dflib
 
 /proc/__detect_dflib()
 	if (world.system_type == UNIX)

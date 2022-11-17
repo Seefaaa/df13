@@ -10,6 +10,9 @@ export BYOND_MINOR=1589
 #rust_g git tag
 export RUST_G_VERSION=0.4.7
 
+#dflib
+export DFLIB_VERSION=0.1
+
 #node version
 export NODE_VERSION=14
 export NODE_VERSION_PRECISE=14.16.0
