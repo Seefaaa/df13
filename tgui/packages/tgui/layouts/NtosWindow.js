@@ -4,10 +4,11 @@
  * @license MIT
  */
 
+import { Box, Button } from '../components';
+
+import { Window } from './Window';
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
-import { Box, Button } from '../components';
-import { Window } from './Window';
 
 export const NtosWindow = (props, context) => {
   const {
@@ -66,9 +67,7 @@ export const NtosWindow = (props, context) => {
                 <img
                   className="NtosHeader__icon"
                   src={resolveAsset(PC_batteryicon)} />
-                {PC_batterypercent && (
-                  PC_batterypercent
-                )}
+                {PC_batterypercent}
               </Box>
             )}
             {PC_apclinkicon && (

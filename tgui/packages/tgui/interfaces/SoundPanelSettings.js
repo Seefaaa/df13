@@ -1,6 +1,7 @@
-import { useBackend } from '../backend';
-import { Button, Section, LabeledList } from '../components';
+import { Button, LabeledList, Section } from '../components';
+
 import { Window } from '../layouts';
+import { useBackend } from '../backend';
 
 export const SoundPanelSettings = (props, context) => {
   const { act, data } = useBackend(context);

@@ -10,7 +10,8 @@ GLOBAL_VAR_INIT(temperature_seed, 0)
 		GLOB.temperature_seed = rand(1, 2000)
 	var/start_time = REALTIMEOFDAY
 	var/list/height_values = fbm(world.maxx, world.maxy)
-	var/list/temp_values = fbm3d(world.maxx, world.maxy, turfs[1].z, GLOB.temperature_seed, frequency=0.006, lacunarity=0.4, persistence=0.4)
+	var/turf/first_turf = turfs[1]
+	var/list/temp_values = fbm3d(world.maxx, world.maxy, first_turf.z, GLOB.temperature_seed, frequency=0.006, lacunarity=0.4, persistence=0.4)
 	for(var/turf/T in turfs)
 		var/height = text2num(height_values[world.maxx * (T.y - 2) + T.x])
 		var/temp = text2num(temp_values[world.maxx * (T.y - 2) + T.x])

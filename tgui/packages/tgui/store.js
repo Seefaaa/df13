@@ -4,13 +4,14 @@
  * @license MIT
  */
 
-import { flow } from 'common/fp';
 import { applyMiddleware, combineReducers, createStore } from 'common/redux';
-import { Component } from 'inferno';
-import { assetMiddleware } from './assets';
 import { backendMiddleware, backendReducer } from './backend';
 import { debugMiddleware, debugReducer, relayMiddleware } from './debug';
+
+import { Component } from 'inferno';
+import { assetMiddleware } from './assets';
 import { createLogger } from './logging';
+import { flow } from 'common/fp';
 
 const logger = createLogger('store');
 
@@ -29,15 +30,14 @@ export const configureStore = (options = {}) => {
     backendMiddleware,
     ...(options.middleware?.post || []),
   ];
-  if (process.env.NODE_ENV !== 'production') {
-    // We are using two if statements because Webpack is capable of
-    // removing this specific block as dead code.
-    if (sideEffects) {
-      middleware.unshift(
-        loggingMiddleware,
-        debugMiddleware,
-        relayMiddleware);
-    }
+  if (process.env.NODE_ENV !== 'production' && sideEffects) {
+    middleware.unshift(
+      loggingMiddleware,
+      debugMiddleware,
+      relayMiddleware);
+    // // We are using two if statements because Webpack is capable of
+    // // removing this specific block as dead code.
+    // But sonar is not, so idkf
   }
   const enhancer = applyMiddleware(...middleware);
   const store = createStore(reducer, enhancer);

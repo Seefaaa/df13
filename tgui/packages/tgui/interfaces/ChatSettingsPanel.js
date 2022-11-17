@@ -1,6 +1,7 @@
-import { useBackend } from '../backend';
-import { Section, Button } from '../components';
+import { Button, Section } from '../components';
+
 import { Window } from '../layouts';
+import { useBackend } from '../backend';
 
 export const ChatSettingsPanel = (props, context) => {
   const { act, data } = useBackend(context);

@@ -1,8 +1,9 @@
+import { Box, Button, Collapsible, Input, NoticeBox, Section, Table, Tooltip } from "../components";
+import { useBackend, useLocalState } from "../backend";
+
+import { Window } from "../layouts";
 import { createSearch } from 'common/string';
 import { sortBy } from 'common/collections';
-import { useBackend, useLocalState } from "../backend";
-import { Box, Button, Input, NoticeBox, Section, Collapsible, Table, Tooltip } from "../components";
-import { Window } from "../layouts";
 
 export const Stack = (props, context) => {
   const { act, data } = useBackend(context);
@@ -183,29 +184,29 @@ const Recipe = (props, context) => {
         <Table.Row>
           <Table.Cell>
             {!recipe.has_tools &&(
-            <Tooltip
-            content={"Required tools: "+recipe.tools}>
-            <Button
-              fluid
-              disabled={!maxMultiplier || !recipe.has_tools}
-              icon="wrench"
-              content={buttonName}
-              onClick={() => act("make", {
-                ref: recipe.ref,
-                multiplier: 1,
-              })} />
+              <Tooltip
+                content={"Required tools: "+recipe.tools}>
+                <Button
+                  fluid
+                  disabled={!maxMultiplier || !recipe.has_tools}
+                  icon="wrench"
+                  content={buttonName}
+                  onClick={() => act("make", {
+                    ref: recipe.ref,
+                    multiplier: 1,
+                  })} />
               </Tooltip>
             )}
             {!!recipe.has_tools &&(
-            <Button
-              fluid
-              disabled={!maxMultiplier || !recipe.has_tools}
-              icon="wrench"
-              content={buttonName}
-              onClick={() => act("make", {
-                ref: recipe.ref,
-                multiplier: 1,
-              })} />
+              <Button
+                fluid
+                disabled={!maxMultiplier || !recipe.has_tools}
+                icon="wrench"
+                content={buttonName}
+                onClick={() => act("make", {
+                  ref: recipe.ref,
+                  multiplier: 1,
+                })} />
             )}
           </Table.Cell>
           {max_res_amount > 1 && maxMultiplier > 1 && (

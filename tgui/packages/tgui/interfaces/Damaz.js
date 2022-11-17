@@ -1,7 +1,8 @@
+import { Box, Button, Stack } from '../components';
+
+import { Window } from '../layouts';
 import { bottom } from '@popperjs/core';
 import { useBackend } from '../backend';
-import { Button, Stack, Box } from '../components';
-import { Window } from '../layouts';
 
 export const Damaz = (props, context) => {
   const { act, data } = useBackend(context);
@@ -15,18 +16,20 @@ export const Damaz = (props, context) => {
       width={600}
       height={700}>
       <Window.Content scrollable>
-      <Stack vertical>
-        {entries.map(entry => (
-          <Stack.Item
-          style={{"border-bottom":"1px solid gray","padding":"4px"}}>
-          <Box bold
-          style={{"font-size":"15px","word-wrap":"break-word"}}>
-            {entry.content}</Box>
-          {admin && <Button onClick={()=>act("remove_entry", {"entry":entries.indexOf(entry)})}>Delete</Button>}
-          <Box italic={true} textAlign="right" >
-            - <b>{entry.author}</b> of <b>{entry.fortress}</b></Box>
-          </Stack.Item>
-        ))}
+        <Stack vertical>
+          {entries.map((entry, index) => (
+            <Stack.Item key={index}
+              style={{ "border-bottom": "1px solid gray", "padding": "4px" }}>
+              <Box bold
+                style={{ "font-size": "15px", "word-wrap": "break-word" }}>
+                {entry.content}
+              </Box>
+              {admin && <Button onClick={() => act("remove_entry", { "entry": entries.indexOf(entry) })}>Delete</Button>}
+              <Box italic textAlign="right" >
+                - <b>{entry.author}</b> of <b>{entry.fortress}</b>
+              </Box>
+            </Stack.Item>
+          ))}
         </Stack>
         <Button
           fluid="auto"

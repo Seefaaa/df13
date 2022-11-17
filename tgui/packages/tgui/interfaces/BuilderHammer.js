@@ -1,5 +1,5 @@
-import { useBackend, useLocalState } from '../backend';
-import { capitalize } from 'common/string';
+// ? Added that cause its unfunny joke, eslint is telling one, react/retard otherwise
+/* eslint-disable react/jsx-indent */
 import {
   Box,
   Button,
@@ -9,7 +9,10 @@ import {
   Stack,
   Tabs,
 } from '../components';
+import { useBackend, useLocalState } from '../backend';
+
 import { Window } from '../layouts';
+import { capitalize } from 'common/string';
 
 export const BuilderHammer = (props, context) => {
   const { act, data } = useBackend(context);
@@ -175,12 +178,8 @@ export const BuilderHammer = (props, context) => {
                     src={activeBlueprintObject.icon}
                     onLoad={(e) =>
                       setPreviewOrientation(
-                        e.currentTarget.naturalWidth >
-                          e.currentTarget.naturalHeight
-                          ? 0
-                          : 1
-                      )
-                    }
+                        e.currentTarget.naturalWidth > e.currentTarget.naturalHeight ? 0 : 1
+                      )}
                   />
                 </div>
                 <hr
@@ -265,8 +264,7 @@ export const BuilderHammer = (props, context) => {
                   onClick={() =>
                     act('select_blueprint', {
                       path: activeBlueprintObject.path,
-                    })
-                  }>
+                    })}>
                   <div
                     style={{
                       'height': '40px',

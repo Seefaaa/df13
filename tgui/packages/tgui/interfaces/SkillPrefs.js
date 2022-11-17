@@ -1,6 +1,8 @@
-import { useBackend } from '../backend';
-import { Box, Button, Stack, ProgressBar, Section } from '../components';
+/* eslint-disable react/jsx-indent */
+import { Box, Button, ProgressBar, Section, Stack } from '../components';
+
 import { Window } from '../layouts';
+import { useBackend } from '../backend';
 
 export const SkillPrefs = (props, context) => {
   const { act, data } = useBackend(context);
@@ -12,8 +14,8 @@ export const SkillPrefs = (props, context) => {
           Available skill points: {available}
         </Box>
         <ul>
-          {skills.map((skill) => (
-            <li
+          {skills.map((skill, index) => (
+            <li key={index}
               style={{
                 'padding': '8px',
                 'margin-top': '10px',
@@ -68,7 +70,7 @@ export const SkillPrefs = (props, context) => {
                     'heigh': '24px',
                     'text-align': 'center',
                   }}
-                  disabled={skill.lvl == per_skill + 1 || available == 0}
+                  disabled={skill.lvl === per_skill + 1 || available === 0}
                   onClick={() => act('add', { 'path': skill.path })}>
                   +
                 </Button>
