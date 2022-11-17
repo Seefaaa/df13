@@ -18,5 +18,13 @@
 	src.acid = acid
 	src.magic = magic
 
+/datum/armor_penetration/proc/setRating(sharp, pierce, blunt, fire, acid, magic)
+	src.sharp = isnull(sharp) ? src.sharp : sharp
+	src.pierce = isnull(pierce) ? src.pierce : pierce
+	src.blunt = isnull(blunt) ? src.blunt : blunt
+	src.fire = isnull(fire) ? src.fire : fire
+	src.acid = isnull(acid) ? src.acid : acid
+	src.magic = isnull(magic) ? src.magic : magic
+
 /datum/armor_penetration/proc/GetRating(rating)
 	return vars[rating]

@@ -50,9 +50,6 @@
 	/// Type path of item to go in the glasses slot
 	var/glasses = null
 
-	/// Type path of ID card trim associated with this outfit.
-	var/id_trim = null
-
 	/// Type path of item for left pocket slot
 	var/l_pocket = null
 
@@ -120,6 +117,9 @@
 	  */
 	var/list/chameleon_extras
 
+	/// Whether to apply grade to spawned items
+	var/apply_grade = FALSE
+
 /**
  * Called at the start of the equip proc
  *
@@ -165,29 +165,53 @@
 
 	//Start with uniform,suit,backpack for additional slots
 	if(uniform)
-		H.equip_to_slot_or_del(new uniform(H),ITEM_SLOT_ICLOTHING, TRUE)
+		var/obj/item/I = new uniform(H)
+		I.apply_grade(I.grade)
+		H.equip_to_slot_or_del(I,ITEM_SLOT_ICLOTHING, TRUE)
 	if(suit)
-		H.equip_to_slot_or_del(new suit(H),ITEM_SLOT_OCLOTHING, TRUE)
+		var/obj/item/I = new suit(H)
+		I.apply_grade(I.grade)
+		H.equip_to_slot_or_del(I,ITEM_SLOT_OCLOTHING, TRUE)
 	if(back)
-		H.equip_to_slot_or_del(new back(H),ITEM_SLOT_BACK, TRUE)
+		var/obj/item/I = new back(H)
+		I.apply_grade(I.grade)
+		H.equip_to_slot_or_del(I,ITEM_SLOT_BACK, TRUE)
 	if(belt)
-		H.equip_to_slot_or_del(new belt(H),ITEM_SLOT_BELT, TRUE)
+		var/obj/item/I = new belt(H)
+		I.apply_grade(I.grade)
+		H.equip_to_slot_or_del(I,ITEM_SLOT_BELT, TRUE)
 	if(gloves)
-		H.equip_to_slot_or_del(new gloves(H),ITEM_SLOT_GLOVES, TRUE)
+		var/obj/item/I = new gloves(H)
+		I.apply_grade(I.grade)
+		H.equip_to_slot_or_del(I,ITEM_SLOT_GLOVES, TRUE)
 	if(shoes)
-		H.equip_to_slot_or_del(new shoes(H),ITEM_SLOT_FEET, TRUE)
+		var/obj/item/I = new shoes(H)
+		I.apply_grade(I.grade)
+		H.equip_to_slot_or_del(I,ITEM_SLOT_FEET, TRUE)
 	if(head)
-		H.equip_to_slot_or_del(new head(H),ITEM_SLOT_HEAD, TRUE)
+		var/obj/item/I = new head(H)
+		I.apply_grade(I.grade)
+		H.equip_to_slot_or_del(I,ITEM_SLOT_HEAD, TRUE)
 	if(mask)
-		H.equip_to_slot_or_del(new mask(H),ITEM_SLOT_MASK, TRUE)
+		var/obj/item/I = new mask(H)
+		I.apply_grade(I.grade)
+		H.equip_to_slot_or_del(I,ITEM_SLOT_MASK, TRUE)
 	if(neck)
-		H.equip_to_slot_or_del(new neck(H),ITEM_SLOT_NECK, TRUE)
+		var/obj/item/I = new neck(H)
+		I.apply_grade(I.grade)
+		H.equip_to_slot_or_del(I,ITEM_SLOT_NECK, TRUE)
 	if(ears)
-		H.equip_to_slot_or_del(new ears(H),ITEM_SLOT_EARS, TRUE)
+		var/obj/item/I = new ears(H)
+		I.apply_grade(I.grade)
+		H.equip_to_slot_or_del(I,ITEM_SLOT_EARS, TRUE)
 	if(glasses)
-		H.equip_to_slot_or_del(new glasses(H),ITEM_SLOT_EYES, TRUE)
+		var/obj/item/I = new glasses(H)
+		I.apply_grade(I.grade)
+		H.equip_to_slot_or_del(I,ITEM_SLOT_EYES, TRUE)
 	if(suit_store)
-		H.equip_to_slot_or_del(new suit_store(H),ITEM_SLOT_SUITSTORE, TRUE)
+		var/obj/item/I = new suit_store(H)
+		I.apply_grade(I.grade)
+		H.equip_to_slot_or_del(I,ITEM_SLOT_SUITSTORE, TRUE)
 
 	if(undershirt)
 		H.undershirt = initial(undershirt.name)
@@ -200,15 +224,23 @@
 			WARNING("Unable to equip accessory [accessory] in outfit [name]. No uniform present!")
 
 	if(l_hand)
-		H.put_in_l_hand(new l_hand(H))
+		var/obj/item/I = new l_hand(H)
+		I.apply_grade(I.grade)
+		H.put_in_l_hand(I)
 	if(r_hand)
-		H.put_in_r_hand(new r_hand(H))
+		var/obj/item/I = new r_hand(H)
+		I.apply_grade(I.grade)
+		H.put_in_r_hand(I)
 
 	if(!visualsOnly) // Items in pockets or backpack don't show up on mob's icon.
 		if(l_pocket)
-			H.equip_to_slot_or_del(new l_pocket(H),ITEM_SLOT_LPOCKET, TRUE)
+			var/obj/item/I = new l_pocket(H)
+			I.apply_grade(I.grade)
+			H.equip_to_slot_or_del(I,ITEM_SLOT_LPOCKET, TRUE)
 		if(r_pocket)
-			H.equip_to_slot_or_del(new r_pocket(H),ITEM_SLOT_RPOCKET, TRUE)
+			var/obj/item/I = new r_pocket(H)
+			I.apply_grade(I.grade)
+			H.equip_to_slot_or_del(I,ITEM_SLOT_RPOCKET, TRUE)
 
 		if(box)
 			if(!backpack_contents)
@@ -222,7 +254,9 @@
 				if(!isnum(number))//Default to 1
 					number = 1
 				for(var/i in 1 to number)
-					H.equip_to_slot_or_del(new path(H),ITEM_SLOT_BACKPACK, TRUE)
+					var/obj/item/I = new path(H)
+					I.apply_grade(I.grade)
+					H.equip_to_slot_or_del(I,ITEM_SLOT_BACKPACK, TRUE)
 
 	post_equip(H, visualsOnly)
 

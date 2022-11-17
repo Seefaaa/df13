@@ -85,36 +85,44 @@ If you want them to actuely show up, go to code\modules\client\preferences.dm on
 	name = "Dwarf miner"
 	back = /obj/item/pickaxe
 	l_hand = /obj/item/shovel
+	apply_grade = TRUE
 
 /datum/outfit/dwarf/farmer
 	name = "Dwarf farmer"
 	r_hand = /obj/item/hoe
 	head = /obj/item/reagent_containers/glass/bucket
+	apply_grade = TRUE
 
 /datum/outfit/dwarf/logger
 	name = "Dwarf logger"
 	back = /obj/item/axe
+	apply_grade = TRUE
 
 /datum/outfit/dwarf/mason
 	name = "Dwarf mason"
 	l_pocket = /obj/item/chisel
 	r_pocket = /obj/item/trowel
+	apply_grade = TRUE
 
 /datum/outfit/dwarf/chef
 	name = "Dwarf chef"
 	r_hand = /obj/item/kitchen/knife
 	l_hand = /obj/item/kitchen/rollingpin
+	apply_grade = TRUE
 
 /datum/outfit/dwarf/blacksmith
 	name = "Dwarf blacksmith"
 	r_hand = /obj/item/tongs
 	l_hand = /obj/item/smithing_hammer
+	apply_grade = TRUE
 
 /datum/outfit/dwarf/builder
 	name = "Dwarf builder"
 	r_hand = /obj/item/builder_hammer
 	l_hand = /obj/item/trowel
+	apply_grade = TRUE
 
 /datum/outfit/dwarf/king
 	name = "Dwarf King"
 	head = /obj/item/clothing/head/helmet/dwarf_crown
+	apply_grade = TRUE
