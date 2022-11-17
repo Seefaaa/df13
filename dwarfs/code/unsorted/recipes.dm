@@ -166,7 +166,7 @@
 /datum/workbench_recipe/halberd
 	name = "halberd"
 	result = /obj/item/halberd
-	reqs = list(/obj/item/partial/halberd =1, /obj/item/stick=1)
+	reqs = list(/obj/item/partial/halberd =1, /obj/item/stick=1, /obj/item/stack/sheet/leather = 2)
 
 /datum/workbench_recipe/crown
 	name = "crown"
