@@ -186,12 +186,14 @@
 		to_chat(user, span_warning("You don't want to harm other living beings!"))
 		return
 
+	var/miss_prob = 30
 	if(skill)
-		if(prob(user.mind.get_skill_modifier(skill, SKILL_MISS_MODIFIER)))
-			user.visible_message(span_danger("<b>[user]</b> misses <b>[M]</b> with [src]!"), span_danger("You miss <b>[M]</b> with [src]!"))
-			if(misssound)
-				playsound(src, misssound, 60, TRUE, -1)
-			return
+		miss_prob = user.mind.get_skill_modifier(skill, SKILL_MISS_MODIFIER)
+	if(prob(miss_prob))
+		user.visible_message(span_danger("<b>[user]</b> misses <b>[M]</b> with [src]!"), span_danger("You miss <b>[M]</b> with [src]!"))
+		if(misssound)
+			playsound(src, misssound, 60, TRUE, -1)
+		return
 
 	if(!force)
 		playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
