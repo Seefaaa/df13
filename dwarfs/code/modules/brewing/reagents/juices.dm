@@ -13,3 +13,7 @@
 /datum/reagent/consumable/juice/sweet_pod
 	name = "sweet syrup"
 	color = "#b2e456ff"
+
+/datum/reagent/consumable/juice/sweet_pod/New()
+	. = ..()
+	AddComponent(/datum/component/fermentable, ferment_into=/datum/reagent/consumable/ethanol/wine/rum)

@@ -8,5 +8,9 @@
 	AddComponent(/datum/component/fermentable, ferment_into=/datum/reagent/consumable/vinegar)
 
 /datum/reagent/consumable/ethanol/wine/plump
-	name = "Plump wine"
+	name = "Plump Wine"
 	color = "#96418aff"
+
+/datum/reagent/consumable/ethanol/wine/rum
+	name = "Dwarven Rum"
+	color = "#9D702E"
