@@ -131,6 +131,9 @@
 			to_chat(user, span_warning("[src] doesn't have any dirt."))
 			return
 		var/needed = watermax-waterlevel
+		if(needed < 10)
+			to_chat(user, span_warning("[src] has enough water already."))
+			return
 		var/to_trans = W.volume <= needed ? W.volume : needed
 		O.reagents.remove_reagent(/datum/reagent/water, to_trans)
 		waterlevel += to_trans

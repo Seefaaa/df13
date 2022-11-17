@@ -225,10 +225,15 @@
 		if(!W)
 			to_chat(user, span_warning("[O] doesn't have water!"))
 			return
-		var/to_remove = W.volume >= 50 ? 50 : W.volume
+		var/needed = watermax-waterlevel
+		if(needed < 10)
+			to_chat(user, span_warning("[src] has enough water already."))
+			return
+		var/to_remove = W.volume <= needed ? W.volume : needed
 		O.reagents.remove_reagent(/datum/reagent/water, to_remove)
 		to_chat(user, span_notice("You water [src]."))
 		waterlevel = clamp(waterlevel+to_remove, 0, watermax)
+		user.mind.adjust_experience(/datum/skill/farming, rand(1,5))
 		update_appearance()
 	else
 		return ..()
