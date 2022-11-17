@@ -1,6 +1,9 @@
 //Cat
 GLOBAL_LIST_EMPTY(cats)
 #define MAX_CATS 300
+#define MAX_CLOSE_CATS 15
+#define CLOSE_CATS_RANGE 15
+
 /mob/living/simple_animal/pet/cat
 	name = "cat"
 	desc = "Kitty!!"
@@ -78,6 +81,13 @@ GLOBAL_LIST_EMPTY(cats)
 /mob/living/simple_animal/pet/cat/make_babies()
 	if(GLOB.cats.len >= MAX_CATS)
 		return
+
+	var/cat_count = 0
+	for(var/mob/living/simple_animal/pet/cat/C in range(CLOSE_CATS_RANGE, src))
+		if(cat_count >= MAX_CLOSE_CATS)
+			return
+		cat_count++
+		continue
 	. = ..()
 
 /mob/living/simple_animal/pet/cat/examine(mob/user)
