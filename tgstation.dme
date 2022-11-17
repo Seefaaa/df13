@@ -1233,6 +1233,7 @@
 #include "dwarfs\code\unsorted\goblin.dm"
 #include "dwarfs\code\unsorted\recipes.dm"
 #include "dwarfs\code\unsorted\rituals.dm"
+#include "dwarfs\code\unsorted\signs.dm"
 #include "dwarfs\code\unsorted\stats.dm"
 #include "dwarfs\code\unsorted\storage.dm"
 #include "interface\interface.dm"
