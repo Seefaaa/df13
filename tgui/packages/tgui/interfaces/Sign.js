@@ -55,12 +55,12 @@ export const Sign = (props, context) => {
   const {
     decals,
     current_decal,
-    text,
     selected_decal,
     selected_decal_1,
+    text,
   } = data;
-  const [input_text, setText] = useLocalState(
-    context, 'text', '');
+  const [new_text, setText] = useLocalState(
+    context, 'new_text', '');
   return (
     <Window
       width={650}
@@ -74,7 +74,7 @@ export const Sign = (props, context) => {
               fluid
               autoFocus
               placeholder="Text"
-              value={input_text}
+              value={text}
               onInput={(e, value) => setText(value)} />
           </Stack.Item>
           <Stack.Item mt={0} grow={1} basis={0}>
@@ -100,7 +100,7 @@ export const Sign = (props, context) => {
               content="Write!"
               title="Write!"
               onClick={() => act('write', {
-                text: text,
+                text: new_text,
               })}
             />
           </Stack.Item>
