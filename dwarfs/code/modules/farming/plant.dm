@@ -158,6 +158,9 @@
 	var/max_mod = user.mind.get_skill_modifier(/datum/skill/farming, SKILL_AMOUNT_MAX_MODIFIER)
 	if(!do_after(user, 5 SECONDS * speed_mod, src))
 		return FALSE
+	if(QDELETED(src) || !harvestable)
+		return
+	harvestable = FALSE
 	for(var/_P in produced)
 		var/obj/item/growable/P = _P
 		var/harvested = rand(0+min_mod, produced[P]+max_mod)
@@ -175,7 +178,6 @@
 			to_chat(user, span_warning("You fail to harvest [initial(P.name)] from [src]."))
 			user.mind.adjust_experience(/datum/skill/farming, 5)
 	update_appearance()
-	harvestable = FALSE
 
 /obj/structure/plant/attack_hand(mob/user)
 	if(!harvestable)
