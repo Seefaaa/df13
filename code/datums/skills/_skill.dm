@@ -29,7 +29,7 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
 	span_green("I fell like i've reached a new level of understanding of [name]! I can be considered an expert [title]!"),
 	span_green("I feel like I've become even more proficient at [name]!"),
 	span_green("After lots of practice, I've begun to truly understand the intricacies and surprising depth behind [name]. I now consider myself a master [title]."),
-	span_green("With immense effort I feel like I've reachen a new enlightment in [name]! I now cinsider myself a grand master [title]."),
+	span_green("With immense effort I feel like I've reachen a new enlightment in [name]! I now consider myself a grand master [title]."),
 	span_green("Through incredible determination and effort, I've reached the peak of my [name] abiltities. I'm finally able to consider myself a legendary [title]!") )
 
 /**
