@@ -688,6 +688,7 @@
 	set category = "OOC"
 
 	if (CONFIG_GET(flag/norespawn) && (!check_rights_for(usr.client, R_ADMIN) || tgui_alert(usr, "Respawn configs disabled. Do you want to use your permissions to circumvent it?", "Respawn", list("Yes", "No")) != "Yes"))
+		to_chat(usr, span_boldannounce("Respawns are disabled."))
 		return
 
 	if ((stat != DEAD || !( SSticker )))
@@ -699,6 +700,7 @@
 	log_game("[key_name(usr)] used abandon mob.")
 
 	to_chat(usr, span_boldnotice("Please change your name!"))
+	SEND_SOUND(usr, sound(null))
 
 	if(!client)
 		log_game("[key_name(usr)] AM failed due to disconnect.")
