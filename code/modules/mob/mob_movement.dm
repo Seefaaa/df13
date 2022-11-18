@@ -412,22 +412,9 @@
 	set name = "Upwards"
 	set category = null
 
-	var/turf/current_turf = get_turf(src)
-	var/turf/above_turf = SSmapping.get_turf_above(current_turf)
-
-	if(!above_turf)
-		to_chat(src, span_warning("NOWHERE!"))
-		return
-
-	if(can_z_move(DOWN, above_turf, current_turf, ZMOVE_FALL_FLAGS)) //Will we fall down if we go up?
-		if(buckled)
-			to_chat(src, span_notice("[buckled] can't fly."))
-		else
-			to_chat(src, span_notice("You are unable to fly."))
-		return
-
 	if(zMove(UP, z_move_flags = ZMOVE_FLIGHT_FLAGS|ZMOVE_FEEDBACK))
 		to_chat(src, span_notice("You move upwards."))
+	return FALSE
 
 ///Moves a mob down a z level
 /mob/verb/down()
