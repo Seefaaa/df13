@@ -249,9 +249,12 @@
 	if(!length(known_skills))
 		to_chat(user, span_notice("You don't have any skills."))
 		return
-	var/msg = span_info("<EM>My skills</EM>\n")
+	var/msg = span_info("<EM>My skills</EM>")
 	for(var/datum/skill/S in known_skills)
-		msg += span_notice("[S.name] - [get_skill_level_name(S.type)]\n")
+		msg += span_notice("\n[S.name] - [get_skill_level_name(S.type)]")
+		if(S.level != 11)
+			msg += span_blue(": [round(S.experience/SKILL_EXP_LIST[S.level+1], 0.01)*100]% until [SSskills.level_names[S.level+1]]")
+
 	to_chat(user, "<div class='examine_block'>[msg]</div>")
 
 /datum/mind/proc/set_death_time()
