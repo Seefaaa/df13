@@ -9,7 +9,7 @@
 	density = TRUE
 	anchored = TRUE
 	var/fuel = 0
-	var/fuel_consumption = 1 // consumes x fuel per /process
+	var/fuel_consumption = 0.5 // consumes x fuel per /process
 	var/working = FALSE
 
 /obj/structure/forge/update_icon_state()

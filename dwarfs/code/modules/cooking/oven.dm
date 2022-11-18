@@ -7,6 +7,7 @@
 	density = TRUE
 	layer = BELOW_OBJ_LAYER
 	var/fuel = 0
+	var/fuel_consumption = 0.5
 	var/working = FALSE
 	var/cooking_time = 10 SECONDS
 	var/timerid
@@ -93,4 +94,4 @@
 	if(fuel<1)
 		working = FALSE
 		update_appearance()
-	fuel = max(fuel-1, 0)
+	fuel = max(fuel-fuel_consumption, 0)

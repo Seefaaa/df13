@@ -9,6 +9,7 @@
 	light_color = "#BB661E"
 	var/working = FALSE
 	var/fuel = 0
+	var/fuel_consumption = 0.5
 	var/smelting_time = 30 SECONDS
 	var/max_items = 5
 	var/timerid
@@ -104,4 +105,4 @@
 		update_appearance()
 		remove_timer()
 		return
-	fuel = max(fuel-1, 0)
+	fuel = max(fuel-fuel_consumption, 0)

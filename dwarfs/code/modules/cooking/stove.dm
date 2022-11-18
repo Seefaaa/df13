@@ -9,6 +9,7 @@
 	anchored = 1
 	var/open = FALSE
 	var/fuel = 0
+	var/fuel_consumption = 0.5
 	var/working = FALSE
 	var/heat = 500
 	var/list/timers = list(null, null)
@@ -161,7 +162,7 @@
 		visible_message(span_notice("[src]'s flames die out."))
 		update_appearance()
 		return
-	fuel = max(fuel-1, 0)
+	fuel = max(fuel-fuel_consumption, 0)
 
 /obj/structure/stove/proc/remove_timer(item_slot)
 	if(active_timers)
