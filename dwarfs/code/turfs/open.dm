@@ -260,7 +260,7 @@
 
 /turf/open/floor/tilled/proc/on_eat(obj/structure/plant/source)
 	SIGNAL_HANDLER
-	if((locate(/turf/open/water) in range(1)))
+	if((locate(/turf/open/water) in range(1, src)))
 		waterlevel = watermax
 	waterlevel = clamp(waterlevel-waterrate, 0, watermax)
 	update_appearance()
