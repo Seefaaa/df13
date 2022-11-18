@@ -729,30 +729,32 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 					if(new_facial_hairstyle)
 						facial_hairstyle = new_facial_hairstyle
 					*/
-					var/list/options
-					switch(gender)
-						if(MALE) options = GLOB.facial_hairstyles_male_list
-						if(FEMALE) options = GLOB.facial_hairstyles_female_list
-						else options = GLOB.facial_hairstyles_list
+					var/list/options = GLOB.facial_hairstyles_list
+					// switch(gender)
+					// 	if(MALE) options = GLOB.facial_hairstyles_male_list
+					// 	if(FEMALE) options = GLOB.facial_hairstyles_female_list
+					// 	else options = GLOB.facial_hairstyles_list
 					var/new_facial_hairstyle = tgui_input_list(user, "Choose your character's facial-hairstyle:", "Character Preference", options)
 					if(new_facial_hairstyle)
 						facial_hairstyle = new_facial_hairstyle
 
 				if("next_facehairstyle")
-					if (gender == MALE)
-						facial_hairstyle = next_list_item(facial_hairstyle, GLOB.facial_hairstyles_male_list)
-					else if(gender == FEMALE)
-						facial_hairstyle = next_list_item(facial_hairstyle, GLOB.facial_hairstyles_female_list)
-					else
-						facial_hairstyle = next_list_item(facial_hairstyle, GLOB.facial_hairstyles_list)
+					// if (gender == MALE)
+					// 	facial_hairstyle = next_list_item(facial_hairstyle, GLOB.facial_hairstyles_male_list)
+					// else if(gender == FEMALE)
+					// 	facial_hairstyle = next_list_item(facial_hairstyle, GLOB.facial_hairstyles_female_list)
+					// else
+					// 	facial_hairstyle = next_list_item(facial_hairstyle, GLOB.facial_hairstyles_list)
+					facial_hairstyle = next_list_item(facial_hairstyle, GLOB.facial_hairstyles_list)
 
 				if("previous_facehairstyle")
-					if (gender == MALE)
-						facial_hairstyle = previous_list_item(facial_hairstyle, GLOB.facial_hairstyles_male_list)
-					else if (gender == FEMALE)
-						facial_hairstyle = previous_list_item(facial_hairstyle, GLOB.facial_hairstyles_female_list)
-					else
-						facial_hairstyle = previous_list_item(facial_hairstyle, GLOB.facial_hairstyles_list)
+					// if (gender == MALE)
+					// 	facial_hairstyle = previous_list_item(facial_hairstyle, GLOB.facial_hairstyles_male_list)
+					// else if (gender == FEMALE)
+					// 	facial_hairstyle = previous_list_item(facial_hairstyle, GLOB.facial_hairstyles_female_list)
+					// else
+					// 	facial_hairstyle = previous_list_item(facial_hairstyle, GLOB.facial_hairstyles_list)
+					facial_hairstyle = previous_list_item(facial_hairstyle, GLOB.facial_hairstyles_list)
 
 				if("underwear")
 					/*
