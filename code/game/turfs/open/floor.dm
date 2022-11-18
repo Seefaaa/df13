@@ -172,6 +172,9 @@
 		if(!offhand || offhand?.tool_behaviour != TOOL_SHOVEL)
 			to_chat(user, span_warning("You need a shovel to plant [I]!"))
 			return
+		if(is_blocked_turf())
+			to_chat(user, span_warning("\The [src] is already occupied!"))
+			return
 		var/obj/item/sapling/S = I
 		var/obj/structure/plant/P = new S.plant_type(src)
 		P.health = S.health
