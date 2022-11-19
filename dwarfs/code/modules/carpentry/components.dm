@@ -35,7 +35,6 @@
 
 /obj/item/stick/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/growable/cave_wheat) || istype(I, /obj/item/growable/barley))
-		to_chat(user, span_notice("Torch>?"))
 		var/mob/living/carbon/human/H = user
 		var/obj/item/flashlight/fueled/torch/T = new()
 		var/held_index = H.is_holding(src)
