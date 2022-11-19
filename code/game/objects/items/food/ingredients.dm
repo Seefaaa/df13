@@ -82,9 +82,11 @@
 		qdel(src)
 		var/obj/item/food/sausage/failed/S = new
 		H.put_in_hand(S, held_index)
+		user.mind.adjust_experience(/datum/skill/cooking, 2)
 		return
 
 	var/obj/item/food/F = new R.result
+	user.mind.adjust_experience(/datum/skill/cooking, rand(5, 12))
 	var/held_index = H.is_holding(src)
 	qdel(src)
 	H.put_in_hand(F, held_index)
@@ -103,3 +105,4 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment=50)
 
 /obj/item/food/sausage/failed // bad sausage; gives poop when cooked
+	food_reagents = list(/datum/reagent/consumable/nutriment=10)

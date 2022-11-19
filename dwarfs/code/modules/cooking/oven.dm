@@ -49,7 +49,7 @@
 		I.forceMove(src)
 		to_chat(user, span_notice("You place \the [I] inside [src]."))
 		if(working)
-			timerid = addtimer(CALLBACK(src, .proc/try_cook, I), cooking_time, TIMER_STOPPABLE)
+			timerid = addtimer(CALLBACK(src, .proc/try_cook, I, user), cooking_time, TIMER_STOPPABLE)
 	else if(I.get_temperature())
 		if(!fuel)
 			to_chat(user, span_warning("[src] has no fuel."))
@@ -61,7 +61,7 @@
 		playsound(src, 'dwarfs/sounds/effects/ignite.ogg', 50, TRUE)
 		working = TRUE
 		if(contents.len)
-			timerid = addtimer(CALLBACK(src, .proc/try_cook, contents[1]), cooking_time, TIMER_STOPPABLE)
+			timerid = addtimer(CALLBACK(src, .proc/try_cook, contents[1], user), cooking_time, TIMER_STOPPABLE)
 		update_appearance()
 	else if(I.get_fuel())
 		fuel += I.get_fuel()
@@ -69,7 +69,7 @@
 		user.visible_message(span_notice("[user] throws [I] into [src]."), span_notice("You throw [I] into [src]."))
 		update_appearance()
 
-/obj/structure/oven/proc/try_cook(obj/item/I)
+/obj/structure/oven/proc/try_cook(obj/item/I, mob/user)
 	var/list/possible_recipes = list()
 	if(istype(I, /obj/item/reagent_containers/glass/plate/regular))
 		possible_recipes = subtypesof(/datum/cooking_recipe/oven/plate)
@@ -81,8 +81,9 @@
 	if(!R)
 		qdel(I)
 		new /obj/item/food/badrecipe(get_turf(src))
+		user.mind.adjust_experience(/datum/skill/cooking, 2)
 		return
-
+	user.mind.adjust_experience(/datum/skill/cooking, rand(10, 30))
 	new R.result(get_turf(src))
 	qdel(I)
 

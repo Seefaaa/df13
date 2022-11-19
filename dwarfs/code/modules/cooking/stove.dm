@@ -81,7 +81,7 @@
 		left_item = I
 		update_appearance()
 		if(working)
-			start_cooking(I, 1)
+			start_cooking(I, 1, user)
 	else if(I.get_temperature())
 		if(!fuel)
 			to_chat(user, span_warning("[src] has no fuel."))
@@ -96,7 +96,7 @@
 		update_appearance()
 		to_chat(user, span_notice("You light up [src]."))
 		playsound(src, 'dwarfs/sounds/effects/ignite.ogg', 50, TRUE)
-		start_cooking()
+		start_cooking(user=user)
 	else if(I.get_fuel())
 		if(!open)
 			to_chat(user, span_warning("[src] has to be opened first."))
@@ -118,7 +118,7 @@
 		right_item = I
 		update_appearance()
 		if(working)
-			start_cooking(I, 2)
+			start_cooking(I, 2, user)
 	else
 		. = ..()
 
@@ -180,16 +180,16 @@
 		timers = list(null, null)
 
 
-/obj/structure/stove/proc/start_cooking(obj/item/I=null, item_slot=null)
+/obj/structure/stove/proc/start_cooking(obj/item/I=null, item_slot=null, mob/user)
 	if(item_slot && I)
-		timers[item_slot] = addtimer(CALLBACK(src, .proc/try_cook, I), cook_time, TIMER_STOPPABLE)
+		timers[item_slot] = addtimer(CALLBACK(src, .proc/try_cook, I, user), cook_time, TIMER_STOPPABLE)
 	else
 		if(left_item)
-			timers[1] = addtimer(CALLBACK(src, .proc/try_cook, left_item), cook_time, TIMER_STOPPABLE)
+			timers[1] = addtimer(CALLBACK(src, .proc/try_cook, left_item, user), cook_time, TIMER_STOPPABLE)
 		if(right_item)
-			timers[2] = addtimer(CALLBACK(src, .proc/try_cook, right_item), cook_time, TIMER_STOPPABLE)
+			timers[2] = addtimer(CALLBACK(src, .proc/try_cook, right_item, user), cook_time, TIMER_STOPPABLE)
 
-/obj/structure/stove/proc/try_cook(obj/item/I)
+/obj/structure/stove/proc/try_cook(obj/item/I, mob/user)
 	var/list/possible_recipes = list()
 	if(istype(I, /obj/item/reagent_containers/glass/cooking_pot))
 		possible_recipes = subtypesof(/datum/cooking_recipe/pot)
@@ -199,6 +199,7 @@
 	if(!R)
 		LAZYCLEARLIST(I.contents)
 		I.reagents.clear_reagents()
+		user.mind.adjust_experience(/datum/skill/cooking, 2)
 		new /obj/item/food/badrecipe(get_turf(src))
 		return
 	if(left_item == I)
@@ -207,6 +208,7 @@
 		right_item = null
 	update_appearance()
 	var/obj/item/food/F = initial(R.result)
+	user.mind.adjust_experience(/datum/skill/cooking, rand(10, 30))
 	new F(get_turf(src))
 	qdel(I)
 	update_appearance()

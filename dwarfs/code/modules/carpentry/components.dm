@@ -58,8 +58,10 @@
 			else
 				new /obj/item/food/badrecipe(loc)
 				qdel(src)
+			user.mind.adjust_experience(/datum/skill/cooking, 2)
 
 		var/obj/item/food/F = new R.result
+		user.mind.adjust_experience(/datum/skill/cooking, rand(5, 15))
 		var/held_index = H.is_holding(src)
 		if(held_index)
 			qdel(src)

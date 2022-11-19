@@ -40,18 +40,6 @@
 	. = ..()
 	AddComponent(/datum/component/storage/concrete/cooking/pot)
 
-/obj/item/reagent_containers/glass/cooking_pot/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
-	. = ..()
-	find_recipe()
-
-/obj/item/reagent_containers/glass/cooking_pot/Exited(atom/movable/gone, direction)
-	. = ..()
-	find_recipe()
-
-/obj/item/reagent_containers/glass/cooking_pot/on_reagent_change(datum/reagents/holder, ...)
-	. = ..()
-	find_recipe()
-
 /obj/item/reagent_containers/glass/cooking_pot/update_overlays()
 	. = ..()
 	if(open && reagents.total_volume)
@@ -184,8 +172,10 @@
 			else
 				new /obj/item/food/badrecipe(loc)
 				qdel(src)
+			user.mind.adjust_experience(/datum/skill/cooking, 2)
 
 		var/obj/item/food/F = new R.result
+		user.mind.adjust_experience(/datum/skill/cooking, rand(10, 30))
 		var/held_index = H.is_holding(src)
 		if(held_index)
 			qdel(src)
