@@ -61,7 +61,7 @@
 
 /obj/item/food/intestines/stitched_casing
 	name = "stitched casing"
-	desc = ""
+	desc = "Fabricated alternative to intestines. Used for sausage production."
 	icon_state = "sausage_casing"
 
 /obj/item/food/intestines/stitched_casing/MakeEdible()
