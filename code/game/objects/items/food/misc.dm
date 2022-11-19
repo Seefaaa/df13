@@ -1,7 +1,7 @@
 /obj/item/transfer_food
 	name = "almost food"
 	desc = "This shouldn't exist"
-	icon = 'dwarfs/icons/items/food.dmi'
+	icon = 'dwarfs/icons/items/kitchen.dmi'
 	//Our original container we cooking this stuff in
 	var/original_container
 	//Container we need to transfer your stuff to
@@ -40,6 +40,7 @@
 /obj/item/transfer_food/stew
 	name = "stew in pot"
 	desc = "Almost stew."
+	icon_state = "cooking_pot_dwarven_stew"
 	food_inside = /obj/item/food/dish/dwarven_stew
 	required_container = /obj/item/reagent_containers/glass/plate/bowl
 	original_container = /obj/item/reagent_containers/glass/cooking_pot
@@ -47,6 +48,7 @@
 /obj/item/transfer_food/beer_wurst
 	name = "beer wurst in pan"
 	desc = "Almost that."
+	icon_state = "skillet_beer_wurst"
 	food_inside = /obj/item/food/dish/roasted_beer_wurst
 	required_container = /obj/item/reagent_containers/glass/plate/regular
 	original_container = /obj/item/reagent_containers/glass/pan
@@ -54,6 +56,7 @@
 /obj/item/transfer_food/allwurst
 	name = "allwurst in pan"
 	desc = "Everything sausage."
+	icon_state = "skillet_allwurst"
 	food_inside = /obj/item/food/dish/allwurst
 	required_container = /obj/item/reagent_containers/glass/plate/regular
 	original_container = /obj/item/reagent_containers/glass/pan
