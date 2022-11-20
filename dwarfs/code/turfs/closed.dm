@@ -27,7 +27,7 @@
 	base_icon_state = "rich_wall"
 	sheet_type = /obj/item/stack/sheet/stone
 	baseturfs = /turf/open/floor/stone
-	sheet_amount = 4
+	sheet_amount = 3
 
 /turf/closed/mineral/random/sand
 	name = "sand"

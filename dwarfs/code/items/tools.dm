@@ -92,8 +92,8 @@
 
 /obj/item/smithing_hammer/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
 	..()
-
 	if(iswallturf(target) && proximity_flag)
+		user.changeNext_move(CLICK_CD_MELEE)
 		var/turf/closed/wall/W = target
 		var/chance = (W.hardness * 0.5)
 		if(chance < 10)
