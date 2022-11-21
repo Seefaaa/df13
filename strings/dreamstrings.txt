@@ -1,44 +1,44 @@
 %A% %ADJECTIVE% familiar face
-%A% %ADJECTIVE% crewmember
-%A% %ADJECTIVE% security officer
+%A% %ADJECTIVE% dwarf
+%A% %ADJECTIVE% knight
 %A% %ADJECTIVE% doctor
 %A% %ADJECTIVE% engineer
 %A% %ADJECTIVE% miner
-%A% %ADJECTIVE% slime
-%A% %ADJECTIVE% alien
+%A% %ADJECTIVE% goblin
+%A% %ADJECTIVE% troll
 %A% %ADJECTIVE% traitor
 %A% %ADJECTIVE% ally
-%A% %ADJECTIVE% scientist
-%A% %ADJECTIVE% monkey
+%A% %ADJECTIVE% alchemist
+%A% %ADJECTIVE% cave cat
 %A% %ADJECTIVE% loved one
 %A% %ADJECTIVE% monster
-the %ADJECTIVE% captain
-%A% %ADJECTIVE% hat
-%A% %ADJECTIVE% ID card
-%A% %ADJECTIVE% bottle
-%A% %ADJECTIVE% toolbox
-%A% %ADJECTIVE% gun
+the %ADJECTIVE% king
+%A% %ADJECTIVE% helmet
+%A% %ADJECTIVE% tool
+%A% %ADJECTIVE% bucket
+%A% %ADJECTIVE% stone brick wall
+%A% %ADJECTIVE% crossbow
 the sun
-the engine
-the station
-%A% %ADJECTIVE% planet
-the medical bay
+diamond ore
+the fortress
+%A% %ADJECTIVE% star
+the kings mastercraft gold crown
 the %ADJECTIVE% bridge
-the %ADJECTIVE% brig
-%A% %ADJECTIVE% shuttle
-%A% %ADJECTIVE% laboratory
-Nanotrasen
-the Syndicate
+the kings luxurous beard 
+%A% %ADJECTIVE% water wheel
+%A% %ADJECTIVE% kitchen
+ARMOK
+%A% untrustorthy elf
 the Wizard Federation
 %ADJECTIVE% blood
-%ADJECTIVE% plasma
+%ADJECTIVE% lava
 %ADJECTIVE% wind
 %ADJECTIVE% darkness
 %ADJECTIVE% light
 %ADJECTIVE% death
-%ADJECTIVE% blinking lights
-%ADJECTIVE% power
+%ADJECTIVE% plump helmet
+%ADJECTIVE% beer
 %ADJECTIVE% riches
 water
 %ADJECTIVE% flames
-some %ADJECTIVE% melons
+some %ADJECTIVE% gold ingots
