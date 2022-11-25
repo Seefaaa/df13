@@ -32,11 +32,10 @@
 	desc = "Shovel made for excavating soils."
 	icon = 'dwarfs/icons/items/tools.dmi'
 	icon_state = "shovel"
-	worn_icon_state = "shovel"
+	worn_icon = 'dwarfs/icons/mob/clothing/back.dmi'
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
-	flags_1 = CONDUCT_1
-	slot_flags = ITEM_SLOT_BELT
+	slot_flags = ITEM_SLOT_BACK
 	force = 8
 	tool_behaviour = TOOL_SHOVEL
 	toolspeed = 1
@@ -44,7 +43,6 @@
 	throwforce = 4
 	inhand_icon_state = "shovel"
 	w_class = WEIGHT_CLASS_NORMAL
-	custom_materials = list(/datum/material/iron=50)
 	attack_verb_continuous = list("smashes", "hits", "attacks")
 	attack_verb_simple = list("smash", "hit", "attack")
 	atck_type = SHARP
