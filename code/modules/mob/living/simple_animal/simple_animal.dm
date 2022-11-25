@@ -166,8 +166,6 @@
 	/// A string for an emote used when pet_bonus == true for the mob being pet.
 	var/pet_bonus_emote = ""
 
-	//Discovery
-	var/discovery_points = 200
 	///Limits how often mobs can hunt other mobs
 	COOLDOWN_DECLARE(emote_cooldown)
 	var/turns_since_scan = 0

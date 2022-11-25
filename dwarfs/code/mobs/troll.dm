@@ -31,8 +31,6 @@
 	gold_core_spawnable = HOSTILE_SPAWN
 	var/rockfalling_last = 0
 
-	discovery_points = 10000
-
 /mob/living/simple_animal/hostile/troll/Initialize()
 	. = ..()
 	flick("troll_spawn", src)
