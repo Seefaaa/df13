@@ -8,7 +8,6 @@
 	worn_icon_state = "flashlight"
 	w_class = WEIGHT_CLASS_SMALL
 	flags_1 = CONDUCT_1
-	slot_flags = ITEM_SLOT_BELT
 	light_system = MOVABLE_LIGHT_DIRECTIONAL
 	light_range = 4
 	light_power = 1
@@ -228,7 +227,6 @@
 	light_color = LIGHT_COLOR_ORANGE
 	light_system = MOVABLE_LIGHT
 	on_damage = 10
-	slot_flags = null
 
 /obj/item/flashlight/fueled/torch/Initialize()
 	. = ..()
@@ -276,11 +274,12 @@
 	icon_state = "lantern"
 	inhand_icon_state = "lantern"
 	worn_icon_state = "lantern"
-	desc = "Brother, lamp"
+	desc = "A casing with a candle inside. Due to it's structure the candle light has higher range."
 	worn_icon = 'dwarfs/icons/mob/clothing/belt.dmi'
 	light_range = 6			// luminosity when on
 	light_system = MOVABLE_LIGHT
 	light_color = "#e7c16d"
+	slot_flags = ITEM_SLOT_BELT
 
 /obj/item/flashlight/fueled/lantern/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/flashlight/fueled/candle))
