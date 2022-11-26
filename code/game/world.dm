@@ -226,9 +226,9 @@ GLOBAL_VAR(restart_counter)
 
 	var/s = ""
 
-	s += "<big><b>Dwarf Fortress 13</b></big>\] <a href=\"https://discord.gg/rVK4VgEYmz\">DISCORD</a>\n\n"
-	s += "<img src='https://assets.station13.ru/l/d1.gif'>\n\n"
-	s += "\[<big>SLAVES TO ARMOK</big>\n\n"
+	s += "<big><b>Dwarf Fortress 13</b></big>\] <a href=\"https://discord.gg/rVK4VgEYmz\">DISCORD</a>\n"
+	s += "<img src='https://assets.station13.ru/l/d1.gif'>\n"
+	s += "\[<big>SLAVES TO ARMOK</big>"
 
 	status = s
 
