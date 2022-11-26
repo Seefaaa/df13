@@ -3,6 +3,7 @@
 	desc = "Nobody ever told anyone that weaving is easy. Neither fun."
 	icon = 'dwarfs/icons/structures/workshops.dmi'
 	icon_state = "loom"
+	density = TRUE
 	var/working = FALSE
 	var/ready = FALSE
 
