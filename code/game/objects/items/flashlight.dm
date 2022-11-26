@@ -286,6 +286,7 @@
 		if(fuel)
 			to_chat(user, span_warning("[src] already has a candle inside."))
 			return
+		to_chat(user, span_notice("You place a candle inside [src]."))
 		var/obj/item/flashlight/fueled/candle/C = I
 		fuel += C.fuel
 		if(C.on && !on)
