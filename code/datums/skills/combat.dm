@@ -48,8 +48,8 @@
 			SKILL_MISS_MODIFIER=list(40, 35, 30, 26, 22, 16, 14, 10, 4, 1, 0),
 			SKILL_PARRY_MODIFIER=list(0, 1, 3, 8, 13, 18, 23, 26, 31, 35, 40),
 			SKILL_DAMAGE_MODIFIER=list(0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 4))
-	exp_per_parry = 7
-	exp_per_attack = 7
+	exp_per_parry = 20
+	exp_per_attack = 15
 
 /datum/skill/combat/longsword
 	name = "Greatsword Combat"
@@ -59,8 +59,8 @@
 			SKILL_MISS_MODIFIER=list(50, 40, 45, 40, 35, 30, 25, 20, 15, 10, 5),
 			SKILL_PARRY_MODIFIER=list(5, 8, 11, 15, 19, 23, 27, 30, 34, 40, 48),
 			SKILL_DAMAGE_MODIFIER=list(0, 0, 1, 1, 2, 2, 2, 3, 3, 4, 4))
-	exp_per_parry = 7
-	exp_per_attack = 7
+	exp_per_parry = 20
+	exp_per_attack = 25
 
 /datum/skill/combat/hammer
 	name = "Greathammer Combat"
@@ -70,8 +70,8 @@
 			SKILL_MISS_MODIFIER=list(50, 40, 42, 36, 31, 26, 21, 17, 14, 9, 3),
 			SKILL_PARRY_MODIFIER=list(3, 5, 9, 12, 17, 21, 25, 27, 30, 34, 38),
 			SKILL_DAMAGE_MODIFIER=list(0, 0, 1, 2, 2, 2, 3, 3, 3, 4, 4))
-	exp_per_parry = 7
-	exp_per_attack = 7
+	exp_per_parry = 20
+	exp_per_attack = 25
 
 /datum/skill/combat/flail
 	name = "Mace Combat"
@@ -81,8 +81,8 @@
 			SKILL_MISS_MODIFIER=list(30, 26, 21, 19, 14, 11, 9, 6, 4, 2, 0),
 			SKILL_PARRY_MODIFIER=list(0, 0, 1, 6, 9, 12, 15, 17, 20, 22, 25),
 			SKILL_DAMAGE_MODIFIER=list(0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3))
-	exp_per_parry = 7
-	exp_per_attack = 7
+	exp_per_parry = 25
+	exp_per_attack = 20
 
 /datum/skill/combat/spear
 	name = "Spear Combat"
@@ -92,8 +92,8 @@
 			SKILL_MISS_MODIFIER=list(15, 13, 11, 9, 7, 5, 3, 0, 0, 0, 0),
 			SKILL_PARRY_MODIFIER=list(0, 0, 3, 5, 9, 13, 16, 19, 22, 25, 30),
 			SKILL_DAMAGE_MODIFIER=list(0, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5))
-	exp_per_parry = 7
-	exp_per_attack = 7
+	exp_per_parry = 15
+	exp_per_attack = 33
 
 /datum/skill/combat/halberd
 	name = "Halberd Combat"
@@ -103,6 +103,6 @@
 			SKILL_MISS_MODIFIER=list(28, 20, 15, 10, 7, 4, 2, 0, 0, 0, 0),
 			SKILL_PARRY_MODIFIER=list(0, 0, 0, 1, 5, 7, 10, 13, 15, 18, 22),
 			SKILL_DAMAGE_MODIFIER=list(0, 0, 0, 1, 2, 2, 2, 3, 3, 4, 6))
-	exp_per_parry = 7
-	exp_per_attack = 7
+	exp_per_parry = 20
+	exp_per_attack = 35
 
