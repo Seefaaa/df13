@@ -11,7 +11,7 @@
 	var/mutable_appearance/decal_overlay_1
 	var/mutable_appearance/decal_overlay_2
 	var/mutable_appearance/scribbels
-	var/static/list/sign_decals = list("pickaxe","arrow_right","arrow_left","dwarf", "none")
+	var/static/list/sign_decals = list("pickaxe","arrow_right","arrow_left","dwarf","shovel","hammer","axe","hoe","cross","goblin","circle","sword","cauldron","bucket","cat","mug","anvil","meat","tombstone", "none")
 
 /obj/structure/sign/proc/write(var/txt as text, var/decal_1, var/decal_2, var/picked_color)
 	sign_text = txt
@@ -21,13 +21,13 @@
 		scribbels = mutable_appearance(icon,"scribbels")
 		scribbels.color = text_color
 		add_overlay(scribbels)
-	if(decal_1 && decal_1 != "None")
+	if(decal_1 && decal_1 != "none")
 		decal_overlay_1 = mutable_appearance(symbol_path, decal_1)
 		decal_overlay_1.color = text_color
 		decal_overlay_1.pixel_x = 7
 		decal_overlay_1.pixel_y = 15
 		add_overlay(decal_overlay_1)
-	if(decal_2 && decal_2 != "None")
+	if(decal_2 && decal_2 != "none")
 		decal_overlay_2 = mutable_appearance(symbol_path, decal_2)
 		decal_overlay_2.color = text_color
 		decal_overlay_2.pixel_x = 17
