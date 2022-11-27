@@ -48,8 +48,9 @@
 		user.visible_message(span_notice("<b>[user]</b> hits \the anvil with \a hammer.") , \
 						span_notice("You hit \the anvil with \a hammer."))
 		current_ingot.progress_current++
-		H.adjustStaminaLoss(rand(0, 3))
-		H.mind.adjust_experience(/datum/skill/smithing, rand(0, 4) * current_ingot.grade)
+		var/max_stam_loss = H.mind.get_skill_modifier(SKILL_AMOUNT_MAX_MODIFIER)
+		H.adjustStaminaLoss(rand(0, max_stam_loss))
+		H.mind.adjust_experience(/datum/skill/smithing, rand(1, 4) * current_ingot.grade)
 
 /obj/structure/anvil/proc/miss(mob/user)
 	if(current_ingot.heattemp <= 0)
