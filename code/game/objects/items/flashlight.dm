@@ -293,6 +293,7 @@
 			on = TRUE
 			icon_state = "lantern_on"
 			damtype = BURN
+			update_brightness(user)
 			START_PROCESSING(SSobj, src)
 		qdel(C)
 	else
