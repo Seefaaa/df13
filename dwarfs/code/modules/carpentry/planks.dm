@@ -45,6 +45,9 @@ GLOBAL_LIST_INIT(plank_recipes, list (
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 
+/obj/item/stack/sheet/bark/get_fuel()
+	return 3 * amount
+
 /obj/structure/lattice
 	name = "wooden lattice"
 	desc = "Blocks you from falling down and allows building floors."
