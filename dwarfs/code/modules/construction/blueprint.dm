@@ -177,3 +177,9 @@
 	target_structure = /obj/structure/tanning_rack
 	reqs = list(/obj/item/stack/sheet/planks=7)
 	cat = "craftsmanship"
+
+/obj/structure/blueprint/throne
+	name = "stone throne"
+	target_structure = /obj/structure/chair/comfy/stone/throne
+	reqs = list(/obj/item/ingot/gold=2, /obj/item/stack/sheet/stone=15, /obj/item/stack/ore/gem/diamond=3)
+	cat = "decoration"
