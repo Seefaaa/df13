@@ -197,7 +197,7 @@
 
 	// Usual checks
 	if(fuel <= 0)
-		to_chat(user, span_warning("[src] burns out!"))
+		to_chat(user, span_warning("[src] doesn't have any fuel!"))
 		return
 	if(on)
 		to_chat(user, span_warning("[src] is already burning!"))
@@ -298,3 +298,7 @@
 		qdel(C)
 	else
 		. = ..()
+
+/obj/item/flashlight/fueled/lantern/examine(mob/user)
+	. = ..()
+	. += fuel ? "\nIt has a candle inside." : "\n\The [src] is empty."
