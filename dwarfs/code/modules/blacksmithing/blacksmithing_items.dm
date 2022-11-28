@@ -43,6 +43,8 @@
 			ct = "cold"
 
 	. += "<hr>The [src] is [ct]."
+	if(recipe)
+		. += "<hr> The [src] is being smithed into [recipe.name]."
 
 /obj/item/ingot/Initialize()
 	. = ..()
