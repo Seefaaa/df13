@@ -252,7 +252,7 @@ Behavior that's still missing from this component that original food items had t
 		else if(fullness > 50 && fullness < 150)
 			eater.visible_message(span_notice("[eater] hungrily [eatverb]s \the [parent].") , span_notice("You hungrily [eatverb] \the [parent]."))
 		else if(fullness > 150 && fullness < 500)
-			eater.visible_message(span_notice("[eater] [eatverb] [parent].") , span_notice("You [eatverb] \the [parent]."))
+			eater.visible_message(span_notice("[eater] [eatverb]s [parent].") , span_notice("You [eatverb] \the [parent]."))
 		else if(fullness > 500 && fullness < 600)
 			eater.visible_message(span_notice("[eater] unwillingly [eatverb]s a bit of \the [parent].") , span_notice("You unwillingly [eatverb] a bit of \the [parent]."))
 		else if(fullness > (600 * (1 + eater.overeatduration / (4000 SECONDS))))	// The more you eat - the more you can eat
