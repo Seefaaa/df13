@@ -112,9 +112,13 @@
 	add_fingerprint(user)
 
 	if(!torch)
-		to_chat(user, span_warning("There is no torch!"))
-		return
-	torch.add_fingerprint(user)
-	user.put_in_active_hand(torch)
-	torch = null
-	update_appearance()
+		to_chat(user, span_notice("You detach [src]."))
+		var/obj/item/i = new /obj/item/sconce
+		if(!user.put_in_active_hand(i))
+			i.forceMove(get_turf(src))
+		qdel(src)
+	else
+		torch.add_fingerprint(user)
+		user.put_in_active_hand(torch)
+		torch = null
+		update_appearance()
