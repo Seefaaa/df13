@@ -72,6 +72,9 @@
 	AddComponent(/datum/component/storage/concrete/cooking/sausage)
 
 /obj/item/food/intestines/attack_self(mob/user, modifiers)
+	if(!contents.len)
+		to_chat(user, span_warning("Cannot make an empty sausage!"))
+		return
 	to_chat(user, span_notice("You start tying up \the [src]..."))
 	if(!do_after(user, 10 SECONDS, src))
 		return
@@ -79,13 +82,27 @@
 	var/mob/living/carbon/human/H = user
 	if(!R)
 		var/held_index = H.is_holding(src)
-		qdel(src)
 		var/obj/item/food/sausage/failed/S = new
+		S.desc += "\n\The [S] contains "
+		for(var/i in 1 to contents.len)
+			var/obj/item/item = contents[i]
+			if(i != 1)
+				S.desc += ", \a [item]"
+			else
+				S.desc += "\a [item]"
+		qdel(src)
 		H.put_in_hand(S, held_index)
 		user.mind.adjust_experience(/datum/skill/cooking, 2)
 		return
 
 	var/obj/item/food/F = new R.result
+	F.desc += "\n\The [F] contains "
+	for(var/i in 1 to contents.len)
+		var/obj/item/item = contents[i]
+		if(i != 1)
+			F.desc += ", \a [item]"
+		else
+			F.desc += "\a [item]"
 	user.mind.adjust_experience(/datum/skill/cooking, rand(5, 12))
 	var/held_index = H.is_holding(src)
 	qdel(src)
