@@ -76,7 +76,7 @@
 
 /obj/item/food/dish/troll_delight
 	name = "troll's delight"
-	desc = "Dish, fir for a kings feast."
+	desc = "Dish, for for a kings feast."
 	icon_state = "troll_delight"
 	plate_type = /obj/item/reagent_containers/glass/plate/flat
 	food_reagents = list(/datum/reagent/consumable/nutriment=240)
