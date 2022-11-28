@@ -34,7 +34,7 @@
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = list(SMOOTH_GROUP_TABLES)
 	canSmoothWith = list(SMOOTH_GROUP_TABLES)
-	obj_flags = BLOCK_Z_IN_DOWN
+	obj_flags = BLOCK_Z_IN_DOWN | CAN_BE_HIT
 
 /obj/structure/table/Initialize(mapload, _buildstack)
 	. = ..()

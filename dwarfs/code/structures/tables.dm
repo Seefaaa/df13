@@ -8,13 +8,6 @@
 	max_integrity = 300
 	buildstack = /obj/item/stack/sheet/stone
 
-/obj/structure/table/stone/attackby(obj/item/W, mob/user, params)
-	if (W.tool_behaviour == TOOL_WRENCH || W.tool_behaviour == TOOL_SCREWDRIVER)
-		to_chat(user, span_warning("How..."))
-		return
-	else
-		return ..()
-
 /obj/structure/table/wood
 	name = "wooden table"
 	desc = ""
