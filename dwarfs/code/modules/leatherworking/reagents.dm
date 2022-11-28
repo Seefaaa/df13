@@ -8,3 +8,4 @@
 		var/obj/item/stack/sheet/dryhide/D = exposed_obj
 		new /obj/item/stack/sheet/leather (get_turf(D), D.leather_amount)
 		qdel(D)
+		holder.remove_reagent(type, 3, 12)

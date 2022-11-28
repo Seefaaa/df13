@@ -208,6 +208,7 @@
 			if(T)
 				T.update_appearance()
 			playsound(holder.my_atom, 'sound/effects/vaper.ogg', 100)
+			holder.remove_reagent(type, rand(2, 12))
 	else if(istype(exposed_obj, /obj/item/stack/sheet/bark))
 		var/obj/item/stack/B = exposed_obj
 		B.use(1)
