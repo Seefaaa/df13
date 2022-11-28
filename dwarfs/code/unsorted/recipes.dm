@@ -133,6 +133,15 @@
 	name = "\[part\] hoe blade"
 	result = /obj/item/partial/hoe
 
+/datum/smithing_recipe/lock_key
+	name = "Lock and key"
+	result = /obj/effect/key_lock
+
+/datum/smithing_recipe/keys
+	name = "Keys"
+	result = /obj/item/key
+	max_resulting = 3
+
 /datum/workbench_recipe
 	var/name = "workbench_recipe"
 	var/result

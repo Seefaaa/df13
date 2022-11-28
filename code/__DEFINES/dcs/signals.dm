@@ -1374,3 +1374,9 @@
 #define COMSIG_ADDED_POINT_OF_INTEREST "added_point_of_interest"
 /// Sent from base of /datum/controller/subsystem/points_of_interest/proc/on_poi_element_removed : (atom/old_poi)
 #define COMSIG_REMOVED_POINT_OF_INTEREST "removed_point_of_interest"
+
+//Lock and key signals
+/// Sent when the key item it used on object : (atom/source, datum/key/key_obj, mob/user)
+#define COMSIG_KEY_USE "key_use"
+/// Sent when you want to check if the object is locked : (atom/source, mob/user)
+#define COMSIG_TRY_LOCKED_ACTION "try_locked_action"

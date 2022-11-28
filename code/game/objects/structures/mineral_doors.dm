@@ -46,6 +46,8 @@
 /obj/structure/mineral_door/proc/TryToSwitchState(atom/user)
 	if(isSwitchingStates || !anchored)
 		return
+	if(SEND_SIGNAL(src, COMSIG_TRY_LOCKED_ACTION, user))
+		return
 	if(isliving(user))
 		var/mob/living/M = user
 		if(M.client)

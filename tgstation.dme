@@ -447,6 +447,7 @@
 #include "code\datums\components\knockoff.dm"
 #include "code\datums\components\liftable.dm"
 #include "code\datums\components\lockon_aiming.dm"
+#include "code\datums\components\locks.dm"
 #include "code\datums\components\manual_blinking.dm"
 #include "code\datums\components\manual_breathing.dm"
 #include "code\datums\components\material_container.dm"
