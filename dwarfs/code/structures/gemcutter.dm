@@ -8,7 +8,7 @@
 	layer = TABLE_LAYER
 	var/busy = FALSE
 
-/obj/structure/gemcutter/attacked_by(obj/item/I, mob/living/user)
+/obj/structure/gemcutter/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/stack/ore/gem))
 		icon_state = "gemcutter_on"
 		if(busy)
