@@ -82,7 +82,7 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 /obj/item/key/attackby(obj/item/I, mob/living/user)
 	if(istype(I,/obj/item/chisel))
 		var/prefix = tgui_input_text(user,"What will be the tag of the key?", "Key tag", "", 30)
-w		name = prefix + " " + initial(name)
+		name = prefix + " " + initial(name)
 		update_name()
 		return
 	if(istype(I,/obj/item/smithing_hammer))
