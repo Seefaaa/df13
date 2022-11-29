@@ -1,5 +1,3 @@
-GLOBAL_VAR_INIT(troll_spawn_change, 0)
-
 /datum/round_event_control/troll
 	name = "trolls"
 	typepath = /datum/round_event/troll
@@ -14,4 +12,4 @@ GLOBAL_VAR_INIT(troll_spawn_change, 0)
 
 
 /datum/round_event/troll/start()
-	GLOB.troll_spawn_change += 0.25
+	SSevents.troll_spawn_change += 0.25

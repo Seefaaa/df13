@@ -11,6 +11,7 @@ SUBSYSTEM_DEF(events)
 	var/scheduled = 0			//The next world.time that a naturally occuring random event can be selected.
 	var/frequency_lower = 1800	//3 minutes lower bound.
 	var/frequency_upper = 6000	//10 minutes upper bound. Basically an event will happen every 3 to 10 minutes.
+	var/troll_spawn_change = 0 //change for troll to spawn
 
 	var/wizardmode = FALSE
 
