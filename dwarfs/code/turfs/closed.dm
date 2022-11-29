@@ -15,7 +15,7 @@
 	if(prob(33))
 		new /obj/item/stack/ore/stone(src)
 
-	if(prob(0.3))
+	if(prob(GLOB.troll_spawn_change))
 		to_chat(user, span_userdanger("THIS ROCK APPEARS TO BE ESPECIALLY SOFT!"))
 		new /mob/living/simple_animal/hostile/troll(src)
 
