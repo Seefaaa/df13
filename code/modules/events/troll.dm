@@ -1,8 +1,8 @@
 GLOBAL_VAR_INIT(troll_spawn_change, 0)
 
 /datum/round_event_control/troll
-	name "trolls"
-	typepath = /datum/round_event/mass_hallucination
+	name = "trolls"
+	typepath = /datum/round_event/troll
 	weight = 20
 	max_occurrences = 10
 	min_players = 10
@@ -13,5 +13,5 @@ GLOBAL_VAR_INIT(troll_spawn_change, 0)
 	announceChance = 0
 
 
-/datum/round_event/mass_hallucination/start()
+/datum/round_event/troll/start()
 	GLOB.troll_spawn_change += 0.25
