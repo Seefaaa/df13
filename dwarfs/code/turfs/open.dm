@@ -317,3 +317,9 @@
 		reagents.expose(arrived)
 		for(var/atom/A in arrived)
 			reagents.expose(A)
+
+/turf/open/floor/wooden
+	name = "wooden floor"
+	desc = "Cozy."
+	icon = 'dwarfs/icons/turf/floors.dmi'
+	icon_state = "wooden"

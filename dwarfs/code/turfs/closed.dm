@@ -54,3 +54,10 @@
 			user.mind.adjust_experience(/datum/skill/mining, 3)
 			T.ChangeTurf(/turf/closed/wall/stone, initial(T.baseturfs))
 	..()
+
+/turf/closed/wall/wooden
+	name = "wooden wall"
+	icon = 'dwarfs/icons/turf/walls_wooden.dmi'
+	base_icon_state = "wooden_wall"
+	icon_state = "wooden_wall-0"
+	baseturfs = /turf/open/floor/wooden
