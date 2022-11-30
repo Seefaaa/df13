@@ -323,3 +323,4 @@
 	desc = "Cozy."
 	icon = 'dwarfs/icons/turf/floors.dmi'
 	icon_state = "wooden"
+	slowdown = -0.2
