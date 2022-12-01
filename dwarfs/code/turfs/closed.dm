@@ -52,7 +52,7 @@
 		if(I.use_tool(src, user, time, volume=50))
 			to_chat(user, span_notice("You finish carving stone wall."))
 			user.mind.adjust_experience(/datum/skill/mining, 3)
-			T.ChangeTurf(/turf/closed/wall/stone, initial(T.baseturfs))
+			T.PlaceOnTop(/turf/closed/wall/stone)
 	..()
 
 /turf/closed/wall/wooden

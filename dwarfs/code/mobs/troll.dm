@@ -47,8 +47,7 @@
 						L.apply_damage_type(20, BRUTE)
 						L.Paralyze(100)
 						to_chat(L, span_userdanger("A PILE OF STONE IS FALLING ON ME!"))
-					var/turf/closed/mineral/random/dwarf_lustress/t = /turf/closed/mineral/random/dwarf_lustress
-					T.ChangeTurf(t, initial(t.baseturfs))
+					T.PlaceOnTop(/turf/closed/mineral/random/dwarf_lustress)
 
 /obj/effect/temp_visual/rockfall
 	icon = 'icons/mob/actions/actions_items.dmi'
