@@ -27,7 +27,9 @@ GLOBAL_LIST_INIT(plank_recipes, list (
 	new/datum/stack_recipe("Wooden Table", /obj/structure/table/wood, 5, time=25 SECONDS, tools=TOOL_AXE),
 	new/datum/stack_recipe("Wooden Chair", /obj/structure/chair/wood, 5, time=20 SECONDS, tools=TOOL_AXE),
 	new/datum/stack_recipe("Loom", /obj/structure/loom, 10, time=30 SECONDS, tools=TOOL_AXE),
-	new/datum/stack_recipe("Club", /obj/item/club, 5, time=15 SECONDS, tools=TOOL_AXE)
+	new/datum/stack_recipe("Club", /obj/item/club, 5, time=15 SECONDS, tools=TOOL_AXE),
+	new/datum/stack_recipe("Wooden Floor", /turf/open/floor/wooden, 4, time=5 SECONDS),
+	new/datum/stack_recipe("Wooden Wall", /turf/closed/wall/wooden, 5, time=5 SECONDS)
 ))
 //new/datum/stack_recipe(title, result_type, req_amount = 1, res_amount = 1, max_res_amount = 1,time = 0)
 /obj/item/stack/sheet/planks/get_main_recipes()

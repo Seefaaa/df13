@@ -61,3 +61,5 @@
 	base_icon_state = "wooden_wall"
 	icon_state = "wooden_wall-0"
 	baseturfs = /turf/open/floor/wooden
+	hardness = 60
+	sheet_type = /obj/item/stack/sheet/planks

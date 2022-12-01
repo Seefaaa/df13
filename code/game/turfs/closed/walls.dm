@@ -20,7 +20,6 @@
 	var/slicing_duration = 100  //default time taken to slice the wall
 	var/sheet_type
 	var/sheet_amount = 2
-	var/girder_type
 
 	var/list/dent_decals
 
@@ -64,7 +63,6 @@
 
 /turf/closed/wall/proc/break_wall()
 	new sheet_type(src, sheet_amount)
-	return new girder_type(src)
 
 /turf/closed/wall/proc/devastate_wall()
 	new sheet_type(src, sheet_amount)
