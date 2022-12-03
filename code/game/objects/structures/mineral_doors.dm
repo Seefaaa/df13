@@ -8,7 +8,7 @@
 	opacity = TRUE
 	layer = CLOSED_DOOR_LAYER
 
-	icon = 'icons/obj/doors/mineral_doors.dmi'
+	icon = 'dwarfs/icons/structures/doors.dmi'
 	icon_state = "metal"
 	max_integrity = 200
 	flags_1 = RAD_PROTECT_CONTENTS_1 | RAD_NO_CONTAMINATE_1
@@ -22,7 +22,7 @@
 	var/closeSound = 'sound/effects/stonedoor_openclose.ogg'
 
 	var/sheetType //what we're made of
-	var/sheetAmount = 7 //how much we drop when deconstructed
+	var/sheetAmount = 3 //how much we drop when deconstructed
 
 /obj/structure/mineral_door/Bumped(atom/movable/AM)
 	..()

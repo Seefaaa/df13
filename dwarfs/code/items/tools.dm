@@ -293,7 +293,7 @@
 		"Floor" = image(icon = 'dwarfs/icons/turf/floors.dmi', icon_state = "stone_floor"),
 		"Wall" = image(icon = 'dwarfs/icons/turf/walls_dwarven.dmi', icon_state = "rich_wall-0"),
 		"Stairs" = image(icon='dwarfs/icons/structures/stone_stairs.dmi', icon_state = "stairs_t"),
-		"Door" = image(icon='dwarfs/icons/structures/stonedoor.dmi', icon_state = "heavystone")
+		"Door" = image(icon='dwarfs/icons/structures/doors.dmi', icon_state = "stone")
 	)
 	var/choice = show_radial_menu(user, src, choices, custom_check = CALLBACK(src, .proc/check_menu, user), require_near = TRUE, tooltips = TRUE)
 	if(!check_menu(user))
