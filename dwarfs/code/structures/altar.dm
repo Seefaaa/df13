@@ -81,6 +81,8 @@
 		to_chat(M, span_notice("You become a dwarf."))
 
 /obj/structure/dwarf_altar/proc/perform_rite(rite, mob/user)
+	if(istype(rite, /datum/ritual))
+		return
 	var/datum/ritual/R = new rite
 	if(busy)
 		return
