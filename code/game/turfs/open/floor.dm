@@ -3,6 +3,7 @@
 	//- you should use istype() if you want to find out whether a floor has a certain type
 	//- floor_tile is now a path, and not a tile obj
 	name = "floor"
+	desc = "This is a floor."
 	icon = 'dwarfs/icons/turf/floors.dmi'
 	base_icon_state = "floor"
 	baseturfs = /turf/open/floor/rock
@@ -166,7 +167,6 @@
 				return
 		var/obj/structure/blueprint/new_blueprint = new H.selected_blueprint(src)
 		new_blueprint.update_appearance()
-		H.selected_blueprint = null
 	else if(istype(I, /obj/item/sapling))
 		var/obj/item/offhand = user.get_inactive_held_item()
 		if(!offhand || offhand?.tool_behaviour != TOOL_SHOVEL)
