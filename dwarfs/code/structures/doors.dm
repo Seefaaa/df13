@@ -8,3 +8,8 @@
 	name = "wooden door"
 	icon_state = "wood"
 	sheetType = /obj/item/stack/sheet/planks
+
+/obj/structure/mineral_door/sand
+	name = "sand door"
+	icon_state = "sand"
+	sheetType = /obj/item/stack/ore/smeltable/sand

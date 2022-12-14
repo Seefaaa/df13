@@ -63,3 +63,11 @@
 	baseturfs = /turf/open/floor/wooden
 	hardness = 60
 	sheet_type = /obj/item/stack/sheet/planks
+
+/turf/closed/wall/sand
+	name = "sand wall"
+	icon = 'dwarfs/icons/turf/walls_sand.dmi'
+	base_icon_state = "sand_wall"
+	icon_state = "sand_wall-0"
+	baseturfs = /turf/open/floor/sandstone
+	sheet_type = /obj/item/stack/ore/smeltable/sand

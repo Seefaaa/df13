@@ -324,3 +324,8 @@
 	icon = 'dwarfs/icons/turf/floors.dmi'
 	icon_state = "wooden"
 	slowdown = -0.2
+
+/turf/open/floor/sandstone
+	name = "sand floor"
+	icon_state = "sandstone"
+	slowdown = -0.1
