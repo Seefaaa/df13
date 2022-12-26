@@ -29,6 +29,7 @@
 	minbodytemp = 0
 	maxbodytemp = INFINITY
 	gold_core_spawnable = HOSTILE_SPAWN
+	stat_attack = HARD_CRIT
 	var/rockfalling_last = 0
 
 /mob/living/simple_animal/hostile/troll/Initialize()
