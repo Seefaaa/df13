@@ -87,7 +87,6 @@ GLOBAL_LIST_EMPTY(cats)
 		if(cat_count >= MAX_CLOSE_CATS)
 			return
 		cat_count++
-		continue
 	. = ..()
 
 /mob/living/simple_animal/pet/cat/examine(mob/user)

@@ -87,6 +87,7 @@
 	icon_state = "cave_wheat"
 	mood_gain = -3
 	food_reagents = list(/datum/reagent/consumable/nutriment=10)
+	food_flags = GRAIN
 
 /obj/item/growable/cave_wheat/MakeGrindable()
 	AddComponent(/datum/component/grindable, /datum/reagent/grain/cave_wheat, 10)
@@ -97,6 +98,7 @@
 	icon_state = "barley"
 	mood_gain = -3
 	food_reagents = list(/datum/reagent/consumable/nutriment=10)
+	food_flags = GRAIN
 
 /obj/item/growable/barley/MakeGrindable()
 	AddComponent(/datum/component/grindable, /datum/reagent/grain/barley, 10)

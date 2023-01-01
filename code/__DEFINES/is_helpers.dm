@@ -147,6 +147,8 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 #define is_reagent_container(O) (istype(O, /obj/item/reagent_containers))
 
+#define isgrowable(O) (istype(O, /obj/item/growable))
+
 //Assemblies
 #define isassembly(O) (istype(O, /obj/item/assembly))
 
