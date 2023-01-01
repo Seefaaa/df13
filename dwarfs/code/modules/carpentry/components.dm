@@ -34,7 +34,10 @@
 		.+=M
 
 /obj/item/stick/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/growable/cave_wheat) || istype(I, /obj/item/growable/barley))
+	if(isgrowable(I))
+		var/obj/item/growable/G = I
+		if(!(G.food_flags & GRAIN))
+			return
 		var/mob/living/carbon/human/H = user
 		var/obj/item/flashlight/fueled/torch/T = new()
 		var/held_index = H.is_holding(src)
