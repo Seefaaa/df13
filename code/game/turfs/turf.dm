@@ -115,9 +115,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if (opacity)
 		directional_opacity = ALL_CARDINALS
 
-	// apply materials properly from the default custom_materials value
-	set_custom_materials(custom_materials)
-
 	ComponentInitialize()
 
 	return INITIALIZE_HINT_NORMAL

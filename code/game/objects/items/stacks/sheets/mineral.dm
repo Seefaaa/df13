@@ -52,9 +52,7 @@ Mineral Sheets
 	icon_state = "sheet-gold"
 	inhand_icon_state = "sheet-gold"
 	singular_name = "golden sheet"
-	mats_per_unit = list(/datum/material/gold=MINERAL_MATERIAL_AMOUNT)
 	merge_type = /obj/item/stack/sheet/mineral/gold
-	material_type = /datum/material/gold
 	novariants = TRUE
 
 GLOBAL_LIST_INIT(gold_recipes, list ())

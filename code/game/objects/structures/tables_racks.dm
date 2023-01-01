@@ -28,7 +28,6 @@
 	var/framestackamount = 2
 	var/deconstruction_ready = 1
 	var/bashsound = 'sound/effects/tablebash.ogg'
-	custom_materials = list(/datum/material/iron = 2000)
 	max_integrity = 100
 	integrity_failure = 0.33
 	smoothing_flags = SMOOTH_BITMASK
@@ -226,10 +225,6 @@
 		var/turf/T = get_turf(src)
 		if(buildstack)
 			new buildstack(T, buildstackamount)
-		else
-			for(var/i in custom_materials)
-				var/datum/material/M = i
-				new M.sheet_type(T, FLOOR(custom_materials[M] / MINERAL_MATERIAL_AMOUNT, 1))
 	qdel(src)
 
 /*

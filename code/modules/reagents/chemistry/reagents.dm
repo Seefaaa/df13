@@ -65,8 +65,6 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	var/metabolizing = FALSE
 	/// is it bad for you? Currently only used for borghypo. C2s and Toxins have it TRUE by default.
 	var/harmful = FALSE
-	/// Are we from a material? We might wanna know that for special stuff. Like metalgen. Is replaced with a ref of the material on New()
-	var/datum/material/material
 	///A list of causes why this chem should skip being removed, if the length is 0 it will be removed from holder naturally, if this is >0 it will not be removed from the holder.
 	var/list/reagent_removal_skip_list = list()
 	///The set of exposure methods this penetrates skin with.
@@ -90,8 +88,6 @@ GLOBAL_LIST_INIT(name2reagent, build_name2reagent())
 	SHOULD_CALL_PARENT(TRUE)
 	. = ..()
 
-	if(material)
-		material = GET_MATERIAL_REF(material)
 	if(!mass)
 		mass = rand(10, 800)
 

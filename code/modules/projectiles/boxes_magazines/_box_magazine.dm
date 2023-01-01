@@ -9,7 +9,6 @@
 	worn_icon_state = "ammobox"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	custom_materials = list(/datum/material/iron = 30000)
 	throwforce = 2
 	w_class = WEIGHT_CLASS_TINY
 	throw_speed = 3
@@ -36,8 +35,8 @@
 /obj/item/ammo_box/Initialize()
 	. = ..()
 	if(!bullet_cost)
-		base_cost = SSmaterials.FindOrCreateMaterialCombo(custom_materials, 0.1)
-		bullet_cost = SSmaterials.FindOrCreateMaterialCombo(custom_materials, 0.9 / max_ammo)
+		base_cost = 1
+		bullet_cost = 1
 	if(!start_empty)
 		top_off(starting=TRUE)
 	update_icon()
@@ -159,13 +158,6 @@
 		if(AMMO_BOX_FULL_EMPTY)
 			icon_state = "[initial(icon_state)]-[shells_left ? "[max_ammo]" : "0"]"
 	desc = "[initial(desc)] There [(shells_left == 1) ? "is" : "are"] [shells_left] shell\s left!"
-	if(length(bullet_cost))
-		var/temp_materials = custom_materials.Copy()
-		for (var/material in bullet_cost)
-			var/material_amount = bullet_cost[material]
-			material_amount = (material_amount*stored_ammo.len) + base_cost[material]
-			temp_materials[material] = material_amount
-		set_custom_materials(temp_materials)
 	return ..()
 
 ///Count of number of bullets in the magazine

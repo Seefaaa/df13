@@ -12,7 +12,6 @@
 /obj/item/stack
 	icon = 'icons/obj/stack_objects.dmi'
 	gender = PLURAL
-	material_modifier = 0.05 //5%, so that a 50 sheet stack has the effect of 5k materials instead of 100k.
 	max_integrity = 100
 	var/list/datum/stack_recipe/recipes
 	var/singular_name
@@ -21,11 +20,6 @@
 	var/merge_type = null // This path and its children should merge with this stack, defaults to src.type
 	var/full_w_class = WEIGHT_CLASS_NORMAL //The weight class the stack should have at amount > 2/3rds max_amount
 	var/novariants = TRUE //Determines whether the item should update it's sprites based on amount.
-	var/list/mats_per_unit //list that tells you how much is in a single unit.
-	///Datum material type that this stack is made of
-	var/material_type
-	//NOTE: When adding grind_results, the amounts should be for an INDIVIDUAL ITEM - these amounts will be multiplied by the stack size in on_grind()
-	var/obj/structure/table/tableVariant // we tables now (stores table variant to be built from this stack)
 
 		// The following are all for medical treatment, they're here instead of /stack/medical because sticky tape can be used as a makeshift bandage or splint
 	/// If set and this used as a splint for a broken bone wound, this is used as a multiplier for applicable slowdowns (lower = better) (also for speeding up burn recoveries)
@@ -37,7 +31,7 @@
 	/// Does this stack require a unique girder in order to make a wall?
 	var/has_unique_girder = FALSE
 
-/obj/item/stack/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
+/obj/item/stack/Initialize(mapload, new_amount, merge = TRUE)
 	if(new_amount != null)
 		amount = new_amount
 	while(amount > max_amount)
@@ -45,13 +39,6 @@
 		new type(loc, max_amount, FALSE)
 	if(!merge_type)
 		merge_type = type
-
-	if(LAZYLEN(mat_override))
-		set_mats_per_unit(mat_override, mat_amt)
-	else if(LAZYLEN(mats_per_unit))
-		set_mats_per_unit(mats_per_unit, 1)
-	else if(LAZYLEN(custom_materials))
-		set_mats_per_unit(custom_materials, amount ? 1/amount : 1)
 
 	. = ..()
 	if(merge)
@@ -64,44 +51,12 @@
 					return INITIALIZE_HINT_QDEL
 	var/list/temp_recipes = get_main_recipes()
 	recipes = temp_recipes.Copy()
-	if(material_type)
-		var/datum/material/M = GET_MATERIAL_REF(material_type) //First/main material
-		for(var/i in M.categories)
-			switch(i)
-				if(MAT_CATEGORY_BASE_RECIPES)
-					var/list/temp = SSmaterials.base_stack_recipes.Copy()
-					recipes += temp
-				if(MAT_CATEGORY_RIGID)
-					var/list/temp = SSmaterials.rigid_stack_recipes.Copy()
-					recipes += temp
 	update_weight()
 	update_icon()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = .proc/on_movable_entered_occupied_turf,
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
-
-/** Sets the amount of materials per unit for this stack.
- *
- * Arguments:
- * - [mats][/list]: The value to set the mats per unit to.
- * - multiplier: The amount to multiply the mats per unit by. Defaults to 1.
- */
-/obj/item/stack/proc/set_mats_per_unit(list/mats, multiplier=1)
-	mats_per_unit = SSmaterials.FindOrCreateMaterialCombo(mats, multiplier)
-	update_custom_materials()
-
-/** Updates the custom materials list of this stack.
- */
-/obj/item/stack/proc/update_custom_materials()
-	set_custom_materials(mats_per_unit, amount, is_update=TRUE)
-
-/**
- * Override to make things like metalgen accurately set custom materials
- */
-/obj/item/stack/set_custom_materials(list/materials, multiplier=1, is_update=FALSE)
-	return is_update ? ..() : set_mats_per_unit(materials, multiplier/(amount || 1))
-
 
 /obj/item/stack/on_grind()
 	. = ..()
@@ -284,13 +239,6 @@
 				O.setDir(usr.dir)
 			use(recipe.req_amount * multiplier)
 
-			if(recipe.applies_mats && LAZYLEN(mats_per_unit))
-				if(isstack(O))
-					var/obj/item/stack/crafted_stack = O
-					crafted_stack.set_mats_per_unit(mats_per_unit, recipe.req_amount / recipe.res_amount)
-				else
-					O.set_custom_materials(mats_per_unit, recipe.req_amount / recipe.res_amount)
-
 			if(isitem(O))
 				usr.put_in_hands(O)
 
@@ -363,8 +311,6 @@
 	amount -= used
 	if(check && is_zero_amount(delete_if_zero = TRUE))
 		return TRUE
-	if(length(mats_per_unit))
-		update_custom_materials()
 	update_icon()
 	update_weight()
 	return TRUE
@@ -402,8 +348,6 @@
  */
 /obj/item/stack/proc/add(_amount)
 	amount += _amount
-	if(length(mats_per_unit))
-		update_custom_materials()
 	update_icon()
 	update_weight()
 
@@ -414,8 +358,6 @@
  */
 /obj/item/stack/proc/can_merge(obj/item/stack/check)
 	if(!istype(check, merge_type))
-		return FALSE
-	if(mats_per_unit != check.mats_per_unit)
 		return FALSE
 	return TRUE
 
@@ -514,7 +456,7 @@
 /obj/item/stack/proc/split_stack(mob/user, amount)
 	if(!use(amount, TRUE, FALSE))
 		return null
-	var/obj/item/stack/F = new type(user? user : drop_location(), amount, FALSE, mats_per_unit)
+	var/obj/item/stack/F = new type(user? user : drop_location(), amount, FALSE)
 	. = F
 	F.copy_evidences(src)
 	if(user)

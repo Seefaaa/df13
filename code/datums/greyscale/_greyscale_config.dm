@@ -11,10 +11,6 @@
 	/// Reference to the dmi file for this config
 	var/icon_file
 
-	/// An optional var to set that tells the material system what material this configuration is for.
-	/// Use a typepath here, not an instance.
-	var/datum/material/material_skin
-
 	///////////////////////////////////////////////////////////////////////////////////////////
 	// Do not set any further vars, the json file specified above is what generates the object
 

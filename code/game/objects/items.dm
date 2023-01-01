@@ -943,24 +943,6 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 			return
 		source_item?.reagents?.add_reagent(/datum/reagent/blood, 2)
 
-	else if(custom_materials?.len) //if we've got materials, lets see whats in it
-		/// How many mats have we found? You can only be affected by two material datums by default
-		var/found_mats = 0
-		/// How much of each material is in it? Used to determine if the glass should break
-		var/total_material_amount = 0
-
-		for(var/mats in custom_materials)
-			total_material_amount += custom_materials[mats]
-			if(found_mats >= MAX_MATS_PER_BITE)
-				continue //continue instead of break so we can finish adding up all the mats to the total
-
-			var/datum/material/discovered_mat = mats
-			if(discovered_mat.on_accidental_mat_consumption(victim, source_item))
-				found_mats++
-		victim.adjust_disgust(33)
-		victim.visible_message(span_warning("[victim] looks like [victim.p_theyve()] just bitten into something hard.") , \
-						span_warning("Eugh! Did I just bite into something?"))
-
 	else if(w_class == WEIGHT_CLASS_TINY) //small items like soap or toys that don't have mat datums
 		/// victim's chest (for cavity implanting the item)
 		var/obj/item/bodypart/chest/victim_cavity = victim.get_bodypart(BODY_ZONE_CHEST)
