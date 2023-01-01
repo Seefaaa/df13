@@ -132,6 +132,9 @@
 	///AI controller that controls this atom. type on init, then turned into an instance during runtime
 	var/datum/ai_controller/ai_controller
 
+	///Material this atom is made of
+	var/datum/material/material = null
+
 /**
  * Called when an atom is created in byond (built in engine proc)
  *
@@ -207,6 +210,9 @@
 	//atom color stuff
 	if(color)
 		add_atom_colour(color, FIXED_COLOUR_PRIORITY)
+
+	if(material)
+		apply_material(material)
 
 	if (light_system == STATIC_LIGHT && light_power && light_range)
 		update_light()
@@ -1634,3 +1640,10 @@
 	flick_overlay_view(I, src, 8)
 	I.alpha = 0
 	animate(I, pixel_z = 32, alpha = 255, time = 5, easing = ELASTIC_EASING)
+
+/// Apply new material to this atom or if used in Initialize, apply preset material
+/atom/proc/apply_material(datum/material/_material)
+	material = _material // in case we apply a new material at runtime
+	var/datum/material/M = SSmaterials.materials[_material]
+	M.apply_stats(src)
+	icon = M.apply2icon(icon, icon_state)
