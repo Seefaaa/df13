@@ -325,3 +325,29 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	atck_type = PIERCE
 	force = 7
+
+/obj/item/pickaxe/material
+	name = "material pickaxe"
+	icon_state = "pickaxe_template"
+	worn_icon_state = "pickaxe_template"
+	inhand_icon_state = "pickaxe_template"
+	materials = list(PART_HANDLE=/datum/material/wood/handle, PART_HEAD=/datum/material/iron/tool_head)
+
+/obj/item/pickaxe/material/apply_material(list/_materials)
+	. = ..()
+	var/icon/I = icon(icon, icon_state)
+	var/datum/material/handle_material = SSmaterials.materials[materials[PART_HANDLE]]
+	var/datum/material/head_material = SSmaterials.materials[materials[PART_HEAD]]
+
+	I = handle_material.apply_palette(I, "template1")
+	I = head_material.apply_palette(I, "template2")
+	icon = I
+
+/obj/item/pickaxe/material/build_worn_with_material(_file, state)
+	var/icon/I = ..()
+	var/datum/material/handle_material = SSmaterials.materials[materials[PART_HANDLE]]
+	var/datum/material/head_material = SSmaterials.materials[materials[PART_HEAD]]
+
+	I = handle_material.apply_palette(I, "template1")
+	I = head_material.apply_palette(I, "template2")
+	return I

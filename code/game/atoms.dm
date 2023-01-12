@@ -1642,9 +1642,10 @@
 	animate(I, pixel_z = 32, alpha = 255, time = 5, easing = ELASTIC_EASING)
 
 /// Apply new materials to this atom or if used in Initialize, apply preset materials
-/atom/proc/apply_material(list/_materials)
-	return
+/atom/proc/apply_material(list/_materials=null)
+	if(_materials)
+		materials = _materials
 
 /// Apply materials to this atom's icon
 /atom/proc/build_worn_with_material(_file=null, state=null)
-	return
+	return icon(_file, state)

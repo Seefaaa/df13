@@ -17,7 +17,16 @@
 		I = apply_palette(I, "template[i]", palettes[i])
 	return I
 
-/datum/material/proc/apply_palette(icon/I, template_name, palette_name)
+/**
+ * Applies palette to given template for an icon
+ *
+ * Argumens:
+ * - I: The icon we are working with.
+ * - template_name: icon_state of the template we are replacing.
+ * - palette_name: icon_state of the material we want to apply. This defaults to the first element of this material.
+ */
+/datum/material/proc/apply_palette(icon/I, template_name, palette_name=null)
+	palette_name = palette_name ? palette_name : palettes[1]
 	. = I
 	var/icon/template_palette = SSmaterials.palettes[template_name]
 	var/icon/material_palette = SSmaterials.palettes[palette_name]
@@ -26,3 +35,13 @@
 		var/color_old = template_palette.GetPixel(x, 1)
 		var/color_new = material_palette.GetPixel(x, 1)
 		I.SwapColor(color_old, color_new)
+
+/datum/material/iron
+	palettes = list("iron")
+
+/datum/material/iron/tool_head
+
+/datum/material/wood
+	palettes = list("wood_treated")
+
+/datum/material/wood/handle
