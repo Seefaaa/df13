@@ -85,6 +85,7 @@
 #include "code\__DEFINES\logging.dm"
 #include "code\__DEFINES\magic.dm"
 #include "code\__DEFINES\maps.dm"
+#include "code\__DEFINES\materials.dm"
 #include "code\__DEFINES\maths.dm"
 #include "code\__DEFINES\MC.dm"
 #include "code\__DEFINES\mecha.dm"
