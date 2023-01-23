@@ -183,6 +183,7 @@
 	if(ismob(loc))
 		var/mob/U = loc
 		update_brightness(U)
+		U.regenerate_icons() // because we don't know where the worn item is
 	else
 		update_brightness(null)
 
@@ -291,7 +292,6 @@
 		fuel += C.fuel
 		if(C.on && !on)
 			on = TRUE
-			icon_state = "lantern_on"
 			damtype = BURN
 			update_brightness(user)
 			START_PROCESSING(SSobj, src)
@@ -302,3 +302,15 @@
 /obj/item/flashlight/fueled/lantern/examine(mob/user)
 	. = ..()
 	. += fuel ? "\nIt has a candle inside." : "\n\The [src] is empty."
+
+/obj/item/flashlight/fueled/lantern/turn_off()
+	worn_icon_state = "lantern"
+	. = ..()
+
+/obj/item/flashlight/fueled/lantern/update_brightness(mob/user)
+	. = ..()
+	if(on)
+		worn_icon_state = "lantern_on"
+	else
+		worn_icon_state = "lantern"
+		damtype = BLUNT
