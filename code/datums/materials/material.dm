@@ -36,12 +36,20 @@
 		var/color_new = material_palette.GetPixel(x, 1)
 		I.SwapColor(color_old, color_new)
 
+/**
+ * Applies materials with given palettes to an icon
+ *
+ * Argumens:
+ * - I: The icon we are working with.
+ * - materials: list of material types. Place the types in the correct oder according to what templates will be used.
+ */
+/proc/apply_palettes(icon/I, list/materials)
+	for(var/i in 1 to materials.len)
+		var/datum/material/M = SSmaterials.materials[materials[i]]
+		I = M.apply_palette(I, "template[i]")
+	return I
 /datum/material/iron
 	palettes = list("iron")
 
-/datum/material/iron/tool_head
-
 /datum/material/wood
 	palettes = list("wood_treated")
-
-/datum/material/wood/handle
