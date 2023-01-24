@@ -336,6 +336,8 @@
 /obj/item/pickaxe/material/apply_material(list/_materials)
 	. = ..()
 	var/icon/I = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
+	var/datum/material/M = SSmaterials.materials[materials[PART_HEAD]]
+	M.apply_stats(src)
 	icon = I
 
 /obj/item/pickaxe/material/build_worn_with_material(_file, state)

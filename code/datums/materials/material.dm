@@ -1,15 +1,27 @@
 /datum/material
 	/// Palettes used. Used as icon_states for it's palette at 'dwarfs/icons/palettes.dmi'. Depending on amount of materials will use template palettes in increasing order.
 	var/list/palettes = list("material")
+	/// Force multiplier
+	var/force_mod = 1
+	/// Tool spped multiplier
+	var/toolspeed_mod = 1
+	/// w_class midifier. A number that is added to preset w_class of an item
+	var/w_class_mod = 0
+	/// Health multiplier for structures
+	var/integrity_mod = 1
 
 /**
- * Applies stat modifiers a given material has to an atom
+ * Applies stat modifiers a given material has to an obj
  *
  * Argumens:
- * - A: The atom we are applying this material to.
+ * - A: The obj we are applying this material to.
  */
-/datum/material/proc/apply_stats(atom/A)
-	return
+/datum/material/proc/apply_stats(obj/A)
+	if(isitem(A))
+		var/obj/item/I = A
+		I.force *= force_mod
+		I.toolspeed *= toolspeed_mod
+		I.w_class += w_class_mod
 
 /datum/material/proc/apply2icon_default(_icon, _icon_state)
 	var/icon/I = icon(_icon, _icon_state)
@@ -50,6 +62,12 @@
 	return I
 /datum/material/iron
 	palettes = list("iron")
+	force_mod = 1.2
+	toolspeed_mod = 0.5
+	w_class_mod = 1
 
 /datum/material/wood
 	palettes = list("wood_treated")
+	force_mod = 0.5
+	toolspeed_mod = 1.2
+	w_class_mod = -1
