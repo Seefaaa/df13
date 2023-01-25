@@ -5,8 +5,6 @@
 	var/force_mod = 1
 	/// Tool spped multiplier
 	var/toolspeed_mod = 1
-	/// w_class midifier. A number that is added to preset w_class of an item
-	var/w_class_mod = 0
 	/// Health multiplier for structures
 	var/integrity_mod = 1
 
@@ -21,7 +19,6 @@
 		var/obj/item/I = A
 		I.force *= force_mod
 		I.toolspeed *= toolspeed_mod
-		I.w_class += w_class_mod
 
 /datum/material/proc/apply2icon_default(_icon, _icon_state)
 	var/icon/I = icon(_icon, _icon_state)
@@ -64,10 +61,8 @@
 	palettes = list("iron")
 	force_mod = 1.2
 	toolspeed_mod = 0.5
-	w_class_mod = 1
 
 /datum/material/wood
 	palettes = list("wood_treated")
 	force_mod = 0.5
 	toolspeed_mod = 1.2
-	w_class_mod = -1
