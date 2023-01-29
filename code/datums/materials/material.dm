@@ -9,6 +9,10 @@
 	var/toolspeed_mod = 1
 	/// Health multiplier for structures
 	var/integrity_mod = 1
+	/// Click cd cooldown multiplier
+	var/melee_cd_mod = 1
+	/// Slowdown modifier (additive). Remember that negative values speed up
+	var/slowdown_mod = 0
 
 /**
  * Applies stat modifiers a given material has to an obj
@@ -21,6 +25,8 @@
 		var/obj/item/I = A
 		I.force *= force_mod
 		I.toolspeed *= toolspeed_mod
+		I.melee_cd *= melee_cd_mod
+		I.slowdown += slowdown_mod
 
 /datum/material/proc/apply2icon_default(_icon, _icon_state)
 	var/icon/I = icon(_icon, _icon_state)
@@ -64,9 +70,13 @@
 	palettes = list("iron")
 	force_mod = 1.2
 	toolspeed_mod = 0.5
+	slowdown_mod = 1
+	melee_cd_mod = 1.1
 
 /datum/material/wood
 	name = "wood"
 	palettes = list("wood_treated")
 	force_mod = 0.5
 	toolspeed_mod = 1.2
+	slowdown_mod = 0
+	melee_cd_mod = 0.8

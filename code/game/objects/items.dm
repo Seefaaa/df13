@@ -172,6 +172,9 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 	///In tiles, how far this weapon can reach; 1 for adjacent, which is default
 	var/reach = 1
 
+	/// How fast does the user recover after attacking with this item
+	var/melee_cd = CLICK_CD_MELEE
+
 	///The list of slots by priority. equip_to_appropriate_slot() uses this list. Doesn't matter if a mob type doesn't have a slot. For default list, see [/mob/proc/equip_to_appropriate_slot]
 	var/list/slot_equipment_priority = null
 
