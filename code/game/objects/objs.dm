@@ -287,3 +287,18 @@
 	for(var/reagent in reagents)
 		var/datum/reagent/R = reagent
 		. |= R.expose_obj(src, reagents[R])
+
+/obj/examine(mob/user)
+	. = ..()
+	if(materials)
+		if(islist(materials) && materials.len)
+			var/list/l = list()
+			for(var/m in materials)
+				if(istext(m)) // m is a part key
+					m = materials[m]
+				var/datum/material/M = SSmaterials.materials[m]
+				l.Add(M.name)
+			. += "<br>It's is made out of [l.Join(", ")]."
+		else if(!islist(materials)) // re-check if this is not an emtpy list
+			var/datum/material/M = SSmaterials[materials]
+			. += "<br>It's is made out of [M.name]."

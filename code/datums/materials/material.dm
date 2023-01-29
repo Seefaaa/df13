@@ -1,4 +1,6 @@
 /datum/material
+	/// Material name. Displayed in examine etc.
+	var/name = "material"
 	/// Palettes used. Used as icon_states for it's palette at 'dwarfs/icons/palettes.dmi'. Depending on amount of materials will use template palettes in increasing order.
 	var/list/palettes = list("material")
 	/// Force multiplier
@@ -58,11 +60,13 @@
 		I = M.apply_palette(I, "template[i]")
 	return I
 /datum/material/iron
+	name = "iron"
 	palettes = list("iron")
 	force_mod = 1.2
 	toolspeed_mod = 0.5
 
 /datum/material/wood
+	name = "wood"
 	palettes = list("wood_treated")
 	force_mod = 0.5
 	toolspeed_mod = 1.2

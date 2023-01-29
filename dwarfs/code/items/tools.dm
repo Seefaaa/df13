@@ -3,13 +3,11 @@
 	name = "pickaxe"
 	desc = "Strike the earth!"
 	icon = 'dwarfs/icons/items/tools.dmi'
-	icon_state = "pickaxe"
+	icon_state = "pickaxe_template"
 	slot_flags = ITEM_SLOT_BACK
 	force = 15
 	atck_type = PIERCE
 	throwforce = 10
-	inhand_icon_state = "pickaxe"
-	worn_icon_state = "pickaxe"
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	worn_icon = 'dwarfs/icons/mob/clothing/back.dmi'
@@ -19,6 +17,21 @@
 	usesound = list('sound/effects/picaxe1.ogg', 'sound/effects/picaxe2.ogg', 'sound/effects/picaxe3.ogg')
 	attack_verb_continuous = list("hits", "pierces", "slashes", "attacks")
 	attack_verb_simple = list("hit", "pierce", "slash", "attacks")
+
+/obj/item/pickaxe/apply_material(list/_materials)
+	. = ..()
+	var/icon/I = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
+	var/datum/material/M = SSmaterials.materials[materials[PART_HEAD]]
+	M.apply_stats(src)
+	icon = I
+
+/obj/item/pickaxe/build_worn_with_material(_file, state)
+	var/icon/I = ..()
+	I = apply_palettes(I, list(materials[PART_HANDLE], materials[PART_HEAD]))
+	return I
+
+/obj/item/pickaxe/default
+	materials = list(PART_HANDLE=/datum/material/wood, PART_HEAD=/datum/material/iron)
 
 /obj/item/pickaxe/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] begins digging into [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -325,22 +338,3 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	atck_type = PIERCE
 	force = 7
-
-/obj/item/pickaxe/material
-	name = "material pickaxe"
-	icon_state = "pickaxe_template"
-	worn_icon_state = "pickaxe_template"
-	inhand_icon_state = "pickaxe_template"
-	materials = list(PART_HANDLE=/datum/material/iron, PART_HEAD=/datum/material/wood)
-
-/obj/item/pickaxe/material/apply_material(list/_materials)
-	. = ..()
-	var/icon/I = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-	var/datum/material/M = SSmaterials.materials[materials[PART_HEAD]]
-	M.apply_stats(src)
-	icon = I
-
-/obj/item/pickaxe/material/build_worn_with_material(_file, state)
-	var/icon/I = ..()
-	I = apply_palettes(I, list(materials[PART_HANDLE], materials[PART_HEAD]))
-	return I

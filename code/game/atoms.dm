@@ -133,7 +133,7 @@
 	var/datum/ai_controller/ai_controller
 
 	///Materials this atom is made of
-	var/list/materials = list()
+	var/list/materials = null
 
 /**
  * Called when an atom is created in byond (built in engine proc)

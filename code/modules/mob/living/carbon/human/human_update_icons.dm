@@ -480,7 +480,7 @@ generate/load female uniform sprites matching all previously decided variables
 		standing = wear_female_version(t_state, file2use, layer2use, femaleuniform, greyscale_colors) //should layer2use be in sync with the adjusted value below? needs testing - shiz
 	if(!standing)
 		//Handle items that are made out of materials
-		if(materials.len)
+		if(materials && materials.len)
 			standing = mutable_appearance(build_worn_with_material(file2use, t_state), layer=-layer2use)
 		else
 			standing = mutable_appearance(file2use, t_state, -layer2use)
