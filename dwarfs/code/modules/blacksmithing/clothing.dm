@@ -114,6 +114,18 @@
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 
+/obj/item/clothing/head/helmet/plate_helmet/apply_material(list/_materials)
+	. = ..()
+	var/datum/material/M = get_material(materials)
+	icon = M.apply2icon_default(icon(icon))
+	M.apply_stats(src)
+
+/obj/item/clothing/head/helmet/plate_helmet/build_worn_with_material(_file, state)
+	var/icon/I = ..()
+	var/datum/material/M = get_material(materials)
+	return M.apply2icon_default(I)
+
+
 /obj/item/clothing/gloves/plate_gloves
 	name = "plate gloves"
 	desc = "Will save your hands from unexpected losses."
