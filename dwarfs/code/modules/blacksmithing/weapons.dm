@@ -17,16 +17,21 @@
 	resistance_flags = FIRE_PROOF
 	reach = 2
 	skill = /datum/skill/combat/longsword
+	melee_cd = 2 SECONDS
 
 /obj/item/zwei/ComponentInitialize()
 	. = ..()
 	AddComponent(/datum/component/two_handed, require_twohands=TRUE)
 
-/obj/item/zwei/afterattack(atom/target, mob/user, proximity)
+/obj/item/zwei/apply_material(list/_materials)
 	. = ..()
-	if(!proximity)
-		return
-	user.changeNext_move(2 SECONDS)
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_BLADE]))
+	var/datum/material/M = get_material(materials[PART_BLADE])
+	M.apply_stats(src)
+
+/obj/item/zwei/build_worn_with_material(_file, state)
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_BLADE]))
+
 
 /obj/item/flail
 	name = "flail"
@@ -46,12 +51,16 @@
 	max_integrity = 50
 	resistance_flags = FIRE_PROOF
 	skill = /datum/skill/combat/flail
+	melee_cd = 1 SECONDS
 
-/obj/item/flail/afterattack(atom/target, mob/user, proximity)
+/obj/item/flail/apply_material(list/_materials)
 	. = ..()
-	if(!proximity)
-		return
-	user.changeNext_move(1 SECONDS)
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_BLADE]))
+	var/datum/material/M = get_material(materials[PART_BLADE])
+	M.apply_stats(src)
+
+/obj/item/flail/build_worn_with_material(_file, state)
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_BLADE]))
 
 /obj/item/dagger
 	name = "dagger"
@@ -70,12 +79,17 @@
 	max_integrity = 20
 	resistance_flags = FIRE_PROOF
 	skill = /datum/skill/combat/dagger
+	melee_cd = 0.6 SECONDS
 
-/obj/item/dagger/afterattack(atom/target, mob/user, proximity)
+/obj/item/dagger/apply_material(list/_materials)
 	. = ..()
-	if(!proximity)
-		return
-	user.changeNext_move(0.6 SECONDS)
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_BLADE]))
+	var/datum/material/M = get_material(materials[PART_BLADE])
+	M.apply_stats(src)
+
+/obj/item/dagger/build_worn_with_material(_file, state)
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_BLADE]))
+
 /*
 /obj/item/dagger/Initialize()
 	. = ..()
@@ -105,12 +119,16 @@
 	max_integrity = 50
 	resistance_flags = FIRE_PROOF
 	skill = /datum/skill/combat/sword
+	melee_cd = 1 SECONDS
 
-/obj/item/sword/afterattack(atom/target, mob/user, proximity)
+/obj/item/sword/apply_material(list/_materials)
 	. = ..()
-	if(!proximity)
-		return
-	user.changeNext_move(1 SECONDS)
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_BLADE]))
+	var/datum/material/M = get_material(materials[PART_BLADE])
+	M.apply_stats(src)
+
+/obj/item/sword/build_worn_with_material(_file, state)
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_BLADE]))
 
 /obj/item/spear
 	name = "spear"
@@ -130,18 +148,21 @@
 	reach = 2
 	atck_type = PIERCE
 	max_integrity = 50
-	resistance_flags = FIRE_PROOF
 	skill = /datum/skill/combat/spear
+	melee_cd = 1.2 SECONDS
 
 /obj/item/spear/Initialize()
 	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded=5, use_grades=TRUE, inhand_icon_wielded="spear_w")
 
-/obj/item/spear/afterattack(atom/target, mob/user, proximity)
+/obj/item/spear/apply_material(list/_materials)
 	. = ..()
-	if(!proximity)
-		return
-	user.changeNext_move(1.2 SECONDS)
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_BLADE]))
+	var/datum/material/M = get_material(materials[PART_BLADE])
+	M.apply_stats(src)
+
+/obj/item/spear/build_worn_with_material(_file, state)
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_BLADE]))
 
 /obj/item/warhammer
 	name = "warhammer"
@@ -155,16 +176,20 @@
 	force = 20
 	reach = 2
 	skill = /datum/skill/combat/hammer
+	melee_cd = 1.5 SECONDS
 
 /obj/item/warhammer/Initialize()
 	. = ..()
 	AddComponent(/datum/component/two_handed, require_twohands=TRUE)
 
-/obj/item/warhammer/afterattack(atom/target, mob/user, proximity)
+/obj/item/warhammer/apply_material(list/_materials)
 	. = ..()
-	if(!proximity)
-		return
-	user.changeNext_move(1.5 SECONDS)
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_BLADE]))
+	var/datum/material/M = get_material(materials[PART_BLADE])
+	M.apply_stats(src)
+
+/obj/item/warhammer/build_worn_with_material(_file, state)
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_BLADE]))
 
 /obj/item/halberd
 	name = "halberd"
@@ -186,16 +211,20 @@
 	resistance_flags = FIRE_PROOF
 	skill = /datum/skill/combat/halberd
 	tool_behaviour = TOOL_AXE
+	melee_cd = 1.2 SECONDS
 
 /obj/item/halberd/Initialize()
 	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded=5, use_grades=TRUE, inhand_icon_wielded="halberd_w")
 
-/obj/item/halberd/afterattack(atom/target, mob/user, proximity)
+/obj/item/halberd/apply_material(list/_materials)
 	. = ..()
-	if(!proximity)
-		return
-	user.changeNext_move(1.2 SECONDS)
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_BLADE]))
+	var/datum/material/M = get_material(materials[PART_BLADE])
+	M.apply_stats(src)
+
+/obj/item/halberd/build_worn_with_material(_file, state)
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_BLADE]))
 
 /obj/item/scepter
 	name = "scepter"
@@ -214,12 +243,7 @@
 	atck_type = BLUNT
 	max_integrity = 50
 	resistance_flags = FIRE_PROOF
-
-/obj/item/scepter/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	user.changeNext_move(0.6 SECONDS)
+	melee_cd = 0.6 SECONDS
 
 /obj/item/club
 	name = "club"
@@ -232,3 +256,12 @@
 	throwforce = 10
 	atck_type = BLUNT
 	w_class = WEIGHT_CLASS_BULKY
+
+/obj/item/club/apply_material(list/_materials)
+	. = ..()
+	icon = apply_palettes(icon(icon, icon_state), list(materials))
+	var/datum/material/M = get_material(materials)
+	M.apply_stats(src)
+
+/obj/item/club/build_worn_with_material(_file, state)
+	return apply_palettes(..(), list(materials))

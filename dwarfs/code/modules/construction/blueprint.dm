@@ -72,6 +72,9 @@
 	if(diff < 1)
 		to_chat(user, span_warning("[src] already has enough of [I]."))
 		return
+	if(!additional_check(I)) //possibly move this to the proc itself for more detailed explanations
+		to_chat(user, span_warning("[I] doesn't meet the requirements for this structure."))
+		return
 	if(isstack(I))
 		var/obj/item/stack/S = I
 		var/to_use = diff <= S.amount ? diff : S.amount
@@ -86,6 +89,9 @@
 	else
 		I.forceMove(src)
 	to_chat(user, span_notice("You add [I] to [src]."))
+
+/obj/structure/blueprint/proc/additional_check(obj/material)
+	return TRUE
 
 /obj/structure/blueprint/large //2x1 size
 	name = "large blueprint"
@@ -181,5 +187,10 @@
 /obj/structure/blueprint/throne
 	name = "stone throne"
 	target_structure = /obj/structure/chair/comfy/stone/throne
-	reqs = list(/obj/item/ingot/gold=2, /obj/item/stack/sheet/stone=15, /obj/item/stack/ore/gem/diamond=3)
+	reqs = list(/obj/item/ingot=2, /obj/item/stack/sheet/stone=15, /obj/item/stack/ore/gem/diamond=3)
 	cat = "decoration"
+
+/obj/structure/blueprint/throne/additional_check(obj/O)
+	. = ..()
+	if(istype(O, /obj/item/ingot))
+		return (O.materials == /datum/material/gold)

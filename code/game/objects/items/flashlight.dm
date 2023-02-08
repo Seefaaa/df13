@@ -282,6 +282,17 @@
 	light_color = "#e7c16d"
 	slot_flags = ITEM_SLOT_BELT
 
+/obj/item/tongs/apply_material(list/_materials)
+	. = ..()
+	var/datum/material/M = get_material(materials)
+	icon = M.apply2icon_default(icon(icon))
+	M.apply_stats(src)
+
+/obj/item/tongs/build_worn_with_material(_file, state)
+	var/icon/I = ..()
+	var/datum/material/M = get_material(materials)
+	return M.apply2icon_default(I)
+
 /obj/item/flashlight/fueled/lantern/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/flashlight/fueled/candle))
 		if(fuel)

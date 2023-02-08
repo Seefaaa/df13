@@ -233,11 +233,16 @@
 				if(!isturf(T))
 					return
 				T.PlaceOnTop(recipe.result_type, flags = CHANGETURF_INHERIT_AIR)
+				if(materials)
+					T.apply_material(materials)
 			else
 				O = new recipe.result_type(usr.drop_location())
 			if(O)
 				O.setDir(usr.dir)
 			use(recipe.req_amount * multiplier)
+
+			if(materials)
+				O.apply_material(materials)
 
 			if(isitem(O))
 				usr.put_in_hands(O)

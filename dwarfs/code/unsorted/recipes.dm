@@ -1,7 +1,9 @@
 /datum/smithing_recipe
+	/// What this recipe is called
 	var/name = ""
+	/// What are we making
 	var/result
-	var/metal_type_need = "iron"
+	/// How much of that item is being made
 	var/max_resulting = 1
 
 /datum/smithing_recipe/zwei
@@ -114,12 +116,10 @@
 /datum/smithing_recipe/crown
 	name = "empty crown"
 	result = /obj/item/partial/crown_empty
-	metal_type_need = "gold"
 
 /datum/smithing_recipe/scepter
 	name = "scepter part"
 	result = /obj/item/partial/scepter_part
-	metal_type_need = "gold"
 
 /datum/smithing_recipe/lantern_parts
 	name = "\[part\] lantern parts"
@@ -170,7 +170,7 @@
 /datum/workbench_recipe/spear
 	name = "spear"
 	result = /obj/item/spear
-	reqs = list(/obj/item/stack/sheet/leather = 1, /obj/item/partial/spear =1, /obj/item/stick=1)
+	reqs = list(/obj/item/partial/spear =1, /obj/item/stick=1)
 
 /datum/workbench_recipe/halberd
 	name = "halberd"

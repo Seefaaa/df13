@@ -170,6 +170,8 @@
 			parent_item.force = force_wielded
 		if(sharpened_increase)
 			parent_item.force += sharpened_increase
+	if(parent_item.materials)
+		parent_item.apply_material(parent_item.materials) // apply materials after wield since the stats get reset on wield
 	parent_item.name = "[parent_item.name] (Wielded)"
 	parent_item.update_icon()
 

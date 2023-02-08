@@ -12,7 +12,7 @@
 	. = ..()
 	if(current_ingot)
 		var/mutable_appearance/Ingot = mutable_appearance('dwarfs/icons/structures/workshops.dmi', "anvil_ingot")
-		Ingot.color = current_ingot.metal_color
+		// Ingot.color = current_ingot.metal_color
 		. += Ingot
 		var/mutable_appearance/Ingot_heat = mutable_appearance('dwarfs/icons/structures/workshops.dmi', "anvil_ingot")
 		Ingot_heat.color = "#ffb35c"
@@ -48,7 +48,7 @@
 		user.visible_message(span_notice("<b>[user]</b> hits \the anvil with \a hammer.") , \
 						span_notice("You hit \the anvil with \a hammer."))
 		current_ingot.progress_current++
-		var/max_stam_loss = H.mind.get_skill_modifier(SKILL_AMOUNT_MAX_MODIFIER)
+		var/max_stam_loss = H.mind.get_skill_modifier(/datum/skill/smithing, SKILL_AMOUNT_MAX_MODIFIER)
 		H.adjustStaminaLoss(rand(0, max_stam_loss))
 		H.mind.adjust_experience(/datum/skill/smithing, rand(1, 4) * current_ingot.grade)
 
@@ -119,10 +119,7 @@
 					playsound(src, 'dwarfs/sounds/tools/anvil/anvil_hit.ogg', 70, TRUE)
 					to_chat(user, span_notice("You begin to upgrade \the [current_ingot]."))
 			else
-				var/list/metal_allowed_list = list()
-				for(var/datum/smithing_recipe/SR in allowed_things)
-					if(SR.metal_type_need == current_ingot.type_metal)
-						metal_allowed_list += SR
+				var/list/metal_allowed_list = allowed_things
 				var/datum/smithing_recipe/sel_recipe = input("Choose:", "What to forge?", null, null) as null|anything in metal_allowed_list
 				if(!sel_recipe)
 					to_chat(user, span_warning("You did not decide what to forge yet."))

@@ -2,7 +2,18 @@
 	name = "weapon hilt"
 	desc = "Protects you from slide cutting your hands off."
 	icon = 'dwarfs/icons/items/components.dmi'
-	icon_state = "sword_handle"
+	icon_state = "weapon_hilt"
+	part_name = PART_HANDLE
+
+/obj/item/weapon_hilt/apply_material(list/_materials)
+	. = ..()
+	icon = apply_palettes(icon(icon, icon_state), list(materials))
+	var/datum/material/M = get_material(materials)
+	M.apply_stats(src)
+
+/obj/item/weapon_hilt/build_worn_with_material(_file, state)
+	return apply_palettes(..(), list(materials))
+
 
 /obj/item/weapon_hilt/get_fuel()
 	return 3
@@ -11,9 +22,19 @@
 	name = "stick"
 	desc = "Stick. That's just stick."
 	icon = 'dwarfs/icons/items/components.dmi'
-	icon_state = "tool_handle"
+	icon_state = "stick"
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
+	part_name = PART_HANDLE
+
+/obj/item/stick/apply_material(list/_materials)
+	. = ..()
+	icon = apply_palettes(icon(icon, icon_state), list(materials))
+	var/datum/material/M = get_material(materials)
+	M.apply_stats(src)
+
+/obj/item/stick/build_worn_with_material(_file, state)
+	return apply_palettes(..(), list(materials))
 
 /obj/item/stick/get_fuel()
 	return 5

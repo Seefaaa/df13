@@ -51,6 +51,7 @@
 	vein_type = /datum/vein/line
 	refined_type = /obj/item/ingot
 	inhand_icon_state = "iron_ore"
+	materials = /datum/material/iron
 
 /obj/item/stack/ore/coal
 	name = "coal"
@@ -72,12 +73,13 @@
 	inhand_icon_state = "Gold ore"
 	singular_name = "gold ore chunk"
 	mine_experience = 5
-	refined_type = /obj/item/ingot/gold
+	refined_type = /obj/item/ingot
 	merge_type = /obj/item/stack/ore/smeltable/gold
 	ore_icon = 'dwarfs/icons/turf/ores/gold.dmi'
 	ore_basename = "gold"
 	vein_type = /datum/vein/line
 	inhand_icon_state = "gold_ore"
+	materials = /datum/material/gold
 
 /obj/item/stack/ore/gem
 	max_amount = 1

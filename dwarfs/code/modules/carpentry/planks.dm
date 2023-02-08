@@ -8,6 +8,7 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	w_class = WEIGHT_CLASS_BULKY
 	merge_type = /obj/item/stack/sheet/planks
+	materials = /datum/material/wood
 
 /obj/item/stack/sheet/planks/get_fuel()
 	return 10 * amount

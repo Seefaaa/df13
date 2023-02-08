@@ -1,11 +1,10 @@
 #define TORCH_LIGHT_COLOR "#FFE0B3"
 
 /obj/item/ingot
-	name = "iron ingot"
+	name = "ingot"
 	desc = "Can be forged into something."
 	icon = 'dwarfs/icons/items/ingots.dmi'
-	icon_state = "iron"
-	inhand_icon_state = "iron_ingot"
+	icon_state = "ingot"
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
@@ -17,17 +16,17 @@
 	var/progress_current = 0
 	var/progress_need = 10
 	var/heattemp = 0
-	var/type_metal = "iron"
-	var/metal_color = "#7e7e7e"
 
-/obj/item/ingot/gold
-	name = "golden ingot"
-	icon_state = "gold"
-	type_metal = "gold"
-	metal_color = "#ffae34"
-	inhand_icon_state = "gold_ingot"
-	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
-	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
+/obj/item/ingot/apply_material(list/_materials)
+	. = ..()
+	var/datum/material/M = SSmaterials.materials[materials]
+	name = "[M.name] ingot"
+	var/icon/I = M.apply_palette(icon(icon, icon_state), "template1")
+	icon = I
+
+/obj/item/ingot/build_worn_with_material(_file, state)
+	var/icon/I = ..()
+	return apply_palettes(I, list(materials))
 
 /obj/item/ingot/examine(mob/user)
 	. = ..()
@@ -90,44 +89,59 @@
 	icon = 'dwarfs/icons/items/components.dmi'
 	force = 1
 
-/obj/item/partial/Initialize()
+/obj/item/partial/apply_material(list/_materials)
 	. = ..()
+	var/datum/material/M = get_material(materials)
+	icon = M.apply2icon_default(icon(icon, icon_state))
+	M.apply_stats(src)
+
+/obj/item/partial/build_worn_with_material(_file, state)
+	return apply_palettes(..(), list(materials))
 
 /obj/item/partial/dagger
 	name = "dagger blade"
 	icon_state = "dagger_blade"
+	part_name = PART_BLADE
 
 /obj/item/partial/pickaxe
 	name = "pickaxe blade"
 	icon_state = "pickaxe_head"
+	part_name = PART_HEAD
 
 /obj/item/partial/shovel
 	name = "shovel blade"
 	icon_state = "shovel_head"
+	part_name = PART_HEAD
 
 /obj/item/partial/axe
 	name = "axe blade"
 	icon_state = "axe_head"
+	part_name = PART_HEAD
 
 /obj/item/partial/builder_hammer
 	name = "builder's hammer head"
 	icon_state = "hammer_head"
+	part_name = PART_HEAD
 
 /obj/item/partial/smithing_hammer
 	name = "smithing hammer head"
 	icon_state = "smithing_hammer_head"
+	part_name = PART_HEAD
 
 /obj/item/partial/zwei
 	name = "zweihander blade"
 	icon_state = "zweihander_blade"
+	part_name = PART_BLADE
 
 /obj/item/partial/flail
 	name = "ball on a chain"
 	icon_state = "cep_mace"
+	part_name = PART_BLADE
 
 /obj/item/partial/sword
 	name = "sword blade"
 	icon_state = "sword_blade"
+	part_name = PART_BLADE
 
 /obj/item/partial/crown_empty
 	name = "empty crown"
@@ -144,19 +158,24 @@
 /obj/item/partial/spear
 	name = "spear head"
 	icon_state = "spear_head"
+	part_name = PART_BLADE
 
 /obj/item/partial/halberd
 	name = "halberd head"
 	icon_state = "halberd_head"
+	part_name = PART_BLADE
 
 /obj/item/partial/kitchen_knife
 	name = "kitchen knife blade"
 	icon_state = "kitchen_knife_blade"
+	part_name = PART_BLADE
 
 /obj/item/partial/hoe
 	name = "hoe head"
 	icon_state = "hoe_head"
+	part_name = PART_HEAD
 
 /obj/item/partial/warhammer
 	name = "warhammer head"
 	icon_state = "warhammer_head"
+	part_name = PART_HEAD

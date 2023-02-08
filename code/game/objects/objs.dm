@@ -33,6 +33,7 @@
 	vis_flags = VIS_INHERIT_PLANE //when this be added to vis_contents of something it inherit something.plane, important for visualisation of obj in openspace.
 
 	var/grade = 1 // object grade value. Defaults to 1
+	var/part_name = "part"
 
 /obj/vv_edit_var(vname, vval)
 	if(vname == NAMEOF(src, obj_flags))
@@ -300,5 +301,5 @@
 				l.Add(M.name)
 			. += "<br>It's is made out of [l.Join(", ")]."
 		else if(!islist(materials)) // re-check if this is not an emtpy list
-			var/datum/material/M = SSmaterials[materials]
+			var/datum/material/M = SSmaterials.materials[materials]
 			. += "<br>It's is made out of [M.name]."

@@ -13,6 +13,7 @@
 	var/melee_cd_mod = 1
 	/// Slowdown modifier (additive). Remember that negative values speed up
 	var/slowdown_mod = 0
+	///TODO: Add mods for armor, armor_penetration
 
 /**
  * Applies stat modifiers a given material has to an obj
@@ -28,8 +29,7 @@
 		I.melee_cd *= melee_cd_mod
 		I.slowdown += slowdown_mod
 
-/datum/material/proc/apply2icon_default(_icon, _icon_state)
-	var/icon/I = icon(_icon, _icon_state)
+/datum/material/proc/apply2icon_default(icon/I)
 	for(var/i in 1 to palettes.len)
 		I = apply_palette(I, "template[i]", palettes[i])
 	return I
@@ -65,13 +65,17 @@
 		var/datum/material/M = SSmaterials.materials[materials[i]]
 		I = M.apply_palette(I, "template[i]")
 	return I
+
 /datum/material/iron
 	name = "iron"
 	palettes = list("iron")
-	force_mod = 1.2
-	toolspeed_mod = 0.5
-	slowdown_mod = 1
-	melee_cd_mod = 1.1
+
+/datum/material/gold
+	name = "gold"
+	palettes = list("gold")
+	force_mod = 0.9
+	slowdown_mod = 2
+	melee_cd_mod = 1.2
 
 /datum/material/wood
 	name = "wood"

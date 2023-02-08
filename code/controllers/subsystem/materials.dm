@@ -16,3 +16,6 @@ SUBSYSTEM_DEF(materials)
 		materials[t] = M
 
 	return ..()
+
+/proc/get_material(type)
+	return SSmaterials.materials[type]

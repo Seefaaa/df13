@@ -40,6 +40,15 @@
 	bare_wound_bonus = 10
 	tool_behaviour = TOOL_KNIFE
 
+/obj/item/kitchen/knife/apply_material(list/_materials)
+	. = ..()
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_BLADE]))
+	var/datum/material/M = get_material(materials[PART_BLADE])
+	M.apply_stats(src)
+
+/obj/item/kitchen/knife/build_worn_with_material(_file, state)
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_BLADE]))
+
 /obj/item/kitchen/knife/Initialize()
 	. = ..()
 	AddElement(/datum/element/eyestab)
@@ -70,6 +79,17 @@
 	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
 	custom_price = PAYCHECK_EASY * 1.5
 	tool_behaviour = TOOL_ROLLINGPIN
+
+/obj/item/kitchen/rollingpin/apply_material(list/_materials)
+	. = ..()
+	var/datum/material/M = get_material(materials)
+	icon = M.apply2icon_default(icon(icon))
+	M.apply_stats(src)
+
+/obj/item/kitchen/rollingpin/build_worn_with_material(_file, state)
+	var/icon/I = ..()
+	var/datum/material/M = get_material(materials)
+	return M.apply2icon_default(I)
 
 /obj/item/kitchen/rollingpin/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins flattening [user.p_their()] head with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))

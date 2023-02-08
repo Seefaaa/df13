@@ -47,6 +47,10 @@
 		playsound(src, 'dwarfs/sounds/tools/anvil/anvil_hit.ogg', 70, TRUE)
 		var/obj/O = new recipe.result(loc)
 		O.apply_grade(get_highest_grade())
+		var/list/_materials = list()
+		for(var/obj/I in contents)
+			_materials[I.part_name] = I.materials
+		O.apply_material(_materials)
 		to_chat(user, span_notice("You assemble [O]."))
 		qdel(recipe)
 		contents.Cut()
