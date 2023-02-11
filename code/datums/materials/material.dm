@@ -13,7 +13,22 @@
 	var/melee_cd_mod = 1
 	/// Slowdown modifier (additive). Remember that negative values speed up
 	var/slowdown_mod = 0
-	///TODO: Add mods for armor, armor_penetration
+
+	// Armor multipliers
+	var/armor_sharp_mod = 1
+	var/armor_pierce_mod = 1
+	var/armor_blunt_mod = 1
+	var/armor_fire_mod = 1
+	var/armor_acid_mod = 1
+	var/armor_magic_mod = 1
+	var/armor_wound_mod = 1
+	// Armor penetration multipliers
+	var/armorpen_sharp_mod = 1
+	var/armorpen_pierce_mod = 1
+	var/armorpen_blunt_mod = 1
+	var/armorpen_fire_mod = 1
+	var/armorpen_acid_mod = 1
+	var/armorpen_magic_mod = 1
 
 /**
  * Applies stat modifiers a given material has to an obj
@@ -28,6 +43,23 @@
 		I.toolspeed *= toolspeed_mod
 		I.melee_cd *= melee_cd_mod
 		I.slowdown += slowdown_mod
+		if(I.armor_penetration)
+			I.armor_penetration.sharp *= armorpen_sharp_mod
+			I.armor_penetration.pierce *= armorpen_pierce_mod
+			I.armor_penetration.blunt *= armorpen_blunt_mod
+			I.armor_penetration.fire *= armorpen_fire_mod
+			I.armor_penetration.acid *= armorpen_acid_mod
+			I.armor_penetration.magic *= armorpen_magic_mod
+	if(A.armor)
+		A.armor.sharp *= armor_sharp_mod
+		A.armor.pierce *= armor_pierce_mod
+		A.armor.blunt *= armor_blunt_mod
+		A.armor.fire *= armor_fire_mod
+		A.armor.acid *= armor_acid_mod
+		A.armor.magic *= armor_magic_mod
+		A.armor.wound *= armor_wound_mod
+//TODO: add functions that prevent armor and penetration reaching 100%
+//TODO: add functions that prevent melee cd reaching near zero values; same with toolspeed
 
 /datum/material/proc/apply2icon_default(icon/I)
 	for(var/i in 1 to palettes.len)
