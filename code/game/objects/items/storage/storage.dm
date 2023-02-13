@@ -1,6 +1,8 @@
 /obj/item/storage
 	name = "storage"
 	icon = 'icons/obj/storage.dmi'
+	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
+	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
 	var/rummage_if_nodrop = TRUE
 	var/component_type = /datum/component/storage/concrete
