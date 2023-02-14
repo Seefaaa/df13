@@ -234,6 +234,7 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	inhand_icon_state = "king_scepter"
+	worn_icon = 'dwarfs/icons/mob/clothing/back.dmi'
 	slot_flags = ITEM_SLOT_BACK|ITEM_SLOT_BELT
 	force = 5
 	throwforce = 5
