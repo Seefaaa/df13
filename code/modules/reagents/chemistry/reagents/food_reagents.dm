@@ -203,7 +203,7 @@
 						ingot.grade = 6
 				var/obj/item/O = new ingot.recipe.result(get_turf(holder.my_atom))
 				O.apply_material(ingot.materials)
-				O.apply_grade(ingot.grade)
+				O.update_stats(ingot.grade)
 			var/obj/item/tongs/T = ingot.loc
 			qdel(ingot)
 			if(T)

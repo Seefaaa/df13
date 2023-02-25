@@ -1,5 +1,18 @@
-/obj/proc/apply_grade(grade)
-	src.grade = grade
+/obj/proc/update_stats(_grade=null)
+	obj_integrity = initial(obj_integrity)
+	max_integrity = initial(max_integrity)
+	apply_grade(_grade)
+	apply_material_stats()
+
+/obj/item/update_stats(_grade)
+	slowdown = initial(slowdown)
+	melee_cd = initial(melee_cd)
+	. = ..()
+
+
+/obj/proc/apply_grade(_grade=null)
+	if(_grade)
+		src.grade = _grade
 	var/grd_name = grade_name(grade)
 	name = "[grd_name][initial(name)][grd_name]"
 

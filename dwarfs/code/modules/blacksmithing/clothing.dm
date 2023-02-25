@@ -12,7 +12,6 @@
 	. = ..()
 	var/datum/material/M = get_material(materials)
 	icon = M.apply2icon_default(icon(icon))
-	M.apply_stats(src)
 
 /obj/item/clothing/suit/armor/light_plate/build_worn_with_material(_file, state)
 	var/icon/I = ..()
@@ -44,7 +43,6 @@
 	. = ..()
 	var/datum/material/M = get_material(materials)
 	icon = M.apply2icon_default(icon(icon))
-	M.apply_stats(src)
 
 /obj/item/clothing/suit/armor/heavy_plate/build_worn_with_material(_file, state)
 	var/icon/I = ..()
@@ -97,7 +95,6 @@
 	. = ..()
 	var/datum/material/M = get_material(materials)
 	icon = M.apply2icon_default(icon(icon))
-	M.apply_stats(src)
 
 /obj/item/clothing/under/chainmail/build_worn_with_material(_file, state)
 	var/icon/I = ..()
@@ -118,7 +115,6 @@
 	. = ..()
 	var/datum/material/M = get_material(materials)
 	icon = M.apply2icon_default(icon(icon))
-	M.apply_stats(src)
 
 /obj/item/clothing/head/helmet/plate_helmet/build_worn_with_material(_file, state)
 	var/icon/I = ..()
@@ -138,7 +134,6 @@
 	. = ..()
 	var/datum/material/M = get_material(materials)
 	icon = M.apply2icon_default(icon(icon))
-	M.apply_stats(src)
 
 /obj/item/clothing/gloves/plate_gloves/build_worn_with_material(_file, state)
 	var/icon/I = ..()
@@ -157,7 +152,6 @@
 	. = ..()
 	var/datum/material/M = get_material(materials)
 	icon = M.apply2icon_default(icon(icon))
-	M.apply_stats(src)
 
 /obj/item/clothing/shoes/jackboots/build_worn_with_material(_file, state)
 	var/icon/I = ..()

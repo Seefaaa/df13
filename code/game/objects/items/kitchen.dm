@@ -42,12 +42,10 @@
 
 /obj/item/kitchen/knife/apply_material(list/_materials)
 	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_BLADE]))
-	var/datum/material/M = get_material(materials[PART_BLADE])
-	M.apply_stats(src)
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/kitchen/knife/build_worn_with_material(_file, state)
-	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_BLADE]))
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/kitchen/knife/Initialize()
 	. = ..()
@@ -84,7 +82,6 @@
 	. = ..()
 	var/datum/material/M = get_material(materials)
 	icon = M.apply2icon_default(icon(icon))
-	M.apply_stats(src)
 
 /obj/item/kitchen/rollingpin/build_worn_with_material(_file, state)
 	var/icon/I = ..()

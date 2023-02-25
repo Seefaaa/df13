@@ -6,7 +6,7 @@
 	lifespan = INFINITY
 	layer = ABOVE_MOB_LAYER
 	var/small_log_type = /obj/item/log
-	var/large_log_type = /obj/item/log
+	var/large_log_type = /obj/item/log/large
 	var/list/small_log_amount = list(0,1,1,2,0,2,0) //a list of small logs with amount corresponding to the growthstage
 	var/list/large_log_amount = list(0,0,0,0,1,1,2) //a list of large logs with amount corresponding to the growthstage
 	var/cutting_time = 4 SECONDS //time between each chop
@@ -39,10 +39,12 @@
 /obj/structure/plant/tree/proc/chop_tree(turf/my_turf)
 	if(small_log_type)
 		for(var/i in 1 to small_log_amount[growthstage])
-			new small_log_type(my_turf)
+			var/obj/L = new small_log_type(my_turf)
+			L.apply_material(materials)
 	if(large_log_type)
 		for(var/i in 1 to large_log_amount[growthstage])
-			new large_log_type(my_turf)
+			var/obj/L = new large_log_type(my_turf)
+			L.apply_material(materials)
 
 /obj/structure/plant/tree/attackby(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_AXE)
@@ -56,13 +58,12 @@
 	species = "towercap"
 	produced = list(/obj/item/growable/seeds/tree/towercap=2)
 	seed_type = /obj/item/growable/seeds/tree/towercap
-	large_log_type = /obj/item/log/large/towercap
-	small_log_type = /obj/item/log/towercap
 	health = 100
 	icon_ripe = "towercap-7"
 	growthstages = 7
 	growthdelta = 80 SECONDS
 	produce_delta = 120 SECONDS
+	materials = /datum/material/wood/towercap
 
 /*
 /obj/structure/plant/tree/apple

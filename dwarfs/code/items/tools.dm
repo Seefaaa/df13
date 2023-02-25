@@ -20,10 +20,7 @@
 
 /obj/item/pickaxe/apply_material(list/_materials)
 	. = ..()
-	var/icon/I = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-	var/datum/material/M = get_material(materials[PART_HEAD])
-	M.apply_stats(src)
-	icon = I
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/pickaxe/build_worn_with_material(_file, state)
 	var/icon/I = ..()
@@ -31,7 +28,7 @@
 	return I
 
 /obj/item/pickaxe/default
-	materials = list(PART_HANDLE=/datum/material/wood, PART_HEAD=/datum/material/iron)
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/pickaxe/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] begins digging into [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -74,8 +71,6 @@
 /obj/item/shovel/apply_material(list/_materials)
 	. = ..()
 	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-	var/datum/material/M = get_material(materials[PART_HEAD])
-	M.apply_stats(src)
 
 /obj/item/shovel/build_worn_with_material(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
@@ -100,8 +95,6 @@
 /obj/item/axe/apply_material(list/_materials)
 	. = ..()
 	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-	var/datum/material/M = get_material(materials[PART_HEAD])
-	M.apply_stats(src)
 
 /obj/item/axe/build_worn_with_material(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
@@ -141,8 +134,6 @@
 /obj/item/smithing_hammer/apply_material(list/_materials)
 	. = ..()
 	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-	var/datum/material/M = get_material(materials[PART_HEAD])
-	M.apply_stats(src)
 
 /obj/item/smithing_hammer/build_worn_with_material(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
@@ -166,8 +157,6 @@
 /obj/item/chisel/apply_material(list/_materials)
 	. = ..()
 	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-	var/datum/material/M = get_material(materials[PART_HEAD])
-	M.apply_stats(src)
 
 /obj/item/chisel/build_worn_with_material(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
@@ -190,7 +179,6 @@
 	. = ..()
 	var/datum/material/M = get_material(materials)
 	icon = M.apply2icon_default(icon(icon))
-	M.apply_stats(src)
 
 /obj/item/tongs/build_worn_with_material(_file, state)
 	var/icon/I = ..()
@@ -267,8 +255,6 @@
 /obj/item/trowel/apply_material(list/_materials)
 	. = ..()
 	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-	var/datum/material/M = get_material(materials[PART_HEAD])
-	M.apply_stats(src)
 
 /obj/item/trowel/build_worn_with_material(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
@@ -398,8 +384,6 @@
 /obj/item/hoe/apply_material(list/_materials)
 	. = ..()
 	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-	var/datum/material/M = get_material(materials[PART_HEAD])
-	M.apply_stats(src)
 
 /obj/item/hoe/build_worn_with_material(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))

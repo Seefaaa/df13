@@ -286,7 +286,6 @@
 	. = ..()
 	var/datum/material/M = get_material(materials)
 	icon = M.apply2icon_default(icon(icon))
-	M.apply_stats(src)
 
 /obj/item/flashlight/fueled/lantern/build_worn_with_material(_file, state)
 	var/icon/I = ..()

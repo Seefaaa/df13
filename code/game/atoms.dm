@@ -1646,6 +1646,19 @@
 	if(_materials)
 		materials = _materials
 
+/// Apply material stats to this atom
+/atom/proc/apply_material_stats()
+	. = TRUE
+	if(!materials)//sanity check
+		return FALSE
+	if(islist(materials))
+		for(var/part in materials)
+			var/datum/material/M = get_material(materials[part])
+			M.apply_stats(src, part)
+	else
+		var/datum/material/M = get_material(materials)
+		M.apply_stats(src)
+
 /// Apply materials to this atom's icon
 /atom/proc/build_worn_with_material(_file=null, state=null)
 	return icon(_file, state)

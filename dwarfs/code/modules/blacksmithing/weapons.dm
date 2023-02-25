@@ -25,12 +25,10 @@
 
 /obj/item/zwei/apply_material(list/_materials)
 	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_BLADE]))
-	var/datum/material/M = get_material(materials[PART_BLADE])
-	M.apply_stats(src)
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/zwei/build_worn_with_material(_file, state)
-	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_BLADE]))
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 
 /obj/item/flail
@@ -55,12 +53,10 @@
 
 /obj/item/flail/apply_material(list/_materials)
 	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_BLADE]))
-	var/datum/material/M = get_material(materials[PART_BLADE])
-	M.apply_stats(src)
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/flail/build_worn_with_material(_file, state)
-	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_BLADE]))
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/dagger
 	name = "dagger"
@@ -83,12 +79,10 @@
 
 /obj/item/dagger/apply_material(list/_materials)
 	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_BLADE]))
-	var/datum/material/M = get_material(materials[PART_BLADE])
-	M.apply_stats(src)
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/dagger/build_worn_with_material(_file, state)
-	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_BLADE]))
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /*
 /obj/item/dagger/Initialize()
@@ -123,12 +117,10 @@
 
 /obj/item/sword/apply_material(list/_materials)
 	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_BLADE]))
-	var/datum/material/M = get_material(materials[PART_BLADE])
-	M.apply_stats(src)
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/sword/build_worn_with_material(_file, state)
-	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_BLADE]))
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/spear
 	name = "spear"
@@ -157,12 +149,10 @@
 
 /obj/item/spear/apply_material(list/_materials)
 	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_BLADE]))
-	var/datum/material/M = get_material(materials[PART_BLADE])
-	M.apply_stats(src)
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/spear/build_worn_with_material(_file, state)
-	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_BLADE]))
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/warhammer
 	name = "warhammer"
@@ -184,12 +174,10 @@
 
 /obj/item/warhammer/apply_material(list/_materials)
 	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_BLADE]))
-	var/datum/material/M = get_material(materials[PART_BLADE])
-	M.apply_stats(src)
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/warhammer/build_worn_with_material(_file, state)
-	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_BLADE]))
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/halberd
 	name = "halberd"
@@ -219,12 +207,10 @@
 
 /obj/item/halberd/apply_material(list/_materials)
 	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_BLADE]))
-	var/datum/material/M = get_material(materials[PART_BLADE])
-	M.apply_stats(src)
+	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/halberd/build_worn_with_material(_file, state)
-	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_BLADE]))
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/scepter
 	name = "scepter"
@@ -261,8 +247,6 @@
 /obj/item/club/apply_material(list/_materials)
 	. = ..()
 	icon = apply_palettes(icon(icon, icon_state), list(materials))
-	var/datum/material/M = get_material(materials)
-	M.apply_stats(src)
 
 /obj/item/club/build_worn_with_material(_file, state)
 	return apply_palettes(..(), list(materials))

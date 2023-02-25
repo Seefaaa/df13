@@ -93,7 +93,6 @@
 	. = ..()
 	var/datum/material/M = get_material(materials)
 	icon = M.apply2icon_default(icon(icon, icon_state))
-	M.apply_stats(src)
 
 /obj/item/partial/build_worn_with_material(_file, state)
 	return apply_palettes(..(), list(materials))
@@ -101,7 +100,7 @@
 /obj/item/partial/dagger
 	name = "dagger blade"
 	icon_state = "dagger_blade"
-	part_name = PART_BLADE
+	part_name = PART_HEAD
 
 /obj/item/partial/pickaxe
 	name = "pickaxe blade"
@@ -131,17 +130,17 @@
 /obj/item/partial/zwei
 	name = "zweihander blade"
 	icon_state = "zweihander_blade"
-	part_name = PART_BLADE
+	part_name = PART_HEAD
 
 /obj/item/partial/flail
 	name = "ball on a chain"
 	icon_state = "cep_mace"
-	part_name = PART_BLADE
+	part_name = PART_HEAD
 
 /obj/item/partial/sword
 	name = "sword blade"
 	icon_state = "sword_blade"
-	part_name = PART_BLADE
+	part_name = PART_HEAD
 
 /obj/item/partial/crown_empty
 	name = "empty crown"
@@ -158,17 +157,17 @@
 /obj/item/partial/spear
 	name = "spear head"
 	icon_state = "spear_head"
-	part_name = PART_BLADE
+	part_name = PART_HEAD
 
 /obj/item/partial/halberd
 	name = "halberd head"
 	icon_state = "halberd_head"
-	part_name = PART_BLADE
+	part_name = PART_HEAD
 
 /obj/item/partial/kitchen_knife
 	name = "kitchen knife blade"
 	icon_state = "kitchen_knife_blade"
-	part_name = PART_BLADE
+	part_name = PART_HEAD
 
 /obj/item/partial/hoe
 	name = "hoe head"

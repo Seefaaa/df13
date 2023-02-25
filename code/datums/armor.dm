@@ -58,4 +58,7 @@
 	. = ..()
 	tag = ARMORID // update tag in case armor values were edited
 
+/datum/armor/proc/modify_rating(rating, mod, max_rating=90)
+	vars[rating] = min(vars[rating] * mod, max_rating)
+
 #undef ARMORID

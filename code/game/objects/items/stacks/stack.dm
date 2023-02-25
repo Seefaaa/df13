@@ -364,6 +364,8 @@
 /obj/item/stack/proc/can_merge(obj/item/stack/check)
 	if(!istype(check, merge_type))
 		return FALSE
+	if(check.materials != materials)
+		return FALSE
 	return TRUE
 
 /**
@@ -462,6 +464,7 @@
 	if(!use(amount, TRUE, FALSE))
 		return null
 	var/obj/item/stack/F = new type(user? user : drop_location(), amount, FALSE)
+	F.apply_material(materials)
 	. = F
 	F.copy_evidences(src)
 	if(user)

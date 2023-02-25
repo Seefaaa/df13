@@ -8,7 +8,15 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	w_class = WEIGHT_CLASS_BULKY
 	merge_type = /obj/item/stack/sheet/planks
-	materials = /datum/material/wood
+	novariants = FALSE
+
+/obj/item/stack/sheet/planks/apply_material(list/_materials)
+	. = ..()
+	icon = apply_palettes(icon(icon), materials)
+
+/obj/item/stack/sheet/planks/build_worn_with_material(_file, state)
+	return apply_palettes(..(), materials)
+
 
 /obj/item/stack/sheet/planks/get_fuel()
 	return 10 * amount
@@ -48,6 +56,14 @@ GLOBAL_LIST_INIT(plank_recipes, list (
 	merge_type = /obj/item/stack/sheet/bark
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
+	novariants = FALSE
+
+/obj/item/stack/sheet/bark/apply_material(list/_materials)
+	. = ..()
+	icon = apply_palettes(icon(icon), materials)
+
+/obj/item/stack/sheet/bark/build_worn_with_material(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/item/stack/sheet/bark/get_fuel()
 	return 3 * amount

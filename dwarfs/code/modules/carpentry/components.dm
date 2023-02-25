@@ -8,8 +8,6 @@
 /obj/item/weapon_hilt/apply_material(list/_materials)
 	. = ..()
 	icon = apply_palettes(icon(icon, icon_state), list(materials))
-	var/datum/material/M = get_material(materials)
-	M.apply_stats(src)
 
 /obj/item/weapon_hilt/build_worn_with_material(_file, state)
 	return apply_palettes(..(), list(materials))
@@ -30,8 +28,6 @@
 /obj/item/stick/apply_material(list/_materials)
 	. = ..()
 	icon = apply_palettes(icon(icon, icon_state), list(materials))
-	var/datum/material/M = get_material(materials)
-	M.apply_stats(src)
 
 /obj/item/stick/build_worn_with_material(_file, state)
 	return apply_palettes(..(), list(materials))

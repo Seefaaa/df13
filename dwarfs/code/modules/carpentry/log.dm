@@ -6,6 +6,13 @@
 	throw_range = 0
 	w_class = WEIGHT_CLASS_BULKY
 
+/obj/item/log/apply_material(list/_materials)
+	. = ..()
+	icon = apply_palettes(icon(icon, icon_state), materials)
+
+/obj/item/log/build_worn_with_material(_file, state)
+	return apply_palettes(..(), materials)
+
 /obj/item/log/get_fuel()
 	return 50 // 5 planks
 
@@ -24,8 +31,11 @@
 		var/my_turf = get_turf(src)
 		user.mind.adjust_experience(/datum/skill/logging, 12)
 		var/plank_amt = rand(4, 6)
-		new /obj/item/stack/sheet/planks(my_turf, plank_amt)
-		new /obj/item/stack/sheet/bark(my_turf, rand(1, 2))
+		var/obj/item/stack/sheet/planks/planks = new (my_turf, plank_amt)
+		var/obj/item/stack/sheet/bark/bark = new (my_turf, rand(1, 2))
+		var/datum/material/wood/W = get_material(materials)
+		planks.apply_material(W.treated_type)
+		bark.apply_material(materials)
 		qdel(src)
 	else
 		return ..()
@@ -33,7 +43,7 @@
 /obj/item/log/large
 	name = "large log"
 	desc = "Huge, wooden tree trunk requiring very heavy labor."
-	icon_state = "large_log"
+	icon_state = "log_large"
 	density = 1
 	w_class = WEIGHT_CLASS_GIGANTIC
 	var/small_log_type = /obj/item/log
@@ -66,16 +76,8 @@
 		var/my_turf = get_turf(src)
 		user.mind.adjust_experience(/datum/skill/logging, 12)
 		for(var/i in 1 to 3)
-			new small_log_type(my_turf)
+			var/obj/O = new small_log_type(my_turf)
+			O.apply_material(materials)
 		qdel(src)
 	else
 		return ..()
-
-/obj/item/log/towercap
-	name = "towercap log"
-	icon_state = "towercap_log"
-
-/obj/item/log/large/towercap
-	name = "large towercap log"
-	icon_state = "large_towercap"
-	small_log_type = /obj/item/log/towercap

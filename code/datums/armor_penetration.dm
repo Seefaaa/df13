@@ -28,3 +28,6 @@
 
 /datum/armor_penetration/proc/GetRating(rating)
 	return vars[rating]
+
+/datum/armor_penetration/proc/modify_rating(rating, mod, max_rating=90)
+	vars[rating] = min(vars[rating] * mod, max_rating)
