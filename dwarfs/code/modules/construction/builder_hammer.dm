@@ -27,14 +27,7 @@
         var/obj/structure/original = S.target_structure
         var/category = S.cat
         var/list/blueprint = list()
-        var/list/reqs = S.reqs
-        var/list/resources = list() // list of lists where each list is a resource data
-        for(var/i in reqs)
-            var/amt = reqs[i]
-            var/obj/O = i
-            var/icon_path = icon2path(initial(O.icon), user, initial(O.icon_state))
-            var/list/resource = list("name"=initial(O.name),"amount"=amt,"icon"=icon_path)
-            resources += list(resource)
+        var/list/resources = S.build_ui_resources(user)
 
         blueprint["name"] = initial(original.name)
         blueprint["desc"] = initial(original.desc)
@@ -54,7 +47,7 @@
     ui = new(user, src, "BuilderHammer")
     ui.open()
 
-/obj/item/builder_hammer/ui_data(mob/user)
+/obj/item/builder_hammer/ui_static_data(mob/user)
 	var/list/data = list()
 	var/list/blueprints = generate_blueprints(user)
 	data["blueprints"] = blueprints

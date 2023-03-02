@@ -6,6 +6,12 @@
 	var/name = "material"
 	/// Palettes used. Used as icon_states for it's palette at 'dwarfs/icons/palettes.dmi'. Depending on amount of materials will use template palettes in increasing order.
 	var/list/palettes = list("template1")
+	/// What floor is made out of this material
+	var/floor_type
+	/// What wall is made out of this material
+	var/wall_type
+	/// What door is made out of this material
+	var/door_type
 	/// Force multiplier
 	var/force_mod = 1
 	/// Tool spped multiplier
@@ -165,6 +171,9 @@
 
 /datum/material/wood
 	var/treated_type
+	floor_type = /turf/open/floor/wooden
+	wall_type = /turf/closed/wall/wooden
+	door_type = /obj/structure/mineral_door/wooden
 
 /datum/material/wood/towercap
 	name = "towercap wood"
@@ -196,6 +205,20 @@
 
 /datum/material/wood/towercap/treated
 	palettes = list("towercap_inside")
+
+/datum/material/stone
+	name = "stone"
+	palettes = list("soapstone")
+	floor_type = /turf/open/floor/stone
+	wall_type = /turf/closed/wall/stone
+	door_type = /obj/structure/mineral_door/stone
+
+/datum/material/sandstone
+	name = "sandstone"
+	palettes = list("sand")
+	floor_type = /turf/open/floor/sandstone
+	wall_type = /turf/closed/wall/sand
+	door_type = /obj/structure/mineral_door/sand
 
 #undef TOOLSPEED_MIN_VALUE
 #undef MELEE_CD_MIN_VALUE

@@ -1,4 +1,4 @@
-/obj/structure/mineral_door/heavystone
+/obj/structure/mineral_door/stone
 	name = "stone door"
 	icon_state = "stone"
 	sheetType = /obj/item/stack/sheet/stone
@@ -12,3 +12,8 @@
 	name = "sand door"
 	icon_state = "sand"
 	sheetType = /obj/item/stack/ore/smeltable/sand
+
+/obj/structure/mineral_door/placeholder
+	name = "door"
+	desc = "Different door Depending on materials."
+	icon_state = "placeholder"

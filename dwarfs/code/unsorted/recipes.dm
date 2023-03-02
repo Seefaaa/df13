@@ -108,10 +108,10 @@
 	result = /obj/item/sconce
 	max_resulting = 5
 
-/datum/smithing_recipe/shpatel
-	name = "trowel"
-	result = /obj/item/trowel
-	max_resulting = 2
+// /datum/smithing_recipe/trowel
+// 	name = "trowel"
+// 	result = /obj/item/trowel
+// 	max_resulting = 2
 
 /datum/smithing_recipe/crown
 	name = "empty crown"

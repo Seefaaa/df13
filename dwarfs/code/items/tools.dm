@@ -309,7 +309,7 @@
 			S.dir = user.dir
 			user.visible_message(span_notice("<b>[user]</b> constructs stone stairs."), span_notice("You construct stone stairs."))
 		if(TROWEL_BUILD_DOOR)
-			var/obj/structure/mineral_door/heavystone/D = new(T)
+			var/obj/structure/mineral_door/stone/D = new(T)
 			D.dir = user.dir
 			user.visible_message(span_notice("<b>[user]</b> constructs stone door."), span_notice("You construct stone door."))
 

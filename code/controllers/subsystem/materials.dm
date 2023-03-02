@@ -18,4 +18,6 @@ SUBSYSTEM_DEF(materials)
 	return ..()
 
 /proc/get_material(type)
+	if(islist(type))
+		return
 	return SSmaterials.materials[type]

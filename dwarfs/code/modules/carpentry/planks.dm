@@ -9,6 +9,7 @@
 	w_class = WEIGHT_CLASS_BULKY
 	merge_type = /obj/item/stack/sheet/planks
 	novariants = FALSE
+	materials = /datum/material/wood/towercap/treated
 
 /obj/item/stack/sheet/planks/apply_material(list/_materials)
 	. = ..()

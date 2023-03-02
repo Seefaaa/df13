@@ -327,5 +327,17 @@
 
 /turf/open/floor/sandstone
 	name = "sand floor"
+	desc = "Grainy."
 	icon_state = "sandstone"
 	slowdown = -0.1
+
+/turf/open/floor/placeholder
+	name = "floor"
+	desc = "Different floor depending on materials."
+	icon_state = "placeholder"
+
+/turf/closed/wall/placeholder
+	name = "wall"
+	desc = "Different wall Depending on materials."
+	icon = 'dwarfs/icons/technical.dmi'
+	icon_state = "placeholder_wall"

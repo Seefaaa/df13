@@ -11,6 +11,7 @@
 	force = 2
 	throwforce = 5
 	throw_range = 7
+	materials = /datum/material/iron
 	var/datum/smithing_recipe/recipe = null
 	var/durability = 6
 	var/progress_current = 0

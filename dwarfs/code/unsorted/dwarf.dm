@@ -101,7 +101,7 @@ If you want them to actuely show up, go to code\modules\client\preferences.dm on
 /datum/outfit/dwarf/mason
 	name = "Dwarf mason"
 	l_pocket = /obj/item/chisel
-	r_pocket = /obj/item/trowel
+	// r_pocket = /obj/item/trowel
 	apply_grade = TRUE
 
 /datum/outfit/dwarf/chef
@@ -119,7 +119,7 @@ If you want them to actuely show up, go to code\modules\client\preferences.dm on
 /datum/outfit/dwarf/builder
 	name = "Dwarf builder"
 	r_hand = /obj/item/builder_hammer
-	l_hand = /obj/item/trowel
+	// l_hand = /obj/item/trowel
 	apply_grade = TRUE
 
 /datum/outfit/dwarf/king

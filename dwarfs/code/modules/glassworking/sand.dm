@@ -5,6 +5,7 @@
 	singular_name = "pile of sand"
 	novariants = FALSE
 	refined_type = /obj/item/stack/glass
+	materials = /datum/material/sandstone
 
 /obj/item/stack/glass
 	name = "glass"
