@@ -25,9 +25,25 @@
 /obj/item/food/dish/plump_skewer
 	name = "plump skewer"
 	desc = "Quick snack, not really nutritious"
-	icon_state = "plump_kebab"
+	icon_state = "plump_skewer"
 	plate_type = /obj/item/stick
 	food_reagents = list(/datum/reagent/consumable/nutriment=55)
+	mood_event_type = /datum/mood_event/ate_meal
+
+/obj/item/food/dish/meat_skewer
+	name = "meat skewer"
+	desc = "Quick snack, not really nutritious"
+	icon_state = "meat_skewer"
+	plate_type = /obj/item/stick
+	food_reagents = list(/datum/reagent/consumable/nutriment=65)
+	mood_event_type = /datum/mood_event/ate_meal
+
+/obj/item/food/dish/balanced_skewer
+	name = "balanced skewer"
+	desc = "Quick snack, not really nutritious"
+	icon_state = "balanced_skewer"
+	plate_type = /obj/item/stick
+	food_reagents = list(/datum/reagent/consumable/nutriment=75)
 	mood_event_type = /datum/mood_event/ate_meal
 
 /obj/item/food/dish/salad

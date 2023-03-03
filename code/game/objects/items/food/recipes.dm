@@ -65,6 +65,18 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	req_lvl = 1
 	cooking_text = "Insert all of it onto a stick and apply some fire."
 
+/datum/cooking_recipe/stick/meat_skewer
+	req_items = list(/obj/item/food/slice/meat=4)
+	result = /obj/item/food/dish/meat_skewer
+	req_lvl = 1
+	cooking_text = "Insert all of it onto a stick and apply some fire."
+
+/datum/cooking_recipe/stick/balanced_skewer
+	req_items = list(/obj/item/food/slice/meat=2, /obj/item/growable/carrot=1, /obj/item/growable/turnip=1)
+	result = /obj/item/food/dish/balanced_skewer
+	req_lvl = 1
+	cooking_text = "Insert all of it onto a stick and apply some fire."
+
 ///******************BOWL RECIPES******************///
 /datum/cooking_recipe/bowl
 
