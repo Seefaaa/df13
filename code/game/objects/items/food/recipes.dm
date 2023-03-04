@@ -36,6 +36,12 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	req_lvl = 6
 	cooking_text = "Put everything on a flat plate and cook in the oven."
 
+/datum/cooking_recipe/oven/flat_plate/bread
+	req_items = list(/obj/item/food/dough=1)
+	result = /obj/item/food/dish/bread
+	req_lvl = 6
+	cooking_text = "Put everything on a flat plate and cook in the oven."
+
 /datum/cooking_recipe/oven/flat_plate/trolls_delight
 	req_items = list(/obj/item/food/meat/slab/troll=2, /obj/item/food/slice/plump_helmet=3, /obj/item/growable/carrot=1)
 	req_reagents = list(/datum/reagent/consumable/juice/sweet_pod=10)

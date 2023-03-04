@@ -14,6 +14,16 @@
 			new plate_type(get_turf(feeder))
 
 //**********************FIRST TIER DISHES*****************************//
+
+/obj/item/food/dish/bread
+	name = "bread"
+	desc = "A loaf of fresh bread. Classic staple food."
+	icon_state = "bread"
+	plate_type = /obj/item/reagent_containers/glass/plate/flat
+	food_reagents = list(/datum/reagent/consumable/nutriment=40)
+	mood_event_type = /datum/mood_event/ate_meal
+	mood_gain = 5
+
 /obj/item/food/dish/plump_with_steak
 	name = "plump with steak"
 	desc = "A simple dish containing all essential vitamins for a dwarf."
