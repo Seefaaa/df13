@@ -10,18 +10,31 @@ If you want to implement a lock, you need a few things.
 /datum/component/lock
 	var/datum/key/key
 	var/locked = FALSE
-	var/static/list/attachable_to = typecacheof(list(/obj/structure/mineral_door, /obj/item/key))
+	var/static/list/attachable_to = typecacheof(list(/obj/structure/mineral_door,/obj/structure/closet, /obj/item/key))
+	var/lock_overlay_path = 'dwarfs/icons/items/misc_items.dmi'
+	var/icon_state = "lock"
+	var/mutable_appearance/lock_overlay
+
 
 /datum/component/lock/Initialize(datum/key/locks_key)
-	//(_owner, _key = null, /datum/callback/_lock_callback)
-	// if(attachable_to && !(src.parent in attachable_to))
-	// 	return COMPONENT_INCOMPATIBLE
+	if(attachable_to && !(src.parent.type in attachable_to))
+		return COMPONENT_INCOMPATIBLE
 	key = locks_key
 	RegisterSignal(parent, COMSIG_KEY_USE, .proc/try_toggle_lock)
 	RegisterSignal(parent, COMSIG_TRY_LOCKED_ACTION, .proc/try_locked_action)
+	lock_overlay = mutable_appearance(lock_overlay_path, icon_state)
+	var/atom/p = parent
+	p.add_overlay(lock_overlay)
+
+/datum/component/lock/Destroy(force, silent)
+	var/atom/p = parent
+	p?.cut_overlay(lock_overlay)
+	return ..()
+
 
 
 /datum/component/lock/proc/try_attach(obj/I)
+	return
 
 ///Locking and unlocking action
 /datum/component/lock/proc/try_toggle_lock(atom/source, datum/key/K, mob/user)
@@ -64,8 +77,8 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 
 /obj/item/lock/attack_obj(obj/O, mob/living/user, params)
 	. = ..()
-	O._AddComponent(list(/datum/component/lock, key_form))
-	qdel(src)
+	if(O._AddComponent(list(/datum/component/lock, key_form)))
+		qdel(src)
 
 /obj/item/key
 	name = "key"

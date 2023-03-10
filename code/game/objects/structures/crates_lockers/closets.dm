@@ -163,6 +163,8 @@
 		return TRUE
 	if(locked)
 		return FALSE
+	if(SEND_SIGNAL(src,COMSIG_TRY_LOCKED_ACTION, user))
+		return FALSE
 	var/turf/T = get_turf(src)
 	for(var/mob/living/L in T)
 		if(L.anchored || horizontal && L.mob_size > MOB_SIZE_TINY && L.density)
