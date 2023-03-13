@@ -1,5 +1,5 @@
 /datum/smite/furmogus
-	name = "furmogufy"
+	name = "Furmogufy"
 
 /datum/smite/furmogus/effect(client/user, mob/living/target)
 	. = ..()
