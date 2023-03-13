@@ -780,6 +780,7 @@
 #include "code\modules\admin\smites\bsa.dm"
 #include "code\modules\admin\smites\fake_bwoink.dm"
 #include "code\modules\admin\smites\fat.dm"
+#include "code\modules\admin\smites\furmogus.dm"
 #include "code\modules\admin\smites\gib.dm"
 #include "code\modules\admin\smites\immerse.dm"
 #include "code\modules\admin\smites\knot_shoes.dm"
