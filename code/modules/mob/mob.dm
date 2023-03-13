@@ -1177,7 +1177,7 @@
 /// Except base mob type doesnt really wear items
 /mob/proc/equipped_speed_mods()
 	for(var/obj/item/I in held_items)
-		if(I.item_flags & SLOWS_WHILE_IN_HAND)
+		if(!(I.item_flags & NOT_SLOWS_WHILE_IN_HAND))
 			. += I.slowdown
 
 /mob/proc/set_stat(new_stat)

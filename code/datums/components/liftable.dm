@@ -1,6 +1,5 @@
 /obj/item/liftable //placeholder item that you pick up when picking up parent
 	var/obj/parent
-	item_flags = SLOWS_WHILE_IN_HAND
 
 /obj/item/liftable/Initialize()
 	. = ..()

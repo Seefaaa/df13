@@ -614,7 +614,7 @@
 	force = 0
 	throwforce = 0
 	slowdown = 1
-	item_flags = DROPDEL | ABSTRACT | NOBLUDGEON | SLOWS_WHILE_IN_HAND | HAND_ITEM
+	item_flags = DROPDEL | ABSTRACT | NOBLUDGEON | HAND_ITEM
 	/// The bodypart we're staunching bleeding on, which also has a reference to us in [/obj/item/bodypart/var/grasped_by]
 	var/obj/item/bodypart/grasped_part
 	/// The carbon who owns all of this mess
