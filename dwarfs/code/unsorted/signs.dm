@@ -39,6 +39,8 @@
 	. += "<hr><span style='color:[text_color]'>[sign_text]</span>"
 
 /obj/structure/sign/attacked_by(obj/item/I, mob/living/user)
+	if(isobserver(user) && !isAdminGhostAI(user))
+		return
 	if(istype(I,/obj/item/chisel))
 		ui_interact(usr)
 		// var/to_write = input(usr,"What would you like to write?") as text
@@ -73,6 +75,10 @@
 			picked_color = input(usr,"What color?") as color
 			ui_interact(usr, ui)
 		if("write")
+			if(isAdminGhostAI(usr))
+				write(params["text"], add_decal_1, add_decal_2, picked_color)
+				ui.close
+				return
 			var/obj/item/chisel/I = usr.get_active_held_item()
 			if(!istype(I))
 				to_chat(usr,span_alert("You need to be holding a chisel"))
