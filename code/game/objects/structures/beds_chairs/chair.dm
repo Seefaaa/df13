@@ -127,6 +127,7 @@
 	icon_state = "wooden_chair"
 	resistance_flags = FLAMMABLE
 	max_integrity = 70
+	buildstacktype = /obj/item/stack/sheet/planks
 	buildstackamount = 3
 	item_chair = /obj/item/chair/wood
 
@@ -263,7 +264,9 @@
 	name = "wooden chair"
 	icon = 'icons/obj/chairs.dmi'
 	icon_state = "wooden_chair_toppled"
-	inhand_icon_state = "woodenchair"
+	inhand_icon_state = "chair_wooden"
+	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
+	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	resistance_flags = FLAMMABLE
 	max_integrity = 70
 	hitsound = 'sound/weapons/genhit1.ogg'
