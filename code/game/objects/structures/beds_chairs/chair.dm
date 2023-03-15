@@ -262,8 +262,8 @@
 
 /obj/item/chair/wood
 	name = "wooden chair"
-	icon = 'icons/obj/chairs.dmi'
-	icon_state = "wooden_chair_toppled"
+	icon = 'dwarfs/icons/items/chairs.dmi'
+	icon_state = "wooden_chair"
 	inhand_icon_state = "chair_wooden"
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
