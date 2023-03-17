@@ -77,7 +77,7 @@
 		if("write")
 			if(isAdminGhostAI(usr))
 				write(params["text"], add_decal_1, add_decal_2, picked_color)
-				ui.close
+				ui.close()
 				return
 			var/obj/item/chisel/I = usr.get_active_held_item()
 			if(!istype(I))
