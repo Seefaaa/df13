@@ -14,8 +14,8 @@ export RUST_G_VERSION=0.4.7
 export DFLIB_VERSION=0.1
 
 #node version
-export NODE_VERSION=18
-export NODE_VERSION_PRECISE=18.15
+export NODE_VERSION=16
+export NODE_VERSION_PRECISE=16.19
 
 # SpacemanDMM git tag
 export SPACEMAN_DMM_VERSION=suite-1.7.2
