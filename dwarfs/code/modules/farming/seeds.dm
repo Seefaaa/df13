@@ -37,3 +37,6 @@
 
 /obj/item/growable/seeds/tree/towercap
 	plant = /obj/structure/plant/tree/towercap
+
+/obj/item/growable/seeds/potato
+	plant = /obj/structure/plant/garden/crop/potato

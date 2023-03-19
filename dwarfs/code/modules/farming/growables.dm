@@ -167,3 +167,11 @@
 
 /obj/item/growable/plump_helmet/MakeProcessable()
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/slice/plump_helmet, 3, 2 SECONDS)
+
+/obj/item/growable/potato
+	name = "potato"
+	desc = "A starchy vegatable belowed for its versatility."
+	icon_state = "potato"
+	edible = TRUE
+	mood_gain = -2
+	food_reagents = list(/datum/reagent/consumable/nutriment=40)

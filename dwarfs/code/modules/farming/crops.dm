@@ -1,6 +1,7 @@
 /// plants that are collected once only
 /obj/structure/plant/garden/crop
 	name = "crop"
+	lifespan = 6
 
 /obj/structure/plant/garden/crop/grown()
 	. = ..()
@@ -22,10 +23,8 @@
 	species = "plump_helmet"
 	health = 30
 	maxhealth = 30
-	growthstages = 5
 	growthdelta = 90 SECONDS
 	produce_delta = 40 SECONDS
-	lifespan = 6
 	produced = list(/obj/item/growable/plump_helmet=3)
 	seed_type = /obj/item/growable/seeds/plump_helmet
 
@@ -35,10 +34,8 @@
 	species = "pig_tail"
 	health = 50
 	maxhealth = 50
-	growthstages = 5
 	growthdelta = 90 SECONDS
 	produce_delta = 80 SECONDS
-	lifespan = 6
 	produced = list(/obj/item/growable/pig_tail=2)
 	seed_type = /obj/item/growable/seeds/pig_tail
 
@@ -48,10 +45,8 @@
 	species = "barley"
 	health = 40
 	maxhealth = 40
-	growthstages = 5
 	growthdelta = 70 SECONDS
 	produce_delta = 60 SECONDS
-	lifespan = 6
 	produced = list(/obj/item/growable/barley=4)
 	seed_type = /obj/item/growable/seeds/barley
 
@@ -61,10 +56,8 @@
 	species = "cotton"
 	health = 50
 	maxhealth = 50
-	growthstages = 5
 	growthdelta = 120 SECONDS
 	produce_delta = 80 SECONDS
-	lifespan = 6
 	produced = list(/obj/item/growable/cotton=2)
 	seed_type = /obj/item/growable/seeds/cotton
 
@@ -74,10 +67,8 @@
 	species = "turnip"
 	health = 45
 	maxhealth = 45
-	growthstages = 5
 	growthdelta = 100 SECONDS
 	produce_delta = 45 SECONDS
-	lifespan = 6
 	produced = list(/obj/item/growable/turnip=2)
 	seed_type = /obj/item/growable/seeds/turnip
 
@@ -87,10 +78,8 @@
 	species = "carrot"
 	health = 45
 	maxhealth = 45
-	growthstages = 5
 	growthdelta = 100 SECONDS
 	produce_delta = 45 SECONDS
-	lifespan = 6
 	produced = list(/obj/item/growable/carrot=2)
 	seed_type = /obj/item/growable/seeds/carrot
 
@@ -100,9 +89,18 @@
 	species = "cave_wheat"
 	health = 40
 	maxhealth = 40
-	growthstages = 5
 	growthdelta = 90 SECONDS
 	produce_delta = 60 SECONDS
-	lifespan = 6
 	produced = list(/obj/item/growable/cave_wheat=4)
 	seed_type = /obj/item/growable/seeds/cave_wheat
+
+/obj/structure/plant/garden/crop/potato
+	name = "potato"
+	desc = "A popular food due to its versatilily and adapatability to many growing conditions."
+	species = "potato"
+	health = 50
+	maxhealth = 50
+	growthdelta = 80 SECONDS
+	produce_delta = 60 SECONDS
+	produced = list(/obj/item/growable/potato=4)
+	seed_type = /obj/item/growable/seeds/potato
