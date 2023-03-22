@@ -23,6 +23,14 @@
 			"Mining": true,
 			"Gravity": true,
 			"Linkage": null,
+			"Up": 1,
+			"Down": -1,
+			"Baseturf": "/turf/open/openspace"
+		},
+		{
+			"Mining": true,
+			"Gravity": true,
+			"Linkage": null,
 			"Down": -1,
 			"Baseturf": "/turf/open/openspace"
 		}

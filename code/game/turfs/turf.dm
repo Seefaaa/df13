@@ -56,6 +56,10 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/list/atom/movable/opacity_sources
 
 
+	// border smoothing overlays
+	var/list/borders = list()
+
+
 /turf/vv_edit_var(var_name, new_value)
 	var/static/list/banned_edits = list("x", "y", "z")
 	if(var_name in banned_edits)

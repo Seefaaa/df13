@@ -1,4 +1,5 @@
 GLOBAL_VAR_INIT(temperature_seed, 0)
+GLOBAL_VAR(surface_z)
 
 /datum/map_generator/caves
 	var/name = "Caves"
@@ -72,3 +73,37 @@ GLOBAL_VAR_INIT(temperature_seed, 0)
 
 /area/dwarf/cavesgen/bottom_level
 	map_generator = /datum/map_generator/caves/bottom
+
+/area/surface
+	name = "surface"
+	static_lighting = FALSE
+	base_lighting_alpha = 255
+	map_generator = /datum/map_generator/surface
+
+/area/surface/Initialize(mapload)
+	. = ..()
+	GLOB.surface_z = z
+
+/datum/map_generator/surface
+	var/name = "Surface"
+
+/datum/map_generator/surface/generate_terrain(list/turfs)
+	if(CONFIG_GET(flag/disable_generation))
+		return
+	var/start_time = REALTIMEOFDAY
+	var/list/some_values = fbm(world.maxx, world.maxy)
+	for(var/turf/T in turfs)
+		var/value = text2num(some_values[world.maxx * (T.y-2) + T.x])
+		var/turf/turf_type
+		switch(value)
+			if(-INFINITY to -0.7)
+				turf_type = /turf/open/water
+			if(-0.7 to -0.45)
+				turf_type = /turf/open/floor/sand
+			if(-0.45 to -0.3)
+				turf_type = /turf/open/floor/dirt
+			if(-0.3 to INFINITY)
+				turf_type = /turf/open/floor/dirt/grass
+		T.ChangeTurf(turf_type, initial(turf_type.baseturfs))
+	to_chat(world, span_green(" -- #<b>[name]</b>:> <b>[(REALTIMEOFDAY - start_time)/10]s</b> -- "))
+	log_world("[name] is done job for [(REALTIMEOFDAY - start_time)/10]s!")

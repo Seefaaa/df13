@@ -15,8 +15,6 @@
 
 	var/area_flags = VALID_TERRITORY | BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED
 
-	var/lightswitch = TRUE
-
 	/// All beauty in this area combined, only includes indoor area.
 	var/totalbeauty = 0
 	/// Beauty average per open turf in the area
@@ -53,12 +51,6 @@
 	var/min_ambience_cooldown = 30 SECONDS
 	///Used to decide what the maximum time between ambience is
 	var/max_ambience_cooldown = 90 SECONDS
-
-	//Lighting overlay
-	var/obj/effect/lighting_overlay
-
-	var/list/air_vent_info = list()
-	var/list/air_scrub_info = list()
 
 /**
  * A list of teleport locations

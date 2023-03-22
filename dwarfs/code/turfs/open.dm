@@ -318,6 +318,25 @@
 		for(var/atom/A in arrived)
 			reagents.expose(A)
 
+/turf/open/floor/dirt/grass
+	name = "grass"
+	desc = "Touch it."
+	icon_state = "grass"
+	slowdown = 0.5
+
+/turf/open/floor/dirt/grass/Initialize(mapload)
+	. = ..()
+	if(prob(5))
+		var/mutable_appearance/rock = mutable_appearance('dwarfs/icons/turf/decals.dmi', "rock[rand(1, 6)]")
+		rock.pixel_x += rand(-12, 12)
+		rock.pixel_y += rand(-12, 12)
+		add_overlay(rock)
+	if(prob(1))
+		for(var/i in 1 to rand(3, 10))
+			var/obj/structure/plant/decor/flower/f = new (src)
+			f.pixel_x = rand(-30, 30)
+			f.pixel_y = rand(-30, 30)
+
 /turf/open/floor/wooden
 	name = "wooden floor"
 	desc = "Cozy."

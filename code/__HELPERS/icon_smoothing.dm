@@ -218,10 +218,14 @@ DEFINE_BITFIELD(smoothing_junction, list(
 /atom/proc/smooth_borders()
 	smoothing_flags &= ~SMOOTH_B_QUEUED
 
+/turf/smooth_borders()
+	. = ..()
+	for(var/border in borders)
+		cut_overlay(border)
+	borders.Cut()
+
 /turf/open/floor/smooth_borders()
 	..()
-	cut_overlays()
-	update_appearance(UPDATE_ICON)
 	var/list/cardinals = GLOB.cardinals.Copy()
 	for(var/cardinal in cardinals)
 		var/turf/open/T = get_step(src, cardinal)
@@ -263,12 +267,11 @@ DEFINE_BITFIELD(smoothing_junction, list(
 				else
 					border.DrawBox(rgb(cr-(cr-tr)/3, cg-(cg-tg)/3, cb-(cb-tb)/3), height, i)
 			SSicon_smooth.borders_cache["[cname][tname]"] = border
+		borders.Add(SSicon_smooth.borders_cache["[cname][tname]"])
 		add_overlay(SSicon_smooth.borders_cache["[cname][tname]"])
 
 /turf/closed/smooth_borders()
 	..()
-	cut_overlays()
-	update_appearance(UPDATE_ICON)
 	var/list/cardinals = GLOB.cardinals.Copy()
 	for(var/cardinal in cardinals)
 		var/turf/closed/T = get_step(src, cardinal)
@@ -310,6 +313,7 @@ DEFINE_BITFIELD(smoothing_junction, list(
 				else
 					border.DrawBox(rgb(cr-(cr-tr)/3, cg-(cg-tg)/3, cb-(cb-tb)/3), height, i)
 			SSicon_smooth.borders_cache["[cname][tname]"] = border
+		borders.Add(SSicon_smooth.borders_cache["[cname][tname]"])
 		add_overlay(SSicon_smooth.borders_cache["[cname][tname]"])
 
 /atom/proc/corners_diagonal_smooth(adjacencies)

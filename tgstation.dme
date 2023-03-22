@@ -1205,6 +1205,7 @@
 #include "dwarfs\code\modules\cooking\reagents.dm"
 #include "dwarfs\code\modules\cooking\stove.dm"
 #include "dwarfs\code\modules\farming\crops.dm"
+#include "dwarfs\code\modules\farming\decoration.dm"
 #include "dwarfs\code\modules\farming\farm_plot.dm"
 #include "dwarfs\code\modules\farming\garden.dm"
 #include "dwarfs\code\modules\farming\growables.dm"
