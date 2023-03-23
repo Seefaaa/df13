@@ -79,7 +79,7 @@
 ///Prefs menu
 /atom/movable/screen/lobby/button/character_setup
 	screen_loc = "EAST-4:26,TOP:-38"
-	icon = 'icons/hud/lobbyv2/character_setup.dmi'
+	icon = 'icons/hud/lobbyv3/character_setup.dmi'
 	icon_state = "character_setup"
 	base_icon_state = "character_setup"
 
@@ -93,7 +93,7 @@
 ///Button that appears before the game has started
 /atom/movable/screen/lobby/button/ready
 	screen_loc = "EAST-4:26,TOP:-2"
-	icon = 'icons/hud/lobbyv2/ready.dmi'
+	icon = 'icons/hud/lobbyv3/ready.dmi'
 	icon_state = "not_ready"
 	base_icon_state = "not_ready"
 	var/ready = FALSE
@@ -141,10 +141,11 @@
 ///Shown when the game has started
 /atom/movable/screen/lobby/button/join
 	screen_loc = "EAST-4:26,TOP:-2"
-	icon = 'icons/hud/lobbyv2/join.dmi'
+	icon = 'icons/hud/lobbyv3/join.dmi'
 	icon_state = "" //Default to not visible
-	base_icon_state = "join_game"
+	base_icon_state = "not_ready"
 	enabled = FALSE
+	var/ready = FALSE
 
 /atom/movable/screen/lobby/button/join/Initialize(mapload)
 	. = ..()
@@ -161,39 +162,18 @@
 	. = ..()
 	if(!.)
 		return
-	if(!SSticker?.IsRoundInProgress())
-		to_chat(hud.mymob, span_boldwarning("The round did not start yet or has already ended..."))
-		return
-
-	//Determines Relevent Population Cap
-	var/relevant_cap
-	var/hpc = CONFIG_GET(number/hard_popcap)
-	var/epc = CONFIG_GET(number/extreme_popcap)
-	if(hpc && epc)
-		relevant_cap = min(hpc, epc)
-	else
-		relevant_cap = max(hpc, epc)
-
 	var/mob/dead/new_player/new_player = hud.mymob
+	ready = !ready
+	if(ready)
+		new_player.ready_join = PLAYER_READY_TO_PLAY
+		base_icon_state = "ready"
+		SSticker.queued_players += new_player
+	else
+		new_player.ready_join = PLAYER_NOT_READY
+		base_icon_state = "not_ready"
+		SSticker.queued_players -= new_player
+	update_appearance(UPDATE_ICON)
 
-	if(SSticker.queued_players.len || (relevant_cap && living_player_count() >= relevant_cap && !(ckey(new_player.key) in GLOB.admin_datums)))
-		to_chat(new_player, span_danger("[CONFIG_GET(string/hard_popcap_message)]"))
-
-		var/queue_position = SSticker.queued_players.Find(new_player)
-		if(queue_position == 1)
-			to_chat(new_player, span_notice("You are next in line to join the game. You will be notified when a slot opens up."))
-		else if(queue_position)
-			to_chat(new_player, span_notice("There are [queue_position-1] players in front of you in the queue to join the game."))
-		else
-			SSticker.queued_players += new_player
-			to_chat(new_player, span_notice("You have been added to the queue to join the game. Your position in queue is [SSticker.queued_players.len]."))
-		return
-	new_player.Try_Latejion()
-	// if(check_whitelist(new_player?.client?.ckey) || new_player?.client?.holder)
-	// 	new_player.Try_Latejion()
-	// else
-	// 	to_chat(hud.mymob, span_boldwarning("Disabled for testing."))
-	// 	return
 
 /atom/movable/screen/lobby/button/join/proc/show_join_button()
 	SIGNAL_HANDLER
@@ -209,7 +189,7 @@
 
 /atom/movable/screen/lobby/button/observe
 	screen_loc = "EAST-4:26,TOP:-20"
-	icon = 'icons/hud/lobbyv2/observe.dmi'
+	icon = 'icons/hud/lobbyv3/observe.dmi'
 	icon_state = "observe_disabled"
 	base_icon_state = "observe"
 	enabled = FALSE

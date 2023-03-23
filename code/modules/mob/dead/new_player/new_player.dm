@@ -1,5 +1,6 @@
 /mob/dead/new_player
 	var/ready = 0
+	var/ready_join = 0
 	var/spawning = 0//Referenced when you want to delete the new_player later on in the code.
 
 	flags_1 = NONE
@@ -145,7 +146,6 @@
 /mob/dead/new_player/proc/AttemptLateSpawn()
 	//Remove the player from the join queue if he was in one and reset the timer
 	SSticker.queued_players -= src
-	SSticker.queue_delay = 4
 
 	mind.assigned_role = "Dwarf" // SSjob removed so we assing it manually
 

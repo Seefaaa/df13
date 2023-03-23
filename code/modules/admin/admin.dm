@@ -260,6 +260,12 @@
 			goblen.equipOutfit(/datum/outfit/goblin)
 			offer_control(goblen)
 
+/datum/admins/proc/trigger_migration()
+	if(!SSticker.queued_players.len)
+		to_chat(usr, span_warning("No players in queue!"))
+		return
+	SSticker.check_queue()
+
 /datum/admins/proc/restart()
 	set category = "Server"
 	set name = "Reboot World"
