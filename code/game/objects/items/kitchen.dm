@@ -40,11 +40,7 @@
 	bare_wound_bonus = 10
 	tool_behaviour = TOOL_KNIFE
 
-/obj/item/kitchen/knife/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/kitchen/knife/build_worn_with_material(_file, state)
+/obj/item/kitchen/knife/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/kitchen/knife/Initialize()
@@ -78,12 +74,7 @@
 	custom_price = PAYCHECK_EASY * 1.5
 	tool_behaviour = TOOL_ROLLINGPIN
 
-/obj/item/kitchen/rollingpin/apply_material(list/_materials)
-	. = ..()
-	var/datum/material/M = get_material(materials)
-	icon = M.apply2icon_default(icon(icon))
-
-/obj/item/kitchen/rollingpin/build_worn_with_material(_file, state)
+/obj/item/kitchen/rollingpin/build_material_icon(_file, state)
 	var/icon/I = ..()
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)

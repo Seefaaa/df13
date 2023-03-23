@@ -1,4 +1,4 @@
-/obj/proc/update_stats(_grade=null)
+/obj/proc/update_stats(_grade=null, use_grade=TRUE)
 	obj_integrity = initial(obj_integrity)
 	max_integrity = initial(max_integrity)
 	apply_grade(_grade)

@@ -18,11 +18,7 @@
 	attack_verb_continuous = list("hits", "pierces", "slashes", "attacks")
 	attack_verb_simple = list("hit", "pierce", "slash", "attacks")
 
-/obj/item/pickaxe/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/pickaxe/build_worn_with_material(_file, state)
+/obj/item/pickaxe/build_material_icon(_file, state)
 	var/icon/I = ..()
 	I = apply_palettes(I, list(materials[PART_HANDLE], materials[PART_HEAD]))
 	return I
@@ -68,11 +64,7 @@
 	user.visible_message(span_suicide("[user] couldn't do it!"))
 	return SHAME
 
-/obj/item/shovel/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/shovel/build_worn_with_material(_file, state)
+/obj/item/shovel/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/axe
@@ -92,11 +84,7 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	usesound = 'dwarfs/sounds/tools/axe/axe_chop.ogg'
 
-/obj/item/axe/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/axe/build_worn_with_material(_file, state)
+/obj/item/axe/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/smithing_hammer
@@ -131,11 +119,7 @@
 			visible_message(span_danger("<b>[user]</b> hits the <b>[W]</b> with [src]!") , null, COMBAT_MESSAGE_RANGE)
 	return TRUE
 
-/obj/item/smithing_hammer/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/smithing_hammer/build_worn_with_material(_file, state)
+/obj/item/smithing_hammer/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/chisel
@@ -154,11 +138,7 @@
 	throwforce = 12
 	throw_range = 7
 
-/obj/item/chisel/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/chisel/build_worn_with_material(_file, state)
+/obj/item/chisel/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/tongs
@@ -175,12 +155,7 @@
 	throwforce = 6
 	throw_range = 7
 
-/obj/item/tongs/apply_material(list/_materials)
-	. = ..()
-	var/datum/material/M = get_material(materials)
-	icon = M.apply2icon_default(icon(icon))
-
-/obj/item/tongs/build_worn_with_material(_file, state)
+/obj/item/tongs/build_material_icon(_file, state)
 	var/icon/I = ..()
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)
@@ -252,11 +227,7 @@
 	var/mode = TROWEL_BUILD_FLOOR
 	var/mat_need = 0
 
-/obj/item/trowel/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/trowel/build_worn_with_material(_file, state)
+/obj/item/trowel/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/trowel/afterattack(atom/A, mob/user, proximity)
@@ -381,9 +352,5 @@
 	atck_type = PIERCE
 	force = 7
 
-/obj/item/hoe/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/hoe/build_worn_with_material(_file, state)
+/obj/item/hoe/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))

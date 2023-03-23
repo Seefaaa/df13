@@ -8,12 +8,7 @@
 	icon_state = "light_plate"
 	inhand_icon_state = "light_plate"
 
-/obj/item/clothing/suit/armor/light_plate/apply_material(list/_materials)
-	. = ..()
-	var/datum/material/M = get_material(materials)
-	icon = M.apply2icon_default(icon(icon))
-
-/obj/item/clothing/suit/armor/light_plate/build_worn_with_material(_file, state)
+/obj/item/clothing/suit/armor/light_plate/build_material_icon(_file, state)
 	var/icon/I = ..()
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)
@@ -39,12 +34,7 @@
 									  'sound/effects/heavystep6.ogg'=1,\
 									  'sound/effects/heavystep7.ogg'=1)
 
-/obj/item/clothing/suit/armor/heavy_plate/apply_material(list/_materials)
-	. = ..()
-	var/datum/material/M = get_material(materials)
-	icon = M.apply2icon_default(icon(icon))
-
-/obj/item/clothing/suit/armor/heavy_plate/build_worn_with_material(_file, state)
+/obj/item/clothing/suit/armor/heavy_plate/build_material_icon(_file, state)
 	var/icon/I = ..()
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)
@@ -91,12 +81,7 @@
 	icon_state = "chainmail"
 	inhand_icon_state = "chainmail"
 
-/obj/item/clothing/under/chainmail/apply_material(list/_materials)
-	. = ..()
-	var/datum/material/M = get_material(materials)
-	icon = M.apply2icon_default(icon(icon))
-
-/obj/item/clothing/under/chainmail/build_worn_with_material(_file, state)
+/obj/item/clothing/under/chainmail/build_material_icon(_file, state)
 	var/icon/I = ..()
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)
@@ -111,12 +96,7 @@
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 
-/obj/item/clothing/head/helmet/plate_helmet/apply_material(list/_materials)
-	. = ..()
-	var/datum/material/M = get_material(materials)
-	icon = M.apply2icon_default(icon(icon))
-
-/obj/item/clothing/head/helmet/plate_helmet/build_worn_with_material(_file, state)
+/obj/item/clothing/head/helmet/plate_helmet/build_material_icon(_file, state)
 	var/icon/I = ..()
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)
@@ -130,12 +110,7 @@
 	icon = 'dwarfs/icons/items/clothing/gloves.dmi'
 	icon_state = "plate_gloves"
 
-/obj/item/clothing/gloves/plate_gloves/apply_material(list/_materials)
-	. = ..()
-	var/datum/material/M = get_material(materials)
-	icon = M.apply2icon_default(icon(icon))
-
-/obj/item/clothing/gloves/plate_gloves/build_worn_with_material(_file, state)
+/obj/item/clothing/gloves/plate_gloves/build_material_icon(_file, state)
 	var/icon/I = ..()
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)
@@ -148,12 +123,7 @@
 	icon = 'dwarfs/icons/items/clothing/feet.dmi'
 	icon_state = "plate_boots"
 
-/obj/item/clothing/shoes/jackboots/apply_material(list/_materials)
-	. = ..()
-	var/datum/material/M = get_material(materials)
-	icon = M.apply2icon_default(icon(icon))
-
-/obj/item/clothing/shoes/jackboots/build_worn_with_material(_file, state)
+/obj/item/clothing/shoes/jackboots/build_material_icon(_file, state)
 	var/icon/I = ..()
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)

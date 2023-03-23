@@ -282,12 +282,7 @@
 	light_color = "#e7c16d"
 	slot_flags = ITEM_SLOT_BELT
 
-/obj/item/flashlight/fueled/lantern/apply_material(list/_materials)
-	. = ..()
-	var/datum/material/M = get_material(materials)
-	icon = M.apply2icon_default(icon(icon))
-
-/obj/item/flashlight/fueled/lantern/build_worn_with_material(_file, state)
+/obj/item/flashlight/fueled/lantern/build_material_icon(_file, state)
 	var/icon/I = ..()
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)

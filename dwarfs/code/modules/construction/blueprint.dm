@@ -121,7 +121,7 @@
 		var/obj/O = new i
 		var/icon/I = icon(O.icon, O.icon_state)
 		if(O.materials)
-			I = O.build_worn_with_material(O.icon, O.icon_state)
+			I = O.build_material_icon(O.icon, O.icon_state)
 		var/icon_path = icon2path(I, user)
 		var/list/resource = list("name"=O.name,"amount"=amt,"icon"=icon_path)
 		qdel(O)

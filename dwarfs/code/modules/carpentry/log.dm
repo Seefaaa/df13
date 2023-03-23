@@ -10,7 +10,7 @@
 	. = ..()
 	icon = apply_palettes(icon(icon, icon_state), materials)
 
-/obj/item/log/build_worn_with_material(_file, state)
+/obj/item/log/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
 
 /obj/item/log/get_fuel()

@@ -23,11 +23,7 @@
 	. = ..()
 	AddComponent(/datum/component/two_handed, require_twohands=TRUE)
 
-/obj/item/zwei/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/zwei/build_worn_with_material(_file, state)
+/obj/item/zwei/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 
@@ -51,11 +47,7 @@
 	skill = /datum/skill/combat/flail
 	melee_cd = 1 SECONDS
 
-/obj/item/flail/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/flail/build_worn_with_material(_file, state)
+/obj/item/flail/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/dagger
@@ -77,11 +69,7 @@
 	skill = /datum/skill/combat/dagger
 	melee_cd = 0.6 SECONDS
 
-/obj/item/dagger/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/dagger/build_worn_with_material(_file, state)
+/obj/item/dagger/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /*
@@ -115,11 +103,7 @@
 	skill = /datum/skill/combat/sword
 	melee_cd = 1 SECONDS
 
-/obj/item/sword/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/sword/build_worn_with_material(_file, state)
+/obj/item/sword/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/spear
@@ -147,11 +131,7 @@
 	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded=5, use_grades=TRUE, inhand_icon_wielded="spear_w")
 
-/obj/item/spear/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/spear/build_worn_with_material(_file, state)
+/obj/item/spear/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/warhammer
@@ -172,11 +152,7 @@
 	. = ..()
 	AddComponent(/datum/component/two_handed, require_twohands=TRUE)
 
-/obj/item/warhammer/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/warhammer/build_worn_with_material(_file, state)
+/obj/item/warhammer/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/halberd
@@ -205,11 +181,7 @@
 	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded=5, use_grades=TRUE, inhand_icon_wielded="halberd_w")
 
-/obj/item/halberd/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/halberd/build_worn_with_material(_file, state)
+/obj/item/halberd/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/scepter
@@ -244,9 +216,5 @@
 	atck_type = BLUNT
 	w_class = WEIGHT_CLASS_BULKY
 
-/obj/item/club/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials))
-
-/obj/item/club/build_worn_with_material(_file, state)
+/obj/item/club/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials))

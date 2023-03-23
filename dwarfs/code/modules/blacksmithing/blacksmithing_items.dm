@@ -20,12 +20,10 @@
 
 /obj/item/ingot/apply_material(list/_materials)
 	. = ..()
-	var/datum/material/M = SSmaterials.materials[materials]
+	var/datum/material/M = get_material(materials)
 	name = "[M.name] ingot"
-	var/icon/I = M.apply_palette(icon(icon, icon_state), "template1")
-	icon = I
 
-/obj/item/ingot/build_worn_with_material(_file, state)
+/obj/item/ingot/build_material_icon(_file, state)
 	var/icon/I = ..()
 	return apply_palettes(I, list(materials))
 
@@ -90,12 +88,7 @@
 	icon = 'dwarfs/icons/items/components.dmi'
 	force = 1
 
-/obj/item/partial/apply_material(list/_materials)
-	. = ..()
-	var/datum/material/M = get_material(materials)
-	icon = M.apply2icon_default(icon(icon, icon_state))
-
-/obj/item/partial/build_worn_with_material(_file, state)
+/obj/item/partial/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials))
 
 /obj/item/partial/dagger

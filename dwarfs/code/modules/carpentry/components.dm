@@ -5,11 +5,7 @@
 	icon_state = "weapon_hilt"
 	part_name = PART_HANDLE
 
-/obj/item/weapon_hilt/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials))
-
-/obj/item/weapon_hilt/build_worn_with_material(_file, state)
+/obj/item/weapon_hilt/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials))
 
 
@@ -25,11 +21,7 @@
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	part_name = PART_HANDLE
 
-/obj/item/stick/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), list(materials))
-
-/obj/item/stick/build_worn_with_material(_file, state)
+/obj/item/stick/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials))
 
 /obj/item/stick/get_fuel()

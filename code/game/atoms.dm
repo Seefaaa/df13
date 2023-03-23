@@ -135,7 +135,7 @@
 	///Materials this atom is made of
 	var/list/materials = null
 	///Whether to apply default material when spawned
-	var/spawn_with_materials = FALSE
+	var/spawn_with_materials = TRUE
 
 /**
  * Called when an atom is created in byond (built in engine proc)
@@ -1647,7 +1647,7 @@
 /atom/proc/apply_material(list/_materials=null)
 	if(_materials)
 		materials = _materials
-		icon = build_worn_with_material(icon)
+		icon = build_material_icon(icon)
 
 /// Apply material stats to this atom
 /atom/proc/apply_material_stats()
@@ -1662,6 +1662,10 @@
 		var/datum/material/M = get_material(materials)
 		M.apply_stats(src)
 
+/obj/apply_material_stats()
+	update_stats(null, FALSE)
+	. = ..()
+
 /// Apply materials to this atom's icon
-/atom/proc/build_worn_with_material(_file=null, state=null)
+/atom/proc/build_material_icon(_file=null, state=null)
 	return icon(_file, state)

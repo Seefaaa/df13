@@ -11,11 +11,7 @@
 	novariants = FALSE
 	materials = /datum/material/wood/towercap/treated
 
-/obj/item/stack/sheet/planks/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon), materials)
-
-/obj/item/stack/sheet/planks/build_worn_with_material(_file, state)
+/obj/item/stack/sheet/planks/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
 
 
@@ -59,11 +55,7 @@ GLOBAL_LIST_INIT(plank_recipes, list (
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	novariants = FALSE
 
-/obj/item/stack/sheet/bark/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon), materials)
-
-/obj/item/stack/sheet/bark/build_worn_with_material(_file, state)
+/obj/item/stack/sheet/bark/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
 
 /obj/item/stack/sheet/bark/get_fuel()
