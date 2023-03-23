@@ -17,7 +17,6 @@
 
 	var/holidayID = ""				//string which should be in the SSeventss.holidays list if you wish this event to be holiday-specific
 									//anything with a (non-null) holidayID which does not match holiday, cannot run.
-	var/wizardevent = FALSE
 	var/alert_observers = TRUE		//should we let the ghosts and admins know this event is firing
 									//should be disabled on events that fire a lot
 
@@ -27,12 +26,9 @@
 	var/triggering	//admin cancellation
 
 /datum/round_event_control/New()
-	if(config && !wizardevent) // Magic is unaffected by configs
+	if(config) // Magic is unaffected by configs
 		earliest_start = CEILING(earliest_start * CONFIG_GET(number/events_min_time_mul), 1)
 		min_players = CEILING(min_players * CONFIG_GET(number/events_min_players_mul), 1)
-
-/datum/round_event_control/wizard
-	wizardevent = TRUE
 
 // Checks if the event can be spawned. Used by event controller and "false alarm" event.
 // Admin-created events override this.
@@ -40,8 +36,6 @@
 	if(occurrences >= max_occurrences)
 		return FALSE
 	if(earliest_start >= world.time-SSticker.round_start_time)
-		return FALSE
-	if(wizardevent != SSevents.wizardmode)
 		return FALSE
 	if(players_amt < min_players)
 		return FALSE

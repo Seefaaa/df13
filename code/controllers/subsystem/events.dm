@@ -2,7 +2,6 @@ SUBSYSTEM_DEF(events)
 	name = "Events"
 	init_order = INIT_ORDER_EVENTS
 	runlevels = RUNLEVEL_GAME
-	flags = SS_NO_FIRE
 
 	var/list/control = list()	//list of all datum/round_event_control. Used for selecting events based on weight and occurrences.
 	var/list/running = list()	//list of all existing /datum/round_event
@@ -12,8 +11,6 @@ SUBSYSTEM_DEF(events)
 	var/frequency_lower = 1800	//3 minutes lower bound.
 	var/frequency_upper = 6000	//10 minutes upper bound. Basically an event will happen every 3 to 10 minutes.
 	var/troll_spawn_change = 0 //change for troll to spawn
-
-	var/wizardmode = FALSE
 
 /datum/controller/subsystem/events/Initialize(time, zlevel)
 	for(var/type in typesof(/datum/round_event_control))
@@ -117,8 +114,6 @@ SUBSYSTEM_DEF(events)
 		dat = "<BR><A href='?src=[REF(src)];[HrefToken()];forceevent=[REF(E)]'>[E]</A>"
 		if(E.holidayID)
 			holiday	+= dat
-		else if(E.wizardevent)
-			magic 	+= dat
 		else
 			normal 	+= dat
 
@@ -150,11 +145,6 @@ SUBSYSTEM_DEF(events)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 */
 
-/datum/controller/subsystem/events/proc/toggleWizardmode()
-	wizardmode = !wizardmode
-	message_admins("Summon Events has been [wizardmode ? "enabled, events will occur every [SSevents.frequency_lower / 600] to [SSevents.frequency_upper / 600] minutes" : "disabled"]!")
-	log_game("Summon Events was [wizardmode ? "enabled" : "disabled"]!")
-
 
 /datum/controller/subsystem/events/proc/resetFrequency()
 	frequency_lower = initial(frequency_lower)
@@ -174,4 +164,3 @@ SUBSYSTEM_DEF(events)
 		if(5 HOURS to INFINITY)
 			frequency_lower = 15 SECONDS
 			frequency_upper = 30 SECONDS
-			wizardmode = TRUE
