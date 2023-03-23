@@ -1,6 +1,7 @@
 SUBSYSTEM_DEF(materials)
 	name = "Materials"
 	flags = SS_NO_FIRE
+	init_order = INIT_ORDER_MATERIALS
 
 	var/list/palettes = list()
 	var/list/materials = list()

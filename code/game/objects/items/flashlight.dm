@@ -281,6 +281,7 @@
 	light_system = MOVABLE_LIGHT
 	light_color = "#e7c16d"
 	slot_flags = ITEM_SLOT_BELT
+	materials = /datum/material/iron
 
 /obj/item/flashlight/fueled/lantern/build_material_icon(_file, state)
 	var/icon/I = ..()

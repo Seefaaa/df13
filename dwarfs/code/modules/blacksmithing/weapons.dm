@@ -18,6 +18,7 @@
 	reach = 2
 	skill = /datum/skill/combat/longsword
 	melee_cd = 2 SECONDS
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/zwei/ComponentInitialize()
 	. = ..()
@@ -46,6 +47,7 @@
 	resistance_flags = FIRE_PROOF
 	skill = /datum/skill/combat/flail
 	melee_cd = 1 SECONDS
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/flail/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
@@ -68,6 +70,7 @@
 	resistance_flags = FIRE_PROOF
 	skill = /datum/skill/combat/dagger
 	melee_cd = 0.6 SECONDS
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/dagger/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
@@ -102,6 +105,7 @@
 	resistance_flags = FIRE_PROOF
 	skill = /datum/skill/combat/sword
 	melee_cd = 1 SECONDS
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/sword/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
@@ -126,6 +130,7 @@
 	max_integrity = 50
 	skill = /datum/skill/combat/spear
 	melee_cd = 1.2 SECONDS
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/spear/Initialize()
 	. = ..()
@@ -147,6 +152,7 @@
 	reach = 2
 	skill = /datum/skill/combat/hammer
 	melee_cd = 1.5 SECONDS
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/warhammer/Initialize()
 	. = ..()
@@ -176,6 +182,7 @@
 	skill = /datum/skill/combat/halberd
 	tool_behaviour = TOOL_AXE
 	melee_cd = 1.2 SECONDS
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/halberd/Initialize()
 	. = ..()
@@ -215,6 +222,7 @@
 	throwforce = 10
 	atck_type = BLUNT
 	w_class = WEIGHT_CLASS_BULKY
+	materials = /datum/material/wood/towercap/treated
 
 /obj/item/club/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials))

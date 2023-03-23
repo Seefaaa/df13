@@ -17,6 +17,7 @@
 	var/progress_current = 0
 	var/progress_need = 10
 	var/heattemp = 0
+	materials = /datum/material/iron
 
 /obj/item/ingot/apply_material(list/_materials)
 	. = ..()

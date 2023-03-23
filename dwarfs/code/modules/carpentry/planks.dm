@@ -54,6 +54,7 @@ GLOBAL_LIST_INIT(plank_recipes, list (
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	novariants = FALSE
+	materials = /datum/material/wood/towercap
 
 /obj/item/stack/sheet/bark/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)

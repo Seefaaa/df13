@@ -17,14 +17,12 @@
 	usesound = list('sound/effects/picaxe1.ogg', 'sound/effects/picaxe2.ogg', 'sound/effects/picaxe3.ogg')
 	attack_verb_continuous = list("hits", "pierces", "slashes", "attacks")
 	attack_verb_simple = list("hit", "pierce", "slash", "attacks")
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/pickaxe/build_material_icon(_file, state)
 	var/icon/I = ..()
 	I = apply_palettes(I, list(materials[PART_HANDLE], materials[PART_HEAD]))
 	return I
-
-/obj/item/pickaxe/default
-	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/pickaxe/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] begins digging into [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -52,6 +50,7 @@
 	attack_verb_continuous = list("smashes", "hits", "attacks")
 	attack_verb_simple = list("smash", "hit", "attack")
 	atck_type = SHARP
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/shovel/Initialize()
 	. = ..()
@@ -83,6 +82,7 @@
 	slot_flags = ITEM_SLOT_BACK
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	usesound = 'dwarfs/sounds/tools/axe/axe_chop.ogg'
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/axe/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
@@ -99,6 +99,7 @@
 	throwforce = 25
 	throw_range = 4
 	atck_type = BLUNT
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/smithing_hammer/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
 	..()
@@ -137,6 +138,7 @@
 	force = 10
 	throwforce = 12
 	throw_range = 7
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/chisel/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
@@ -154,6 +156,7 @@
 	atck_type = BLUNT
 	throwforce = 6
 	throw_range = 7
+	materials = /datum/material/iron
 
 /obj/item/tongs/build_material_icon(_file, state)
 	var/icon/I = ..()
@@ -226,6 +229,7 @@
 	throw_range = 3
 	var/mode = TROWEL_BUILD_FLOOR
 	var/mat_need = 0
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/trowel/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
@@ -351,6 +355,7 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	atck_type = PIERCE
 	force = 7
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/hoe/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))

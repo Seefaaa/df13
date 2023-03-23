@@ -98,9 +98,9 @@
 				I.obj_integrity *= integrity_mod
 				I.max_integrity *= integrity_mod
 
-/datum/material/proc/apply2icon_default(icon/I)
+/datum/material/proc/apply2icon_default(icon/I, _i=0)
 	for(var/i in 1 to palettes.len)
-		I = apply_palette(I, "template[i]", palettes[i])
+		I = apply_palette(I, "template[i+_i]", palettes[i])
 	return I
 
 /**
@@ -134,7 +134,7 @@
 		materials = list(materials)
 	for(var/i in 1 to materials.len)
 		var/datum/material/M = SSmaterials.materials[materials[i]]
-		I = M.apply2icon_default(I)
+		I = M.apply2icon_default(I, i-1)
 	return I
 
 /datum/material/iron

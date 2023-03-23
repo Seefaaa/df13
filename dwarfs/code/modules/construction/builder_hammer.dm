@@ -8,8 +8,12 @@
 	usesound = 'dwarfs/sounds/tools/hammer/hammer_hit.ogg'
 	tool_behaviour = TOOL_BUILDER_HAMMER
 	atck_type = BLUNT
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 	//What do we want to build -> selected in gui
 	var/obj/structure/blueprint/selected_blueprint
+
+/obj/item/builder_hammer/build_material_icon(_file, state)
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/builder_hammer/proc/generate_blueprints(user)
     var/list/buildable = subtypesof(/obj/structure/blueprint) - /obj/structure/blueprint/large
