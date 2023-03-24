@@ -1647,7 +1647,7 @@
 /atom/proc/apply_material(list/_materials=null)
 	if(_materials)
 		materials = _materials
-		icon = build_material_icon(icon)
+		icon = build_material_icon(initial(icon))
 
 /// Apply material stats to this atom
 /atom/proc/apply_material_stats()
