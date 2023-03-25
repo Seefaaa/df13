@@ -97,6 +97,8 @@
 	to_chat(user, span_notice("You finish working at [src]."))
 
 /obj/structure/quern/AltClick(mob/user)
+	if(!CanReach(user))
+		return
 	if(busy_operating)
 		to_chat(user, span_warning("Cannot open [src] while it's rotating."))
 		return
@@ -105,7 +107,8 @@
 	update_appearance()
 
 /obj/structure/quern/CtrlClick(mob/user)
-	. = ..()
+	if(!CanReach(user))
+		return
 	if(!contents.len)
 		to_chat(user, span_warning("[src] is empty."))
 		return

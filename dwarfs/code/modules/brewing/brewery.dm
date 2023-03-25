@@ -42,6 +42,8 @@
 	START_PROCESSING(SSprocessing, src)
 
 /obj/structure/brewery/l/AltClick(mob/user)
+	if(!CanReach(user))
+		return
 	if(working)
 		to_chat(user, span_warning("Cannot open [src] while it's working."))
 		return
