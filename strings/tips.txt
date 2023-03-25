@@ -11,3 +11,8 @@ Don't be mean to your fellow dwarves, you're in this shithole together.
 Some food will give more mood buffs.
 You can use some weapons as tools.
 Tree sapplings need to be first grown in pots and then planted elsewhere.
+Signs can be changed using a chisel.
+Some structures may have different interactions depending if you alt click
+Being alone in the mine is dangerous, try to bring a friend along so you can keep eachother safe.
+The change of hitting a target with an weapon depends on the level you are in that weapon class.
+You can reforge iron bars to make them of higher quality, if you miss too much during the minigame the bar will dissapear. Misses carry over to the next stage.
