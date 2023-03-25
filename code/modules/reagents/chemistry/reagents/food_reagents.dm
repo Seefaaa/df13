@@ -123,6 +123,11 @@
 	nutriment_factor = 9 * REAGENTS_METABOLISM //45% as calorie dense as corn oil.
 	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
 
+/datum/reagent/consumable/nutriment/protein/gib
+	name = "Protein?"
+	description = "Oh god I think it was alive!"
+	taste_description = "squishy and meaty"
+
 /datum/reagent/consumable/sugar
 	name = "Sugar"
 	description = "The organic compound commonly known as table sugar and sometimes called saccharose. This white, odorless, crystalline powder has a pleasing, sweet taste."

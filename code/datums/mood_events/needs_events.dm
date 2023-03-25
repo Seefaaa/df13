@@ -31,6 +31,12 @@
 	mood_change = -8
 	timeout = 5 MINUTES
 
+/datum/mood_event/ate_fertile_egg
+	description = span_red("What the fuck was in that egg...")
+	mood_change = -14
+	timeout = 5 MINUTES
+
+
 /datum/mood_event/ate_meal
 	description = span_green("I ate a meal.")
 	mood_change = 10

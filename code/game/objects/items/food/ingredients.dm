@@ -123,3 +123,38 @@
 
 /obj/item/food/sausage/failed // bad sausage; gives poop when cooked
 	food_reagents = list(/datum/reagent/consumable/nutriment=10)
+
+/obj/item/food/egg
+	name = "egg"
+	desc = "The fruit from an industrous creature."
+	food_reagents = list(/datum/reagent/consumable/nutriment=5, /datum/reagent/consumable/nutriment/protein = 3)
+	icon_state = "egg"
+	var/fertile = FALSE
+	var/time_till_birth = 2 MINUTES
+	var/containing_mob = /mob/living/simple_animal/chicken/baby
+
+
+/obj/item/food/egg/fertile/Initialize(mapload)
+	. = ..()
+	fertelize()
+
+/obj/item/food/egg/proc/fertelize()
+	fertile = TRUE
+	addtimer(CALLBACK(src, .proc/hatch), time_till_birth)
+
+/obj/item/food/egg/proc/hatch()
+	new containing_mob(src.loc)
+	visible_message(span_notice("The [src] hatches!"))
+	qdel(src)
+
+/obj/item/food/egg/fertile
+	desc = "It moves around slightly"
+	mood_event_type = /datum/mood_event/ate_fertile_egg
+	mood_gain = -14
+	mood_duration = 5 MINUTES
+	food_reagents = list(/datum/reagent/consumable/nutriment=5, /datum/reagent/consumable/nutriment/protein/gib = 5 )
+
+
+
+
+
