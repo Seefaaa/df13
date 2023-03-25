@@ -383,20 +383,19 @@ SUBSYSTEM_DEF(ticker)
 		L.notransform = FALSE
 
 /datum/controller/subsystem/ticker/proc/send_tip_of_the_round()
-	return
-	// var/m
-	// if(selected_tip)
-	// 	m = selected_tip
-	// else
-	// 	var/list/randomtips = world.file2list("strings/tips.txt")
-	// 	var/list/memetips = world.file2list("strings/sillytips.txt")
-	// 	if(randomtips.len && prob(95))
-	// 		m = pick(randomtips)
-	// 	else if(memetips.len)
-	// 		m = pick(memetips)
+	var/m
+	if(selected_tip)
+		m = selected_tip
+	else
+		var/list/randomtips = world.file2list("strings/tips.txt")
+		var/list/memetips = world.file2list("strings/sillytips.txt")
+		if(randomtips.len && prob(95))
+			m = pick(randomtips)
+		else if(memetips.len)
+			m = pick(memetips)
 
-	// if(m)
-	// 	to_chat(world, span_purple("<b>Tip of the round: </b>[html_encode(m)]"))
+	if(m)
+		to_chat(world, span_purple("<b>Tip of the round: </b>[html_encode(m)]"))
 
 /datum/controller/subsystem/ticker/proc/check_queue()
 	last_migration = world.time
