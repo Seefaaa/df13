@@ -3,6 +3,7 @@
 	desc = "A book of grudges."
 	icon = 'dwarfs/icons/items/weapons.dmi'
 	icon_state = "damaz"
+	w_class = WEIGHT_CLASS_NORMAL
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 

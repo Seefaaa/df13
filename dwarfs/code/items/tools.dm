@@ -46,7 +46,7 @@
 	usesound = 'sound/effects/shovel_dig.ogg'
 	throwforce = 4
 	inhand_icon_state = "shovel"
-	w_class = WEIGHT_CLASS_NORMAL
+	w_class = WEIGHT_CLASS_BULKY
 	attack_verb_continuous = list("smashes", "hits", "attacks")
 	attack_verb_simple = list("smash", "hit", "attack")
 	atck_type = SHARP
@@ -78,7 +78,7 @@
 	force = 10
 	throwforce = 5
 	atck_type = SHARP
-	w_class = WEIGHT_CLASS_NORMAL
+	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	usesound = 'dwarfs/sounds/tools/axe/axe_chop.ogg'
@@ -94,7 +94,7 @@
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	icon_state = "smithing_hammer"
-	w_class = WEIGHT_CLASS_HUGE
+	w_class = WEIGHT_CLASS_NORMAL
 	force = 20
 	throwforce = 25
 	throw_range = 4
@@ -353,6 +353,7 @@
 	icon_state = "hoe"
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
+	w_class = WEIGHT_CLASS_BULKY
 	atck_type = PIERCE
 	force = 7
 	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)

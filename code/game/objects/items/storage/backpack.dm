@@ -10,9 +10,8 @@
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
 	resistance_flags = NONE
-	max_integrity = 300
 
-/obj/item/storage/backpack/ComponentInitialize()
+/obj/item/storage/satchel/ComponentInitialize()
 	. = ..()
 	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
 	STR.max_combined_w_class = 21
