@@ -52,10 +52,10 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 ///******************POT RECIPES******************///
 /datum/cooking_recipe/pot
 
-/datum/cooking_recipe/pot/dwarven_stew
-	req_items = list(/obj/item/food/slice/meat=3, /obj/item/food/slice/plump_helmet=3, /obj/item/growable/turnip=1)
+/datum/cooking_recipe/pot/plump_stew
+	req_items = list(/obj/item/food/slice/meat=2, /obj/item/food/slice/plump_helmet=3, /obj/item/growable/turnip=1)
 	req_reagents = list(/datum/reagent/water=15)
-	result = /obj/item/transfer_food/stew
+	result = /obj/item/transfer_food/plump_stew
 	req_lvl = 3
 	cooking_text = "Put everything in a pot and cook on the stove."
 

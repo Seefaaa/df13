@@ -37,11 +37,11 @@
 		. = ..()
 
 
-/obj/item/transfer_food/stew
+/obj/item/transfer_food/plump_stew
 	name = "stew in pot"
 	desc = "Almost stew."
 	icon_state = "cooking_pot_dwarven_stew"
-	food_inside = /obj/item/food/dish/dwarven_stew
+	food_inside = /obj/item/food/dish/plump_stew
 	required_container = /obj/item/reagent_containers/glass/plate/bowl
 	original_container = /obj/item/reagent_containers/glass/cooking_pot
 

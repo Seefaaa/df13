@@ -66,10 +66,10 @@
 
 //**********************SECOND TIER DISHES*****************************//
 
-/obj/item/food/dish/dwarven_stew
-	name = "dwarven stew"
+/obj/item/food/dish/plump_stew
+	name = "plump stew"
 	desc = "Simple yet tasteful stew, dwarves would cook in their hold."
-	icon_state = "dwarven_stew"
+	icon_state = "plump_stew"
 	plate_type = /obj/item/reagent_containers/glass/plate/bowl
 	food_reagents = list(/datum/reagent/consumable/nutriment=120)
 	mood_event_type = /datum/mood_event/ate_meal/decent
