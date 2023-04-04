@@ -15,7 +15,7 @@ export DFLIB_VERSION=0.1
 
 #node version
 export NODE_VERSION=16
-export NODE_VERSION_PRECISE=16.19
+export NODE_VERSION_PRECISE=16.19.0
 
 # SpacemanDMM git tag
 export SPACEMAN_DMM_VERSION=suite-1.7.2
