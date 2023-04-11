@@ -206,6 +206,68 @@
 /datum/material/wood/towercap/treated
 	palettes = list("towercap_inside")
 
+/datum/material/wood/apple
+	name = "apple wood"
+	palettes = list("apple", "apple_inside")
+	treated_type = /datum/material/wood/apple/treated
+	force_mod = 0.65
+	toolspeed_mod = 0.5
+	toolspeed_mod_handle = 1
+	integrity_mod = 0.6
+	integrity_mod_handle = 0.8
+	melee_cd_mod = 0.8
+	melee_cd_mod_handle = 0.9
+	slowdown_mod = -0.2
+	slowdown_mod_handle = -0.1
+
+	armor_sharp_mod = 0.4
+	armor_pierce_mod = 0.3
+	armor_blunt_mod = 0.3
+	armor_fire_mod = 0
+	armor_acid_mod = 0
+	armor_magic_mod = 1
+	armor_wound_mod = 1
+	armorpen_sharp_mod = 0.5
+	armorpen_pierce_mod = 0.4
+	armorpen_blunt_mod = 0.3
+	armorpen_fire_mod = 0
+	armorpen_acid_mod = 0
+	armorpen_magic_mod = 1
+
+/datum/material/wood/apple/treated
+	palettes = list("apple_inside")
+
+/datum/material/wood/pine
+	name = "pine wood"
+	palettes = list("pine", "pine_inside")
+	treated_type = /datum/material/wood/pine/treated
+	force_mod = 0.65
+	toolspeed_mod = 0.5
+	toolspeed_mod_handle = 1
+	integrity_mod = 0.6
+	integrity_mod_handle = 0.8
+	melee_cd_mod = 0.8
+	melee_cd_mod_handle = 0.9
+	slowdown_mod = -0.2
+	slowdown_mod_handle = -0.1
+
+	armor_sharp_mod = 0.4
+	armor_pierce_mod = 0.3
+	armor_blunt_mod = 0.3
+	armor_fire_mod = 0
+	armor_acid_mod = 0
+	armor_magic_mod = 1
+	armor_wound_mod = 1
+	armorpen_sharp_mod = 0.5
+	armorpen_pierce_mod = 0.4
+	armorpen_blunt_mod = 0.3
+	armorpen_fire_mod = 0
+	armorpen_acid_mod = 0
+	armorpen_magic_mod = 1
+
+/datum/material/wood/pine/treated
+	palettes = list("pine_inside")
+
 /datum/material/stone
 	name = "stone"
 	palettes = list("soapstone")

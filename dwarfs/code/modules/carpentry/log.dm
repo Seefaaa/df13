@@ -6,10 +6,6 @@
 	throw_range = 0
 	w_class = WEIGHT_CLASS_BULKY
 
-/obj/item/log/apply_material(list/_materials)
-	. = ..()
-	icon = apply_palettes(icon(icon, icon_state), materials)
-
 /obj/item/log/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
 

@@ -74,11 +74,9 @@
 	desc = "Red?"
 	icon_state = "apple"
 	edible = TRUE
-	bite_consumption = 100
 	foodtypes = FRUIT
-	max_volume = 100
 	bite_consumption = 1
-	food_reagents = list(/datum/reagent/consumable/nutriment/vitamin = 5)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 50)
 	tastes = list("apple" = 1)
 
 /obj/item/growable/cave_wheat
