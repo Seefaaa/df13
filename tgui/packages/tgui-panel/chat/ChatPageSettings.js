@@ -54,7 +54,7 @@ export const ChatPageSettings = (props, context) => {
         <Collapsible
           mt={1}
           color="transparent"
-          title="Pedalique Bullshit">
+          title="Admin Bullshit">
           {MESSAGE_TYPES
             .filter(typeDef => !typeDef.important && typeDef.admin)
             .map(typeDef => (
