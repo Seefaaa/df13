@@ -35,6 +35,8 @@
 	bar = image('icons/hud/progressbar.dmi', bar_loc, "prog_bar_0")
 	bar.plane = ABOVE_HUD_PLANE
 	bar.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+	bar.pixel_x = -target.base_pixel_x - (abs(target.base_pixel_x) - abs(target.pixel_x))
+	bar.pixel_y = -target.base_pixel_y - (abs(target.base_pixel_y) - abs(target.pixel_y))
 	user = User
 
 	LAZYADDASSOCLIST(user.progressbars, bar_loc, src)
