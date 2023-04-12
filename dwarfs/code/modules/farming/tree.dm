@@ -5,6 +5,9 @@
 	density = TRUE
 	lifespan = INFINITY
 	layer = ABOVE_MOB_LAYER
+	base_pixel_x = -32
+	spread_x = 4
+	spread_y = 3
 	var/small_log_type = /obj/item/log
 	var/large_log_type = /obj/item/log/large
 	var/list/small_log_amount = list(0,1,1,2,0,2,0) //a list of small logs with amount corresponding to the growthstage
@@ -12,10 +15,6 @@
 	var/cutting_time = 4 SECONDS //time between each chop
 	var/cutting_steps = 4 //how many times you have to chop the tree, 1 less because on the last chop you actuely cut it down
 	var/current_step = 0
-
-/obj/structure/plant/tree/Initialize()
-	. = ..()
-	pixel_x = -32
 
 /obj/structure/plant/tree/proc/try_chop(obj/item/tool, mob/living/user)
 	to_chat(user, span_notice("You start chopping down [src]..."))

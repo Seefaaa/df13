@@ -332,10 +332,42 @@
 		rock.pixel_y += rand(-12, 12)
 		add_overlay(rock)
 	if(prob(1))
-		for(var/i in 1 to rand(3, 10))
-			var/obj/structure/plant/decor/flower/f = new (src)
-			f.pixel_x = rand(-30, 30)
-			f.pixel_y = rand(-30, 30)
+		var/obj/structure/plant/decor/flower/f = new (src)
+		f.pixel_x = rand(-12, 12)
+		f.pixel_y = rand(-12, 12)
+	if(prob(0.1))
+		return INITIALIZE_HINT_LATELOAD
+
+/turf/open/floor/dirt/grass/LateInitialize()
+	. = ..()
+	if((locate(/obj/structure/plant/tree) in view(40, src)))
+		return
+	var/r = rand(10, 20)
+	var/list/s_range = circlerangeturfs(src, r)
+	for(var/turf/T in s_range)
+		if(prob(40))
+			continue
+		if(!T || !istype(T, /turf/open/floor/dirt) || (locate(/obj/structure/plant) in view(0, src)))
+			continue
+		var/tree = /obj/structure/plant/tree/pine
+		if(prob(0.1))
+			tree = /obj/structure/plant/tree/apple
+		var/obj/structure/plant/tree/TR = new tree(T)
+		TR.growthstage = rand(1, 7)
+		TR.growthdelta += rand(-10 SECONDS, 1 MINUTES)
+		TR.update_appearance(UPDATE_ICON)
+	for(var/turf/T in (circlerangeturfs(src, r+rand(15, 25))-s_range))
+		if(prob(80))
+			continue
+		if(!T || !istype(T, /turf/open/floor/dirt) || (locate(/obj/structure/plant) in view(0, src)))
+			continue
+		var/tree = /obj/structure/plant/tree/pine
+		if(prob(0.1))
+			tree = /obj/structure/plant/tree/apple
+		var/obj/structure/plant/tree/TR = new tree(T)
+		TR.growthstage = rand(1, 7)
+		TR.growthdelta += rand(-10 SECONDS, 1 MINUTES)
+		TR.update_appearance(UPDATE_ICON)
 
 /turf/open/floor/wooden
 	name = "wooden floor"

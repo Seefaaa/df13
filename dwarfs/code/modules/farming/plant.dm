@@ -29,6 +29,8 @@
 	var/age = 1 // plants age in cycles; cycle's length is growthdelta
 	var/turf/open/floor/tilled/plot // if planted via seeds will have a plot assigned to it
 	var/dummy = FALSE // whether we process this plant at all. Used for decoration dummy plants
+	var/spread_x = 8
+	var/spread_y = 8
 
 /obj/structure/plant/examine(mob/user)
 	. = ..()
@@ -44,8 +46,8 @@
 
 /obj/structure/plant/Initialize()
 	. = ..()
-	pixel_x = base_pixel_x + rand(-8, 8)
-	pixel_y = base_pixel_y + rand(-8, 8)
+	pixel_x = base_pixel_x + rand(-spread_x, spread_x)
+	pixel_y = base_pixel_y + rand(0, spread_y)
 	if(!dummy)
 		START_PROCESSING(SSplants, src)
 	if(!icon_ripe)
