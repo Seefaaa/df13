@@ -3,6 +3,8 @@
 	lifespan = INFINITY
 	dummy = TRUE
 	icon = 'dwarfs/icons/farming/decoration.dmi'
+	spread_x = 8
+	spread_y = 10
 
 /obj/structure/plant/decor/flower
 	name = "flower"

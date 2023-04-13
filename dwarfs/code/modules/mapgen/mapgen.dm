@@ -96,9 +96,9 @@ GLOBAL_VAR(surface_z)
 		var/value = text2num(some_values[world.maxx * (T.y-2) + T.x])
 		var/turf/turf_type
 		switch(value)
-			if(-INFINITY to -0.7)
+			if(-INFINITY to -0.6)
 				turf_type = /turf/open/water
-			if(-0.7 to -0.45)
+			if(-0.6 to -0.45)
 				turf_type = /turf/open/floor/sand
 			if(-0.45 to -0.3)
 				turf_type = /turf/open/floor/dirt

@@ -30,7 +30,7 @@
 	var/turf/open/floor/tilled/plot // if planted via seeds will have a plot assigned to it
 	var/dummy = FALSE // whether we process this plant at all. Used for decoration dummy plants
 	var/spread_x = 8
-	var/spread_y = 8
+	var/spread_y = 12
 
 /obj/structure/plant/examine(mob/user)
 	. = ..()
