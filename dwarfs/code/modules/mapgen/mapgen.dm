@@ -54,7 +54,7 @@ GLOBAL_VAR(surface_z)
 /datum/map_generator/caves/bottom
 	name = "Bottom Caves"
 
-/area/dwarf/cavesgen
+/area/cavesgen
 	name = "Caverns"
 	icon_state = "cavesgen"
 	static_lighting = TRUE
@@ -65,13 +65,13 @@ GLOBAL_VAR(surface_z)
 	ambientsounds = list('sound/ambience/caves8.ogg', 'sound/ambience/caves_old.ogg')
 	map_generator = /datum/map_generator/caves
 
-/area/dwarf/cavesgen/upper_level
+/area/cavesgen/upper_level
 	map_generator = /datum/map_generator/caves/upper
 
-/area/dwarf/cavesgen/middle_level
+/area/cavesgen/middle_level
 	map_generator = /datum/map_generator/caves/middle
 
-/area/dwarf/cavesgen/bottom_level
+/area/cavesgen/bottom_level
 	map_generator = /datum/map_generator/caves/bottom
 
 /area/surface
