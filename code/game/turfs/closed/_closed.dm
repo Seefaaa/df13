@@ -18,7 +18,6 @@
 	name = "emptiness"
 	desc = "It look back at you."
 	icon_state = "black"
-	layer = FLY_LAYER
 	bullet_bounce_sound = null
 	baseturfs = /turf/closed/indestructible/black
 

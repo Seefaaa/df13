@@ -329,14 +329,19 @@
 	if(prob(5))
 		var/mutable_appearance/rock = mutable_appearance('dwarfs/icons/turf/decals.dmi', "rock[rand(1, 6)]")
 		rock.pixel_x += rand(-12, 12)
-		rock.pixel_y += rand(-12, 12)
+		rock.pixel_y += rand(0, 12)
 		add_overlay(rock)
 	if(prob(1))
-		var/obj/structure/plant/decor/flower/f = new (src)
-		f.pixel_x = rand(-12, 12)
-		f.pixel_y = rand(-12, 12)
+		new /obj/structure/plant/decor/flower(src)
 	if(prob(0.1))
 		return INITIALIZE_HINT_LATELOAD
+	if(prob(1))
+		var/pt = pick(/obj/structure/plant/garden/crop/carrot, /obj/structure/plant/garden/crop/barley, /obj/structure/plant/garden/crop/potato)
+		var/obj/structure/plant/plant = new pt(src)
+		plant.growthstage = rand(0, plant.growthstages)
+		plant.lifespan = INFINITY
+		plant.growthdelta += rand(-plant.growthdelta*0.2, plant.growthdelta*0.6)
+		plant.update_appearance(UPDATE_ICON)
 
 /turf/open/floor/dirt/grass/LateInitialize()
 	. = ..()
@@ -347,7 +352,7 @@
 	for(var/turf/T in s_range)
 		if(prob(40))
 			continue
-		if(!T || !istype(T, /turf/open/floor/dirt) || (locate(/obj/structure/plant) in view(0, src)))
+		if(!T || !istype(T, /turf/open/floor/dirt) || T.is_blocked_turf() || (locate(/obj/structure/plant) in view(0, T)))
 			continue
 		var/tree = /obj/structure/plant/tree/pine
 		if(prob(0.1))
@@ -359,7 +364,7 @@
 	for(var/turf/T in (circlerangeturfs(src, r+rand(15, 25))-s_range))
 		if(prob(80))
 			continue
-		if(!T || !istype(T, /turf/open/floor/dirt) || (locate(/obj/structure/plant) in view(0, src)))
+		if(!T || !istype(T, /turf/open/floor/dirt) || T.is_blocked_turf() || (locate(/obj/structure/plant) in view(0, T)))
 			continue
 		var/tree = /obj/structure/plant/tree/pine
 		if(prob(0.1))

@@ -102,8 +102,10 @@ GLOBAL_VAR(surface_z)
 				turf_type = /turf/open/floor/sand
 			if(-0.45 to -0.3)
 				turf_type = /turf/open/floor/dirt
-			if(-0.3 to INFINITY)
+			if(-0.3 to 0.4)
 				turf_type = /turf/open/floor/dirt/grass
+			if(0.4 to INFINITY)
+				turf_type = /turf/closed/mineral/random/dwarf_lustress
 		T.ChangeTurf(turf_type, initial(turf_type.baseturfs))
 	to_chat(world, span_green(" -- #<b>[name]</b>:> <b>[(REALTIMEOFDAY - start_time)/10]s</b> -- "))
 	log_world("[name] is done job for [(REALTIMEOFDAY - start_time)/10]s!")
