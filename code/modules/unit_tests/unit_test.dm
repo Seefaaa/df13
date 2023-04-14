@@ -26,7 +26,7 @@ GLOBAL_VAR(test_log)
 	var/turf/run_loc_floor_top_right
 
 	/// The type of turf to allocate for the testing zone
-	var/test_turf_type = /turf/open/floor/stone
+	var/test_turf_type = /turf/open/floor/rock
 
 	///The priority of the test, the larger it is the later it fires
 	var/priority = TEST_DEFAULT

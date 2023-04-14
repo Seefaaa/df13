@@ -9,7 +9,7 @@
 			"Gravity": true,
 			"Linkage": null,
 			"Up": 1,
-			"Baseturf": "/turf/open/floor/stone/raw"
+			"Baseturf": "/turf/open/floor/rock"
 		},
 		{
 			"Mining": true,
