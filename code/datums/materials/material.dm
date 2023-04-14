@@ -6,6 +6,8 @@
 	var/name = "material"
 	/// Palettes used. Used as icon_states for it's palette at 'dwarfs/icons/palettes.dmi'. Depending on amount of materials will use template palettes in increasing order.
 	var/list/palettes = list("template1")
+	/// What material type this is
+	var/mat
 	/// What floor is made out of this material
 	var/floor_type
 	/// What wall is made out of this material
@@ -133,7 +135,10 @@
 	if(!islist(materials))
 		materials = list(materials)
 	for(var/i in 1 to materials.len)
-		var/datum/material/M = SSmaterials.materials[materials[i]]
+		var/mat_type = materials[i]
+		if(istext(mat_type))
+			mat_type = materials[mat_type]
+		var/datum/material/M = SSmaterials.materials[mat_type]
 		I = M.apply2icon_default(I, i-1)
 	return I
 
@@ -170,6 +175,7 @@
 	armorpen_magic_mod = 1
 
 /datum/material/wood
+	mat = MATERIAL_WOOD
 	var/treated_type
 	floor_type = /turf/open/floor/wooden
 	wall_type = /turf/closed/wall/wooden
@@ -271,14 +277,14 @@
 /datum/material/stone
 	name = "stone"
 	palettes = list("soapstone")
-	floor_type = /turf/open/floor/stone
+	mat = MATERIAL_STONE
 	wall_type = /turf/closed/wall/stone
 	door_type = /obj/structure/mineral_door/stone
 
 /datum/material/sandstone
 	name = "sandstone"
 	palettes = list("sand")
-	floor_type = /turf/open/floor/sandstone
+	mat = MATERIAL_STONE
 	wall_type = /turf/closed/wall/sand
 	door_type = /obj/structure/mineral_door/sand
 

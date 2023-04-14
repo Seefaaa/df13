@@ -7,7 +7,7 @@
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER | SMOOTH_BORDERS
 	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_MINERAL_WALLS)
 	canSmoothWith = list(SMOOTH_GROUP_MINERAL_WALLS, SMOOTH_GROUP_CLOSED_TURFS)
-	baseturfs = /turf/open/floor/stone
+	baseturfs = /turf/open/floor/rock
 	opacity = TRUE
 	density = TRUE
 	base_icon_state = "smoothrocks"

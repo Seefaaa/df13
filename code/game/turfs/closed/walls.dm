@@ -7,7 +7,7 @@
 	icon_state = "wall-0"
 	base_icon_state = "wall"
 	explosion_block = 1
-	baseturfs = /turf/open/floor/stone
+	baseturfs = /turf/open/genturf
 
 	flags_ricochet = RICOCHET_HARD
 
@@ -18,7 +18,7 @@
 	///lower numbers are harder. Used to determine the probability of a hulk smashing through.
 	var/hardness = 40
 	var/slicing_duration = 100  //default time taken to slice the wall
-	var/sheet_type
+	var/atom/sheet_type
 	var/sheet_amount = 2
 
 	var/list/dent_decals
@@ -62,10 +62,12 @@
 	ScrapeAway()
 
 /turf/closed/wall/proc/break_wall()
-	new sheet_type(src, sheet_amount)
+	var/obj/O = new sheet_type(src, sheet_amount)
+	O.apply_material(initial(sheet_type.materials))
 
 /turf/closed/wall/proc/devastate_wall()
-	new sheet_type(src, sheet_amount)
+	var/obj/O = new sheet_type(src, sheet_amount)
+	O.apply_material(initial(sheet_type.materials))
 
 /turf/closed/wall/ex_act(severity, target, prikolist)
 	if(target == src)

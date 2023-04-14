@@ -229,10 +229,10 @@ DEFINE_BITFIELD(smoothing_junction, list(
 	var/list/cardinals = GLOB.cardinals.Copy()
 	for(var/cardinal in cardinals)
 		var/turf/open/T = get_step(src, cardinal)
-		if(!T || isclosedturf(T) || type == T.type || !(T.smoothing_flags & SMOOTH_BORDERS))
+		if(!T || isclosedturf(T) || (type == T.type && materials == T.materials) || !(T.smoothing_flags & SMOOTH_BORDERS))
 			continue
-		var/cname = "[type];[cardinal];[smoothing_junction ? smoothing_junction : 0]"
-		var/tname = "[T.type];[REVERSE_DIR(cardinal)];[T.smoothing_junction ? T.smoothing_junction : 0]"
+		var/cname = "[type];[cardinal];[smoothing_junction ? smoothing_junction : 0];[materials ? islist(materials) ? list2params(materials) : materials : "null"]"
+		var/tname = "[T.type];[REVERSE_DIR(cardinal)];[T.smoothing_junction ? T.smoothing_junction : 0];[T.materials ? islist(T.materials) ? list2params(T.materials) : T.materials : "null"]"
 		if(!SSicon_smooth.borders_cache["[cname][tname]"])
 			var/icon/ci = icon(icon, icon_state)
 			var/icon/ti = icon(T.icon, T.icon_state)
@@ -275,10 +275,10 @@ DEFINE_BITFIELD(smoothing_junction, list(
 	var/list/cardinals = GLOB.cardinals.Copy()
 	for(var/cardinal in cardinals)
 		var/turf/closed/T = get_step(src, cardinal)
-		if(!T || isfloorturf(T) || type == T.type || !(T.smoothing_flags & SMOOTH_BORDERS))
+		if(!T || isfloorturf(T) || (type == T.type && materials == T.materials) || !(T.smoothing_flags & SMOOTH_BORDERS))
 			continue
-		var/cname = "[type];[cardinal];[smoothing_junction ? smoothing_junction : 0]"
-		var/tname = "[T.type];[REVERSE_DIR(cardinal)];[T.smoothing_junction ? T.smoothing_junction : 0]"
+		var/cname = "[type];[cardinal];[smoothing_junction ? smoothing_junction : 0];[materials ? islist(materials) ? list2params(materials) : materials : "null"]"
+		var/tname = "[T.type];[REVERSE_DIR(cardinal)];[T.smoothing_junction ? T.smoothing_junction : 0];[T.materials ? islist(T.materials) ? list2params(T.materials) : T.materials : "null"]"
 		if(!SSicon_smooth.borders_cache["[cname][tname]"])
 			var/icon/ci = icon(icon, icon_state)
 			var/icon/ti = icon(T.icon, T.icon_state)

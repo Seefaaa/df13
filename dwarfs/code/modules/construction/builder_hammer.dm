@@ -16,34 +16,39 @@
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/builder_hammer/proc/generate_blueprints(user)
-    var/list/buildable = subtypesof(/obj/structure/blueprint) - /obj/structure/blueprint/large
-    var/list/blueprints = list()
-    var/list/cats = list()
-    //init categories
-    for(var/s in buildable)
-        var/obj/structure/blueprint/S = s
-        var/category = initial(S.cat)
-        if(!cats[category])
-            cats[category] = list()
-    //build recipes data for categories
-    for(var/s in buildable)
-        var/obj/structure/blueprint/S = new s
-        var/obj/structure/original = S.target_structure
-        var/category = S.cat
-        var/list/blueprint = list()
-        var/list/resources = S.build_ui_resources(user)
-
-        blueprint["name"] = initial(original.name)
-        blueprint["desc"] = initial(original.desc)
-        blueprint["icon"] = icon2path(initial(original.icon), user, initial(original.icon_state))
-        blueprint["path"] = S.type
-        blueprint["reqs"] = resources
-        cats[category]+=list(blueprint)
-        qdel(S)
-        //add all categories to blueprints
-    for(var/cat in cats)
-        blueprints += list(list("name"=cat, "blueprints"=cats[cat]))
-    return blueprints
+	var/list/buildable = subtypesof(/obj/structure/blueprint) - /obj/structure/blueprint/large - /obj/structure/blueprint/floor
+	var/list/blueprints = list()
+	var/list/cats = list()
+	//init categories
+	for(var/s in buildable)
+		var/obj/structure/blueprint/S = s
+		var/category = initial(S.cat)
+		if(!cats[category])
+			cats[category] = list()
+	//build recipes data for categories
+	for(var/s in buildable)
+		var/obj/structure/blueprint/S = new s
+		var/atom/original
+		if(ispath(S.target_structure, /turf))
+			original = new S.target_structure(locate(world.maxx, world.maxy, world.maxz))
+		else
+			original = new S.target_structure
+		var/category = S.cat
+		var/list/blueprint = list()
+		var/list/resources = S.build_ui_resources(user)
+		blueprint["name"] = initial(original.name)
+		blueprint["desc"] = initial(original.desc)
+		blueprint["icon"] = icon2path(original.build_material_icon(initial(original.icon), initial(original.icon_state)), user)
+		blueprint["path"] = S.type
+		blueprint["reqs"] = resources
+		cats[category]+=list(blueprint)
+		qdel(S)
+		if(!isturf(original))
+			qdel(original)
+		//add all categories to blueprints
+	for(var/cat in cats)
+		blueprints += list(list("name"=cat, "blueprints"=cats[cat]))
+	return blueprints
 
 /obj/item/builder_hammer/ui_interact(mob/user, datum/tgui/ui)
   ui = SStgui.try_update_ui(user, src, ui)

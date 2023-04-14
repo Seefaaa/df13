@@ -4,26 +4,22 @@
 	icon = 'icons/turf/debug.dmi'
 	icon_state = "genturf"
 
-/turf/open/floor/stone
-	name = "stone floor"
+/turf/open/floor/tiles
+	name = "tiled floor"
 	desc = "Classic."
-	icon_state = "stone_floor"
+	icon_state = "tiles"
 	footstep = FOOTSTEP_SAND
 	barefootstep = FOOTSTEP_SAND
 	clawfootstep = FOOTSTEP_SAND
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
+	materials = /datum/material/stone
 	var/busy = FALSE
 
-/turf/open/floor/stone/ScrapeAway(amount, flags)
+/turf/open/floor/tiles/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
+
+/turf/open/floor/tiles/ScrapeAway(amount, flags)
 	return ChangeTurf(/turf/open/floor/rock)
-
-/turf/open/floor/stone/setup_broken_states()
-	return list(icon_state)
-
-/turf/open/floor/stone/crowbar_act(mob/living/user, obj/item/I)
-	if(pry_tile(I, user))
-		new /obj/item/stack/sheet/stone(get_turf(src))
-		return TRUE
 
 /turf/open/floor/rock
 	name = "rock"
@@ -65,7 +61,7 @@
 		if(I.use_tool(src, user, time, volume=50))
 			to_chat(user, span_notice("You finish carving stone floor."))
 			user.mind.adjust_experience(/datum/skill/mining, 3)
-			T.ChangeTurf(/turf/open/floor/stone)
+			T.ChangeTurf(/turf/open/floor/tiles)
 	else
 		. = ..()
 
@@ -335,7 +331,7 @@
 		new /obj/structure/plant/decor/flower(src)
 	if(prob(0.1))
 		return INITIALIZE_HINT_LATELOAD
-	if(prob(1))
+	if(prob(1) && !is_blocked_turf())
 		var/pt = pick(/obj/structure/plant/garden/crop/carrot, /obj/structure/plant/garden/crop/barley, /obj/structure/plant/garden/crop/potato)
 		var/obj/structure/plant/plant = new pt(src)
 		plant.growthstage = rand(0, plant.growthstages)
@@ -380,12 +376,20 @@
 	icon = 'dwarfs/icons/turf/floors.dmi'
 	icon_state = "wooden"
 	slowdown = -0.2
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated)
 
-/turf/open/floor/sandstone
-	name = "sand floor"
+/turf/open/floor/wooden/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
+
+/turf/open/floor/bigtiles
+	name = "large tile floor"
 	desc = "Grainy."
-	icon_state = "sandstone"
+	icon_state = "big_tiles"
 	slowdown = -0.1
+	materials = /datum/material/sandstone
+
+/turf/open/floor/bigtiles/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /turf/open/floor/placeholder
 	name = "floor"

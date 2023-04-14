@@ -13,7 +13,8 @@
 /obj/structure/workbench/Initialize()
 	. = ..()
 	var/turf/T = locate(x+1,y,z)
-	T.density = TRUE
+	if(T)
+		T.density = TRUE
 
 /obj/structure/workbench/Destroy()
 	var/turf/T = locate(x+1,y,z)

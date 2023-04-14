@@ -26,7 +26,7 @@
 	icon_state = "rich_wall-0"
 	base_icon_state = "rich_wall"
 	sheet_type = /obj/item/stack/sheet/stone
-	baseturfs = /turf/open/floor/stone
+	baseturfs = /turf/open/floor/tiles
 	sheet_amount = 3
 
 /turf/closed/mineral/random/sand
@@ -64,10 +64,13 @@
 	hardness = 60
 	sheet_type = /obj/item/stack/sheet/planks
 
+/turf/closed/wall/wooden/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
+
 /turf/closed/wall/sand
 	name = "sand wall"
 	icon = 'dwarfs/icons/turf/walls_sand.dmi'
 	base_icon_state = "sand_wall"
 	icon_state = "sand_wall-0"
-	baseturfs = /turf/open/floor/sandstone
+	baseturfs = /turf/open/floor/bigtiles
 	sheet_type = /obj/item/stack/ore/smeltable/sand

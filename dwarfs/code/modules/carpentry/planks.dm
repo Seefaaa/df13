@@ -6,6 +6,7 @@
 	icon_state = "planks"
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
+	part_name = PART_PLANKS
 	w_class = WEIGHT_CLASS_BULKY
 	merge_type = /obj/item/stack/sheet/planks
 	novariants = FALSE

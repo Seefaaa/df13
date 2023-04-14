@@ -15,6 +15,10 @@
 /obj/structure/blueprint/examine(mob/user)
 	. = ..()
 	. += "<br>Required materials:"
+	. += req_examine()
+
+/obj/structure/blueprint/proc/req_examine()
+	. = list()
 	for(var/i in reqs)
 		var/obj/O = i
 		. += "<br>[get_req_amount(i)-get_amount(i)] [initial(O.name)]"
@@ -34,11 +38,18 @@
 			to_chat(user, span_notice("You build [initial(target_structure.name)]."))
 			var/turf/spawn_turf = get_turf(src)
 			target_structure = get_target_structure()
+			var/list/_materials = list()
+			for(var/obj/O in contents)
+				_materials[O.part_name] = O.materials
 			if(ispath(target_structure, /turf/))
-				spawn_turf.PlaceOnTop(target_structure)
+				var/turf/T = spawn_turf.PlaceOnTop(target_structure)
+				T.apply_material(_materials)
+				QUEUE_SMOOTH_BORDERS(T)
+				QUEUE_SMOOTH_BORDERS_NEIGHBORS(T)
 			else
 				var/atom/A = new target_structure(spawn_turf)
 				A.dir = dir
+				A.apply_material(_materials)
 			contents.Cut()
 			qdel(src)
 	else
@@ -87,7 +98,8 @@
 			added = TRUE
 			break
 		if(!added)
-			new S.type(src, to_use)
+			var/obj/O = new S.type(src, to_use)
+			O.materials = S.materials
 	else
 		I.forceMove(src)
 	to_chat(user, span_notice("You add [I] to [src]."))
@@ -231,10 +243,60 @@
 
 /obj/structure/blueprint/floor
 	name = "floor"
-	target_structure = /turf/open/floor/placeholder
 	cat = "construction"
 	var/material_required = 1
 	var/material_type
+
+/obj/structure/blueprint/floor/tiles
+	name = "tile floor"
+	target_structure = /turf/open/floor/tiles
+
+/obj/structure/blueprint/floor/tiles/can_accept(mob/user, obj/I)
+	. = ..()
+	if(!.)
+		return FALSE
+	var/datum/material/M = get_material(I.materials)
+	if(M.mat != MATERIAL_STONE)
+		return FALSE
+
+/obj/structure/blueprint/floor/bigtiles
+	name = "large tile floor"
+	target_structure = /turf/open/floor/bigtiles
+
+/obj/structure/blueprint/floor/bigtiles/can_accept(mob/user, obj/I)
+	. = ..()
+	if(!.)
+		return FALSE
+	var/datum/material/M = get_material(I.materials)
+	if(M.mat != MATERIAL_STONE)
+		return FALSE
+
+/obj/structure/blueprint/floor/wooden
+	name = "wooden floor"
+	target_structure = /turf/open/floor/wooden
+
+/obj/structure/blueprint/floor/wooden/can_accept(mob/user, obj/I)
+	. = ..()
+	if(!.)
+		return FALSE
+	var/datum/material/M = get_material(I.materials)
+	if(M.mat != MATERIAL_WOOD)
+		return FALSE
+
+/obj/structure/blueprint/floor/wooden/build_ui_resources(mob/user)
+	var/obj/O = /obj/item/stack/sheet/planks
+	var/icon/I = apply_palettes(icon(initial(O.icon), initial(O.icon_state)), initial(O.materials))
+	var/icon_path = icon2path(I, user)
+	return list(list("name"="Any Wood Material","amount"=material_required,"icon"=icon_path))
+
+/obj/structure/blueprint/floor/wooden/req_examine()
+	. = list()
+	. += "<br>[material_required-get_amount(contents.len ? contents[1].type : 0)] any wood material"
+
+/obj/structure/blueprint/floor/can_build(mob/user)
+	if(get_amount(contents.len ? contents[1].type : 0) != material_required)
+		to_chat(user, span_warning("[src] is is missing materials to be built!"))
+		return FALSE
 
 /obj/structure/blueprint/floor/can_accept(mob/user, obj/I)
 	. = ..()
@@ -244,8 +306,6 @@
 		return FALSE
 	var/datum/material/M = get_material(I.materials)
 	if(!M)
-		return FALSE
-	if(!M.floor_type)
 		return FALSE
 
 /obj/structure/blueprint/floor/additional_check(mob/user, obj/material)
@@ -258,17 +318,14 @@
 /obj/structure/blueprint/floor/get_req_amount(type)
 	return material_required
 
-/obj/structure/blueprint/floor/get_target_structure()
-	var/datum/material/M = get_material(material_type)
-	return M.floor_type
-
-/obj/structure/blueprint/floor/get_amount(type)
-	return contents.len
-
 /obj/structure/blueprint/floor/build_ui_resources(mob/user)
 	var/obj/O = /obj/item/stack/sheet/stone
 	var/icon_path = icon2path(initial(O.icon), user, initial(O.icon_state))
-	return list(list("name"="Any Valid Material","amount"=material_required,"icon"=icon_path))
+	return list(list("name"="Any Stony Material","amount"=material_required,"icon"=icon_path))
+
+/obj/structure/blueprint/floor/req_examine()
+	. = ..()
+	. += "<br>[material_required-get_amount(contents.len ? contents[1].type : 0)] any stony material"
 
 /obj/structure/blueprint/wall
 	name = "wall"
@@ -276,6 +333,15 @@
 	cat = "construction"
 	var/material_required = 4
 	var/material_type
+
+/obj/structure/blueprint/wall/req_examine()
+	. = ..()
+	. += "<br>[material_required-get_amount(contents.len ? contents[1].type : 0)] any valid material"
+
+/obj/structure/blueprint/wall/can_build(mob/user)
+	if(get_amount(contents.len ? contents[1].type : 0) != material_required)
+		to_chat(user, span_warning("[src] is is missing materials to be built!"))
+		return FALSE
 
 /obj/structure/blueprint/wall/can_accept(mob/user, obj/I)
 	. = ..()
@@ -299,9 +365,6 @@
 /obj/structure/blueprint/wall/get_req_amount(type)
 	return material_required
 
-/obj/structure/blueprint/wall/get_amount(type)
-	return contents.len
-
 /obj/structure/blueprint/wall/build_ui_resources(mob/user)
 	var/obj/O = /obj/item/stack/sheet/stone
 	var/icon_path = icon2path(initial(O.icon), user, initial(O.icon_state))
@@ -317,6 +380,16 @@
 	cat = "construction"
 	var/material_required = 3
 	var/material_type
+
+
+/obj/structure/blueprint/door/req_examine()
+	. = ..()
+	. += "<br>[material_required-get_amount(contents.len ? contents[1].type : 0)] any valid material"
+
+/obj/structure/blueprint/door/can_build(mob/user)
+	if(get_amount(contents.len ? contents[1].type : 0) != material_required)
+		to_chat(user, span_warning("[src] is is missing materials to be built!"))
+		return FALSE
 
 /obj/structure/blueprint/door/can_accept(mob/user, obj/I)
 	. = ..()
@@ -339,9 +412,6 @@
 
 /obj/structure/blueprint/door/get_req_amount(type)
 	return material_required
-
-/obj/structure/blueprint/door/get_amount(type)
-	return contents.len
 
 /obj/structure/blueprint/door/build_ui_resources(mob/user)
 	var/obj/O = /obj/item/stack/sheet/stone

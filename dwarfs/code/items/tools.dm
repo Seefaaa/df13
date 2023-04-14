@@ -276,7 +276,7 @@
 					return
 				else
 					qdel(L)
-			T.ChangeTurf(/turf/open/floor/stone)
+			T.ChangeTurf(/turf/open/floor/tiles)
 			user.visible_message(span_notice("<b>[user]</b> constructs stone floor.") , \
 								span_notice("You construct stone floor."))
 		if(TROWEL_BUILD_STAIRS)
