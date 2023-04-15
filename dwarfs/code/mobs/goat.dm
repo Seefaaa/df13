@@ -19,6 +19,10 @@
 	// Did it eat?
 	var/fed = FALSE
 
+/mob/living/simple_animal/goat/examine(mob/user)
+	. = ..()
+	. += "<br>It seems to be a [gender]."
+
 /mob/living/simple_animal/goat/Initialize(mapload, _gender=null, _color=null)
 	. = ..()
 	gender = _gender ? _gender : pick(MALE, FEMALE)

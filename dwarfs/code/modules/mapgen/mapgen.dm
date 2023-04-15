@@ -104,6 +104,8 @@ GLOBAL_VAR(surface_z)
 				turf_type = /turf/open/floor/dirt
 			if(-0.3 to 0.4)
 				turf_type = /turf/open/floor/dirt/grass
+				if(prob(0.05))
+					new /mob/living/simple_animal/goat(T)
 			if(0.4 to INFINITY)
 				turf_type = /turf/closed/mineral/random/dwarf_lustress
 		T.ChangeTurf(turf_type, initial(turf_type.baseturfs))
