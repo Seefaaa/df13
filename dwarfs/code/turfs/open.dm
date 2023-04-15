@@ -348,7 +348,7 @@
 	for(var/turf/T in s_range)
 		if(prob(40))
 			continue
-		if(!T || !istype(T, /turf/open/floor/dirt) || T.is_blocked_turf() || (locate(/obj/structure/plant) in view(0, T)))
+		if(!T || !istype(T, /turf/open/floor/dirt) || T.is_blocked_turf() || (locate(/obj/structure/plant) in view(0, T)) || istype(T.loc, /area/fortress))
 			continue
 		var/tree = /obj/structure/plant/tree/pine
 		if(prob(0.1))
@@ -360,7 +360,7 @@
 	for(var/turf/T in (circlerangeturfs(src, r+rand(15, 25))-s_range))
 		if(prob(80))
 			continue
-		if(!T || !istype(T, /turf/open/floor/dirt) || T.is_blocked_turf() || (locate(/obj/structure/plant) in view(0, T)))
+		if(!T || !istype(T, /turf/open/floor/dirt) || T.is_blocked_turf() || (locate(/obj/structure/plant) in view(0, T)) || istype(T.loc, /area/fortress))
 			continue
 		var/tree = /obj/structure/plant/tree/pine
 		if(prob(0.1))
