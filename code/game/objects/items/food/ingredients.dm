@@ -128,6 +128,7 @@
 	name = "egg"
 	desc = "The fruit from an industrous creature."
 	food_reagents = list(/datum/reagent/consumable/nutriment=5, /datum/reagent/consumable/nutriment/protein = 3)
+	icon = 'dwarfs/icons/mob/animals.dmi'
 	icon_state = "egg"
 	var/fertile = FALSE
 	var/time_till_birth = 2 MINUTES

@@ -3,34 +3,38 @@
 	name = "chicken"
 	desc = "Loved for its industrial-like quality of mass producing eggs."
 	icon = 'dwarfs/icons/mob/animals.dmi'
-	icon_state = "goat_brown_m"
+	icon_state = "chicken_brown"
 	maxHealth = 50
 	health = 50
 	childtype = list(/mob/living/simple_animal/chicken/baby)
 	animal_species = /mob/living/simple_animal/chicken
 	// Used for icon state: see ./Initialize
+	gender = NEUTER
 	var/color_txt = "brown"
 	var/food_level
 
 
 /mob/living/simple_animal/chicken/Initialize(mapload, _gender=null, _color=null)
 	. = ..()
+	if(gender != NEUTER)
+		return
 	gender = _gender ? _gender : pick(MALE, FEMALE)
-	color_txt = _color ? _color : pick("brown", "grey")
-	icon_dead = "goat_[color_txt]_[gender == MALE ? "m" : "f"]_dead"
-	icon_state = "goat_[color_txt]_[gender == MALE ? "m" : "f"]"
+	if(gender == MALE)
+		new /mob/living/simple_animal/chicken/rooster(src.loc)
+	else
+		new /mob/living/simple_animal/chicken/hen(src.loc)
+	qdel(src)
 
 /mob/living/simple_animal/chicken/attack_hand(mob/living/carbon/human/M)
 	. = ..()
 
 /mob/living/simple_animal/chicken/baby
 	name = "baby chicken"
-	icon_state = "goat_brown_baby"
+	icon_state = "chicken_baby"
+	icon_dead = "chicken_baby_dead"
 
 /mob/living/simple_animal/chicken/baby/Initialize(mapload)
 	. = ..()
-	icon_state = "goat_[color_txt]_baby"
-	icon_dead = "goat_[color_txt]_baby_dead"
 	addtimer(CALLBACK(src, .proc/grow_up), 4 MINUTES)
 
 /mob/living/simple_animal/chicken/baby/proc/grow_up()
@@ -63,10 +67,12 @@
 	name = "hen"
 	gender = FEMALE
 	childtype = list(/obj/item/food/egg/fertile)
+	icon_state = "chicken_white"
+	icon_dead = "chicken_white_dead"
 	var/egg_progress
 
 /mob/living/simple_animal/chicken/rooster
 	name = "rooster"
 	gender = MALE
-
-// TODO: add milking
+	icon_state = "chicken_brown"
+	icon_dead = "chicken_brown_dead"
