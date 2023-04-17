@@ -127,7 +127,6 @@
 	.["respawn"] = config ? !CONFIG_GET(flag/norespawn) : FALSE
 	.["enter"] = !LAZYACCESS(SSlag_switch.measures, DISABLE_NON_OBSJOBS)
 	.["vote"] = CONFIG_GET(flag/allow_vote_mode)
-	.["ai"] = CONFIG_GET(flag/allow_ai)
 	.["host"] = world.host ? world.host : null
 	.["round_id"] = GLOB.round_id
 	.["players"] = GLOB.clients.len

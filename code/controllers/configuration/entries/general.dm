@@ -15,16 +15,6 @@
 /datum/config_entry/flag/auto_deadmin_antagonists
 	protection = CONFIG_ENTRY_LOCKED
 
-/datum/config_entry/flag/auto_deadmin_heads
-	protection = CONFIG_ENTRY_LOCKED
-
-/datum/config_entry/flag/auto_deadmin_silicons
-	protection = CONFIG_ENTRY_LOCKED
-
-/datum/config_entry/flag/auto_deadmin_security
-	protection = CONFIG_ENTRY_LOCKED
-
-
 /datum/config_entry/string/servername	// server name (the name of the game window)
 
 /datum/config_entry/string/servertype	// server type
@@ -65,8 +55,6 @@
 
 /datum/config_entry/flag/log_game	// log game events
 
-/datum/config_entry/flag/log_virus	// log virology data
-
 /datum/config_entry/flag/log_vote	// log voting
 
 /datum/config_entry/flag/log_whisper	// log client whisper
@@ -83,8 +71,6 @@
 /datum/config_entry/flag/log_world_topic	// log all world.Topic() calls
 
 /datum/config_entry/flag/log_manifest	// log crew manifest to seperate file
-
-/datum/config_entry/flag/log_job_debug	// log roundstart divide occupations debug information to a file
 
 /datum/config_entry/flag/log_exrp // :^)
 
@@ -244,8 +230,6 @@
 
 /datum/config_entry/flag/kick_inactive	//force disconnect for inactive players
 
-/datum/config_entry/flag/load_jobs_from_txt
-
 /datum/config_entry/flag/forbid_singulo_possession
 
 /datum/config_entry/flag/automute_on	//enables automuting/spam prevention
@@ -404,10 +388,6 @@
 	config_entry_value = 50
 	integer = FALSE
 
-/datum/config_entry/number/spp
-	config_entry_value = 20
-	min_val = 0
-
 /datum/config_entry/flag/irc_announce_new_game
 	deprecated_by = /datum/config_entry/string/chat_announce_new_game
 
@@ -460,11 +440,6 @@
 
 /datum/config_entry/string/default_view_square
 	config_entry_value = "15x15"
-
-/datum/config_entry/flag/log_pictures
-
-/datum/config_entry/flag/picture_logging_camera
-
 
 /datum/config_entry/flag/reopen_roundstart_suicide_roles
 

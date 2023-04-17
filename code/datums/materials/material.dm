@@ -16,7 +16,7 @@
 	var/door_type
 	/// Force multiplier
 	var/force_mod = 1
-	/// Tool spped multiplier
+	/// Tool speed multiplier
 	var/toolspeed_mod = 1
 	var/toolspeed_mod_handle = 1
 	/// Health multiplier for structures

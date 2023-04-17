@@ -104,7 +104,6 @@ GLOBAL_PROTECT(admin_verbs_server)
 	/datum/admins/proc/delay,
 	/datum/admins/proc/toggleaban,
 	/client/proc/everyone_random,
-	/datum/admins/proc/toggleAI,
 	/client/proc/cmd_admin_delete,		/*delete an instance/object/mob/etc*/
 	/client/proc/cmd_debug_del_all_wrapper,
 	/client/proc/toggle_random_events,
@@ -202,7 +201,6 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	/datum/admins/proc/delay,
 	/datum/admins/proc/toggleaban,
 	/client/proc/everyone_random,
-	/datum/admins/proc/toggleAI,
 	/client/proc/restart_controller,
 	/client/proc/callproc,
 	/client/proc/callproc_datum,

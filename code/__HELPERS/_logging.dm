@@ -89,10 +89,6 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 	if (CONFIG_GET(flag/log_game))
 		WRITE_LOG(GLOB.world_game_log, "GAME: [text]")
 
-/proc/log_virus(text)
-	if (CONFIG_GET(flag/log_virus))
-		WRITE_LOG(GLOB.world_virus_log, "VIRUS: [text]")
-
 /proc/log_paper(text)
 	WRITE_LOG(GLOB.world_paper_log, "PAPER: [text]")
 
@@ -171,10 +167,6 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 
 /proc/log_query_debug(text)
 	WRITE_LOG(GLOB.query_debug_log, "SQL: [text]")
-
-/proc/log_job_debug(text)
-	if (CONFIG_GET(flag/log_job_debug))
-		WRITE_LOG(GLOB.world_job_debug_log, "JOB: [text]")
 
 /* Log to both DD and the logfile. */
 /proc/log_world(text)

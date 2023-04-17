@@ -420,20 +420,6 @@
 	message_admins("[key_name_admin(usr)] toggled new player game entering [SSlag_switch.measures[DISABLE_NON_OBSJOBS] ? "OFF" : "ON"].")
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle Entering", "[!SSlag_switch.measures[DISABLE_NON_OBSJOBS] ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/datum/admins/proc/toggleAI()
-	set category = "Server"
-	set desc="People can't be AI"
-	set name="Toggle AI"
-	var/alai = CONFIG_GET(flag/allow_ai)
-	CONFIG_SET(flag/allow_ai, !alai)
-	if (alai)
-		to_chat(world, "<B>The AI job is no longer chooseable.</B>", confidential = TRUE)
-	else
-		to_chat(world, "<B>The AI job is chooseable now.</B>", confidential = TRUE)
-	log_admin("[key_name(usr)] toggled AI allowed.")
-	world.update_status()
-	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle AI", "[!alai ? "Disabled" : "Enabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
 /datum/admins/proc/toggleaban()
 	set category = "Server"
 	set desc="Respawn basically"

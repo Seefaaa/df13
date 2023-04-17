@@ -4,10 +4,10 @@
 ## World address and port for server receiving cross server messages
 ## Use '+' to denote spaces in ServerName
 ## Repeat this entry to add more servers
-#CROSS_SERVER Theta byond://station13.ru:2077
+#CROSS_SERVER
 
 ## Name that the server calls itself in communications
-#CROSS_COMMS_NAME White Dream
+#CROSS_COMMS_NAME
 
 ## Hub address for tracking stats
 ## example: Hubmakerckey.Hubname
@@ -24,6 +24,4 @@
 
 #CROSS_KEY
 
-SPP 0
-
-SPECIAL_STRING GAYFURRYPRIDE]
+#SPECIAL_STRING

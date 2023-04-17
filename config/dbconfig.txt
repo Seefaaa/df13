@@ -13,7 +13,7 @@
 #PORT 3306
 
 ## Database for all SQL functions, not just feedback.
-#FEEDBACK_DATABASE shit
+#FEEDBACK_DATABASE
 
 ## Prefix to be added to the name of every table, older databases will require this be set to erro_
 ## Note, this does not change the table names in the database, you will have to do that yourself.
@@ -33,7 +33,7 @@
 ## Set to 0 for infinite
 #ASYNC_QUERY_TIMEOUT 100
 
-## Time in seconds for blocking queries to execute before slow query timeout 
+## Time in seconds for blocking queries to execute before slow query timeout
 ## Set to 0 for infinite
 ## Must be less than or equal to ASYNC_QUERY_TIMEOUT
 #BLOCKING_QUERY_TIMEOUT 50

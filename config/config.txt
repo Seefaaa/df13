@@ -3,7 +3,6 @@
 $include game_options.txt
 $include dbconfig.txt
 $include comms.txt
-$include antag_rep.txt
 $include resources.txt
 $include interviews.txt
 
@@ -16,15 +15,10 @@ $include interviews.txt
 # There are various options which are hard-locked for security reasons.
 
 ## Server name: This appears at the top of the screen in-game and in the BYOND hub. Uncomment and replace 'tgstation' with the name of your choice.
-SERVERNAME Gay Dream
-
-SERVERTYPE Fuck
+SERVERNAME Dwarf Fortress 13
 
 ## Server SQL name: This is the name used to identify the server to the SQL DB, distinct from SERVERNAME as it must be at most 32 characters.
-SERVERSQLNAME shit
-
-## Station name: The name of the station as it is referred to in-game. If commented out, the game will generate a random name instead.
-STATIONNAME Testbox
+SERVERSQLNAME dwarf
 
 ## Put on byond hub: Uncomment this to put your server on the byond hub.
 #HUB
@@ -52,16 +46,6 @@ ADMIN_LEGACY_SYSTEM
 
 ## Comment this out to stop locally connected clients from being given the almost full access !localhost! admin rank
 ENABLE_LOCALHOST_RANK
-
-## Uncomment this entry to have certain jobs require your account to be at least a certain number of days old to select. You can configure the exact age requirement for different jobs by editing
-## the minimal_player_age variable in the files in folder /code/game/jobs/job/.. for the job you want to edit. Set minimal_player_age to 0 to disable age requirement for that job.
-## REQUIRES the database set up to work. Keep it hashed if you don't have a database set up.
-## NOTE: If you have just set-up the database keep this DISABLED, as player age is determined from the first time they connect to the server with the database up. If you just set it up, it means
-## you have noone older than 0 days, since noone has been logged yet. Only turn this on once you have had the database up for 30 days.
-USE_AGE_RESTRICTION_FOR_JOBS
-
-## Uncomment this to have the job system use the player's account creation date, rather than the when they first joined the server for job timers.
-#USE_ACCOUNT_AGE_FOR_JOBS
 
 ## Unhash this to track player playtime in the database. Requires database to be enabled.
 #USE_EXP_TRACKING
@@ -107,20 +91,11 @@ LOG_EMOTE
 ## log attack messages
 LOG_ATTACK
 
-## log telecomms messages
-LOG_TELECOMMS
-
 ## log prayers
 LOG_PRAYER
 
-## log economy actions
-LOG_ECON
-
 ## log crew manifest to seperate file
 LOG_MANIFEST
-
-## log job divide debugging information
-#LOG_JOB_DEBUG
 
 ## log all world.Topic() calls
 LOG_WORLD_TOPIC
@@ -129,26 +104,8 @@ LOG_WORLD_TOPIC
 ## As an example of how this could be """useful""" look towards Poly (https://twitter.com/Poly_the_Parrot)
 # LOG_TWITTER
 
-## Enable logging pictures
-# LOG_PICTURES
-
-## log mecha actions
-# LOG_MECHA
-
-## log virus and actions
-LOG_VIRUS
-
-## log cloning actions
-LOG_CLONING
-
-## log shuttle actions
-LOG_SHUTTLE
-
 ## Log all timers on timer auto reset
 # LOG_TIMERS_ON_BUCKET_RESET
-
-##Log camera pictures - Must have picture logging enabled
-PICTURE_LOGGING_CAMERA
 
 ## period of time in seconds for players to be considered inactive
 # INACTIVITY_PERIOD 300
@@ -166,7 +123,7 @@ ALLOW_ADMIN_OOCCOLOR
 ALLOW_ADMIN_ASAYCOLOR
 
 ## allow players to initiate a restart vote
-#ALLOW_VOTE_RESTART
+ALLOW_VOTE_RESTART
 
 ## allow players to initiate a mode-change vote
 #ALLOW_VOTE_MODE
@@ -221,34 +178,34 @@ CHECK_RANDOMIZER
 
 ## set a server location for world reboot. Don't include the byond://, just give the address and port.
 ## Don't set this to the same server, BYOND will automatically restart players to the server when it has restarted.
-#SERVER s1.station13.ru:2019
+#SERVER 127.0.0.1:2023
 
 ## forum address
-FORUMURL https://discord.gg/9uJ7dmM
+FORUMURL https://discord.gg/rVK4VgEYmz
 
 ## Wiki address
-WIKIURL https://wiki.station13.ru
+WIKIURL https://github.com/Dwarf-Fortress-13/Dwarf-Fortress-13/wiki/FAQ
 
 ## Rules address
-RULESURL https://discord.gg/tSaNvvG
+RULESURL https://discord.gg/rVK4VgEYmz
 
 ## Github address
-GITHUBURL https://github.com/daxsc/YTgstation/
+GITHUBURL https://github.com/Dwarf-Fortress-13/Dwarf-Fortress-13
 
 ## Round specific stats address
 ## Link to round specific parsed logs; IE statbus. It is appended with the RoundID automatically by ticker/Reboot()
 ## This will take priority over the game logs address during reboot.
 ## Example: https://atlantaned.space/statbus/round.php?round=
-# ROUNDSTATSURL https://hub.station13.ru/rounds/
+# ROUNDSTATSURL
 
 ## Game Logs address
 ## Incase you don't have a fancy parsing system, but still want players to be able to find where you keep your server's logs.
 ## Example: https://tgstation13.org/parsed-logs/basil/data/logs/
-# GAMELOGURL https://hub.station13.ru/logs/
+# GAMELOGURL
 
 
 ## Ban appeals URL - usually for a forum or wherever people should go to contact your admins.
-# BANAPPEALS https://discord.gg/tSaNvvG
+# BANAPPEALS https://discord.gg/rVK4VgEYmz
 
 ## System command that invokes youtube-dl, used by Play Internet Sound.
 ## You can install youtube-dl with
@@ -258,10 +215,6 @@ GITHUBURL https://github.com/daxsc/YTgstation/
 ## The default value assumes youtube-dl is in your system PATH
 # INVOKE_YOUTUBEDL youtube-dl
 
-## In-game features
-##Toggle for having jobs load up from the .txt
-# LOAD_JOBS_FROM_TXT
-
 ## Uncomment this to forbid admins from possessing the singularity.
 #FORBID_SINGULO_POSSESSION
 
@@ -270,7 +223,7 @@ GITHUBURL https://github.com/daxsc/YTgstation/
 #POPUP_ADMIN_PM
 
 ## Uncomment to allow special 'Easter-egg' events on special holidays such as seasonal holidays and stuff like 'Talk Like a Pirate Day' :3 YAARRR
-ALLOW_HOLIDAYS
+#ALLOW_HOLIDAYS
 
 ## Uncomment to show the names of the admin sending a pm from IRC instead of showing as a stealthmin.
 #SHOW_IRC_NAME
@@ -380,23 +333,16 @@ PREFERENCE_MAP_VOTING 1
 
 ## AUTOADMIN
 ## The default admin rank
-AUTOADMIN_RANK LV-I
+AUTOADMIN_RANK Game Master
 
 ## Uncomment to automatically give that admin rank to all players
 #AUTOADMIN
-
 
 ## Uncomment to automatically deadmin players when the game starts.
 #AUTO_DEADMIN_PLAYERS
 
 ## Uncomment to automatically deadmin antagonists when they gain the role.
 AUTO_DEADMIN_ANTAGONISTS
-
-## Uncomment to automatically deadmin specific role sets when a player joins the game.
-AUTO_DEADMIN_HEADS
-AUTO_DEADMIN_SECURITY
-AUTO_DEADMIN_SILICONS
-
 
 
 ## CLIENT VERSION CONTROL
@@ -430,7 +376,7 @@ MINUTE_TOPIC_LIMIT 60
 ## Set to 0 to disable.
 SECOND_CLICK_LIMIT 10
 
-MINUTE_CLICK_LIMIT 60
+MINUTE_CLICK_LIMIT 600
 
 ##Error handling related options
 ## The "cooldown" time for each occurence of a unique error
