@@ -10,6 +10,7 @@
 	health = 50
 	childtype = list(/mob/living/simple_animal/goat/baby)
 	animal_species = /mob/living/simple_animal/goat
+	butcher_results = list(/obj/item/food/meat/slab = list(2,3), /obj/item/stack/sheet/tallow = list(1,4))
 	// Used for icon state: see ./Initialize
 	var/color_txt = "brown"
 	// Does it have a bag mounted
@@ -83,6 +84,7 @@
 /mob/living/simple_animal/goat/baby
 	name = "baby goat"
 	icon_state = "goat_brown_baby"
+	butcher_results = list(/obj/item/food/meat/slab = list(0,1), /obj/item/stack/sheet/tallow = list(0,1))
 
 /mob/living/simple_animal/goat/baby/Initialize(mapload)
 	. = ..()
