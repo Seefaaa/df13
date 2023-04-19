@@ -8,8 +8,16 @@
 "bk" = (
 /turf/open/floor/dirt/grass,
 /area/fortress/surface)
+"cq" = (
+/mob/living/simple_animal/pet/cat/male,
+/turf/open/floor/dirt/grass,
+/area/fortress/surface)
 "cK" = (
 /obj/effect/landmark/start/dwarf,
+/turf/open/floor/dirt/grass,
+/area/fortress/surface)
+"dh" = (
+/mob/living/simple_animal/pet/cat/female,
 /turf/open/floor/dirt/grass,
 /area/fortress/surface)
 "dG" = (
@@ -316488,7 +316496,7 @@ jE
 jE
 jE
 bk
-bk
+dh
 bk
 bk
 bk
@@ -316791,7 +316799,7 @@ jE
 jE
 bk
 bk
-bk
+cq
 bk
 bk
 bk
