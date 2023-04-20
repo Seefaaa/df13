@@ -37,7 +37,7 @@
 
 /turf/open/floor/rock/attackby(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_PICKAXE)
-		if(I.use_tool(src, user, 5 SECONDS))
+		if(I.use_tool(src, user, 5 SECONDS, volume=50))
 			if(QDELETED(src))
 				return
 			if(digged_up)
@@ -78,7 +78,7 @@
 	if(I.tool_behaviour == TOOL_SHOVEL || I.tool_behaviour == TOOL_PICKAXE)
 		to_chat(user, span_notice("You start digging [src]..."))
 		var/dig_time = I.tool_behaviour == TOOL_SHOVEL ? 5 SECONDS : 10 SECONDS
-		if(I.use_tool(src, user, dig_time))
+		if(I.use_tool(src, user, dig_time, volume=50))
 			if(QDELETED(src))
 				return
 			if(digged_up)
@@ -106,7 +106,7 @@
 			return
 		to_chat(user, span_notice("You start tilling [src]..."))
 		var/channel = playsound(src, 'dwarfs/sounds/tools/hoe/hoe_dig_long.ogg', 50, TRUE)
-		if(I.use_tool(src, user, 10 SECONDS))
+		if(I.use_tool(src, user, 10 SECONDS, volume=50))
 			stop_sound_channel_nearby(src, channel)
 			var/turf/open/floor/tilled/T = ChangeTurf(/turf/open/floor/tilled)
 			if((locate(/turf/open/water) in range(1, T)))
@@ -118,7 +118,7 @@
 	else if(I.tool_behaviour == TOOL_SHOVEL || I.tool_behaviour == TOOL_PICKAXE)
 		to_chat(user, span_notice("You start digging [src]..."))
 		var/dig_time = I.tool_behaviour == TOOL_SHOVEL ? 5 SECONDS : 10 SECONDS
-		if(I.use_tool(src, user, dig_time))
+		if(I.use_tool(src, user, dig_time, volume=50))
 			if(digged_up)
 				try_digdown(I,user)
 			else
@@ -135,6 +135,7 @@
 	desc = "Ready for plants."
 	icon_state = "soil_tilled"
 	slowdown = 1
+	var/digged_up = FALSE
 	var/waterlevel = 0
 	var/watermax = 100
 	var/waterrate = 1
@@ -182,6 +183,9 @@
 
 /turf/open/floor/tilled/attackby(obj/item/O, mob/user, params)
 	if(istype(O, /obj/item/growable/seeds))
+		if(digged_up)
+			to_chat(user, span_warning("There is no dirt to plant in!"))
+			return
 		if(!myplant)
 			if(istype(O, /obj/item/growable/seeds/tree))
 				to_chat(user, span_warning("Cannot plant this here!"))
@@ -204,7 +208,7 @@
 			to_chat(user, span_warning("[capitalize(src.name)] already has seeds in it!"))
 			return
 
-	else if(istype(O, /obj/item/shovel))
+	else if(O.tool_behaviour == TOOL_SHOVEL && user.a_intent != INTENT_HARM && !digged_up)
 		user.visible_message(span_notice("[user] starts digging out [src]'s plants...") ,
 			span_notice("You start digging out [src]'s plants..."))
 		if(O.use_tool(src, user, 50, volume=50) || !myplant)
@@ -214,7 +218,17 @@
 				name = initial(name)
 				desc = initial(desc)
 			update_appearance()
-			return
+	else if(O.tool_behaviour == TOOL_SHOVEL && (user.a_intent == INTENT_HARM || digged_up))
+		to_chat(user, span_notice("You start digging [src]..."))
+		if(O.use_tool(src, user, 5 SECONDS, volume=50))
+			if(digged_up)
+				try_digdown(O,user)
+			else
+				new/obj/item/stack/dirt(src, rand(2,5))
+				user.visible_message(span_notice("<b>[user]</b> digs up some dirt.") , \
+					span_notice("You dig up some dirt."))
+				digged_up = TRUE
+				icon_state = "soil_dug"
 	else if(istype(O, /obj/item/fertilizer))
 		user.visible_message(span_notice("[user] adds [O] to \the [src]."), span_notice("You add [O] to \the [src]."))
 		var/obj/item/fertilizer/F = O
