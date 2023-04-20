@@ -1,6 +1,6 @@
 /obj/structure/demijohn
 	name = "demijohn"
-	desc = "A rigid container used in brewing."
+	desc = "A rigid container used for fermenting."
 	density = 1
 	layer = ABOVE_MOB_LAYER
 	icon = 'dwarfs/icons/structures/workshops.dmi'
