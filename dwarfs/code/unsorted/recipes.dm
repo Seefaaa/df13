@@ -225,12 +225,12 @@
 /datum/workbench_recipe/mop
 	name = "mop"
 	result = /obj/item/mop
-	reqs = list(/obj/item/stick=1, /obj/item/stack/sheet/animalhide/cat =1)
+	reqs = list(/obj/item/stick=1, /obj/item/stack/sheet/string=5)
 
 /datum/workbench_recipe/rag
 	name = "rag"
 	result = /obj/item/reagent_containers/glass/rag
-	reqs = list(/obj/item/stack/sheet/animalhide/cat =2)
+	reqs = list(/obj/item/stack/sheet/string=3)
 
 /datum/workbench_recipe/kitchen_knife
 	name = "kitchen_knife"
