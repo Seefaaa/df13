@@ -19,6 +19,9 @@
 	var/lantern = FALSE
 	// Did it eat?
 	var/fed = FALSE
+	// Does it have milk?
+	var/milk = FALSE
+	var/last_produced_milk
 
 /mob/living/simple_animal/goat/examine(mob/user)
 	. = ..()
@@ -30,6 +33,7 @@
 	color_txt = _color ? _color : pick("brown", "grey")
 	icon_dead = "goat_[color_txt]_[gender == MALE ? "m" : "f"]_dead"
 	icon_state = "goat_[color_txt]_[gender == MALE ? "m" : "f"]"
+	last_produced_milk = world.time
 
 /mob/living/simple_animal/goat/death(gibbed)
 	. = ..()
@@ -55,13 +59,28 @@
 		I.forceMove(src)
 		bag = TRUE
 		update_appearance()
-	if(isgrowable(I))
+	else if(isgrowable(I))
 		var/obj/item/growable/G = I
 		if(G.food_flags & GRAIN)
 			to_chat(user, span_notice("You feed [src] [G]."))
 			playsound(loc, 'sound/items/eatfood.ogg', rand(10,50), TRUE)
 			qdel(G)
 			fed = TRUE
+	else if(I.is_refillable())
+		if(gender != FEMALE)
+			to_chat(user, span_warning("What are you trying to milk?"))
+			return
+		if(!milk)
+			to_chat(user, span_warning("[src] doesn't have any milk yet!"))
+			return
+		to_chat(user, span_notice("You start milking [src]..."))
+		if(!do_after(user, 6 SECONDS, src))
+			return
+		I.reagents.add_reagent(/datum/reagent/consumable/milk, rand(10, 30))
+		milk = FALSE
+		to_chat(user, span_notice("You milk [src]."))
+		last_produced_milk = world.time
+		//sound here
 	else
 		. = ..()
 
@@ -112,10 +131,10 @@
 	. = ..()
 
 /mob/living/simple_animal/goat/Life(delta_time, times_fired)
-	..()
+	. = ..()
 	make_babies()
+	if(DT_PROB(1, (world.time-last_produced_milk)/10) && gender == FEMALE && !milk)
+		milk = TRUE
 
 #undef MAX_GOATS_NEARBY
 #undef MAX_GOATS_RANGE
-
-// TODO: add milking
