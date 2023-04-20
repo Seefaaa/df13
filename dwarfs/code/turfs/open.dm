@@ -141,7 +141,6 @@
 	var/fertlevel = 0
 	var/fertmax = 100
 	var/fertrate = 1
-	var/list/allowed_species
 	///The currently planted plant
 	var/obj/structure/plant/myplant = null
 
@@ -188,6 +187,10 @@
 				to_chat(user, span_warning("Cannot plant this here!"))
 				return
 			var/obj/item/growable/seeds/S = O
+			var/obj/structure/plant/plant = S.plant
+			if(!initial(plant.surface) && z == GLOB.surface_z)
+				to_chat(user, span_warning("This will not grow here!"))
+				return
 			to_chat(user, span_notice("You plant [S]."))
 			var/obj/structure/plant/P = new S.plant(src)
 			qdel(S)
@@ -252,7 +255,7 @@
 	SIGNAL_HANDLER
 	if(!waterlevel)
 		source.health -= rand(1,3)
-	if(allowed_species && !(source.species in allowed_species))
+	if(source.surface && z == GLOB.surface_z)
 		source.health -= rand(1,3)
 
 /turf/open/floor/tilled/proc/on_eat(obj/structure/plant/source)

@@ -27,6 +27,7 @@
 	produce_delta = 40 SECONDS
 	produced = list(/obj/item/growable/plump_helmet=3)
 	seed_type = /obj/item/growable/seeds/plump_helmet
+	surface = FALSE
 
 /obj/structure/plant/garden/crop/pig_tail
 	name = "pig tail"
@@ -38,6 +39,7 @@
 	produce_delta = 80 SECONDS
 	produced = list(/obj/item/growable/pig_tail=2)
 	seed_type = /obj/item/growable/seeds/pig_tail
+	surface = FALSE
 
 /obj/structure/plant/garden/crop/barley
 	name = "barley"
@@ -93,6 +95,7 @@
 	produce_delta = 60 SECONDS
 	produced = list(/obj/item/growable/cave_wheat=4)
 	seed_type = /obj/item/growable/seeds/cave_wheat
+	surface = FALSE
 
 /obj/structure/plant/garden/crop/potato
 	name = "potato"

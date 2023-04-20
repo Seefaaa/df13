@@ -31,6 +31,7 @@
 	var/dummy = FALSE // whether we process this plant at all. Used for decoration dummy plants
 	var/spread_x = 8
 	var/spread_y = 12
+	var/surface = TRUE
 
 /obj/structure/plant/examine(mob/user)
 	. = ..()
