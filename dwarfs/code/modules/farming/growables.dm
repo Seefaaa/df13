@@ -75,8 +75,7 @@
 	icon_state = "apple"
 	edible = TRUE
 	foodtypes = FRUIT
-	bite_consumption = 1
-	food_reagents = list(/datum/reagent/consumable/nutriment = 50)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 40)
 	tastes = list("apple" = 1)
 
 /obj/item/growable/cave_wheat
