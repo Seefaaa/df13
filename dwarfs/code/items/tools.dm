@@ -174,8 +174,7 @@
 	. = ..()
 	if(contents.len)
 		var/obj/item/ingot/I = contents[1]
-		var/mutable_appearance/Ingot = mutable_appearance('dwarfs/icons/items/tools.dmi', "tongs_ingot")
-		// Ingot.color = I.metal_color
+		var/icon/Ingot = I.build_material_icon('dwarfs/icons/items/tools.dmi', "tongs_ingot")
 		. += Ingot
 		var/mutable_appearance/Ingot_heat = mutable_appearance('dwarfs/icons/items/tools.dmi', "tongs_ingot")
 		Ingot_heat.color = "#ffb35c"
@@ -186,8 +185,7 @@
 	. = ..()
 	if(contents.len)
 		var/obj/item/ingot/I = contents[1]
-		var/mutable_appearance/Ingot = mutable_appearance(icon_file, "tongs_ingot")
-		// Ingot.color = I.metal_color
+		var/icon/Ingot = I.build_material_icon(icon_file, "tongs_ingot")
 		. += Ingot
 		var/mutable_appearance/Ingot_heat = mutable_appearance(icon_file, "tongs_ingot")
 		Ingot_heat.color = "#ffb35c"
