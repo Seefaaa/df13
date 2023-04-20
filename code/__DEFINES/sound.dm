@@ -53,19 +53,6 @@
 
 #define HOLY list('sound/ambience/white/ambichurch1.ogg')
 
-#define HIGHSEC list('sound/ambience/white/ambidanger1.ogg',\
-					'sound/ambience/white/ambidanger2.ogg',\
-					'sound/ambience/white/ambidanger3.ogg')
-
-#define RUINS list('sound/ambience/white/ambidanger1.ogg',\
-				'sound/ambience/white/ambidanger2.ogg',\
-				'sound/ambience/white/ambi1.ogg',\
-				'sound/ambience/white/ambi11.ogg',\
-				'sound/ambience/white/ambi3.ogg')
-
-#define ENGINEERING list('sound/ambience/white/ambieng1.ogg',\
-						'sound/ambience/white/ambidanger2.ogg')
-
 #define MINING list('sound/ambience/white/ambidanger1.ogg',\
 					'sound/ambience/white/ambidanger2.ogg',\
 					'sound/ambience/white/ambi12.ogg')
@@ -73,23 +60,12 @@
 #define MEDICAL list('sound/ambience/white/ambimed1.ogg',\
 					'sound/ambience/white/ambimed2.ogg')
 
-#define SPOOKY list('sound/ambience/white/ambimo1.ogg')
-
-#define SPACE list('sound/ambience/white/ambispace1.ogg',\
-				'sound/ambience/white/ambispace2.ogg',\
-				'sound/ambience/white/ambispace3.ogg',\
-				'sound/ambience/white/ambispace4.ogg') // Source - https://vk.com/wall-180293907_321
-
 #define MAINTENANCE list('sound/ambience/white/ambimaint1.ogg',\
 						'sound/ambience/white/ambimaint2.ogg')
 
 #define AWAY_MISSION list('sound/ambience/white/ambidanger2.ogg',\
 						'sound/ambience/white/ambidanger3.ogg',\
 						'sound/ambience/white/ambi12.ogg')
-
-#define REEBE list('sound/ambience/ambireebe1.ogg',\
-				'sound/ambience/ambireebe2.ogg',\
-				'sound/ambience/ambireebe3.ogg')
 
 #define CREEPY_SOUNDS list('sound/effects/ghost.ogg',\
 						'sound/effects/ghost2.ogg',\
@@ -115,8 +91,7 @@
 						'sound/hallucinations/veryfar_noise.ogg',\
 						'sound/hallucinations/wail.ogg')
 
-#define GENERIC_AMBIGEN list('sound/ambience/ambigen1.ogg',\
-						'sound/ambience/ambigen3.ogg',\
+#define GENERIC_AMBIGEN list('sound/ambience/ambigen3.ogg',\
 						'sound/ambience/ambigen4.ogg',\
 						'sound/ambience/ambigen5.ogg',\
 						'sound/ambience/ambigen6.ogg',\
