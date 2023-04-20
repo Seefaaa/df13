@@ -294,6 +294,7 @@
 	. += "<br>[material_required-get_amount(contents.len ? contents[1].type : 0)] any wood material"
 
 /obj/structure/blueprint/floor/can_build(mob/user)
+	. = TRUE
 	if(get_amount(contents.len ? contents[1].type : 0) != material_required)
 		to_chat(user, span_warning("[src] is is missing materials to be built!"))
 		return FALSE
@@ -339,6 +340,7 @@
 	. += "<br>[material_required-get_amount(contents.len ? contents[1].type : 0)] any valid material"
 
 /obj/structure/blueprint/wall/can_build(mob/user)
+	. = TRUE
 	if(get_amount(contents.len ? contents[1].type : 0) != material_required)
 		to_chat(user, span_warning("[src] is is missing materials to be built!"))
 		return FALSE
@@ -381,12 +383,12 @@
 	var/material_required = 3
 	var/material_type
 
-
 /obj/structure/blueprint/door/req_examine()
 	. = ..()
 	. += "<br>[material_required-get_amount(contents.len ? contents[1].type : 0)] any valid material"
 
 /obj/structure/blueprint/door/can_build(mob/user)
+	. = TRUE
 	if(get_amount(contents.len ? contents[1].type : 0) != material_required)
 		to_chat(user, span_warning("[src] is is missing materials to be built!"))
 		return FALSE
