@@ -179,7 +179,7 @@
 
 /datum/workbench_recipe/crown
 	name = "crown"
-	result = /obj/item/clothing/head/helmet/dwarf_crown
+	result = /obj/item/clothing/head/helmet/crown
 	reqs = list(/obj/item/stack/sheet/mineral/gem/sapphire = 3, /obj/item/partial/crown_empty = 1)
 
 /datum/workbench_recipe/pickaxe

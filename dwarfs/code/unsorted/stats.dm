@@ -848,7 +848,7 @@
         if(6)
             armor.setRating(sharp=23,pierce=16,blunt=15,fire=10,wound=40)
 
-/obj/item/clothing/head/helmet/dwarf_crown/apply_grade(grade)
+/obj/item/clothing/head/helmet/crown/apply_grade(grade)
     ..()
     switch(grade)
         if(1)

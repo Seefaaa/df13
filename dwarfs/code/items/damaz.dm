@@ -29,7 +29,7 @@
 /obj/item/damaz/ui_data(mob/user)
 	var/list/data = list()
 	var/mob/current_king
-	for(var/obj/item/clothing/head/helmet/dwarf_crown/C in GLOB.dwarf_crowns)
+	for(var/obj/item/clothing/head/helmet/crown/C in GLOB.crowns)
 		if(C.assigned_count)
 			current_king = C.assigned_count
 	data["king"] = (user == current_king)

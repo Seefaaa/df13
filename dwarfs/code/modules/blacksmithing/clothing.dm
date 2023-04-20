@@ -128,7 +128,7 @@
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)
 
-/obj/item/clothing/head/helmet/dwarf_crown
+/obj/item/clothing/head/helmet/crown
 	name = "crown"
 	desc = "To show the royal status."
 	worn_icon = 'dwarfs/icons/mob/clothing/head.dmi'
@@ -139,29 +139,29 @@
 	actions_types = list(/datum/action/item_action/send_message_action)
 	var/mob/assigned_count = null
 
-/obj/item/clothing/head/helmet/dwarf_crown/Initialize()
+/obj/item/clothing/head/helmet/crown/Initialize()
 	. = ..()
-	GLOB.dwarf_crowns+=src
+	GLOB.crowns+=src
 
-/obj/item/clothing/head/helmet/dwarf_crown/Destroy()
+/obj/item/clothing/head/helmet/crown/Destroy()
     . = ..()
-    GLOB.dwarf_crowns-=src
+    GLOB.crowns-=src
 
 /datum/action/item_action/send_message_action
 	name = "Send message to subjects"
 
-/obj/item/clothing/head/helmet/dwarf_crown/proc/send_message(mob/user, msg)
+/obj/item/clothing/head/helmet/crown/proc/send_message(mob/user, msg)
 	message_admins("DF: [ADMIN_LOOKUPFLW(user)]: [msg]")
 	for(var/mob/M in GLOB.dwarf_list)
 		to_chat(M, span_revenbignotice("[msg]"))
 		var/sound/siren = sound('sound/effects/siren.ogg', volume = 25)
 		SEND_SOUND(M, siren)
 
-/obj/item/clothing/head/helmet/dwarf_crown/attack_self(mob/user)
+/obj/item/clothing/head/helmet/crown/attack_self(mob/user)
 	. = ..()
 	var/busy = FALSE
 	var/mob/king
-	for(var/obj/item/clothing/head/helmet/dwarf_crown/C in GLOB.dwarf_crowns)
+	for(var/obj/item/clothing/head/helmet/crown/C in GLOB.crowns)
 		if(C.assigned_count && C.assigned_count?.stat != DEAD)
 			busy = TRUE
 			king = C.assigned_count

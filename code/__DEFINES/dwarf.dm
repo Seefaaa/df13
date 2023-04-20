@@ -2,4 +2,4 @@
 								// With 0.1, 100 units of the strongest alcohol would refill you completely from 0 to 100, which is perfect.
 #define DRUNK_ALERT_TIME_OFFSET 10 SECONDS
 
-GLOBAL_LIST_EMPTY(dwarf_crowns)
+GLOBAL_LIST_EMPTY(crowns)
