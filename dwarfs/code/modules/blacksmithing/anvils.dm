@@ -32,6 +32,11 @@
 		miss(usr)
 
 /obj/structure/anvil/proc/hit(mob/user)
+	if(!current_ingot)
+		to_chat(user, span_warning("[src] doesn't have an ingot!"))
+		usr<<browse(null, "window=Anvil")
+		update_appearance()
+		return
 	if(current_ingot.heattemp <= 0)
 		update_appearance()
 		to_chat(user, span_warning("\The [current_ingot] is to cold too keep working."))
@@ -53,6 +58,11 @@
 		H.mind.adjust_experience(/datum/skill/smithing, rand(1, 4) * current_ingot.grade)
 
 /obj/structure/anvil/proc/miss(mob/user)
+	if(!current_ingot)
+		to_chat(user, span_warning("[src] doesn't have an ingot!"))
+		usr<<browse(null, "window=Anvil")
+		update_appearance()
+		return
 	if(current_ingot.heattemp <= 0)
 		update_appearance()
 		to_chat(user, span_warning("\The [current_ingot] is to cold too keep working."))
