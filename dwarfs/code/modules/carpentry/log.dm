@@ -22,7 +22,7 @@
 	if(I.tool_behaviour == TOOL_AXE)
 		to_chat(user, span_notice("You start cutting [src] into planks..."))
 		var/cutting_time = 10 SECONDS * user.mind.get_skill_modifier(/datum/skill/logging, SKILL_SPEED_MODIFIER)
-		if(!I.use_tool(src, user, cutting_time))
+		if(!I.use_tool(src, user, cutting_time, volume=50))
 			return
 		var/my_turf = get_turf(src)
 		user.mind.adjust_experience(/datum/skill/logging, 12)
@@ -67,7 +67,7 @@
 	if(I.tool_behaviour == TOOL_AXE)
 		to_chat(user, span_notice("You start cutting [src] into pieces..."))
 		var/cutting_time = 10 SECONDS * user.mind.get_skill_modifier(/datum/skill/logging, SKILL_SPEED_MODIFIER)
-		if(!I.use_tool(src, user, cutting_time))
+		if(!I.use_tool(src, user, cutting_time, volume=50))
 			return
 		var/my_turf = get_turf(src)
 		user.mind.adjust_experience(/datum/skill/logging, 12)
