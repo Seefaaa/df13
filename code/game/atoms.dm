@@ -1663,7 +1663,7 @@
 		M.apply_stats(src)
 
 /obj/apply_material_stats()
-	update_stats(null, FALSE)
+	reset_stats()
 	. = ..()
 
 /// Apply materials to this atom's icon
