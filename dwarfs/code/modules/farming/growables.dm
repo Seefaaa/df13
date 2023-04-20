@@ -78,6 +78,9 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 40)
 	tastes = list("apple" = 1)
 
+/obj/item/growable/apple/MakePressable()
+	AddComponent(/datum/component/pressable, /datum/reagent/consumable/juice/apple, 10)
+
 /obj/item/growable/cave_wheat
 	name = "cave wheat"
 	desc = "Grey wheat, growing in dark caves. Dwarfs favorirte beer component."

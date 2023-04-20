@@ -1,6 +1,5 @@
 /datum/reagent/consumable/ethanol/wine
 	name = "Wine"
-	description = "Traditional dwarfen mushroom wine. Heals dwarf's souls and minds (and probably more)."
 	color = "#c9220cff"
 
 /datum/reagent/consumable/ethanol/wine/New()
@@ -9,8 +8,13 @@
 
 /datum/reagent/consumable/ethanol/wine/plump
 	name = "Plump Wine"
+	description = "Traditional dwarfen mushroom wine. Heals dwarf's souls and minds (and probably more)."
 	color = "#96418aff"
 
 /datum/reagent/consumable/ethanol/wine/rum
-	name = "Dwarven Rum"
+	name = "Rum"
 	color = "#9D702E"
+
+/datum/reagent/consumable/ethanol/wine/apple
+	name = "Apple Cider"
+	color = "#C46210"
