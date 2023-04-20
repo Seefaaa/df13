@@ -8,6 +8,7 @@
 	baseturfs = /turf/open/floor/rock
 	mineralSpawnChanceList = list(/obj/item/stack/ore/smeltable/gold = 20, /obj/item/stack/ore/smeltable/iron = 40, /obj/item/stack/ore/gem/diamond=10,/obj/item/stack/ore/gem/ruby=10,/obj/item/stack/ore/gem/sapphire=10,/obj/item/stack/ore/coal=40)
 	mineralChance = 1
+	materials = /datum/material/stone
 
 /turf/closed/mineral/random/dwarf_lustress/gets_drilled(user, give_exp = FALSE)
 	. = ..()
@@ -38,6 +39,7 @@
 	base_icon_state = "rockwall"
 	icon = 'dwarfs/icons/turf/walls_sandstone.dmi'
 	icon_state = "rockwall-0"
+	materials = /datum/material/sandstone
 
 /turf/closed/mineral/random/sand/gets_drilled(user, give_exp)
 	. = ..()
@@ -52,8 +54,9 @@
 		if(I.use_tool(src, user, time, volume=50))
 			to_chat(user, span_notice("You finish carving stone wall."))
 			user.mind.adjust_experience(/datum/skill/mining, 3)
-			T.PlaceOnTop(/turf/closed/wall/stone)
-	..()
+			var/turf/wall = T.PlaceOnTop(/turf/closed/wall/stone)
+			wall.apply_material(materials)
+	. = ..()
 
 /turf/closed/wall/wooden
 	name = "wooden wall"

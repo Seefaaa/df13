@@ -61,7 +61,8 @@
 		if(I.use_tool(src, user, time, volume=50))
 			to_chat(user, span_notice("You finish carving stone floor."))
 			user.mind.adjust_experience(/datum/skill/mining, 3)
-			T.ChangeTurf(/turf/open/floor/tiles)
+			var/turf/floor = T.ChangeTurf(/turf/open/floor/tiles)
+			floor.apply_material(materials)
 	else
 		. = ..()
 
