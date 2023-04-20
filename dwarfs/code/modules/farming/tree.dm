@@ -8,6 +8,7 @@
 	base_pixel_x = -32
 	spread_x = 4
 	spread_y = 3
+	growthstages = 7
 	var/small_log_type = /obj/item/log
 	var/large_log_type = /obj/item/log/large
 	var/list/small_log_amount = list(0,1,1,2,0,2,0) //a list of small logs with amount corresponding to the growthstage
@@ -58,8 +59,6 @@
 	produced = list(/obj/item/growable/seeds/tree/towercap=2)
 	seed_type = /obj/item/growable/seeds/tree/towercap
 	health = 100
-	icon_ripe = "towercap-7"
-	growthstages = 7
 	growthdelta = 80 SECONDS
 	produce_delta = 120 SECONDS
 	materials = /datum/material/wood/towercap
