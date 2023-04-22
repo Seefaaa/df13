@@ -9,6 +9,21 @@
 /turf/closed/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
 	return FALSE
 
+/turf/closed/ChangeTurf(path, list/new_baseturfs, flags)
+	. = ..()
+	if(!ispath(path, /turf/closed))
+		for(var/d in GLOB.cardinals)
+			var/turf/T = get_step(src, d)
+			if(!T)
+				continue
+			for(var/obj/structure/sconce/sconce in view(0, T))
+				if(sconce.dir == get_dir(src, sconce))//check if it's actually attached to this turf
+					var/obj/item/sconce/isconce = new(sconce.loc)
+					isconce.apply_material(sconce.materials)
+					if(sconce.torch)
+						sconce.torch.forceMove(sconce.loc)
+					qdel(sconce)
+
 /turf/closed/indestructible
 	name = "wall"
 	icon = 'icons/turf/walls.dmi'

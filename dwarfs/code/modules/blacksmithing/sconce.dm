@@ -5,15 +5,24 @@
 	icon_state = "sconce"
 	w_class = WEIGHT_CLASS_SMALL
 	var/result_path = /obj/structure/sconce
+	materials = /datum/material/iron
+
+/obj/item/sconce/build_material_icon(_file, state)
+	. = apply_palettes(..(), materials)
 
 /obj/item/sconce/proc/try_build(turf/on_wall, mob/user)
 	var/ndir = get_dir(on_wall, user)
 	if(!(ndir in GLOB.cardinals))
 		return
-	if(locate(/obj/structure/sconce) in view(1))
-		to_chat(user, span_warning("There is something already attached to [on_wall]!"))
+	var/turf/T = get_step(on_wall, ndir)
+	if(!T)
 		return
-
+	for(var/obj/O in view(0, T))
+		if(!istype(O, /obj/structure/sconce))
+			continue
+		if(O.dir == get_dir(on_wall, O))//check if it's actually attached to this turf
+			to_chat(user, span_warning("There is something already attached to [on_wall]!"))
+			return
 	return TRUE
 
 /obj/item/sconce/proc/attach(turf/on_wall, mob/user)
@@ -24,7 +33,8 @@
 			span_hear("You hear a metal click."))
 		var/ndir = get_dir(on_wall, user)
 
-		new result_path(get_turf(user), ndir)
+		var/obj/O = new result_path(get_turf(user), ndir)
+		O.apply_material(materials)
 	qdel(src)
 
 /obj/item/sconce/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
@@ -42,6 +52,10 @@
 	layer = BELOW_MOB_LAYER
 	max_integrity = 100
 	var/obj/item/flashlight/fueled/torch/torch
+	materials = /datum/material/iron
+
+/obj/structure/sconce/build_material_icon(_file, state)
+	. = apply_palettes(..(), materials)
 
 /obj/structure/sconce/Initialize(mapload, ndir=null)
 	. = ..()
@@ -87,8 +101,14 @@
 
 
 /obj/structure/sconce/attackby(obj/item/W, mob/living/user, params)
-
-	if(istype(W, /obj/item/flashlight/fueled/torch))
+	if(torch && W.get_temperature())
+		if(torch.on)
+			return
+		torch.on = TRUE
+		STOP_PROCESSING(SSobj, torch)
+		torch.update_brightness(null)
+		update_appearance()
+	else if(istype(W, /obj/item/flashlight/fueled/torch))
 		if(torch)
 			to_chat(user, span_warning("There is a torch already!"))
 			return
@@ -114,6 +134,7 @@
 	if(!torch)
 		to_chat(user, span_notice("You detach [src]."))
 		var/obj/item/i = new /obj/item/sconce
+		i.apply_material(materials)
 		if(!user.put_in_active_hand(i))
 			i.forceMove(get_turf(src))
 		qdel(src)

@@ -116,7 +116,6 @@
 		if(F.try_build(src, user))
 			F.attach(src, user)
 		return TRUE
-
 	return FALSE
 
 /turf/closed/wall/proc/try_decon(obj/item/I, mob/user, turf/T)
