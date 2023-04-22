@@ -39,6 +39,7 @@
 	wound_bonus = -5
 	bare_wound_bonus = 10
 	tool_behaviour = TOOL_KNIFE
+	materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/kitchen/knife/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
@@ -64,15 +65,16 @@
 	icon = 'dwarfs/icons/items/kitchen.dmi'
 	icon_state = "rolling_pin"
 	worn_icon_state = "rolling_pin"
-	force = 8
+	force = 5
 	throwforce = 5
 	throw_speed = 3
 	throw_range = 7
-	w_class = WEIGHT_CLASS_NORMAL
+	w_class = WEIGHT_CLASS_SMALL
 	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "whacks")
 	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
 	custom_price = PAYCHECK_EASY * 1.5
 	tool_behaviour = TOOL_ROLLINGPIN
+	materials = /datum/material/wood/pine/treated
 
 /obj/item/kitchen/rollingpin/build_material_icon(_file, state)
 	var/icon/I = ..()
