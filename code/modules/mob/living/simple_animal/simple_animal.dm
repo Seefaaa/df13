@@ -246,7 +246,7 @@
 /mob/living/simple_animal/examine(mob/user)
 	. = ..()
 	if(stat == DEAD)
-		. += span_deadsay("Upon closer examination, [p_they()] appear[p_s()] to be dead.")
+		. += span_deadsay("<br>Upon closer examination, [p_they()] appear[p_s()] to be dead.")
 
 /mob/living/simple_animal/update_stat()
 	if(status_flags & GODMODE)
