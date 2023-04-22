@@ -1,6 +1,6 @@
 /obj/item/stack/sheet/animalhide
 	name = "hide"
-	desc = "Something went wrong."
+	desc = "Hide from an animal. It once was somebody's skin."
 	icon = 'dwarfs/icons/items/components.dmi'
 	icon_state = "sheet-hide"
 	inhand_icon_state = "sheet-hide"
@@ -19,13 +19,32 @@
 	icon_state = "hide_cat"
 	inhand_icon_state = "sheet-cat"
 	leather_amount = 2
-	merge_type = /obj/item/stack/sheet/animalhide/cat
 	damaged_type = /obj/item/stack/sheet/animalhide/cat/damaged
 
 /obj/item/stack/sheet/animalhide/cat/damaged
 	name = "torn cat hide"
 	leather_amount = 1
 	singular_name = "torn cat hide piece"
+
+/obj/item/stack/sheet/animalhide/goat
+	name = "goat hide"
+	desc = "The by-product of goat farming."
+	singular_name = "goat hide piece"
+	icon_state = "hide_goat_brown"
+	leather_amount = 5
+	damaged_type = /obj/item/stack/sheet/animalhide/goat/damaged
+
+/obj/item/stack/sheet/animalhide/goat/blue
+	icon_state = "hide_goat_blue"
+	damaged_type = /obj/item/stack/sheet/animalhide/goat/blue/damaged
+
+/obj/item/stack/sheet/animalhide/goat/blue/damaged
+	leather_amount = 2
+
+/obj/item/stack/sheet/animalhide/goat/damaged
+	name = "torn goat hide"
+	leather_amount = 2
+	singular_name = "torn goat hide piece"
 
 /obj/item/stack/sheet/animalhide/troll
 	name = "troll hide"

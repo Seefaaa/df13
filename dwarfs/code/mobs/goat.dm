@@ -30,10 +30,11 @@
 /mob/living/simple_animal/goat/Initialize(mapload, _gender=null, _color=null)
 	. = ..()
 	gender = _gender ? _gender : pick(MALE, FEMALE)
-	color_txt = _color ? _color : pick("brown", "grey")
+	color_txt = _color ? _color : pick("brown", "blue")
 	icon_dead = "goat_[color_txt]_[gender == MALE ? "m" : "f"]_dead"
 	icon_state = "goat_[color_txt]_[gender == MALE ? "m" : "f"]"
 	last_produced_milk = world.time
+	hide_type = color_txt == "brown" ? /obj/item/stack/sheet/animalhide/goat : /obj/item/stack/sheet/animalhide/goat/blue
 
 /mob/living/simple_animal/goat/death(gibbed)
 	. = ..()
