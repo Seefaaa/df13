@@ -46,3 +46,6 @@
 
 /obj/item/growable/seeds/potato
 	plant = /obj/structure/plant/garden/crop/potato
+
+/obj/item/growable/seeds/onion
+	plant = /obj/structure/plant/garden/crop/onion

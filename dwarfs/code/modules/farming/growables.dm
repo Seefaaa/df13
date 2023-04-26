@@ -175,3 +175,11 @@
 	edible = TRUE
 	mood_gain = -2
 	food_reagents = list(/datum/reagent/consumable/nutriment=40)
+
+/obj/item/growable/onion
+	name = "onion"
+	desc = "It has many layers."
+	icon_state = "onion"
+	edible = TRUE
+	mood_gain = -3
+	food_reagents = list(/datum/reagent/consumable/nutriment=30)

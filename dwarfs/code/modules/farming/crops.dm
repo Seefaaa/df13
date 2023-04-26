@@ -105,5 +105,15 @@
 	maxhealth = 50
 	growthdelta = 80 SECONDS
 	produce_delta = 60 SECONDS
-	produced = list(/obj/item/growable/potato=4)
+	produced = list(/obj/item/growable/potato=3)
 	seed_type = /obj/item/growable/seeds/potato
+
+/obj/structure/plant/garden/crop/onion
+	name = "onion"
+	desc = "Often mistaken for a weed."
+	species = "onion"
+	health = 30
+	maxhealth = 30
+	growthdelta = 1 MINUTES
+	produced = list(/obj/item/growable/onion=3)
+	seed_type = /obj/item/growable/seeds/onion
