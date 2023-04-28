@@ -71,6 +71,9 @@
 		if(gender != FEMALE)
 			to_chat(user, span_warning("What are you trying to milk?"))
 			return
+		if(is_type_in_list(src, childtype))
+			to_chat(user, span_warning("[src] can't produce milk yet!"))
+			return
 		if(!milk)
 			to_chat(user, span_warning("[src] doesn't have any milk yet!"))
 			return
