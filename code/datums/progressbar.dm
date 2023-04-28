@@ -35,8 +35,10 @@
 	bar = image('icons/hud/progressbar.dmi', bar_loc, "prog_bar_0")
 	bar.plane = ABOVE_HUD_PLANE
 	bar.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
-	bar.pixel_x = -target.base_pixel_x - (abs(target.base_pixel_x) - abs(target.pixel_x))
-	bar.pixel_y = -target.base_pixel_y - (abs(target.base_pixel_y) - abs(target.pixel_y))
+	// var/icon/I = icon(target.icon) //keeping this here in case something doesn't work after all
+	// var/icon_w = I.Width()
+	// bar.pixel_x = icon_w/2 - 16 + (icon_w/2 - 16 + target.pixel_x)
+	bar.pixel_x = -target.base_pixel_x + (-target.base_pixel_x + target.pixel_x)
 	user = User
 
 	LAZYADDASSOCLIST(user.progressbars, bar_loc, src)
