@@ -2,6 +2,8 @@
 	name = "log"
 	desc = "Wooden tree trunk requiring heavy labor."
 	icon = 'dwarfs/icons/items/components.dmi'
+	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
+	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	icon_state = "log"
 	throw_range = 0
 	w_class = WEIGHT_CLASS_BULKY
