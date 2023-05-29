@@ -16,6 +16,7 @@
 		H.mind.set_experience(/datum/skill/skinning,SKILL_EXP_LEGEND, TRUE)
 		H.mind.set_experience(/datum/skill/smithing,SKILL_EXP_LEGEND, TRUE)
 		H.mind.set_experience(/datum/skill/masonry,SKILL_EXP_LEGEND, TRUE)
+		H.mind.set_experience(/datum/skill/construction,SKILL_EXP_LEGEND, TRUE)
 
 /obj/item/storage/satchel/debug
 	name = "Satchel of holding"

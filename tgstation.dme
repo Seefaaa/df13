@@ -606,6 +606,7 @@
 #include "code\datums\skills\_skill.dm"
 #include "code\datums\skills\butchering.dm"
 #include "code\datums\skills\combat.dm"
+#include "code\datums\skills\construction.dm"
 #include "code\datums\skills\cooking.dm"
 #include "code\datums\skills\farming.dm"
 #include "code\datums\skills\logging.dm"
