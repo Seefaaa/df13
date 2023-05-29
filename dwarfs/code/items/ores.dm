@@ -8,12 +8,14 @@
 
 /obj/item/stack/ore/stone/attackby(obj/item/I, mob/living/user, params)
 	if(I.tool_behaviour == TOOL_CHISEL)
-		if(I.use_tool(src, user, 1 SECONDS, volume=50))
-			if(prob(25))
+		var/speed_mod = user.mind ? user.mind.get_skill_modifier(/datum/skill/masonry, SKILL_SPEED_MODIFIER) : 1
+		if(I.use_tool(src, user, 1 SECONDS * speed_mod, volume=50))
+			var/fail_prob = user.mind ? user.mind.get_skill_modifier(/datum/skill/masonry, SKILL_PROBS_MODIFIER) : 1
+			if(prob(fail_prob))
 				to_chat(user, span_warning("You process \the [src]."))
 				return
 			new /obj/item/stack/sheet/stone(user.loc)
-			user.mind.adjust_experience(/datum/skill/mining, 1)
+			user.mind.adjust_experience(/datum/skill/masonry, rand(1,4))
 			to_chat(user, span_notice("You process \the [src]."))
 			use(1)
 	else

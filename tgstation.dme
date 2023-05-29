@@ -609,6 +609,7 @@
 #include "code\datums\skills\cooking.dm"
 #include "code\datums\skills\farming.dm"
 #include "code\datums\skills\logging.dm"
+#include "code\datums\skills\masonry.dm"
 #include "code\datums\skills\mining.dm"
 #include "code\datums\skills\skinning.dm"
 #include "code\datums\skills\smithing.dm"
