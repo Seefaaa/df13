@@ -16,7 +16,6 @@
 	var/mopcount = 0
 	var/mopcap = 15
 	var/mopspeed = 15
-	force_string = "robust... against germs"
 	var/insertable = TRUE
 
 /obj/item/mop/Initialize()

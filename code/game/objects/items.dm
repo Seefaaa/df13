@@ -178,12 +178,6 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 	///The list of slots by priority. equip_to_appropriate_slot() uses this list. Doesn't matter if a mob type doesn't have a slot. For default list, see [/mob/proc/equip_to_appropriate_slot]
 	var/list/slot_equipment_priority = null
 
-	//Tooltip vars
-	///string form of an item's force. Edit this var only to set a custom force string
-	var/force_string
-	var/last_force_string_check = 0
-	var/tip_timer
-
 	///Determines who can shoot this
 	var/trigger_guard = TRIGGER_GUARD_NONE
 
@@ -227,9 +221,6 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 	for(var/path in actions_types)
 		new path(src)
 	actions_types = null
-
-	if(force_string)
-		item_flags |= FORCE_STRING_OVERRIDE
 
 	if(!hitsound)
 		if(damtype == BURN)
@@ -699,43 +690,6 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 
 /obj/item/proc/on_juice()
 	return SEND_SIGNAL(src, COMSIG_ITEM_ON_JUICE)
-
-/obj/item/proc/set_force_string()
-	switch(force)
-		if(0 to 4)
-			force_string = "very low"
-		if(4 to 7)
-			force_string = "low"
-		if(7 to 10)
-			force_string = "medium"
-		if(10 to 11)
-			force_string = "high"
-		if(11 to 20) //12 is the force of a toolbox
-			force_string = "robust"
-		if(20 to 25)
-			force_string = "very robust"
-		else
-			force_string = "exceptionally robust"
-	last_force_string_check = force
-
-/obj/item/proc/openTip(location, control, params, user)
-	if(last_force_string_check != force && !(item_flags & FORCE_STRING_OVERRIDE))
-		set_force_string()
-	if(!(item_flags & FORCE_STRING_OVERRIDE))
-		openToolTip(user,src,params,title = name,content = "[desc]<br>[force ? "<b>Force:</b> [force_string]" : ""]",theme = "")
-	else
-		openToolTip(user,src,params,title = name,content = "[desc]<br><b>Force:</b> [force_string]",theme = "")
-
-/obj/item/MouseEntered(location, control, params)
-	if((item_flags & IN_INVENTORY || item_flags & IN_STORAGE) && usr.client.prefs.enable_tips && !QDELETED(src))
-		var/timedelay = usr.client.prefs.tip_delay/100
-		var/user = usr
-		tip_timer = addtimer(CALLBACK(src, .proc/openTip, location, control, params, user), timedelay, TIMER_STOPPABLE)//timer takes delay in deciseconds, but the pref is in milliseconds. dividing by 100 converts it.
-
-/obj/item/MouseExited()
-	deltimer(tip_timer)//delete any in-progress timer if the mouse is moved off the item before it finishes
-	closeToolTip(usr)
-
 
 /// Called when a mob tries to use the item as a tool. Handles most checks.
 /obj/item/proc/use_tool(atom/target, mob/living/user, delay, amount=0, volume=0, datum/callback/extra_checks)
