@@ -255,3 +255,13 @@
 		M.heal_bodypart_damage(1,0, 0)
 		. = TRUE
 	..()
+
+/datum/reagent/consumable/milk_curds
+	name = "Milk Curds"
+	color = "#f3d6d6"
+	taste_description = "salty milk"
+	hydration_factor = DRINK_HYDRATION_FACTOR_SALTY
+
+/datum/reagent/consumable/milk_curds/New()
+	. = ..()
+	AddComponent(/datum/component/pressable, atom_result=/obj/item/cheese)

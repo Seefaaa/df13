@@ -41,9 +41,8 @@
 		to_chat(user, span_notice("You add [G] to [src]."))
 		icon_state = "press_open_item"
 		update_appearance()
-	else if(istype(I, /obj/item/reagent_containers))
-		var/obj/item/reagent_containers/C = I
-		var/transfered = reagents.trans_to(C, 10, transfered_by=user)
+	else if(I.is_refillable())
+		var/transfered = reagents.trans_to(I, 10, transfered_by=user)
 		if(!transfered)
 			return FALSE
 		to_chat(user, span_notice("You take [transfered]u from [src]."))
@@ -57,40 +56,70 @@
 	else
 		return ..()
 
+/obj/structure/press/attackby_secondary(obj/item/I, mob/user, params)
+	. = SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+	if(I.is_refillable())
+		for(var/datum/reagent/R in I.reagents.reagent_list)
+			if(R.GetComponent(/datum/component/pressable))
+				reagents.add_reagent(R.type, R.volume)
+				I.reagents.remove_reagent(R.type, R.volume)
+
 /obj/structure/press/proc/squeeze()
-	if(!length(contents))
-		return
-	var/list/item_types = list()
-	var/types_amount = 0
-	for(var/obj/item/I in contents)
-		if(!(I.type in item_types))
-			item_types.Add(I.type)
-			types_amount++
-	var/obj/item/growable/G = contents[length(contents)]
-	SEND_SIGNAL(G, COSMIG_ITEM_SQUEEZED, src, types_amount)
+	if(contents.len)
+		var/list/item_types = list()
+		var/types_amount = 0
+		for(var/obj/item/I in contents)
+			if(!(I.type in item_types))
+				item_types.Add(I.type)
+				types_amount++
+		var/obj/item/growable/G = contents[contents.len]
+		SEND_SIGNAL(G, COSMIG_ITEM_SQUEEZED, src, types_amount)
+	else
+		for(var/datum/reagent/R in reagents.reagent_list)
+			if(R.GetComponent(/datum/component/pressable))
+				SEND_SIGNAL(R, COSMIG_ITEM_SQUEEZED, src, 1)
 
 /obj/structure/press/update_overlays()
 	. = ..()
 	switch(icon_state)
 		if("press_working")
 			var/mutable_appearance/M = mutable_appearance('dwarfs/icons/structures/32x64.dmi', "working_overlay")
-			var/obj/item/growable/G = contents[length(contents)]
-			var/datum/component/pressable/C = G.GetComponent(/datum/component/pressable)
-			var/_color = initial(C.pressable_liquid_type.color)
-			M.color = _color
+			var/pressable = get_pressable()
+			if(isitem(pressable))
+				var/obj/item/growable/G = contents[length(contents)]
+				var/datum/component/pressable/C = G.GetComponent(/datum/component/pressable)
+				var/_color = initial(C.liquid_result.color)
+				M.color = _color
+			else
+				var/datum/reagent/R = pressable
+				M.color = R.color
 			. += M
 		if("press_open_item")
 			var/mutable_appearance/M = mutable_appearance('dwarfs/icons/structures/32x64.dmi', "item_overlay")
-			var/obj/item/growable/G = contents[length(contents)]
-			var/datum/component/pressable/C = G.GetComponent(/datum/component/pressable)
-			var/_color = initial(C.pressable_liquid_type.color)
-			M.color = _color
+			var/pressable = get_pressable()
+			if(isitem(pressable))
+				var/obj/item/growable/G = contents[length(contents)]
+				var/datum/component/pressable/C = G.GetComponent(/datum/component/pressable)
+				var/_color = initial(C.liquid_result.color)
+				M.color = _color
+			else
+				var/datum/reagent/R = pressable
+				M.color = R.color
 			. += M
 		if("press_finished")
 			var/mutable_appearance/M = mutable_appearance('dwarfs/icons/structures/32x64.dmi', "finished_overlay")
 			var/_color = mix_color_from_reagents(reagents.reagent_list)
 			M.color = _color
 			. += M
+
+/obj/structure/press/proc/get_pressable()
+	. = FALSE
+	if(contents.len)
+		return contents[contents.len]
+	if(reagents.total_volume)
+		for(var/datum/reagent/R in reagents.reagent_list)
+			if(R.GetComponent(/datum/component/pressable))
+				return R
 
 /obj/structure/press/attack_hand(mob/user)
 	var/list/choices = list("Juice"=icon('icons/hud/radial.dmi', "radial_juice"), "Eject"=icon('icons/hud/radial.dmi', "radial_eject"))
@@ -108,7 +137,7 @@
 		update_appearance()
 		to_chat(user, span_notice("You remove everything from [src]."))
 	else if(answer == "Juice")
-		if(!length(contents))
+		if(!get_pressable())
 			to_chat(user, span_warning("There is nothing to juice!"))
 			return
 		if(busy_juicing)
@@ -117,7 +146,7 @@
 		icon_state = "press_working"
 		update_appearance()
 		to_chat(user, span_notice("You start juicing [src]'s contents..."))
-		while(length(contents))
+		while(get_pressable())
 			if(!do_after(user, time_to_juice, src))
 				break
 			squeeze()
