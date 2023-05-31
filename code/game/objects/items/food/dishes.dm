@@ -82,6 +82,22 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment=120)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
+/obj/item/food/dish/meat_pie
+	name = "meat pie"
+	desc = "A pie full of juicy meat."
+	icon_state = "meat_pie"
+	plate_type = /obj/item/reagent_containers/glass/plate/bowl
+	food_reagents = list(/datum/reagent/consumable/nutriment=150)
+	mood_event_type = /datum/mood_event/ate_meal/decent
+
+/obj/item/food/dish/apple_pie
+	name = "meat pie"
+	desc = "Sweet delicacy with a sour aftertaste."
+	icon_state = "apple_pie"
+	plate_type = /obj/item/reagent_containers/glass/plate/bowl
+	food_reagents = list(/datum/reagent/consumable/nutriment=100)
+	mood_event_type = /datum/mood_event/ate_meal/decent
+
 /obj/item/food/dish/roasted_beer_wurst
 	name = "roasted beer wurst"
 	desc = "Ich liebe dich."

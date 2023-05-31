@@ -28,7 +28,19 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	req_items = list(/obj/item/food/dough=1, /obj/item/growable/plump_helmet=3, /obj/item/growable/sweet_pod=2)
 	result = /obj/item/food/dish/plump_pie
 	req_lvl = 4
-	cooking_text = "Put everything ina bowl and cook in the oven."
+	cooking_text = "Put everything in a bowl and cook in the oven."
+
+/datum/cooking_recipe/oven/bowl/meat_pie
+	req_items = list(/obj/item/food/dough=1, /obj/item/food/meat=3)
+	result = /obj/item/food/dish/meat_pie
+	req_lvl = 3
+	cooking_text = "Put everything in a bowl and cook in the oven."
+
+/datum/cooking_recipe/oven/bowl/apple_pie
+	req_items = list(/obj/item/food/dough=1, /obj/item/growable/apple=3)
+	result = /obj/item/food/dish/apple_pie
+	req_lvl = 4
+	cooking_text = "Put everything in a bowl and cook in the oven."
 
 /datum/cooking_recipe/oven/flat_plate/balanced_roll
 	req_items = list(/obj/item/food/flat_dough=1, /obj/item/food/slice/meat=3, /obj/item/growable/carrot=2, /obj/item/food/slice/plump_helmet=2)
