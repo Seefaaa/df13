@@ -18,6 +18,12 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 /datum/cooking_recipe/oven/flat_plate
 /datum/cooking_recipe/oven/plate
 
+/datum/cooking_recipe/oven/plate/baked_potato
+	req_items = list(/obj/item/growable/potato=1)
+	result = /obj/item/food/dish/baked_potato
+	req_lvl = 1
+	cooking_text = "Place the potato on the plate and bake it in the oven."
+
 /datum/cooking_recipe/oven/plate/plump_steak
 	req_items = list(/obj/item/food/slice/plump_helmet=3, /obj/item/food/meat/slab=1)
 	result = /obj/item/food/dish/plump_with_steak
