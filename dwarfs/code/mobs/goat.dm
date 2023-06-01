@@ -11,6 +11,8 @@
 	childtype = list(/mob/living/simple_animal/goat/baby)
 	animal_species = /mob/living/simple_animal/goat
 	butcher_results = list(/obj/item/food/meat/slab = list(2,3), /obj/item/stack/sheet/tallow = list(1,4))
+	deathsound = 'dwarfs/sounds/mobs/goat/death.wav'
+
 	// Used for icon state: see ./Initialize
 	var/color_txt = "brown"
 	// Does it have a bag mounted
@@ -64,7 +66,7 @@
 		var/obj/item/growable/G = I
 		if(G.food_flags & GRAIN)
 			to_chat(user, span_notice("You feed [src] [G]."))
-			playsound(loc, 'sound/items/eatfood.ogg', rand(10,50), TRUE)
+			playsound(src, 'sound/items/eatfood.ogg', rand(10,50), TRUE)
 			qdel(G)
 			fed = TRUE
 	else if(I.is_refillable())
@@ -84,7 +86,7 @@
 		milk = FALSE
 		to_chat(user, span_notice("You milk [src]."))
 		last_produced_milk = world.time
-		//sound here
+		playsound(src, 'dwarfs/sounds/mobs/goat/milk_short.ogg', rand(20, 50), TRUE)
 	else
 		. = ..()
 
@@ -139,6 +141,8 @@
 	make_babies()
 	if(DT_PROB(1, (world.time-last_produced_milk)/10) && gender == FEMALE && !milk)
 		milk = TRUE
+	if(prob(2))
+		playsound(src, file("dwarfs/sounds/mobs/goat/goat[rand(1,4)].wav"), rand(20, 60), TRUE)
 
 #undef MAX_GOATS_NEARBY
 #undef MAX_GOATS_RANGE
