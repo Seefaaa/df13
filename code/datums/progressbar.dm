@@ -30,6 +30,8 @@
 		stack_trace("/datum/progressbar created with [isnull(User) ? "null" : "invalid"] goal_number")
 		qdel(src)
 		return
+	if(!ismob(target) && !isturf(target))
+		target = get_turf(target)
 	goal = goal_number
 	bar_loc = target
 	bar = image('icons/hud/progressbar.dmi', bar_loc, "prog_bar_0")
