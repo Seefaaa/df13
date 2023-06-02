@@ -30,7 +30,9 @@
 	if (broken_states)
 		stack_trace("broken_states defined at the object level for [type], move it to setup_broken_states()")
 	else
-		broken_states = string_list(setup_broken_states())
+		var/list/new_broken_states = setup_broken_states()
+		if(new_broken_states)
+			broken_states = new_broken_states
 	if (burnt_states)
 		stack_trace("burnt_states defined at the object level for [type], move it to setup_burnt_states()")
 	else
@@ -45,7 +47,7 @@
 		GLOB.station_turfs += src
 
 /turf/open/floor/proc/setup_broken_states()
-	return list("damaged1", "damaged2", "damaged3", "damaged4", "damaged5")
+	return
 
 /turf/open/floor/proc/setup_burnt_states()
 	return
@@ -113,7 +115,8 @@
 /turf/open/floor/proc/break_tile()
 	if(broken)
 		return
-	icon_state = pick(broken_states)
+	if(broken_states)
+		icon_state = pick(broken_states)
 	broken = 1
 
 /turf/open/floor/burn_tile()
