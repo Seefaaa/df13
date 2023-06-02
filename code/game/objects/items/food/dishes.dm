@@ -24,6 +24,14 @@
 	mood_event_type = /datum/mood_event/ate_meal
 	mood_gain = 2
 
+/obj/item/food/dish/cooked_egg
+	name = "cooked egg"
+	desc = "Tender protein ball. Perfect for a snack."
+	icon_state = "cooked_egg"
+	food_reagents = list(/datum/reagent/consumable/nutriment=40)
+	mood_event_type = /datum/mood_event/ate_meal
+	mood_gain = 1
+
 /obj/item/food/dish/bread
 	name = "bread"
 	desc = "A loaf of fresh bread. Classic staple food."

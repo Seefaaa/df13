@@ -11,6 +11,7 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	var/obj/result
 	var/req_lvl = 12 // what cooking level is required to add this recipe to dwarf's notes
 	var/cooking_text = "Tell admins about me."
+	var/consume_container = TRUE // do we delete original container it was cooked in?
 
 ///******************OVEN RECIPES******************///
 /datum/cooking_recipe/oven
@@ -23,6 +24,14 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	result = /obj/item/food/dish/baked_potato
 	req_lvl = 1
 	cooking_text = "Place the potato on the plate and bake it in the oven."
+
+/datum/cooking_recipe/pot/cooked_egg
+	req_items = list(/obj/item/food/egg=1)
+	req_reagents = list(/datum/reagent/water=15)
+	result = /obj/item/food/dish/cooked_egg
+	req_lvl = 1
+	cooking_text = "Put everything in a pot and cook on the stove."
+	consume_container = FALSE
 
 /datum/cooking_recipe/oven/plate/plump_steak
 	req_items = list(/obj/item/food/slice/plump_helmet=3, /obj/item/food/meat/slab=1)
