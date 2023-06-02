@@ -23,6 +23,11 @@
 	desc = "Meat cutlet, made for a greater dishes."
 	icon_state = "troll_slice"
 
+/obj/item/food/slice/meat/chicken
+	name = "chicken meat slice"
+	desc = "Poultry cutlet."
+	icon_state = "chicken_slice"
+
 /obj/item/food/slice/dough
 	name = "dough slice"
 	desc = "Cut piece of a dough"

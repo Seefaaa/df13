@@ -6,6 +6,7 @@
 	icon_state = "chicken_brown"
 	maxHealth = 50
 	health = 50
+	butcher_results = list(/obj/item/food/meat/slab/chicken=list(1,4))
 	childtype = list(/mob/living/simple_animal/chicken/baby)
 	animal_species = /mob/living/simple_animal/chicken
 	// Used for icon state: see ./Initialize

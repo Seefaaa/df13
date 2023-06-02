@@ -21,3 +21,11 @@
 
 /obj/item/food/meat/slab/troll/MakeProcessable()
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/slice/meat/troll, 3, 2 SECONDS)
+
+/obj/item/food/meat/slab/chicken
+	name = "chicken meat"
+	desc = "Slab of a chicken meat."
+	icon_state = "chicken_meat"
+
+/obj/item/food/meat/slab/chicken/MakeProcessable()
+	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/slice/meat/chicken, 3, 2 SECONDS)
