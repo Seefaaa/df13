@@ -86,6 +86,13 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	req_lvl = 3
 	cooking_text = "Put everything in a pot and cook on the stove."
 
+/datum/cooking_recipe/pot/veggie_stew
+	req_items = list(/obj/item/growable/onion=1, /obj/item/growable/carrot=2, /obj/item/growable/turnip=1)
+	req_reagents = list(/datum/reagent/water=15)
+	result = /obj/item/transfer_food/veggie_stew
+	req_lvl = 3
+	cooking_text = "Put everything in a pot and cook on the stove."
+
 ///******************PLATE RECIPES******************///
 /datum/cooking_recipe/plate
 

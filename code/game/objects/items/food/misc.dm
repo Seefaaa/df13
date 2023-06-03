@@ -38,10 +38,18 @@
 
 
 /obj/item/transfer_food/plump_stew
-	name = "stew in pot"
+	name = "plump stew in pot"
 	desc = "Almost stew."
 	icon_state = "cooking_pot_dwarven_stew"
 	food_inside = /obj/item/food/dish/plump_stew
+	required_container = /obj/item/reagent_containers/glass/plate/bowl
+	original_container = /obj/item/reagent_containers/glass/cooking_pot
+
+/obj/item/transfer_food/veggie_stew
+	name = "veggie stew in pot"
+	desc = "Almost stew."
+	icon_state = "cooking_pot_dwarven_stew"
+	food_inside = /obj/item/food/dish/veggie_stew
 	required_container = /obj/item/reagent_containers/glass/plate/bowl
 	original_container = /obj/item/reagent_containers/glass/cooking_pot
 

@@ -91,6 +91,14 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment=120)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
+/obj/item/food/dish/veggie_stew
+	name = "veggie stew"
+	desc = "Simple yet tasteful stew, dwarves would cook in their hold."
+	icon_state = "veggie_stew"
+	plate_type = /obj/item/reagent_containers/glass/plate/bowl
+	food_reagents = list(/datum/reagent/consumable/nutriment=100)
+	mood_event_type = /datum/mood_event/ate_meal/decent
+
 /obj/item/food/dish/plump_pie
 	name = "plump pie"
 	desc = "Mushroom pie. A bit weird combination, but dwarves like it."
