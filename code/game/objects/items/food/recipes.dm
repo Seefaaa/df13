@@ -22,14 +22,14 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 /datum/cooking_recipe/oven/plate/baked_potato
 	req_items = list(/obj/item/growable/potato=1)
 	result = /obj/item/food/dish/baked_potato
-	req_lvl = 1
+	req_lvl = 2
 	cooking_text = "Place the potato on the plate and bake it in the oven."
 
 /datum/cooking_recipe/pot/cooked_egg
 	req_items = list(/obj/item/food/egg=1)
 	req_reagents = list(/datum/reagent/water=15)
 	result = /obj/item/food/dish/cooked_egg
-	req_lvl = 1
+	req_lvl = 2
 	cooking_text = "Put everything in a pot and cook on the stove."
 	consume_container = FALSE
 
@@ -102,19 +102,19 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 /datum/cooking_recipe/stick/plump_skewer
 	req_items = list(/obj/item/growable/plump_helmet=3)
 	result = /obj/item/food/dish/plump_skewer
-	req_lvl = 1
+	req_lvl = 2
 	cooking_text = "Insert all of it onto a stick and apply some fire."
 
 /datum/cooking_recipe/stick/meat_skewer
 	req_items = list(/obj/item/food/slice/meat=4)
 	result = /obj/item/food/dish/meat_skewer
-	req_lvl = 1
+	req_lvl = 2
 	cooking_text = "Insert all of it onto a stick and apply some fire."
 
 /datum/cooking_recipe/stick/balanced_skewer
 	req_items = list(/obj/item/food/slice/meat=2, /obj/item/growable/carrot=1, /obj/item/growable/turnip=1)
 	result = /obj/item/food/dish/balanced_skewer
-	req_lvl = 1
+	req_lvl = 2
 	cooking_text = "Insert all of it onto a stick and apply some fire."
 
 ///******************BOWL RECIPES******************///
