@@ -50,28 +50,6 @@
 
 
 
-/mob/living/simple_animal/chicken/rooster/Life(delta_time, times_fired)
-	..()
-
-
-/mob/living/simple_animal/chicken/hen/Life(delta_time,times_fired)
-	..()
-	egg_progress++
-	//make_babies()
-	if(egg_progress > 99)
-		lay_egg()
-
-/mob/living/simple_animal/chicken/rooster/Life(delta_time, times_fired)
-	. = ..()
-	make_babies()
-
-/mob/living/simple_animal/chicken/hen/proc/lay_egg()
-	egg_progress = 0
-	if(fertile_count)
-		new /obj/item/food/egg/fertile(src.loc)
-		fertile_count -= 1
-	else
-		new /obj/item/food/egg(src.loc)
 
 /mob/living/simple_animal/chicken/hen
 	name = "hen"
@@ -82,11 +60,32 @@
 	var/egg_progress
 	var/fertile_count = 0
 
+/mob/living/simple_animal/chicken/hen/Life(delta_time,times_fired)
+	..()
+	egg_progress++
+	//make_babies()
+	if(egg_progress > 99)
+		lay_egg()
+
+
+
+/mob/living/simple_animal/chicken/hen/proc/lay_egg()
+	egg_progress = 0
+	if(fertile_count)
+		new /obj/item/food/egg/fertile(src.loc)
+		fertile_count -= 1
+	else
+		new /obj/item/food/egg(src.loc)
+
 /mob/living/simple_animal/chicken/rooster
 	name = "rooster"
 	gender = MALE
 	icon_state = "chicken_brown"
 	icon_dead = "chicken_brown_dead"
+
+/mob/living/simple_animal/chicken/rooster/Life(delta_time, times_fired)
+	. = ..()
+	make_babies()
 
 /mob/living/simple_animal/chicken/rooster/make_babies()
 	if(stat || next_scan_time > world.time || !childtype || !animal_species || !SSticker.IsRoundInProgress())
@@ -123,4 +122,4 @@
 
 /mob/living/simple_animal/chicken/rooster/proc/fertilize(mob/living/simple_animal/chicken/hen/H)
 	if(H.fertile_count < 1)
-		H.fertile_count += rand(1,5)
+		H.fertile_count += 1
