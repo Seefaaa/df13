@@ -21,6 +21,10 @@
 		src.grade = _grade
 	var/grd_name = grade_name(grade)
 	name = "[grd_name][initial(name)][grd_name]"
+	apply_grade_extra(_grade)
+
+/obj/proc/apply_grade_extra(_grade=null)
+	return
 
 /proc/grade_name(grade)
 	var/list/grades = list("*", "-", "+", "≡", "☼", "☼☼")

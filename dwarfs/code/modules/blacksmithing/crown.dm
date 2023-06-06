@@ -18,13 +18,13 @@
     . = ..()
     GLOB.crowns-=src
 
-/obj/item/clothing/head/helmet/crown/apply_grade(grade)
+/obj/item/clothing/head/helmet/crown/apply_grade_extra(grade)
 	. = ..()
-	for(var/action/a in king_actions)
+	for(var/datum/action/a in king_actions)
 		qdel(a)
 	if(grade >= 2)
 		king_actions += new /datum/action/item_action/send_message_action(src)
-		king_actions += /datum/action/item_action/show_location(src)
+		king_actions += new /datum/action/item_action/show_location(src)
 		return
 	if(grade >= 1)
 		king_actions += new /datum/action/item_action/send_message_action(src)
