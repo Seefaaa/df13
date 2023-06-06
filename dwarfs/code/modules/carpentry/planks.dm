@@ -20,12 +20,12 @@
 	return 10 * amount
 
 GLOBAL_LIST_INIT(plank_recipes, list (
-	new/datum/stack_recipe("Weapon Hilt", /obj/item/weapon_hilt, 1, time=5 SECONDS, tools=TOOL_AXE),
+	new/datum/stack_recipe("Weapon Hilt", /obj/item/weapon_hilt, 1, time=5 SECONDS, res_amount=2, tools=TOOL_AXE),
 	new/datum/stack_recipe("Bucket", /obj/item/reagent_containers/glass/bucket, 3, time=15 SECONDS, tools=TOOL_AXE),
 	new/datum/stack_recipe("Bed", /obj/structure/bed, 8, time=25 SECONDS, tools=TOOL_AXE),
-	new/datum/stack_recipe("Plate", /obj/item/reagent_containers/glass/plate/regular, 2, time=10 SECONDS, tools=TOOL_AXE),
-	new/datum/stack_recipe("Flat Plate", /obj/item/reagent_containers/glass/plate/flat, 2, time=10 SECONDS, tools=TOOL_AXE),
-	new/datum/stack_recipe("Bowl", /obj/item/reagent_containers/glass/plate/bowl, 3, time=10 SECONDS, tools=TOOL_AXE),
+	new/datum/stack_recipe("Plate", /obj/item/reagent_containers/glass/plate/regular, 2, time=10 SECONDS, res_amount=2, tools=TOOL_AXE),
+	new/datum/stack_recipe("Flat Plate", /obj/item/reagent_containers/glass/plate/flat, 2, time=10 SECONDS, res_amount=2, tools=TOOL_AXE),
+	new/datum/stack_recipe("Bowl", /obj/item/reagent_containers/glass/plate/bowl, 3, time=10 SECONDS, res_amount=2, tools=TOOL_AXE),
 	new/datum/stack_recipe("Stick", /obj/item/stick, res_amount=2, time=5 SECONDS, tools=TOOL_AXE),
 	new/datum/stack_recipe("Wooden Cup", /obj/item/reagent_containers/glass/cup, 2, time=10 SECONDS, tools=TOOL_AXE),
 	new/datum/stack_recipe("Rolling Pin", /obj/item/kitchen/rollingpin, 2, time=5 SECONDS, tools=TOOL_AXE),
