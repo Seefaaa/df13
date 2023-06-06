@@ -13,8 +13,6 @@
 	// Used for icon state: see ./Initialize
 	gender = NEUTER
 	var/color_txt = "brown"
-	var/food_level
-
 
 /mob/living/simple_animal/chicken/Initialize(mapload, _gender=null, _color=null)
 	. = ..()
@@ -48,32 +46,25 @@
 		new /mob/living/simple_animal/chicken/rooster(get_turf(src), gender, color_txt)
 	qdel(src)
 
-
-
-
 /mob/living/simple_animal/chicken/hen
 	name = "hen"
 	gender = FEMALE
-	childtype = list(/obj/item/food/egg/fertile)
 	icon_state = "chicken_white"
 	icon_dead = "chicken_white_dead"
-	var/egg_progress
-	var/fertile_count = 0
+	var/egg_progress = 0
+	var/fertile
 
 /mob/living/simple_animal/chicken/hen/Life(delta_time,times_fired)
-	..()
+	. = ..()
 	egg_progress++
-	//make_babies()
 	if(egg_progress > 99)
 		lay_egg()
 
-
-
 /mob/living/simple_animal/chicken/hen/proc/lay_egg()
 	egg_progress = 0
-	if(fertile_count)
+	if(fertile)
 		new /obj/item/food/egg/fertile(src.loc)
-		fertile_count -= 1
+		fertile = FALSE
 	else
 		new /obj/item/food/egg(src.loc)
 
@@ -119,7 +110,6 @@
 			walk_to(src, partner, 0, 6)
 			fertilize(partner)
 
-
 /mob/living/simple_animal/chicken/rooster/proc/fertilize(mob/living/simple_animal/chicken/hen/H)
-	if(H.fertile_count < 1)
-		H.fertile_count += 1
+	if(!H.fertile)
+		H.fertile = TRUE
