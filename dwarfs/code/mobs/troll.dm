@@ -39,7 +39,7 @@
 
 /mob/living/simple_animal/hostile/troll/Life()
 	. = ..()
-	if(target && rockfalling_last < world.time && prob(50))
+	if(target && rockfalling_last < world.time && prob(50) && z != GLOB.surface_z)
 		rockfalling_last = world.time + 60 SECONDS
 		for(var/turf/open/T in view(7, src))
 			if(prob(5))
