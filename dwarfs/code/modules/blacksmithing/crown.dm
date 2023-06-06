@@ -60,12 +60,14 @@
 	name = "Show your location to your subjects"
 
 /obj/item/clothing/head/helmet/crown/proc/show_location(mob/user)
-	for(var/mob/M in GLOB.dwarf_list)
-		if(tracking)
-			tracking = FALSE
+	if(tracking)
+		tracking = FALSE
+		for(var/mob/M in GLOB.dwarf_list)
+
 			M.clear_alert("kingsense")
-		else
-			tracking = TRUE
+	else
+		tracking = TRUE
+		for(var/mob/M in GLOB.dwarf_list)
 			var/atom/movable/screen/alert/kingsense/K = M.throw_alert("kingsense", /atom/movable/screen/alert/kingsense)
 			K.king = user
 
