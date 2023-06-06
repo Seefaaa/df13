@@ -6,12 +6,14 @@
 	if(plate_type)
 		var/mob/living/carbon/human/H = feeder
 		var/held_index = H.is_holding(src)
+		var/obj/item/I = new plate_type
+		if(materials) //apply stored materials back to our place if we actually saved any
+			I.apply_material(materials)
+		qdel(src)
 		if(held_index)
-			var/obj/item/I = new plate_type
-			qdel(src)
 			H.put_in_hand(I, held_index)
 		else
-			new plate_type(get_turf(feeder))
+			I.forceMove(get_turf(feeder))
 
 //**********************FIRST TIER DISHES*****************************//
 
@@ -56,6 +58,7 @@
 	plate_type = /obj/item/stick
 	food_reagents = list(/datum/reagent/consumable/nutriment=55)
 	mood_event_type = /datum/mood_event/ate_meal
+	materials = /datum/material/wood/pine/treated
 
 /obj/item/food/dish/meat_skewer
 	name = "meat skewer"
@@ -64,6 +67,7 @@
 	plate_type = /obj/item/stick
 	food_reagents = list(/datum/reagent/consumable/nutriment=65)
 	mood_event_type = /datum/mood_event/ate_meal
+	materials = /datum/material/wood/pine/treated
 
 /obj/item/food/dish/balanced_skewer
 	name = "balanced skewer"
@@ -72,6 +76,7 @@
 	plate_type = /obj/item/stick
 	food_reagents = list(/datum/reagent/consumable/nutriment=75)
 	mood_event_type = /datum/mood_event/ate_meal
+	materials = /datum/material/wood/pine/treated
 
 /obj/item/food/dish/salad
 	name = "salad"
