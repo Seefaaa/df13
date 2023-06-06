@@ -67,10 +67,11 @@
 
 /mob/living/simple_animal/chicken/hen/proc/lay_egg()
 	egg_progress = 0
-	var/obj/item/food/egg/E = new /obj/item/food/egg(src.loc)
 	if(fertile_count)
-		E.fertelize()
+		new /obj/item/food/egg/fertile(src.loc)
 		fertile_count -= 1
+	else
+		new /obj/item/food/egg(src.loc)
 
 /mob/living/simple_animal/chicken/hen
 	name = "hen"
