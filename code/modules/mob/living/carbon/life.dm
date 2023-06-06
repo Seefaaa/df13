@@ -78,6 +78,13 @@
 		if(prob(10))
 			INVOKE_ASYNC(src, .proc/emote, "gasp")
 
+	//if(reagents.has_reagent(crit_stabilizing_reagent))
+	//	return
+	if(health >= crit_threshold)
+		adjustOxyLoss(HUMAN_MAX_OXYLOSS)
+	else if(!HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
+		adjustOxyLoss(HUMAN_CRIT_MAX_OXYLOSS)
+
 /mob/living/carbon/proc/has_smoke_protection()
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))
 		return TRUE
