@@ -226,7 +226,11 @@
 					return
 
 			var/obj/O
-			if(recipe.max_res_amount > 1) //Is it a stack?
+			if(recipe.res_amount > 1 && !isstack(recipe.result_type))
+				for(var/i in 1 to recipe.res_amount)
+					var/obj/obj = new recipe.result_type (usr.drop_location())
+					obj.apply_material(materials)
+			else if(recipe.res_amount > 1 && isstack(recipe.result_type))
 				O = new recipe.result_type(usr.drop_location(), recipe.res_amount * multiplier)
 			else if(ispath(recipe.result_type, /turf))
 				var/turf/T = usr.drop_location()
