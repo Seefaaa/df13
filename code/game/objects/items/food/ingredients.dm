@@ -142,11 +142,13 @@
 
 /obj/item/food/egg/fertile/Initialize(mapload)
 	. = ..()
-	fertelize()
-
-/obj/item/food/egg/proc/fertelize()
 	fertile = TRUE
 	addtimer(CALLBACK(src, .proc/hatch), time_till_birth)
+
+/obj/item/food/egg/proc/fertelize()
+	new /obj/item/food/egg/fertile(src.loc)
+	qdel(src)
+
 
 /obj/item/food/egg/proc/hatch()
 	new containing_mob(src.loc)
