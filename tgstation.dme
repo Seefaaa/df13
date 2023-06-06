@@ -1181,6 +1181,7 @@
 #include "dwarfs\code\modules\blacksmithing\anvils.dm"
 #include "dwarfs\code\modules\blacksmithing\blacksmithing_items.dm"
 #include "dwarfs\code\modules\blacksmithing\clothing.dm"
+#include "dwarfs\code\modules\blacksmithing\crown.dm"
 #include "dwarfs\code\modules\blacksmithing\forge.dm"
 #include "dwarfs\code\modules\blacksmithing\sconce.dm"
 #include "dwarfs\code\modules\blacksmithing\smelter.dm"
