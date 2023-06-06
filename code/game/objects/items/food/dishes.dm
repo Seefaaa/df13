@@ -19,7 +19,7 @@
 	name = "baked potato"
 	desc = "Very basic meal for a quick snack."
 	icon_state = "baked_potato"
-	plate_type = /obj/item/reagent_containers/glass/plate
+	plate_type = /obj/item/reagent_containers/glass/plate/regular
 	food_reagents = list(/datum/reagent/consumable/nutriment=30)
 	mood_event_type = /datum/mood_event/ate_meal
 	mood_gain = 2
