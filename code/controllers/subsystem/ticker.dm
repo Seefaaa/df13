@@ -434,9 +434,9 @@ SUBSYSTEM_DEF(ticker)
 			y = rand(10, world.maxx-10)
 			x = pick(10, world.maxy-10)
 		for(var/mob/dead/new_player/NP in group)
-			NP.mind.assigned_role = "Dwarf"
 			var/mob/living/character = NP.create_character(TRUE) //creates the human and transfers vars and mind
 			SSticker.minds += character.mind
+			character.mind.assigned_role = "Dwarf"
 			character.client.init_verbs() // init verbs for the late join
 			var/mob/living/carbon/human/humanc
 			if(ishuman(character))
