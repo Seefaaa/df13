@@ -51,13 +51,6 @@
 		if(spec_return)
 			return spec_return
 
-	//MARTIAL ART STUFF
-	if(mind)
-		if(mind.martial_art && mind.martial_art.can_use(src)) //Some martial arts users can deflect projectiles!
-			var/martial_art_result = mind.martial_art.on_projectile_hit(src, P, def_zone)
-			if(!(martial_art_result == BULLET_ACT_HIT))
-				return martial_art_result
-
 	if(!(P.original == src && P.firer == src)) //can't block or reflect when shooting yourself
 		if(P.reflectable & REFLECT_NORMAL)
 			if(check_reflect(def_zone)) // Checks if you've passed a reflection% check
@@ -111,29 +104,25 @@
 	if(offhand && istype(offhand, /obj/item/shield))
 		to_parry = offhand
 	if(to_parry && to_parry.skill)
-		if(prob(mind.get_skill_modifier(to_parry.skill, SKILL_PARRY_MODIFIER)+to_parry.block_chance))
+		if(prob(get_skill_modifier(to_parry.skill, SKILL_PARRY_MODIFIER)+to_parry.block_chance))
 			visible_message(span_danger("<b>[src]</b> parries [attack_text]!"), span_danger("You parry [attack_text] attack!"))
 			if(to_parry.parrysound)
 				playsound(src, to_parry.parrysound, 60, TRUE, -1)
-			mind.adjust_experience(to_parry.skill, initial(to_parry.skill.exp_per_parry))
+			adjust_experience(to_parry.skill, initial(to_parry.skill.exp_per_parry))
 			return TRUE
 	return FALSE
 
 /mob/living/carbon/human/proc/check_block()
-	if(mind)
-		var/obj/item/to_parry = get_active_held_item()
-		var/obj/item/offhand = get_inactive_held_item()
-		if(offhand && istype(offhand, /obj/item/shield))
-			to_parry = offhand
-		if(to_parry && to_parry.skill)
-			if(prob(mind.get_skill_modifier(to_parry.skill, SKILL_PARRY_MODIFIER)+to_parry.block_chance))
-				visible_message(span_danger("<b>[src]</b> parries the attack!"), span_danger("You parry the attack!"))
-				if(to_parry.parrysound)
-					playsound(src, to_parry.parrysound, 60, TRUE, -1)
-				mind.adjust_experience(to_parry.skill, initial(to_parry.skill.exp_per_parry))
-				return TRUE
-		if(mind.martial_art && prob(mind.martial_art.block_chance) && mind.martial_art.can_use(src) && throw_mode && !incapacitated(FALSE, TRUE))
-			playsound(src, 'sound/misc/block_hand.ogg', 100)
+	var/obj/item/to_parry = get_active_held_item()
+	var/obj/item/offhand = get_inactive_held_item()
+	if(offhand && istype(offhand, /obj/item/shield))
+		to_parry = offhand
+	if(to_parry && to_parry.skill)
+		if(prob(get_skill_modifier(to_parry.skill, SKILL_PARRY_MODIFIER) + to_parry.block_chance))
+			visible_message(span_danger("<b>[src]</b> parries the attack!"), span_danger("You parry the attack!"))
+			if(to_parry.parrysound)
+				playsound(src, to_parry.parrysound, 60, TRUE, -1)
+			adjust_experience(to_parry.skill, initial(to_parry.skill.exp_per_parry))
 			return TRUE
 	return FALSE
 

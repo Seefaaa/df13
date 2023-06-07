@@ -56,11 +56,11 @@
 			to_chat(user, span_warning("Nice try mongoid."))
 			return
 		var/turf/T = src
-		var/time = 5 SECONDS * user.mind.get_skill_modifier(/datum/skill/masonry, SKILL_SPEED_MODIFIER)
+		var/time = 5 SECONDS * user.get_skill_modifier(/datum/skill/masonry, SKILL_SPEED_MODIFIER)
 		to_chat(user, span_notice("You start carving stone floor..."))
 		if(I.use_tool(src, user, time, volume=50))
 			to_chat(user, span_notice("You finish carving stone floor."))
-			user.mind.adjust_experience(/datum/skill/masonry, rand(3,6))
+			user.adjust_experience(/datum/skill/masonry, rand(3,6))
 			var/turf/floor = T.ChangeTurf(/turf/open/floor/tiles)
 			floor.apply_material(materials)
 	else
@@ -112,7 +112,7 @@
 			if((locate(/turf/open/water) in range(1, T)))
 				T.waterlevel = T.watermax
 				T.update_appearance()
-			user.mind.adjust_experience(/datum/skill/farming, 7)
+			user.adjust_experience(/datum/skill/farming, 7)
 		else
 			stop_sound_channel_nearby(src, channel)
 	else if(I.tool_behaviour == TOOL_SHOVEL || I.tool_behaviour == TOOL_PICKAXE)
@@ -247,7 +247,7 @@
 		O.reagents.remove_reagent(/datum/reagent/water, to_remove)
 		to_chat(user, span_notice("You water [src]."))
 		waterlevel = clamp(waterlevel+to_remove, 0, watermax)
-		user.mind.adjust_experience(/datum/skill/farming, rand(1,5))
+		user.adjust_experience(/datum/skill/farming, rand(1,5))
 		update_appearance()
 	else
 		return ..()

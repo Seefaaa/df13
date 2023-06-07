@@ -144,9 +144,6 @@
 				if(S.next_step(user, user.a_intent))
 					return TRUE
 
-	if (user.apply_martial_art(src))
-		return TRUE
-
 	return FALSE
 
 

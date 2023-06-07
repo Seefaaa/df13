@@ -185,7 +185,7 @@
 		P.update_appearance()
 		to_chat(user, span_notice("You plant [S]."))
 		qdel(S)
-		user.mind.adjust_experience(/datum/skill/farming, rand(1,7))
+		user.adjust_experience(/datum/skill/farming, rand(1,7))
 	return FALSE
 
 /turf/open/floor/crowbar_act(mob/living/user, obj/item/I)

@@ -1348,10 +1348,10 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 			else if(firstspace == name_length)
 				real_name += "[pick(GLOB.last_names)]"
 
-	if(skills && character.mind && !character_setup)
+	if(skills && !character_setup)
 		for(var/skilltype in skills)
 			if(skills[skilltype] > 0)
-				character.mind.adjust_experience(skilltype, SKILL_EXP_LIST[skills[skilltype]+1])
+				character.adjust_experience(skilltype, SKILL_EXP_LIST[skills[skilltype]+1])
 
 	character.real_name = real_name
 	character.name = character.real_name

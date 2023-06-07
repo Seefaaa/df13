@@ -47,33 +47,33 @@
 /datum/component/butchering/proc/startButcher(obj/item/source, mob/living/simple_animal/M, mob/living/user)
 	to_chat(user, span_notice("You start butchering [M]..."))
 	playsound(M.loc, butcher_sound, 50, TRUE, -1)
-	if(do_mob(user, M, speed*user.mind.get_skill_modifier(/datum/skill/butchering, SKILL_SPEED_MODIFIER)) && M.Adjacent(source))
+	if(do_mob(user, M, speed*user.get_skill_modifier(/datum/skill/butchering, SKILL_SPEED_MODIFIER)) && M.Adjacent(source))
 		Butcher(source, user, M)
 
 /datum/component/butchering/proc/startSkin(obj/item/source, mob/living/simple_animal/M, mob/living/user)
 	to_chat(user, span_notice("You start skinning [M]..."))
 	playsound(M.loc, butcher_sound, 50, TRUE, -1)
-	if(do_mob(user, M, speed*user.mind.get_skill_modifier(/datum/skill/skinning, SKILL_SPEED_MODIFIER)) && M.Adjacent(source))
+	if(do_mob(user, M, speed*user.get_skill_modifier(/datum/skill/skinning, SKILL_SPEED_MODIFIER)) && M.Adjacent(source))
 		Skin(source, user, M)
 
 /datum/component/butchering/proc/Skin(obj/item/source, mob/living/butcher, mob/living/simple_animal/meat)
-	var/full_chance = butcher.mind.get_skill_modifier(/datum/skill/skinning, SKILL_PROBS_MODIFIER)
-	var/damaged_chance = butcher.mind.get_skill_modifier(/datum/skill/skinning, SKILL_PROBS2_MODIFIER)
+	var/full_chance = butcher.get_skill_modifier(/datum/skill/skinning, SKILL_PROBS_MODIFIER)
+	var/damaged_chance = butcher.get_skill_modifier(/datum/skill/skinning, SKILL_PROBS2_MODIFIER)
 	if(source.tool_behaviour == TOOL_KNIFE)
 		full_chance += 15
 		damaged_chance += 25
 	if(prob(full_chance))
 		butcher.visible_message(span_notice("[butcher] skins [meat]."), span_notice("You skin [meat]."))
 		new meat.hide_type (get_turf(meat))
-		butcher.mind.adjust_experience(/datum/skill/skinning, 37)
+		butcher.adjust_experience(/datum/skill/skinning, 37)
 	else if(prob(damaged_chance))
 		butcher.visible_message(span_notice("[butcher] poorly skins [meat]."), span_notice("You poorly skin [meat]."))
 		var/dam_hidetype = initial(meat.hide_type.damaged_type)
 		new dam_hidetype (get_turf(meat))
-		butcher.mind.adjust_experience(/datum/skill/skinning, 19)
+		butcher.adjust_experience(/datum/skill/skinning, 19)
 	else
 		butcher.visible_message(span_notice("[butcher] fails to skin [meat]."), span_warning("You fail to skin [meat]."))
-		butcher.mind.adjust_experience(/datum/skill/skinning, 10)
+		butcher.adjust_experience(/datum/skill/skinning, 10)
 	meat.skinned = TRUE
 	if(meat.icon_skinned)
 		meat.icon_state = meat.icon_skinned
@@ -88,8 +88,8 @@
 /datum/component/butchering/proc/Butcher(obj/item/source, mob/living/butcher, mob/living/simple_animal/meat)
 	var/list/results = list()
 	var/turf/T = meat.drop_location()
-	var/lower_modifier = butcher.mind.get_skill_modifier(/datum/skill/butchering, SKILL_AMOUNT_MIN_MODIFIER)
-	var/upper_modifier = butcher.mind.get_skill_modifier(/datum/skill/butchering, SKILL_AMOUNT_MAX_MODIFIER)
+	var/lower_modifier = butcher.get_skill_modifier(/datum/skill/butchering, SKILL_AMOUNT_MIN_MODIFIER)
+	var/upper_modifier = butcher.get_skill_modifier(/datum/skill/butchering, SKILL_AMOUNT_MAX_MODIFIER)
 	if(source.tool_behaviour == TOOL_KNIFE)
 		lower_modifier += 1
 		upper_modifier += 2
@@ -106,8 +106,7 @@
 	if(butcher)
 		butcher.visible_message(span_notice("[butcher] butchers [meat]."), \
 								span_notice("You butcher [meat]."))
-		if(butcher.mind)
-			butcher.mind.adjust_experience(/datum/skill/butchering, 12)
+		butcher.adjust_experience(/datum/skill/butchering, 12)
 	butcher_callback?.Invoke(butcher, meat)
 	meat.harvest(butcher)
 	meat.gib(FALSE, FALSE, TRUE)

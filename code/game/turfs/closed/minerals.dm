@@ -53,7 +53,7 @@
 		var/turf/T = user.loc
 		if (!isturf(T))
 			return
-		var/time = 3 SECONDS * user.mind.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
+		var/time = 3 SECONDS * user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
 		if(last_act + time > world.time)//prevents message spam
 			return
 		last_act = world.time
@@ -69,7 +69,7 @@
 
 /turf/closed/mineral/attackby_secondary(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_PICKAXE)
-		var/time = 3 SECONDS * user.mind.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
+		var/time = 3 SECONDS * user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
 		if(last_act + time > world.time)//prevents message spam
 			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 		last_act = world.time
@@ -85,8 +85,8 @@
 		. = ..()
 
 /turf/closed/mineral/proc/gets_drilled(mob/user, give_exp = FALSE)
-	var/min_mod = user.mind ? user.mind.get_skill_modifier(/datum/skill/mining, SKILL_AMOUNT_MIN_MODIFIER) : 0
-	var/max_mod = user.mind ? user.mind.get_skill_modifier(/datum/skill/mining, SKILL_AMOUNT_MAX_MODIFIER) : 0
+	var/min_mod = user.get_skill_modifier(/datum/skill/mining, SKILL_AMOUNT_MIN_MODIFIER)
+	var/max_mod = user.get_skill_modifier(/datum/skill/mining, SKILL_AMOUNT_MAX_MODIFIER)
 	var/to_spawn = rand(mineralAmt+min_mod, mineralAmt+max_mod)
 	if (mineralType && (mineralAmt > 0) && ispath(mineralType, /obj/item/stack))
 		if(to_spawn > 1)
@@ -98,9 +98,9 @@
 		var/mob/living/carbon/human/H = user
 		if(give_exp)
 			if (mineralType && (mineralAmt > 0))
-				H.mind.adjust_experience(/datum/skill/mining, initial(mineralType.mine_experience) * to_spawn)
+				H.adjust_experience(/datum/skill/mining, initial(mineralType.mine_experience) * to_spawn)
 			else
-				H.mind.adjust_experience(/datum/skill/mining, 4)
+				H.adjust_experience(/datum/skill/mining, 4)
 
 	var/flags = NONE
 	if(defer_change) // TODO: make the defer change var a var for any changeturf flag

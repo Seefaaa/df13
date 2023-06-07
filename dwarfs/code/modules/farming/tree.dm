@@ -19,13 +19,13 @@
 
 /obj/structure/plant/tree/proc/try_chop(obj/item/tool, mob/living/user)
 	to_chat(user, span_notice("You start chopping down [src]..."))
-	var/time_mod = user?.mind.get_skill_modifier(/datum/skill/logging, SKILL_SPEED_MODIFIER)
+	var/time_mod = user.get_skill_modifier(/datum/skill/logging, SKILL_SPEED_MODIFIER)
 	time_mod = time_mod ? time_mod : 1
 	var/channel = playsound(src.loc, 'dwarfs/sounds/tools/axe/axe_chop_long.ogg', 50, TRUE)
 	if(tool.use_tool(src, user, cutting_time*time_mod))
 		stop_sound_channel_nearby(src, channel)
 
-		user?.mind.adjust_experience(/datum/skill/logging, 3.6)
+		user.adjust_experience(/datum/skill/logging, 3.6)
 		if(current_step >= cutting_steps)
 			to_chat(user, span_notice("You chop down [src]."))
 			chop_tree(get_turf(src))

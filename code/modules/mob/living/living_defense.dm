@@ -210,18 +210,10 @@
 	log_combat(M, src, "attacked")
 	return TRUE
 
-/mob/living/attack_hand(mob/living/carbon/human/user)
-	. = ..()
-	if (user.apply_martial_art(src))
-		return TRUE
-
 /mob/living/attack_paw(mob/living/carbon/human/M, list/modifiers)
 	if(isturf(loc) && istype(loc.loc, /area/start))
 		to_chat(M, "No attacking people at spawn, you jackass.")
 		return FALSE
-
-	if (M.apply_martial_art(src))
-		return TRUE
 
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
 		if (M != src)

@@ -201,11 +201,11 @@
 	LAZYCLEARLIST(I.contents)
 	I.reagents.clear_reagents()
 	if(!R)
-		user.mind.adjust_experience(/datum/skill/cooking, 2)
+		user.adjust_experience(/datum/skill/cooking, 2)
 		new /obj/item/food/badrecipe(get_turf(src))
 		return
 	var/obj/item/food/F = initial(R.result)
-	user.mind.adjust_experience(/datum/skill/cooking, rand(10, 30))
+	user.adjust_experience(/datum/skill/cooking, rand(10, 30))
 	new F(get_turf(src))
 	if(R.consume_container)
 		if(left_item == I)

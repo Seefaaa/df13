@@ -45,8 +45,6 @@
 
 	var/list/spell_list = list() // Wizard mode & "Give Spell" badmin button.
 
-	var/datum/martial_art/martial_art
-	var/static/default_martial_art = new/datum/martial_art
 	var/miming = FALSE // Mime's vow of silence
 	var/list/antag_datums
 	var/antag_hud_icon_state = null //this mind's ANTAG_HUD should have this icon_state
@@ -67,19 +65,10 @@
 
 	var/list/learned_recipes //List of learned recipe TYPES.
 
-	///List of skills the user has received a reward for. Should not be used to keep track of currently known skills. Lazy list because it shouldnt be filled often
-	var/list/skills_rewarded
-	///List of skill datums
-	var/list/known_skills = list()
 	///Weakref to thecharacter we joined in as- either at roundstart or latejoin, so we know for persistent scars if we ended as the same person or not
 	var/datum/weakref/original_character
 	/// The index for what character slot, if any, we were loaded from, so we can track persistent scars on a per-character basis. Each character slot gets PERSISTENT_SCAR_SLOTS scar slots
 	var/original_character_slot_index
-
-	///Skill multiplier, adjusts how much xp you get/loose from adjust_xp. Dont override it directly, add your reason to experience_multiplier_reasons and use that as a key to put your value in there.
-	var/experience_multiplier = 1
-	///Skill multiplier list, just slap your multiplier change onto this with the type it is coming from as key.
-	var/list/experience_multiplier_reasons = list()
 
 	/// A lazy list of statuses to add next to this mind in the traitor panel
 	var/list/special_statuses
@@ -93,7 +82,6 @@
 	key = _key
 	src.key = _key
 	soulOwner = src
-	martial_art = default_martial_art
 
 /datum/mind/Destroy()
 	SSticker.minds -= src
@@ -150,7 +138,6 @@
 		C.last_mind = src
 	transfer_antag_huds(hud_to_transfer)				//inherit the antag HUD
 	transfer_actions(new_character)
-	transfer_martial_arts(new_character)
 	RegisterSignal(new_character, COMSIG_LIVING_DEATH, .proc/set_death_time)
 	if(active || force_key_move)
 		new_character.key = key		//now transfer the key to link the client to our new body
@@ -162,100 +149,6 @@
 //I cannot trust you fucks to do this properly
 /datum/mind/proc/set_original_character(new_original_character)
 	original_character = WEAKREF(new_original_character)
-
-/datum/mind/proc/get_skill(skill_type)
-	return type_from_list(skill_type, known_skills)
-
-///Return the amount of EXP needed to go to the next level. Returns 0 if max level
-/datum/mind/proc/exp_needed_to_level_up(skill)
-	var/lvl = update_skill_level(skill)
-	var/datum/skill/S = get_skill(skill)
-	if (lvl >= length(SKILL_EXP_LIST)) //If we're already past the last exp threshold
-		return 0
-	return SKILL_EXP_LIST[lvl+1] - S.experience
-
-///Adjust experience of a specific skill
-/datum/mind/proc/adjust_experience(skill, amt, silent = FALSE, force_old_level = 0)
-	var/datum/skill/S = get_skill(skill)
-	if(!S)
-		S = new skill
-		known_skills.Add(S)
-	var/old_level = force_old_level ? force_old_level : S.level //Get current level of the S skill
-	experience_multiplier = initial(experience_multiplier)
-	for(var/key in experience_multiplier_reasons)
-		experience_multiplier += experience_multiplier_reasons[key]
-	S.experience = max(0, S.experience + amt*experience_multiplier) //Update exp. Prevent going below 0
-	S.level = update_skill_level(skill)//Check what the current skill level is based on that skill's exp
-	if(silent)
-		return
-	if(S.level > old_level)
-		for(var/i in 1 to S.level-old_level)
-			S.level_gained(src, old_level+i, old_level)
-	else if(S.level < old_level)
-		S.level_lost(src, S.level, old_level)
-
-///Set experience of a specific skill to a number
-/datum/mind/proc/set_experience(skill, amt, silent = FALSE)
-	var/datum/skill/S = get_skill(skill)
-	if(!S)
-		S = new skill
-		known_skills.Add(S)
-	var/old_level = S.experience
-	S.experience = amt
-	adjust_experience(skill, 0, silent, old_level) //Make a call to adjust_experience to handle updating level
-
-///Set level of a specific skill
-/datum/mind/proc/set_level(skill, newlevel, silent = FALSE)
-	var/oldlevel = get_skill_level(skill)
-	var/difference = SKILL_EXP_LIST[newlevel] - SKILL_EXP_LIST[oldlevel]
-	adjust_experience(skill, difference, silent)
-
-///Check what the current skill level is based on that skill's exp
-/datum/mind/proc/update_skill_level(skill)
-	var/i = 0
-	var/datum/skill/S = get_skill(skill)
-	for (var/exp in SKILL_EXP_LIST)
-		i ++
-		if (S.experience >= SKILL_EXP_LIST[i])
-			continue
-		return i - 1 //Return level based on the last exp requirement that we were greater than
-	return i //If we had greater EXP than even the last exp threshold, we return the last level
-
-///Gets the skill's singleton and returns the result of its get_skill_modifier
-/datum/mind/proc/get_skill_modifier(skill, modifier)
-	var/datum/skill/S = get_skill(skill)
-	if(!S)
-		S = new skill
-		var/skill_modifier = S.get_skill_modifier(modifier, S.level)
-		qdel(S)
-		return skill_modifier
-	return S.get_skill_modifier(modifier, S.level)
-
-///Gets the player's current level number from the relevant skill
-/datum/mind/proc/get_skill_level(skill)
-	var/datum/skill/S = get_skill(skill)
-	return S?.level ? S.level : 1
-
-///Gets the player's current exp from the relevant skill
-/datum/mind/proc/get_skill_exp(skill)
-	var/datum/skill/S = get_skill(skill)
-	return S?.experience ? S.experience : 0
-
-/datum/mind/proc/get_skill_level_name(skill)
-	var/level = get_skill_level(skill)
-	return SSskills.level_names[level]
-
-/datum/mind/proc/print_levels(user)
-	if(!length(known_skills))
-		to_chat(user, span_notice("You don't have any skills."))
-		return
-	var/msg = span_info("<EM>My skills</EM>")
-	for(var/datum/skill/S in known_skills)
-		msg += span_notice("\n[S.name] - [get_skill_level_name(S.type)]")
-		if(S.level != 11)
-			msg += span_blue(": [round(S.experience/SKILL_EXP_LIST[S.level+1], 0.01)*100]% until [SSskills.level_names[S.level+1]]")
-
-	to_chat(user, "<div class='examine_block'>[msg]</div>")
 
 /datum/mind/proc/set_death_time()
 	SIGNAL_HANDLER
@@ -505,15 +398,6 @@
 		to_chat(current, "<B>Objective #[obj_count]</B>: [O.explanation_text]")
 		obj_count++
 
-/datum/mind/proc/transfer_martial_arts(mob/living/new_character)
-	if(!ishuman(new_character))
-		return
-	if(martial_art)
-		if(martial_art.base) //Is the martial art temporary?
-			martial_art.remove(new_character)
-		else
-			martial_art.teach(new_character)
-
 /datum/mind/proc/transfer_actions(mob/living/new_character)
 	if(current?.actions)
 		for(var/datum/action/A in current.actions)
@@ -535,11 +419,6 @@
 /mob/proc/sync_mind()
 	mind_initialize()	//updates the mind (or creates and initializes one if one doesn't exist)
 	mind.active = TRUE	//indicates that the mind is currently synced with a client
-
-/datum/mind/proc/has_martialart(string)
-	if(martial_art && martial_art.id == string)
-		return martial_art
-	return FALSE
 
 ///Adds addiction points to the specified addiction
 /datum/mind/proc/add_addiction_points(type, amount)

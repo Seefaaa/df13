@@ -81,9 +81,9 @@
 	if(!R)
 		qdel(I)
 		new /obj/item/food/badrecipe(get_turf(src))
-		user.mind.adjust_experience(/datum/skill/cooking, 2)
+		user.adjust_experience(/datum/skill/cooking, 2)
 		return
-	user.mind.adjust_experience(/datum/skill/cooking, rand(10, 30))
+	user.adjust_experience(/datum/skill/cooking, rand(10, 30))
 	new R.result(get_turf(src))
 	qdel(I)
 

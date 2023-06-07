@@ -82,7 +82,7 @@
 /atom/movable/screen/skills/Click()
 	if(ishuman(usr))
 		var/mob/living/carbon/human/H = usr
-		H.mind.print_levels(H)
+		H.print_levels(H)
 
 /atom/movable/screen/craft
 	name = "craft"

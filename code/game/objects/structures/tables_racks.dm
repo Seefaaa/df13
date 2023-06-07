@@ -138,8 +138,6 @@
 	pushed_mob.Knockdown(30)
 	pushed_mob.apply_damage(10, BRUTE)
 	pushed_mob.apply_damage(40, STAMINA)
-	if(user.mind?.martial_art.smashes_tables && user.mind?.martial_art.can_use(user))
-		deconstruct(FALSE)
 	playsound(pushed_mob, 'sound/effects/tableslam.ogg', 90, TRUE)
 	pushed_mob.visible_message(span_danger("<b>[user]</b> slams <b>[pushed_mob]</b> onto <b>[src]</b>!") , \
 								span_userdanger("<b>[user]</b> slams you onto <b>[src]</b>!"))
@@ -152,8 +150,6 @@
 	banged_limb?.receive_damage(30)
 	pushed_mob.apply_damage(60, STAMINA)
 	take_damage(50)
-	if(user.mind?.martial_art.smashes_tables && user.mind?.martial_art.can_use(user))
-		deconstruct(FALSE)
 	playsound(pushed_mob, "sound/effects/bang.ogg", 90, TRUE)
 	pushed_mob.visible_message(span_danger("<b>[user]</b> smashes [pushed_mob]'s head againts \the <b>[src]</b>!") ,
 								span_userdanger("<b>[user]</b> smashes your head against \the <b>[src]</b>!"))

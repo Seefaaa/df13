@@ -356,11 +356,6 @@
 	if(world.time < user.next_move)
 		return FALSE
 
-	var/mob/living/user_living = user
-	if(user_living.apply_martial_art(src, null, is_grab=TRUE) == MARTIAL_ATTACK_SUCCESS)
-		user_living.changeNext_move(CLICK_CD_MELEE)
-		return TRUE
-
 	return ..()
 
 
@@ -373,7 +368,7 @@
 		return FALSE
 
 	var/mob/living/carbon/human/human_user = user
-	if(human_user.dna.species.grab(human_user, src, human_user.mind.martial_art))
+	if(human_user.dna.species.grab(human_user, src))
 		human_user.changeNext_move(CLICK_CD_MELEE)
 		return TRUE
 

@@ -82,7 +82,7 @@
 	qdel(src)
 
 ///If the shooter shoves or grabs the target, cancel the holdup to avoid cheesing and forcing the charged shot
-/datum/component/gunpoint/proc/check_shove(mob/living/carbon/shooter, mob/shooter_again, mob/living/T, datum/martial_art/attacker_style, modifiers)
+/datum/component/gunpoint/proc/check_shove(mob/living/carbon/shooter, mob/shooter_again, mob/living/T, modifiers)
 	SIGNAL_HANDLER
 
 	if(T != target || LAZYACCESS(modifiers, RIGHT_CLICK))

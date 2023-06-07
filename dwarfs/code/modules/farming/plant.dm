@@ -158,9 +158,9 @@
 
 /obj/structure/plant/proc/harvest(mob/user)
 	. = TRUE
-	var/speed_mod = user?.mind ? user.mind.get_skill_modifier(/datum/skill/farming, SKILL_SPEED_MODIFIER) : 1
-	var/min_mod = user.mind.get_skill_modifier(/datum/skill/farming, SKILL_AMOUNT_MIN_MODIFIER)
-	var/max_mod = user.mind.get_skill_modifier(/datum/skill/farming, SKILL_AMOUNT_MAX_MODIFIER)
+	var/speed_mod = user.get_skill_modifier(/datum/skill/farming, SKILL_SPEED_MODIFIER)
+	var/min_mod = user.get_skill_modifier(/datum/skill/farming, SKILL_AMOUNT_MIN_MODIFIER)
+	var/max_mod = user.get_skill_modifier(/datum/skill/farming, SKILL_AMOUNT_MAX_MODIFIER)
 	if(!do_after(user, 5 SECONDS * speed_mod, src))
 		return FALSE
 	if(QDELETED(src) || !harvestable)
@@ -178,10 +178,10 @@
 				for(var/i in 1 to rand(1,2))
 					new seed_type(get_turf(src))
 			to_chat(user, span_notice("You harvest [initial(P.name)] from [src]."))
-			user.mind.adjust_experience(/datum/skill/farming, harvested*8)
+			user.adjust_experience(/datum/skill/farming, harvested*8)
 		else
 			to_chat(user, span_warning("You fail to harvest [initial(P.name)] from [src]."))
-			user.mind.adjust_experience(/datum/skill/farming, 5)
+			user.adjust_experience(/datum/skill/farming, 5)
 	update_appearance()
 
 /obj/structure/plant/attack_hand(mob/user)

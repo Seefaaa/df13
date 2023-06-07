@@ -138,7 +138,7 @@
 		O.reagents.remove_reagent(/datum/reagent/water, to_trans)
 		waterlevel += to_trans
 		to_chat(user, span_notice("You water [src]."))
-		user.mind.adjust_experience(/datum/skill/farming, rand(1,5))
+		user.adjust_experience(/datum/skill/farming, rand(1,5))
 		update_appearance()
 	else
 		return ..()
@@ -160,7 +160,7 @@
 			QDEL_NULL(myplant)
 			H.put_in_active_hand(S)
 			to_chat(user, span_notice("You remove [S] from [src]."))
-			user.mind.adjust_experience(/datum/skill/farming, rand(10, 25))
+			user.adjust_experience(/datum/skill/farming, rand(10, 25))
 			update_appearance()
 
 /obj/structure/sapling_pot/update_icon_state()

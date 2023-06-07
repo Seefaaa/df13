@@ -1236,7 +1236,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	return
 
 
-/datum/species/proc/help(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
+/datum/species/proc/help(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	if(target.body_position == STANDING_UP || (target.health >= 0 && !HAS_TRAIT(target, TRAIT_FAKEDEATH)))
 		target.help_shake_act(user)
 		if(target != user)
@@ -1246,25 +1246,23 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	user.do_cpr(target)
 
 
-/datum/species/proc/grab(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
+/datum/species/proc/grab(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	if(target.check_block())
 		target.visible_message(span_warning("<b>[target]</b> blocks <b>[user]'s</b> grab!") , \
 							span_userdanger("You block <b>[user]'s</b> grab!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
 		to_chat(user, span_warning("Your grab at <b>[target]</b> was blocked!"))
 		return FALSE
-	if(attacker_style?.grab_act(user,target))
-		return TRUE
 	else
 		target.grabbedby(user)
 		return TRUE
 
 ///This proc handles punching damage. IMPORTANT: Our owner is the TARGET and not the USER in this proc. For whatever reason...
-/datum/species/proc/harm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
+/datum/species/proc/harm(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		to_chat(user, span_warning("You don't want to harm <b>[target]</b>!"))
 		return FALSE
 
-	if(target.mind && prob(target.mind.get_skill_modifier(/datum/skill/martial, SKILL_MISS_MODIFIER)))
+	if(prob(target.get_skill_modifier(/datum/skill/martial, SKILL_MISS_MODIFIER)))
 		user.visible_message(span_warning("[user]'s attack misses [target]!") , \
 							span_userdanger("Your attack misses [target]!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
 		to_chat(target, span_warning("[user]'s attack misses you!"))
@@ -1276,83 +1274,78 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 							span_userdanger("You block [user]'s attack!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
 		to_chat(user, span_warning("Your attack at [target] was blocked!"))
 		return FALSE
-	if(attacker_style?.harm_act(user,target))
-		return TRUE
-	else
 
-		var/atk_verb = user.dna.species.attack_verb
-		var/atk_effect = user.dna.species.attack_effect
-		if(target.body_position == LYING_DOWN)
-			atk_verb = "kick"
-			atk_effect = ATTACK_EFFECT_KICK
+	var/atk_verb = user.dna.species.attack_verb
+	var/atk_effect = user.dna.species.attack_effect
+	if(target.body_position == LYING_DOWN)
+		atk_verb = "kick"
+		atk_effect = ATTACK_EFFECT_KICK
 
-		if(atk_effect == ATTACK_EFFECT_BITE)
-			if(user.is_mouth_covered(mask_only = TRUE))
-				to_chat(user, span_warning("You can't [atk_verb] with your mouth covered!"))
-				return FALSE
-		user.do_attack_animation(target, atk_effect)
-		target.do_damaged_animation(user)
-
-		var/damage = rand(user.dna.species.punchdamagelow, user.dna.species.punchdamagehigh)
-
-		var/obj/item/bodypart/affecting = target.get_bodypart(ran_zone(user.zone_selected))
-
-		//var/mis_dice_rolled = roll_stat_dice(user.current_fate[MOB_INT] + user.current_fate[MOB_DEX])
-
-		if(!damage || !affecting)//future-proofing for species that have 0 damage/weird cases where no zone is targeted
-			// playsound(target.loc, user.dna.species.miss_sound, 25, TRUE, -1)
-			// target.visible_message(span_danger("[user] [atk_verb] misses [target]!") ,
-			// 				span_userdanger("You avoid [user]'s [atk_verb]!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
-			// to_chat(user, span_warning("You [atk_verb] misses [target]!"))
-			log_combat(user, target, "attempted to punch")
+	if(atk_effect == ATTACK_EFFECT_BITE)
+		if(user.is_mouth_covered(mask_only = TRUE))
+			to_chat(user, span_warning("You can't [atk_verb] with your mouth covered!"))
 			return FALSE
+	user.do_attack_animation(target, atk_effect)
+	target.do_damaged_animation(user)
 
-		var/armor_block = target.run_armor_check(affecting, BLUNT)
+	var/damage = rand(user.dna.species.punchdamagelow, user.dna.species.punchdamagehigh)
 
-		playsound(target.loc, user.dna.species.attack_sound, 25, TRUE, -1)
+	var/obj/item/bodypart/affecting = target.get_bodypart(ran_zone(user.zone_selected))
 
-		target.visible_message(span_danger("[user] [atk_verb]ed [target]!") , \
-					span_userdanger("You're [atk_verb]ed by [user] !") , span_hear("You hear a sickening sound of flesh hitting flesh!") , COMBAT_MESSAGE_RANGE, user)
-		to_chat(user, span_danger("You [atk_verb] [target]!"))
+	//var/mis_dice_rolled = roll_stat_dice(user.current_fate[MOB_INT] + user.current_fate[MOB_DEX])
 
-		target.lastattacker = user.real_name
-		target.lastattackerckey = user.ckey
-		user.dna.species.spec_unarmedattacked(user, target)
+	if(!damage || !affecting)//future-proofing for species that have 0 damage/weird cases where no zone is targeted
+		// playsound(target.loc, user.dna.species.miss_sound, 25, TRUE, -1)
+		// target.visible_message(span_danger("[user] [atk_verb] misses [target]!") ,
+		// 				span_userdanger("You avoid [user]'s [atk_verb]!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
+		// to_chat(user, span_warning("You [atk_verb] misses [target]!"))
+		log_combat(user, target, "attempted to punch")
+		return FALSE
 
-		if(user.limb_destroyer)
-			target.dismembering_strike(user, affecting.body_zone, TRUE)
+	var/armor_block = target.run_armor_check(affecting, BLUNT)
 
-		var/attack_direction = get_dir(user, target)
-		if(atk_effect == ATTACK_EFFECT_KICK)//kicks deal 1.5x raw damage
-			target.apply_damage(damage*1.5, user.dna.species.attack_type, affecting, armor_block, attack_direction = attack_direction)
-			log_combat(user, target, "kicked")
-		else//other attacks deal full raw damage + 1.5x in stamina damage
-			target.apply_damage(damage, user.dna.species.attack_type, affecting, armor_block, attack_direction = attack_direction)
-			target.apply_damage(damage*1.5, STAMINA, affecting, armor_block)
-			log_combat(user, target, "punched")
+	playsound(target.loc, user.dna.species.attack_sound, 25, TRUE, -1)
 
-		if(target.stat != DEAD)
-			user.mind.adjust_experience(/datum/skill/martial, 4)
+	target.visible_message(span_danger("[user] [atk_verb]ed [target]!") , \
+				span_userdanger("You're [atk_verb]ed by [user] !") , span_hear("You hear a sickening sound of flesh hitting flesh!") , COMBAT_MESSAGE_RANGE, user)
+	to_chat(user, span_danger("You [atk_verb] [target]!"))
 
-		if((target.stat != DEAD) && damage >= user.dna.species.punchstunthreshold)
-			target.visible_message(span_danger("[user] knocks [target] down!") , \
-							span_userdanger("You're knocked down by [user]!") , span_hear("You hear aggressive shuffling followed by a loud thud!") , COMBAT_MESSAGE_RANGE, user)
-			to_chat(user, span_danger("You knock [target] down!"))
-			var/knockdown_duration = 40 + (target.getStaminaLoss() + (target.getBruteLoss()*0.5))*0.8 //50 total damage = 40 base stun + 40 stun modifier = 80 stun duration, which is the old base duration
-			target.apply_effect(knockdown_duration, EFFECT_KNOCKDOWN, armor_block)
-			log_combat(user, target, "got a stun punch with their previous punch")
+	target.lastattacker = user.real_name
+	target.lastattackerckey = user.ckey
+	user.dna.species.spec_unarmedattacked(user, target)
+
+	if(user.limb_destroyer)
+		target.dismembering_strike(user, affecting.body_zone, TRUE)
+
+	var/attack_direction = get_dir(user, target)
+	if(atk_effect == ATTACK_EFFECT_KICK)//kicks deal 1.5x raw damage
+		target.apply_damage(damage*1.5, user.dna.species.attack_type, affecting, armor_block, attack_direction = attack_direction)
+		log_combat(user, target, "kicked")
+	else//other attacks deal full raw damage + 1.5x in stamina damage
+		target.apply_damage(damage, user.dna.species.attack_type, affecting, armor_block, attack_direction = attack_direction)
+		target.apply_damage(damage*1.5, STAMINA, affecting, armor_block)
+		log_combat(user, target, "punched")
+
+	if(target.stat != DEAD)
+		user.adjust_experience(/datum/skill/martial, 4)
+
+	if((target.stat != DEAD) && damage >= user.dna.species.punchstunthreshold)
+		target.visible_message(span_danger("[user] knocks [target] down!") , \
+						span_userdanger("You're knocked down by [user]!") , span_hear("You hear aggressive shuffling followed by a loud thud!") , COMBAT_MESSAGE_RANGE, user)
+		to_chat(user, span_danger("You knock [target] down!"))
+		var/knockdown_duration = 40 + (target.getStaminaLoss() + (target.getBruteLoss()*0.5))*0.8 //50 total damage = 40 base stun + 40 stun modifier = 80 stun duration, which is the old base duration
+		target.apply_effect(knockdown_duration, EFFECT_KNOCKDOWN, armor_block)
+		log_combat(user, target, "got a stun punch with their previous punch")
 
 /datum/species/proc/spec_unarmedattacked(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	return
 
-/datum/species/proc/disarm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
+/datum/species/proc/disarm(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	if(target.check_block())
 		target.visible_message(span_warning("[user]'s shove is blocked by [target]!") , \
 							span_userdanger("You block [user]'s shove!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
 		to_chat(user, span_warning("Your shove at [target] was blocked!"))
 		return FALSE
-	if(attacker_style?.disarm_act(user,target))
-		return TRUE
 	if(user.body_position != STANDING_UP)
 		return FALSE
 	if(user == target)
@@ -1365,7 +1358,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 /datum/species/proc/spec_hitby(atom/movable/AM, mob/living/carbon/human/H)
 	return
 
-/datum/species/proc/spec_attack_hand(mob/living/carbon/human/M, mob/living/carbon/human/H, datum/martial_art/attacker_style, list/modifiers)
+/datum/species/proc/spec_attack_hand(mob/living/carbon/human/M, mob/living/carbon/human/H, list/modifiers)
 	if(!istype(M))
 		return
 	CHECK_DNA_AND_SPECIES(M)
@@ -1373,8 +1366,6 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 	if(!istype(M)) //sanity check for drones.
 		return
-	if(M.mind)
-		attacker_style = M.mind.martial_art
 	if((M != H) && M.a_intent != INTENT_HELP && H.check_shields(M, 0, M.name, attack_type = UNARMED_ATTACK))
 		log_combat(M, H, "attempted to touch")
 		H.visible_message(span_warning("[M] attempts to touch [H]!") , \
@@ -1383,23 +1374,23 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		playsound(get_turf(H), 'sound/misc/block_hand.ogg', 100)
 		return
 
-	SEND_SIGNAL(M, COMSIG_MOB_ATTACK_HAND, M, H, attacker_style)
+	SEND_SIGNAL(M, COMSIG_MOB_ATTACK_HAND, M, H)
 
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
-		disarm(M, H, attacker_style)
+		disarm(M, H)
 		return // dont attack after
 	switch(M.a_intent)
 		if("help")
-			help(M, H, attacker_style)
+			help(M, H)
 
 		if("grab")
-			grab(M, H, attacker_style)
+			grab(M, H)
 
 		if("harm")
-			harm(M, H, attacker_style)
+			harm(M, H)
 
 		if("disarm")
-			disarm(M, H, attacker_style)
+			disarm(M, H)
 
 /datum/species/proc/spec_attacked_by(obj/item/I, mob/living/user, obj/item/bodypart/affecting, intent, mob/living/carbon/human/H)
 	if(user != H)

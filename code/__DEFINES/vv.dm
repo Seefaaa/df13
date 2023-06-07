@@ -124,7 +124,6 @@
 #define VV_HK_MODIFY_BODYPART "mod_bodypart"
 #define VV_HK_MODIFY_ORGANS "organs_modify"
 #define VV_HK_HALLUCINATION "force_hallucinate"
-#define VV_HK_MARTIAL_ART "give_martial_art"
 
 // /mob/living/carbon/human
 #define VV_HK_COPY_OUTFIT "copy_outfit"

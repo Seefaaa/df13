@@ -49,11 +49,11 @@
 /turf/closed/mineral/random/dwarf_lustress/attackby(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_CHISEL)
 		var/turf/T = src
-		var/time = 5 SECONDS * user.mind.get_skill_modifier(/datum/skill/masonry, SKILL_SPEED_MODIFIER)
+		var/time = 5 SECONDS * user.get_skill_modifier(/datum/skill/masonry, SKILL_SPEED_MODIFIER)
 		to_chat(user, span_notice("You start carving stone wall..."))
 		if(I.use_tool(src, user, time, volume=50))
 			to_chat(user, span_notice("You finish carving stone wall."))
-			user.mind.adjust_experience(/datum/skill/masonry, rand(2,6))
+			user.adjust_experience(/datum/skill/masonry, rand(2,6))
 			var/turf/wall = T.PlaceOnTop(/turf/closed/wall/stone)
 			wall.apply_material(materials)
 	. = ..()

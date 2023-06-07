@@ -188,7 +188,7 @@
 
 	var/miss_prob = 30
 	if(skill)
-		miss_prob = user.mind.get_skill_modifier(skill, SKILL_MISS_MODIFIER)
+		miss_prob = user.get_skill_modifier(skill, SKILL_MISS_MODIFIER)
 	if(prob(miss_prob))
 		user.visible_message(span_danger("<b>[user]</b> misses <b>[M]</b> with [src]!"), span_danger("You miss <b>[M]</b> with [src]!"))
 		if(misssound)
@@ -207,7 +207,7 @@
 	M.do_damaged_animation(user)
 	M.attacked_by(src, user)
 	if(skill && M.stat != DEAD)
-		user.mind.adjust_experience(skill, initial(skill.exp_per_attack))
+		user.adjust_experience(skill, initial(skill.exp_per_attack))
 
 	log_combat(user, M, "attacked", src.name, "(DAMTYPE: [uppertext(damtype)])")
 	add_fingerprint(user)
@@ -251,7 +251,7 @@
 /mob/living/attacked_by(obj/item/I, mob/living/user)
 	var/tempforce = I.force
 	if(I.skill)
-		tempforce += user.mind.get_skill_modifier(I.skill, SKILL_DAMAGE_MODIFIER)
+		tempforce += user.get_skill_modifier(I.skill, SKILL_DAMAGE_MODIFIER)
 	send_item_attack_message(I, user)
 	if(tempforce)
 		apply_damage(tempforce, I.damtype)
@@ -267,7 +267,7 @@
 /mob/living/simple_animal/attacked_by(obj/item/I, mob/living/user)
 	var/tempforce = I.force
 	if(I.skill)
-		tempforce += user.mind.get_skill_modifier(I.skill, SKILL_DAMAGE_MODIFIER)
+		tempforce += user.get_skill_modifier(I.skill, SKILL_DAMAGE_MODIFIER)
 	if(!attack_threshold_check(tempforce, I.damtype, I.atck_type, FALSE))
 		playsound(loc, 'sound/weapons/tap.ogg', I.get_clamped_volume(), TRUE, -1)
 	else
