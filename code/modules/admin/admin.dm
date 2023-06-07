@@ -490,16 +490,16 @@
 	set category = "Admin.Game"
 	set desc = "Edit mobs's experience and skill levels"
 	set name = "Show Skill Panel"
-	var/datum/mind/target_mind
+	var/mob/target_user
 	if(ismob(target))
-		var/mob/target_mob = target
-		target_mind = target_mob.mind
+		target_user = target
 	else if (istype(target, /datum/mind))
-		target_mind = target
+		var/datum/mind/target_mind = target
+		target_user = target_mind.current
 	else
 		to_chat(usr, "This can only be used on instances of type /mob and /mind", confidential = TRUE)
 		return
-	var/datum/skill_panel/SP  = new(usr, target_mind)
+	var/datum/skill_panel/SP  = new(usr, target_user)
 	SP.ui_interact(usr)
 
 
