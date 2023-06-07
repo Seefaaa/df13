@@ -86,7 +86,7 @@
 		if(lungs)
 			breathing_delta = lungs.check_breath(src, breathing_delta)
 
-	adjustOxyLoss(min(breathing_delta, 3))
+	adjustOxyLoss(min(breathing_delta * delta_time, 3))
 
 	//if(reagents.has_reagent(crit_stabilizing_reagent))
 	//	return
