@@ -93,7 +93,7 @@
 
 /obj/item/organ/lungs/proc/check_breath(mob/living/carbon/human/H, breathing_delta)
 	if(organ_flags & ORGAN_FAILING || failed)
-		return
+		return breathing_delta
 	return breathing_delta -4
 
 /obj/item/organ/lungs/get_availability(datum/species/S)

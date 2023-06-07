@@ -64,7 +64,7 @@
 
 /mob/living/carbon/proc/breathe(delta_time, times_fired)
 	if(HAS_TRAIT(src,TRAIT_NOBREATH))
-		adjustOxyLoss(1)
+		adjustOxyLoss(-1)
 		return
 
 	var/obj/item/organ/lungs/lungs = getorganslot(ORGAN_SLOT_LUNGS)
