@@ -189,7 +189,7 @@
 	var/miss_prob = 30
 	if(skill)
 		miss_prob = user.get_skill_modifier(skill, SKILL_MISS_MODIFIER)
-	if(prob(miss_prob))
+	if(prob(miss_prob) && user != M)
 		user.visible_message(span_danger("<b>[user]</b> misses <b>[M]</b> with [src]!"), span_danger("You miss <b>[M]</b> with [src]!"))
 		if(misssound)
 			playsound(src, misssound, 60, TRUE, -1)

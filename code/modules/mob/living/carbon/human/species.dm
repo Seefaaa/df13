@@ -1262,14 +1262,14 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		to_chat(user, span_warning("You don't want to harm <b>[target]</b>!"))
 		return FALSE
 
-	if(prob(target.get_skill_modifier(/datum/skill/martial, SKILL_MISS_MODIFIER)))
+	if(prob(target.get_skill_modifier(/datum/skill/martial, SKILL_MISS_MODIFIER)) && user != target)
 		user.visible_message(span_warning("[user]'s attack misses [target]!") , \
 							span_userdanger("Your attack misses [target]!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
 		to_chat(target, span_warning("[user]'s attack misses you!"))
 		playsound(target.loc, user.dna.species.miss_sound, 25, TRUE, -1)
 		return FALSE
 
-	if(target.check_block())
+	if(target.check_block() && user != target)
 		target.visible_message(span_warning("[target] blocks [user]'s attack!") , \
 							span_userdanger("You block [user]'s attack!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
 		to_chat(user, span_warning("Your attack at [target] was blocked!"))
