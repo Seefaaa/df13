@@ -63,27 +63,33 @@
 			location_as_object.handle_internal_lifeform(src,0)
 
 /mob/living/carbon/proc/breathe(delta_time, times_fired)
-	var/obj/item/organ/lungs = getorganslot(ORGAN_SLOT_LUNGS)
+	if(HAS_TRAIT(src,TRAIT_NOBREATH))
+		adjustOxyLoss(1)
+		return
+
+	var/obj/item/organ/lungs/lungs = getorganslot(ORGAN_SLOT_LUNGS)
+	var/breathing_delta = 3
 
 	if(!getorganslot(ORGAN_SLOT_BREATHING_TUBE))
-		if(health <= HEALTH_THRESHOLD_FULLCRIT || (pulledby && pulledby.grab_state >= GRAB_KILL) || HAS_TRAIT(src, TRAIT_MAGIC_CHOKE) || (lungs && lungs.organ_flags & ORGAN_FAILING))
+		if(health <= HEALTH_THRESHOLD_FULLCRIT || (pulledby && pulledby.grab_state >= GRAB_KILL) || HAS_TRAIT(src, TRAIT_MAGIC_CHOKE))
 			losebreath++  //You can't breath at all when in critical or when being choked, so you're going to miss a breath
 
 		else if(health <= crit_threshold)
-			losebreath += 0.25 //You're having trouble breathing in soft crit, so you'll miss a breath one in four times
+			losebreath += 0.50 //You're having trouble breathing in soft crit, so you'll miss a breath one in four times
 
 	//Suffocate
 	if(losebreath >= 1) //You've missed a breath, take oxy damage
 		losebreath--
 		if(prob(10))
 			INVOKE_ASYNC(src, .proc/emote, "gasp")
+	else
+		if(lungs)
+			breathing_delta = lungs.check_breath(src, breathing_delta)
+
+	adjustOxyLoss(min(breathing_delta, 3))
 
 	//if(reagents.has_reagent(crit_stabilizing_reagent))
 	//	return
-	if(health >= crit_threshold)
-		adjustOxyLoss(HUMAN_MAX_OXYLOSS)
-	else if(!HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
-		adjustOxyLoss(HUMAN_CRIT_MAX_OXYLOSS)
 
 /mob/living/carbon/proc/has_smoke_protection()
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))

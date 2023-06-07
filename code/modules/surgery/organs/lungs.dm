@@ -91,5 +91,10 @@
 		owner.visible_message(span_danger("[owner] grabs [owner.p_their()] throat, struggling for breath!") , span_userdanger("You suddenly feel like you can't breathe!"))
 		failed = TRUE
 
+/obj/item/organ/lungs/proc/check_breath(mob/living/carbon/human/H, breathing_delta)
+	if(organ_flags & ORGAN_FAILING || failed)
+		return
+	return breathing_delta -4
+
 /obj/item/organ/lungs/get_availability(datum/species/S)
 	return !(TRAIT_NOBREATH in S.inherent_traits)
