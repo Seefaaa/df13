@@ -22,6 +22,7 @@
 				var/datum/reagent/R = reag
 				text += "<br>\t[recipe.req_reagents[reag]] [initial(R.name)]"
 			text += "<br>\t[recipe.cooking_text]"
-			user.mind.store_memory(text)
+			if(user.mind)
+				user.mind.store_memory(text)
 	if(!silent)
 		to_chat(user, span_green("Through better understanding of [name] I realise how to cook new recipes!"))
