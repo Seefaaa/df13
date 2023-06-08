@@ -176,8 +176,8 @@
 		var/obj/item/ingot/I = contents[1]
 		var/icon/Ingot = I.build_material_icon('dwarfs/icons/items/tools.dmi', "tongs_ingot")
 		. += Ingot
-		var/mutable_appearance/Ingot_heat = mutable_appearance('dwarfs/icons/items/tools.dmi', "tongs_ingot")
-		Ingot_heat.color = "#ffb35c"
+		var/mutable_appearance/Ingot_heat = mutable_appearance('dwarfs/icons/items/tools.dmi', "tongs_ingot_heat")
+		Ingot_heat.color = "#ff9900"
 		Ingot_heat.alpha =  255 * (I.heattemp / 350)
 		. += Ingot_heat
 
@@ -187,8 +187,8 @@
 		var/obj/item/ingot/I = contents[1]
 		var/icon/Ingot = I.build_material_icon(icon_file, "tongs_ingot")
 		. += Ingot
-		var/mutable_appearance/Ingot_heat = mutable_appearance(icon_file, "tongs_ingot")
-		Ingot_heat.color = "#ffb35c"
+		var/mutable_appearance/Ingot_heat = mutable_appearance(icon_file, "tongs_ingot_heat")
+		Ingot_heat.color = "#ff9900"
 		Ingot_heat.alpha =  255 * (I.heattemp / 350)
 		. += Ingot_heat
 

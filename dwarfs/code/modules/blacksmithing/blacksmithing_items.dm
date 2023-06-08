@@ -63,7 +63,8 @@
 
 /obj/item/ingot/update_overlays()
 	. = ..()
-	var/mutable_appearance/heat = mutable_appearance('dwarfs/icons/items/ingots.dmi', initial(icon_state))
+	var/mutable_appearance/heat = mutable_appearance('dwarfs/icons/items/ingots.dmi', "ingot_heat")
+	heat.color = "#ff9900"
 	heat.alpha =  255 * (heattemp / 350)
 	. += heat
 
