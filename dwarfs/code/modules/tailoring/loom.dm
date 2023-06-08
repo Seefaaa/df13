@@ -4,6 +4,7 @@
 	icon = 'dwarfs/icons/structures/workshops.dmi'
 	icon_state = "loom"
 	density = TRUE
+	anchored = TRUE
 	var/working = FALSE
 	var/ready = FALSE
 
