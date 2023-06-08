@@ -86,7 +86,6 @@
 	if(!can_accept(user, I))
 		return
 	if(!additional_check(user, I)) //possibly move this to the proc itself for more detailed explanations
-		to_chat(user, span_warning("[I] doesn't meet the requirements for this structure."))
 		return
 	if(isstack(I))
 		var/obj/item/stack/S = I
@@ -240,7 +239,8 @@
 /obj/structure/blueprint/throne/additional_check(mob/user, obj/O)
 	. = ..()
 	if(istype(O, /obj/item/ingot))
-		return (O.materials == /datum/material/gold)
+		if(O.materials != /datum/material/gold)
+			to_chat(user, span_warning("[O] has to be a golden ingot."))
 
 /obj/structure/blueprint/floor
 	name = "floor"

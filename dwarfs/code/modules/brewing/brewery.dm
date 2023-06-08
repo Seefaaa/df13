@@ -5,6 +5,10 @@
 	density = 1
 	layer = ABOVE_MOB_LAYER
 	icon = 'dwarfs/icons/structures/32x64.dmi'
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron)
+
+/obj/structure/brewery/build_material_icon(_file, state)
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT]))
 
 /obj/structure/brewery/spawner
 	icon = 'dwarfs/icons/structures/64x64.dmi'
