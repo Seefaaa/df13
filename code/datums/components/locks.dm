@@ -10,7 +10,7 @@ If you want to implement a lock, you need a few things.
 /datum/component/lock
 	var/datum/key/key
 	var/locked = FALSE
-	var/static/list/attachable_to = typecacheof(list(/obj/structure/mineral_door,/obj/structure/closet, /obj/item/key))
+	var/static/list/attachable_to = typecacheof(list(/obj/structure/mineral_door,/obj/structure/closet))
 	var/lock_overlay_path = 'dwarfs/icons/items/misc_items.dmi'
 	var/icon_state = "lock"
 	var/mutable_appearance/lock_overlay
@@ -44,7 +44,7 @@ If you want to implement a lock, you need a few things.
 		user.visible_message(span_notice("<b>[user]</b> [locked ? "" : "un"]locks \the [parent].") , null, COMBAT_MESSAGE_RANGE)
 		playsound(get_turf(source), 'sound/effects/stonelock.ogg', 65, vary = TRUE)
 	else
-		to_chat(user, span_warn("The key does not fit the lock!"))
+		to_chat(user, span_warning("The key does not fit the lock!"))
 
 /datum/component/lock/proc/toggle_lock()
 	locked = !locked
@@ -56,7 +56,7 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 /datum/component/lock/proc/try_locked_action(source, atom/user)
 	SIGNAL_HANDLER
 	if(locked)
-		to_chat(user, span_warn("[parent] is locked!"))
+		to_chat(user, span_warning("[parent] is locked!"))
 		return TRUE
 	return FALSE
 
@@ -67,9 +67,14 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 	name = "lock"
 	desc = "a lock you can attach to a door"
 	icon = 'dwarfs/icons/items/misc_items.dmi'
+	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
+	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	icon_state = "lock"
+	materials = /datum/material/iron
 	var/datum/key/key_form = new()
 
+/obj/item/lock/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/item/lock/Initialize()
 	. = ..()
@@ -84,9 +89,15 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 	name = "key"
 	desc = "a key to something"
 	icon = 'dwarfs/icons/items/misc_items.dmi'
+	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
+	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	icon_state = "key"
+	materials = /datum/material/iron
 	var/prefix = ""
 	var/datum/key/key_form
+
+/obj/item/key/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/item/key/attack_obj(obj/O, mob/living/user, params)
 	. = ..()
