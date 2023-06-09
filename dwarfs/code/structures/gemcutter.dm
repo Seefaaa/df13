@@ -6,7 +6,11 @@
 	anchored = TRUE
 	density = TRUE
 	layer = TABLE_LAYER
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron)
 	var/busy = FALSE
+
+/obj/structure/gemcutter/build_material_icon(_file, state)
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT]))
 
 /obj/structure/gemcutter/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/stack/ore/gem))

@@ -203,7 +203,7 @@
 /obj/structure/blueprint/gemcutter
 	name = "gemstone grinder blueprint"
 	target_structure = /obj/structure/gemcutter
-	reqs = list(/obj/item/ingot=2, /obj/item/stack/sheet/planks=6, /obj/item/stack/glass=1)
+	reqs = list(/obj/item/ingot=1, /obj/item/stack/sheet/planks=6, /obj/item/stack/glass=1)
 	cat = "craftsmanship"
 
 /obj/structure/blueprint/altar
