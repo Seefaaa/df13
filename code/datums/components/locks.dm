@@ -179,11 +179,3 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 	var/obj/item/key/K = new(loc)
 	K.key_form = L.key_form
 	qdel(src)
-
-/obj/effect/key_ring/Initialize()
-	. = ..()
-	var/obj/item/key/K = new(loc)
-	var/obj/item/key/K2 = new(loc)
-	K2.apply_material(/datum/material/gold)
-	var/obj/item/keyring/R = new(loc)
-	qdel(src)
