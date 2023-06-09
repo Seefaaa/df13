@@ -121,7 +121,7 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 	name = "key ring"
 	desc = "Holds multiple keys."
 	icon = 'dwarfs/icons/items/misc_items.dmi'
-	icon_state = "key"
+	icon_state = "key_ring"
 	materials = /datum/material/iron
 	var/list/obj/item/key/keys = list()
 	var/limit = 4
@@ -136,16 +136,20 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 
 /obj/item/keyring/attackby(obj/item/attacking_item, mob/user, params)
 	if(istype(attacking_item,/obj/item/key))
-		if(LAZYLEN(keys) >= 4)
-			to_chat(user,span_warn("The key ring is full!"))
-			return
-		attacking_item.forceMove(src)
-		keys += attacking_item
+		add_key(attacking_item)
 	. = ..()
+
+/obj/item/keyring/proc/add_key(obj/item/key)
+	if(LAZYLEN(keys) >= 4)
+		to_chat(user,span_warn("The key ring is full!"))
+		return FALSE
+	attacking_item.forceMove(src)
+	keys += attacking_item
+	return TRUE
 
 /obj/item/keyring/examine_more(mob/user)
 	. = ..()
-w	if(!LAZYLEN(keys))
+	if(!LAZYLEN(keys))
 		. += "<hr>It contains no keys"
 		return
 	. += "<hr>It contains keys for "
