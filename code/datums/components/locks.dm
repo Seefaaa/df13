@@ -121,10 +121,10 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 	name = "key ring"
 	desc = "Holds multiple keys."
 	icon = 'dwarfs/icons/items/misc_items.dmi'
-	icon_state = "key_ring"
+	icon_state = "keyring"
 	materials = /datum/material/iron
 	var/list/obj/item/key/keys = list()
-	var/limit = 4
+	var/limit = 3
 
 /obj/item/keyring/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
@@ -141,10 +141,11 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 
 /obj/item/keyring/proc/add_key(obj/item/key)
 	if(LAZYLEN(keys) >= 4)
-		to_chat(user,span_warn("The key ring is full!"))
+		to_chat(usr,span_warn("The key ring is full!"))
 		return FALSE
-	attacking_item.forceMove(src)
-	keys += attacking_item
+	key.forceMove(src)
+	keys += key
+	update_icon()
 	return TRUE
 
 /obj/item/keyring/examine_more(mob/user)
@@ -162,6 +163,16 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 	if(chosen)
 		chosen.forceMove(usr.loc)
 		keys -= chosen
+		update_icon()
+
+/obj/item/keyring/update_overlays()
+	. = ..()
+	if(LAZYLEN(keys) >= 3)
+		. += keys[3].build_material_icon(icon, "keyring-3")
+	if(LAZYLEN(keys) >= 2)
+		. += mutable_appearance(keys[2].build_material_icon(), "keyring-2")
+	if(LAZYLEN(keys) >= 1)
+		. += mutable_appearance(keys[1].build_material_icon(), "keyring-1")
 
 
 /obj/effect/key_lock/Initialize()
