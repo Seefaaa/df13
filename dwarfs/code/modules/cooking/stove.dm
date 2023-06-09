@@ -7,6 +7,7 @@
 	icon_state = "stove_closed_empty"
 	density = 1
 	anchored = 1
+	materials = /datum/material/iron
 	var/open = FALSE
 	var/fuel = 0
 	var/fuel_consumption = 0.5
@@ -25,6 +26,9 @@
 /obj/structure/stove/Destroy()
 	. = ..()
 	STOP_PROCESSING(SSprocessing, src)
+
+/obj/structure/stove/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/structure/stove/update_icon_state()
 	. = ..()

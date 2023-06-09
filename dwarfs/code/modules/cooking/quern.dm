@@ -5,6 +5,7 @@
 	icon_state = "millstone"
 	density = TRUE
 	anchored = TRUE
+	materials = /datum/material/wood/pine/treated
 	var/max_volume = 150
 	var/work_time = 3 SECONDS
 	var/open = FALSE
@@ -13,6 +14,9 @@
 /obj/structure/quern/Initialize()
 	. = ..()
 	create_reagents(max_volume)
+
+/obj/structure/quern/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/structure/quern/examine(mob/user)
 	. = ..()

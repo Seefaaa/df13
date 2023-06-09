@@ -6,6 +6,7 @@
 	density = 1
 	anchored = 1
 	layer = ABOVE_MOB_LAYER
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron)
 	var/max_items = 10 // how much fruits it can hold
 	var/max_volume = 500 // sus
 	var/time_to_juice = 3 SECONDS
@@ -14,6 +15,9 @@
 /obj/structure/press/Initialize()
 	. = ..()
 	create_reagents(max_volume)
+
+/obj/structure/press/build_material_icon(_file, state)
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT]))
 
 /obj/structure/press/examine(mob/user)
 	. = ..()

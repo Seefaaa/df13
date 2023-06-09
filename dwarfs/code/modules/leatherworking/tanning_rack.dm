@@ -5,8 +5,12 @@
 	icon_state = "tanning_rack"
 	anchored = TRUE
 	density = TRUE
+	materials = /datum/material/wood/pine/treated
 	var/tanning_time = 1 MINUTES
 	var/timerid
+
+/obj/structure/tanning_rack/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/structure/tanning_rack/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/stack/sheet/wethide))

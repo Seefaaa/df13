@@ -59,6 +59,8 @@
 /datum/component/liftable/proc/update_item()
 	spawn(1) //We have to wait a bit for parent to update otherwise we will copy their previous appearance
 		var/obj/P = parent
+		if(QDELETED(P))
+			return
 		item.icon = P.icon
 		item.icon_state = P.icon_state
 		item.copy_overlays(P, TRUE)

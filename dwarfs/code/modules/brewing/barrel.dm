@@ -5,6 +5,10 @@
 	icon_state = "barrel"
 	var/open = TRUE
 	density = 1
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron)
+
+/obj/structure/barrel/build_material_icon(_file, state)
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT]))
 
 /obj/structure/barrel/examine(mob/user)
 	. = ..()

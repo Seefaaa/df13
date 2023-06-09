@@ -5,8 +5,12 @@
 	icon_state = "anvil"
 	density = TRUE
 	anchored = TRUE
+	materials = /datum/material/iron
 	var/obj/item/ingot/current_ingot = null
 	var/list/allowed_things = list()
+
+/obj/structure/anvil/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/structure/anvil/update_overlays()
 	. = ..()

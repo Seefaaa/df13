@@ -5,9 +5,13 @@
 	icon_state = "well"
 	density = 1
 	anchored = 1
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron)
 	var/working = FALSE
 	//IMPORTANT: work_time should be somewhat the same as "well_working" animation duration otherwise it will look crappy
 	var/work_time = 3.9 SECONDS
+
+/obj/structure/well/build_material_icon(_file, state)
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT]))
 
 /obj/structure/well/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/reagent_containers/glass/bucket))

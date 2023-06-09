@@ -6,6 +6,7 @@
 	density = TRUE
 	anchored = TRUE
 	layer = TABLE_LAYER
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron)
 	var/datum/workbench_recipe/recipe
 	var/ready = FALSE
 	var/busy = FALSE
@@ -20,7 +21,10 @@
 	var/turf/T = locate(x+1,y,z)
 	if(istype(T, /turf/open))
 		T.density = FALSE
-	..()
+	. = ..()
+
+/obj/structure/workbench/build_material_icon(_file, state)
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT]))
 
 /obj/structure/workbench/attack_hand(mob/user)
 	. = ..()

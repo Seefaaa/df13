@@ -8,6 +8,8 @@
 	var/atom/target_structure
 	//What do we need to build it
 	var/list/reqs = list()
+	//What materials are allowed or what is the user using
+	var/list/req_materials = list()
 	//The size of our blueprint = list(x,y)
 	var/list/dimensions = list(0,0)
 	var/cat = "misc"
@@ -57,7 +59,14 @@
 		add_material(user, I)
 
 /obj/structure/blueprint/proc/structure_overlay()
-	var/mutable_appearance/M = mutable_appearance(initial(target_structure.icon), initial(target_structure.icon_state), layer=ABOVE_MOB_LAYER)
+	var/atom/target
+	if(ispath(target_structure, /turf))
+		target = new target_structure(locate(world.maxx, world.maxy, world.maxz))
+	else
+		target = new target_structure
+	var/mutable_appearance/M = mutable_appearance(target.build_material_icon(initial(target_structure.icon), initial(target_structure.icon_state)), layer=ABOVE_MOB_LAYER)
+	if(!isturf(target))
+		qdel(target)
 	M.color = "#5e8bdf"
 	M.alpha = 120
 	return M
@@ -114,6 +123,12 @@
 	if(diff < 1)
 		to_chat(user, span_warning("[src] already has enough of [I]."))
 		return FALSE
+	if(I.type in req_materials)
+		if(I.materials != req_materials[I.type])
+			to_chat(user, span_warning("[I] has to be made out of [get_material_name(req_materials[I.type])]"))
+			return FALSE
+	else
+		req_materials[I.type] = I.materials
 
 /// Extra check after we figure obj/material is accepted by can_accept proc
 /obj/structure/blueprint/proc/additional_check(mob/user, obj/material)
@@ -200,6 +215,12 @@
 	reqs = list(/obj/item/ingot=5)
 	cat = "craftsmanship"
 
+/obj/structure/blueprint/barrel
+	name = "barrel blueprint"
+	target_structure = /obj/structure/barrel
+	reqs = list(/obj/item/ingot=1, /obj/item/stack/sheet/planks=6)
+	cat = "utils"
+
 /obj/structure/blueprint/gemcutter
 	name = "gemstone grinder blueprint"
 	target_structure = /obj/structure/gemcutter
@@ -215,7 +236,7 @@
 /obj/structure/blueprint/loom
 	name = "loom blueprint"
 	target_structure = /obj/structure/loom
-	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/ingot=2)
+	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/ingot=1)
 	cat = "craftsmanship"
 
 /obj/structure/blueprint/press

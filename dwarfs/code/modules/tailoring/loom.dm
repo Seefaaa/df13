@@ -3,10 +3,14 @@
 	desc = "Nobody ever told anyone that weaving is easy. Neither fun."
 	icon = 'dwarfs/icons/structures/workshops.dmi'
 	icon_state = "loom"
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron)
 	density = TRUE
 	anchored = TRUE
 	var/working = FALSE
 	var/ready = FALSE
+
+/obj/structure/loom/build_material_icon(_file, state)
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT]))
 
 /obj/structure/loom/update_icon_state()
 	. = ..()

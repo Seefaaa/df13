@@ -22,3 +22,9 @@ SUBSYSTEM_DEF(materials)
 	if(islist(type))
 		return
 	return SSmaterials.materials[type]
+
+/proc/get_material_name(type)
+	var/datum/material/M = get_material(type)
+	if(!M)
+		return "unknown material"
+	return M.name
