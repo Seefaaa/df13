@@ -154,9 +154,7 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 		. += "<hr>It contains no keys"
 		return
 	. += "<hr>It contains keys for "
-	. += jointext(keys, ",")
-	for(var/obj/item/key/K in keys)
-		. += list(span_notice(K.name) + ",")
+	. += span_notice(jointext(keys, ","))
 
 /obj/item/keyring/verb/remove_key()
 	var/obj/item/key/chosen = tgui_input_list(usr, "Which key do you want to remove?", "Pick key", keys)
