@@ -130,6 +130,10 @@
 	buildstacktype = /obj/item/stack/sheet/planks
 	buildstackamount = 3
 	item_chair = /obj/item/chair/wood
+	materials = /datum/material/wood/pine/treated
+
+/obj/structure/chair/wood/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/structure/chair/wood/GetArmrest()
 	return mutable_appearance(icon, "wooden_chair_armrest")
@@ -272,3 +276,7 @@
 	hitsound = 'sound/weapons/genhit1.ogg'
 	origin_type = /obj/structure/chair/wood
 	break_chance = 50
+	materials = /datum/material/wood/pine/treated
+
+/obj/item/chair/wood/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)

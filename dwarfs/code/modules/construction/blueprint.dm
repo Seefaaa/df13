@@ -255,13 +255,32 @@
 	name = "stone throne"
 	target_structure = /obj/structure/chair/comfy/stone/throne
 	reqs = list(/obj/item/ingot=2, /obj/item/stack/sheet/stone=15, /obj/item/stack/sheet/mineral/gem/diamond=3)
+	req_materials = list(/obj/item/ingot=/datum/material/gold)
 	cat = "decoration"
 
-/obj/structure/blueprint/throne/additional_check(mob/user, obj/O)
-	. = ..()
-	if(istype(O, /obj/item/ingot))
-		if(O.materials != /datum/material/gold)
-			to_chat(user, span_warning("[O] has to be a golden ingot."))
+/obj/structure/blueprint/stone_chair
+	name = "stone chair"
+	target_structure = /obj/structure/chair/comfy/stone
+	reqs = list(/obj/item/stack/sheet/stone=5)
+	cat = "decoration"
+
+/obj/structure/blueprint/wood_chair
+	name = "wooden chair"
+	target_structure = /obj/structure/chair/wood
+	reqs = list(/obj/item/stack/sheet/planks=5)
+	cat = "decoration"
+
+/obj/structure/blueprint/wood_table
+	name = "wooden table"
+	target_structure = /obj/structure/table/wood
+	reqs = list(/obj/item/stack/sheet/planks=6)
+	cat = "decoration"
+
+/obj/structure/blueprint/stone_table
+	name = "stone table"
+	target_structure = /obj/structure/table/stone
+	reqs = list(/obj/item/stack/sheet/stone=6)
+	cat = "decoration"
 
 /obj/structure/blueprint/floor
 	name = "floor"

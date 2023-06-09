@@ -10,8 +10,12 @@
 
 /obj/structure/table/wood
 	name = "wooden table"
-	desc = ""
+	desc = "It's a table."
 	icon = 'dwarfs/icons/structures/wood_table.dmi'
 	icon_state = "wood_table-0"
 	base_icon_state = "wood_table"
 	buildstack = /obj/item/stack/sheet/planks
+	materials = /datum/material/wood/pine/treated
+
+/obj/structure/table/wood/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)

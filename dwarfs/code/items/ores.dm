@@ -36,8 +36,6 @@
 
 GLOBAL_LIST_INIT(stone_recipes, list(
 	new/datum/stack_recipe("Pot", /obj/structure/sapling_pot, 20, time=10 SECONDS, tools=TOOL_CHISEL),
-	new/datum/stack_recipe("Stone Table", /obj/structure/table/stone, 8, time=10 SECONDS, tools=TOOL_CHISEL),
-	new/datum/stack_recipe("Stone Chair", /obj/structure/chair/comfy/stone, 5, time=15 SECONDS, tools=TOOL_CHISEL),
 	new/datum/stack_recipe("Sarcophagus", /obj/structure/closet/crate/sarcophagus, 5, time=10 SECONDS),
 	new/datum/stack_recipe("Sign", /obj/structure/sign, 5, time = 10 SECONDS, tools=TOOL_CHISEL),
 ))
