@@ -76,10 +76,6 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 /obj/item/lock/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
 
-/obj/item/lock/Initialize()
-	. = ..()
-	AddComponent(/datum/component/lock, key_form)
-
 /obj/item/lock/attack_obj(obj/O, mob/living/user, params)
 	. = ..()
 	if(O._AddComponent(list(/datum/component/lock, key_form)))
@@ -120,6 +116,48 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 						update_name()
 				return
 	. = ..()
+
+/obj/item/keyring
+	name = "key ring"
+	desc = "Holds multiple keys."
+	icon = 'dwarfs/icons/items/misc_items.dmi'
+	icon_state = "key"
+	materials = /datum/material/iron
+	var/list/obj/item/key/keys = list()
+	var/limit = 4
+
+/obj/item/keyring/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
+
+/obj/item/keyring/attack_obj(obj/O, mob/living/user, params)
+	. = ..()
+	for(var/obj/item/key/key in keys)
+		SEND_SIGNAL(O, COMSIG_KEY_USE, key.key_form, user)
+
+/obj/item/keyring/attackby(obj/item/attacking_item, mob/user, params)
+	if(istype(attacking_item,/obj/item/key))
+		if(LAZYLEN(keys) >= 4)
+			to_chat(user,span_warn("The key ring is full!"))
+			return
+		attacking_item.forceMove(src)
+		keys += attacking_item
+	. = ..()
+
+/obj/item/keyring/examine_more(mob/user)
+	. = ..()
+w	if(!LAZYLEN(keys))
+		. += "<hr>It contains no keys"
+		return
+	. += "<hr>It contains keys for "
+	. += jointext(keys, ",")
+	for(var/obj/item/key/K in keys)
+		. += list(span_notice(K.name) + ",")
+
+/obj/item/keyring/verb/remove_key()
+	var/obj/item/key/chosen = tgui_input_list(usr, "Which key do you want to remove?", "Pick key", keys)
+	if(chosen)
+		chosen.forceMove(usr.loc)
+		keys -= chosen
 
 
 /obj/effect/key_lock/Initialize()
