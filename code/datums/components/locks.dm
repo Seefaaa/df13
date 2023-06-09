@@ -168,11 +168,11 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 /obj/item/keyring/update_overlays()
 	. = ..()
 	if(LAZYLEN(keys) >= 3)
-		. += keys[3].build_material_icon(icon, "keyring-3")
+		. += mutable_appearance(keys[3].build_material_icon(keys[3].icon,"keyring-3"))
 	if(LAZYLEN(keys) >= 2)
-		. += mutable_appearance(keys[2].build_material_icon(), "keyring-2")
+		. += mutable_appearance(keys[2].build_material_icon(keys[2].icon,"keyring-2"))
 	if(LAZYLEN(keys) >= 1)
-		. += mutable_appearance(keys[1].build_material_icon(), "keyring-1")
+		. += mutable_appearance(keys[1].build_material_icon(keys[1].icon,"keyring-1"))
 
 
 /obj/effect/key_lock/Initialize()
@@ -180,4 +180,12 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 	var/obj/item/lock/L = new(loc)
 	var/obj/item/key/K = new(loc)
 	K.key_form = L.key_form
+	qdel(src)
+
+/obj/effect/key_ring/Initialize()
+	. = ..()
+	var/obj/item/key/K = new(loc)
+	var/obj/item/key/K2 = new(loc)
+	K2.apply_material(/datum/material/gold)
+	var/obj/item/keyring/R = new(loc)
 	qdel(src)
