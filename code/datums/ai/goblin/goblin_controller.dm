@@ -1,0 +1,82 @@
+/datum/ai_controller/goblin
+	planning_subtrees = list(/datum/ai_planning_subtree/goblin_tree)
+	blackboard = list(
+		BB_GOBLIN_ATTACK_TARGET = null,
+		BB_GOBLIN_DESTINATION_REACHED = FALSE,
+		BB_GOBLIN_ENEMIES = list()
+	)
+
+/datum/ai_controller/goblin/TryPossessPawn(atom/new_pawn)
+	if(!isliving(new_pawn))
+		return AI_CONTROLLER_INCOMPATIBLE
+
+	var/mob/living/living_pawn = new_pawn
+	RegisterSignal(new_pawn, COMSIG_PARENT_ATTACKBY, .proc/on_attackby)
+	RegisterSignal(new_pawn, COMSIG_ATOM_ATTACK_HAND, .proc/on_attack_hand)
+	RegisterSignal(new_pawn, COMSIG_ATOM_ATTACK_PAW, .proc/on_attack_paw)
+	RegisterSignal(new_pawn, COMSIG_ATOM_ATTACK_ANIMAL, .proc/on_attack_animal)
+	RegisterSignal(new_pawn, COMSIG_ATOM_BULLET_ACT, .proc/on_bullet_act)
+	RegisterSignal(new_pawn, COMSIG_ATOM_HITBY, .proc/on_hitby)
+	RegisterSignal(new_pawn, COMSIG_LIVING_START_PULL, .proc/on_startpulling)
+	RegisterSignal(new_pawn, COMSIG_MOB_MOVESPEED_UPDATED, .proc/update_movespeed)
+
+	movement_delay = living_pawn.cached_multiplicative_slowdown
+	return ..() //Run parent at end
+
+/datum/ai_controller/goblin/UnpossessPawn(destroy)
+	UnregisterSignal(pawn, list(COMSIG_PARENT_ATTACKBY, COMSIG_ATOM_ATTACK_HAND, COMSIG_ATOM_ATTACK_PAW, COMSIG_ATOM_BULLET_ACT, COMSIG_ATOM_HITBY, COMSIG_LIVING_START_PULL,\
+	COMSIG_MOB_MOVESPEED_UPDATED, COMSIG_ATOM_ATTACK_ANIMAL))
+	qdel(GetComponent(/datum/component/connect_loc_behalf))
+
+/datum/ai_controller/goblin/proc/retaliate(mob/living/L)
+	var/list/enemies = blackboard[BB_GOBLIN_ENEMIES]
+	enemies[L] = 100
+
+/datum/ai_controller/goblin/proc/on_attackby(datum/source, obj/item/I, mob/user)
+	SIGNAL_HANDLER
+	if(I.force && I.damtype != STAMINA)
+		retaliate(user)
+
+/datum/ai_controller/goblin/proc/on_attack_hand(datum/source, mob/living/user)
+	SIGNAL_HANDLER
+	if(prob(GOBLIN_RETALIATE_PROB))
+		retaliate(user)
+
+/datum/ai_controller/goblin/proc/on_attack_paw(datum/source, mob/living/user)
+	SIGNAL_HANDLER
+	if(prob(GOBLIN_RETALIATE_PROB))
+		retaliate(user)
+
+/datum/ai_controller/goblin/proc/on_attack_animal(datum/source, mob/living/user)
+	SIGNAL_HANDLER
+	if(user.melee_damage_upper > 0 && prob(GOBLIN_RETALIATE_PROB))
+		retaliate(user)
+
+/datum/ai_controller/goblin/proc/on_bullet_act(datum/source, obj/projectile/Proj)
+	SIGNAL_HANDLER
+	var/mob/living/living_pawn = pawn
+	if(istype(Proj, /obj/projectile/bullet))
+		if((Proj.damage_type == BURN) || (Proj.damage_type == BRUTE))
+			if(!Proj.nodamage && Proj.damage < living_pawn.health && isliving(Proj.firer))
+				retaliate(Proj.firer)
+
+/datum/ai_controller/goblin/proc/on_hitby(datum/source, atom/movable/AM, skipcatch = FALSE, hitpush = TRUE, blocked = FALSE, datum/thrownthing/throwingdatum)
+	SIGNAL_HANDLER
+	if(istype(AM, /obj/item))
+		var/mob/living/living_pawn = pawn
+		var/obj/item/I = AM
+		var/mob/thrown_by = I.thrownby?.resolve()
+		if(I.throwforce < living_pawn.health && ishuman(thrown_by))
+			var/mob/living/carbon/human/H = thrown_by
+			retaliate(H)
+
+/datum/ai_controller/goblin/proc/on_startpulling(datum/source, atom/movable/puller, state, force)
+	SIGNAL_HANDLER
+	var/mob/living/living_pawn = pawn
+	if(!IS_DEAD_OR_INCAP(living_pawn) && prob(GOBLIN_RETALIATE_PROB)) // nuh uh you don't pull me!
+		retaliate(living_pawn.pulledby)
+		return TRUE
+
+/datum/ai_controller/goblin/proc/update_movespeed(mob/living/pawn)
+	SIGNAL_HANDLER
+	movement_delay = pawn.cached_multiplicative_slowdown

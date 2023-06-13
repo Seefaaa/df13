@@ -16,8 +16,6 @@
 
 /datum/round_event/ghost_role/goblin_raid/spawn_role()
 	var/list/candidates = get_candidates("Goblin", null, FALSE)
-	if(!candidates.len)
-		return NOT_ENOUGH_PLAYERS
 	var/x
 	var/y
 	var/z = GLOB.surface_z
@@ -28,17 +26,24 @@
 		y = rand(10, world.maxx-10)
 		x = pick(10, world.maxy-10)
 
-	while(spawns > 1 && candidates.len > 1)
+	while(spawns > 1)
 		var/client/C = pick_n_take(candidates)
 		var/mob/living/carbon/human/species/goblin/warrior = new(locate(x+rand(-5,5), y+rand(-5,5), z))
 		warrior.equipOutfit(/datum/outfit/goblin)
-		warrior.key = C.key
+		if(C)
+			warrior.key = C.key
+		else
+			warrior.ai_controller = new /datum/ai_controller/goblin(warrior)
 		spawned_mobs += warrior
 		to_chat(warrior, span_announce("You are a goblin raider. Your tribe spotted a nearby fortress and sent out your group to deal with it."))
+		spawns--
 	var/client/C = pick_n_take(candidates)
 	var/mob/living/carbon/human/species/goblin/leader = new(locate(x+rand(-5,5), y+rand(-5,5), z))
 	leader.equipOutfit(/datum/outfit/goblin_leader)
-	leader.key = C.key
+	if(C)
+		leader.key = C.key
+	else
+		leader.ai_controller = new /datum/ai_controller/goblin(leader)
 	spawned_mobs += leader
 	to_chat(leader, span_announce("You and yor group were tasked to raid a nearby fortress."))
 	return SUCCESSFUL_SPAWN

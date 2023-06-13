@@ -27,10 +27,12 @@
 
 /datum/species/goblin/on_species_gain(mob/living/carbon/human/C, datum/species/old_species, pref_load)
 	GLOB.goblin_list += C
+	C.faction += "goblin"
 	. = ..()
 
 /datum/species/goblin/on_species_loss(mob/living/carbon/human/C, datum/species/new_species, pref_load)
 	GLOB.goblin_list -= C
+	C.faction -= "goblin"
 	. = ..()
 
 /datum/species/goblin/random_name(gender,unique,lastname)

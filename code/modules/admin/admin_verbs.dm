@@ -65,7 +65,6 @@ GLOBAL_LIST_INIT(admin_verbs_fun, list(
 	/client/proc/invisimin,				/*allows our mob to go invisible/visible*/
 	/datum/admins/proc/show_lag_switch_panel,
 	/client/proc/game_panel,			/*game panel, allows to change game-mode etc*/
-	/client/proc/spawn_goblins,
 	/client/proc/trigger_migration,
 	/datum/admins/proc/announce,		/*priority announce something to all clients.*/
 	/datum/admins/proc/set_admin_notice, /*announcement all clients see when joining the server.*/
@@ -380,12 +379,6 @@ GLOBAL_PROTECT(admin_verbs_hideable)
 	if(holder)
 		holder.Game()
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Game Panel") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-/client/proc/spawn_goblins()
-	set name = "Spawn Goblins"
-	set category = "Admin.Game"
-	if(holder)
-		holder.spawn_goblins()
 
 /client/proc/trigger_migration()
 	set name = "Trigger Migration"

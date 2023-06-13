@@ -225,23 +225,6 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////admins2.dm merge
 //i.e. buttons/verbs
 
-/datum/admins/proc/spawn_goblins()
-	if (!usr.client.holder)
-		return
-	var/ans = input(usr, "How many goblins to spawn?", "Goblins", 2) as null|num
-	if(!ans)
-		return
-	new /obj/item/flashlight/fueled/torch/lit (get_turf(usr))
-	spawn()
-		var/mob/living/carbon/human/species/goblin/leader = new(get_turf(usr))
-		leader.equipOutfit(/datum/outfit/goblin_leader)
-		offer_control(leader)
-	for(var/i in 1 to ans)
-		spawn()
-			var/mob/living/carbon/human/species/goblin/goblen = new(get_turf(usr))
-			goblen.equipOutfit(/datum/outfit/goblin)
-			offer_control(goblen)
-
 /datum/admins/proc/trigger_migration()
 	if(!SSticker.queued_players.len)
 		to_chat(usr, span_warning("No players in queue!"))

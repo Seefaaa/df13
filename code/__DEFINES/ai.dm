@@ -55,6 +55,13 @@
 #define BB_MONKEY_NEXT_HUNGRY "BB_monkey_next_hungry"
 
 
+///Goblin stuff
+
+#define BB_GOBLIN_DESTINATION_REACHED "BB_golbin_destination_reached"
+#define BB_GOBLIN_ATTACK_TARGET "BB_goblin_attack_target"
+#define BB_GOBLIN_ENEMIES "BB_goblin_enemies"
+#define GOBLIN_RETALIATE_PROB 70
+
 ///Haunted item controller defines
 
 ///Chance for haunted item to haunt someone
