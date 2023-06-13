@@ -78,10 +78,10 @@
 
 ///Prefs menu
 /atom/movable/screen/lobby/button/character_setup
-	screen_loc = "EAST-4:26,TOP:-38"
-	icon = 'icons/hud/lobbyv3/character_setup.dmi'
-	icon_state = "character_setup"
-	base_icon_state = "character_setup"
+	screen_loc = "EAST-4,TOP:-232"
+	icon = 'dwarfs/icons/ui/lobbyv3/setup.dmi'
+	icon_state = "setup"
+	base_icon_state = "setup"
 
 /atom/movable/screen/lobby/button/character_setup/Click(location, control, params)
 	. = ..()
@@ -92,8 +92,8 @@
 
 ///Button that appears before the game has started
 /atom/movable/screen/lobby/button/ready
-	screen_loc = "EAST-4:26,TOP:-2"
-	icon = 'icons/hud/lobbyv3/ready.dmi'
+	screen_loc = "EAST-4,TOP:-118"
+	icon = 'dwarfs/icons/ui/lobbyv3/ready.dmi'
 	icon_state = "not_ready"
 	base_icon_state = "not_ready"
 	var/ready = FALSE
@@ -140,8 +140,8 @@
 
 ///Shown when the game has started
 /atom/movable/screen/lobby/button/join
-	screen_loc = "EAST-4:26,TOP:-2"
-	icon = 'icons/hud/lobbyv3/join.dmi'
+	screen_loc = "EAST-4,TOP:-2"
+	icon = 'dwarfs/icons/ui/lobbyv3/migrate.dmi'
 	icon_state = "" //Default to not visible
 	base_icon_state = "not_ready"
 	enabled = FALSE
@@ -174,7 +174,6 @@
 		SSticker.queued_players -= new_player
 	update_appearance(UPDATE_ICON)
 
-
 /atom/movable/screen/lobby/button/join/proc/show_join_button()
 	SIGNAL_HANDLER
 	set_button_status(TRUE)
@@ -188,8 +187,8 @@
 	RegisterSignal(SSticker, COMSIG_TICKER_ENTER_SETTING_UP, .proc/show_join_button)
 
 /atom/movable/screen/lobby/button/observe
-	screen_loc = "EAST-4:26,TOP:-20"
-	icon = 'icons/hud/lobbyv3/observe.dmi'
+	screen_loc = "EAST-4,TOP:-175"
+	icon = 'dwarfs/icons/ui/lobbyv3/observe.dmi'
 	icon_state = "observe_disabled"
 	base_icon_state = "observe"
 	enabled = FALSE
@@ -217,3 +216,8 @@
 	flick("[base_icon_state]_enabled", src)
 	set_button_status(TRUE)
 	UnregisterSignal(SSticker, COMSIG_TICKER_ENTER_PREGAME, .proc/enable_observing)
+
+/atom/movable/screen/lobby/chains
+	icon = 'dwarfs/icons/ui/lobbyv3/chains.dmi'
+	icon_state = "chains1"
+	screen_loc = "EAST-4:-4,TOP"//has to be 4 pixels to the left compared to the rest of the buttons
