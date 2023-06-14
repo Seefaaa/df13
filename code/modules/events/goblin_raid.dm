@@ -25,7 +25,7 @@
 	else//spawn on left/right side
 		y = rand(10, world.maxx-10)
 		x = pick(10, world.maxy-10)
-
+	var/list/goblins = list()
 	while(spawns > 1)
 		var/client/C = pick_n_take(candidates)
 		var/mob/living/carbon/human/species/goblin/warrior = new(locate(x+rand(-5,5), y+rand(-5,5), z))
@@ -35,6 +35,7 @@
 		else
 			warrior.ai_controller = new /datum/ai_controller/goblin(warrior)
 		spawned_mobs += warrior
+		goblins += warrior
 		to_chat(warrior, span_announce("You are a goblin raider. Your tribe spotted a nearby fortress and sent out your group to deal with it."))
 		spawns--
 	var/client/C = pick_n_take(candidates)
@@ -45,5 +46,12 @@
 	else
 		leader.ai_controller = new /datum/ai_controller/goblin(leader)
 	spawned_mobs += leader
+	goblins += leader
 	to_chat(leader, span_announce("You and yor group were tasked to raid a nearby fortress."))
+
+	for(var/mob/living/goblin in goblins)
+		for(var/mob/living/other_goblin in goblins-goblin)
+			var/datum/ai_controller/goblin/goblin_controller = goblin.ai_controller
+			if(goblin_controller)
+				goblin_controller.add_teammate(other_goblin)
 	return SUCCESSFUL_SPAWN

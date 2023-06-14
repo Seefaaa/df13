@@ -1,9 +1,12 @@
 /datum/ai_controller/goblin
 	planning_subtrees = list(/datum/ai_planning_subtree/goblin_tree)
+	max_target_distance = 150
 	blackboard = list(
 		BB_GOBLIN_ATTACK_TARGET = null,
 		BB_GOBLIN_DESTINATION_REACHED = FALSE,
-		BB_GOBLIN_ENEMIES = list()
+		BB_GOBLIN_ENEMIES = list(),
+		BB_FOLLOW_TARGET = null,
+		BB_VISION_RANGE = 10
 	)
 
 /datum/ai_controller/goblin/TryPossessPawn(atom/new_pawn)
@@ -80,3 +83,25 @@
 /datum/ai_controller/goblin/proc/update_movespeed(mob/living/pawn)
 	SIGNAL_HANDLER
 	movement_delay = pawn.cached_multiplicative_slowdown
+
+/datum/ai_controller/goblin/proc/check_verbal_command(mob/speaker, speech_args)
+	SIGNAL_HANDLER
+
+	var/mob/living/living_pawn = pawn
+	if(IS_DEAD_OR_INCAP(living_pawn))
+		return
+
+	if(!("goblin" in speaker.faction))
+		return
+	if(!can_see(pawn, speaker, length=10))
+		return
+
+	var/spoken_text = speech_args[SPEECH_MESSAGE] // probably should check for full words
+	if(findtext(spoken_text, "stop") || findtext(spoken_text, "stay"))
+		blackboard[BB_FOLLOW_TARGET] = null
+	else if((findtext(spoken_text, "follow") || findtext(spoken_text, "come")))
+		blackboard[BB_FOLLOW_TARGET] = WEAKREF(speaker)
+		queue_behavior(/datum/ai_behavior/follow)
+
+/datum/ai_controller/goblin/proc/add_teammate(mob/teammate)
+	RegisterSignal(teammate, COMSIG_MOB_SAY, .proc/check_verbal_command)

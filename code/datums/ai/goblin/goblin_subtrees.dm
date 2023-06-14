@@ -1,4 +1,4 @@
-/datum/ai_planning_subtree/goblin_tree/SelectBehaviors(datum/ai_controller/monkey/controller, delta_time)
+/datum/ai_planning_subtree/goblin_tree/SelectBehaviors(datum/ai_controller/goblin/controller, delta_time)
 	var/mob/living/living_pawn = controller.pawn
 
 	if(SHOULD_RESIST(living_pawn))
@@ -31,11 +31,12 @@
 			controller.queue_behavior(/datum/ai_behavior/goblin_attack_mob)
 			return SUBTREE_RETURN_FINISH_PLANNING
 
-	if(!controller.blackboard[BB_GOBLIN_DESTINATION_REACHED])
+	if(!controller.blackboard[BB_GOBLIN_DESTINATION_REACHED] && !controller.blackboard[BB_FOLLOW_TARGET])
 		controller.queue_behavior(/datum/ai_behavior/move_to_fortress)
 		return SUBTREE_RETURN_FINISH_PLANNING
 
-	//wander around randomly to stumble on some targets
-	controller.queue_behavior(/datum/ai_behavior/goblin_wander)
-	return SUBTREE_RETURN_FINISH_PLANNING
+	//wander around randomly to stumble on some targets of we're not following sb
+	if(!controller.blackboard[BB_FOLLOW_TARGET])
+		controller.queue_behavior(/datum/ai_behavior/goblin_wander)
+		return SUBTREE_RETURN_FINISH_PLANNING
 

@@ -8,6 +8,11 @@
 	. = ..()
 
 	var/mob/living/target = controller.blackboard[BB_GOBLIN_ATTACK_TARGET]
+	var/mob/living/carbon/owner = controller.pawn
+
+	if(IS_DEAD_OR_INCAP(owner))
+		finish_action(controller, FALSE)
+		return
 
 	if(!target || target.stat >= HARD_CRIT)
 		finish_action(controller, TRUE)
@@ -55,17 +60,20 @@
 	. = ..()
 
 	if(controller.blackboard[BB_GOBLIN_DESTINATION_REACHED])
+		finish_action(controller, TRUE)
+		return
+
+	if(controller.blackboard[BB_FOLLOW_TARGET])
+		finish_action(controller, FALSE)
 		return
 
 	var/mob/living/carbon/owner = controller.pawn
 
 	var/turf/fortress_turf = locate(world.maxx/2, world.maxy/2, GLOB.surface_z)
-	var/turf/next_turf = get_step_to(owner, fortress_turf)
-	owner.Move(next_turf, get_dir(owner, next_turf))
 	if(fortress_turf in view(10, owner))
 		finish_action(controller, TRUE)
 	else
-		finish_action(controller, FALSE)
+		controller.current_movement_target = fortress_turf
 
 /datum/ai_behavior/move_to_fortress/finish_action(datum/ai_controller/controller, succeeded)
 	. = ..()
