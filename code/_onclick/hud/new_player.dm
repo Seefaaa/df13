@@ -39,7 +39,7 @@
 
 	if(!enabled)
 		return
-	flick("[base_icon_state]_pressed", src)
+	// flick("[base_icon_state]_pressed", src)
 	update_appearance(UPDATE_ICON)
 	return TRUE
 
@@ -140,7 +140,7 @@
 
 ///Shown when the game has started
 /atom/movable/screen/lobby/button/join
-	screen_loc = "EAST-4,TOP:-2"
+	screen_loc = "EAST-4,TOP:-118"
 	icon = 'dwarfs/icons/ui/lobbyv3/migrate.dmi'
 	icon_state = "" //Default to not visible
 	base_icon_state = "not_ready"
@@ -219,5 +219,5 @@
 
 /atom/movable/screen/lobby/chains
 	icon = 'dwarfs/icons/ui/lobbyv3/chains.dmi'
-	icon_state = "chains1"
+	icon_state = "chains2"
 	screen_loc = "EAST-4:-4,TOP"//has to be 4 pixels to the left compared to the rest of the buttons
