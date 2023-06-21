@@ -29,6 +29,10 @@
 
 /obj/structure/spider/stickyweb/Initialize(mapload)
 	. = ..()
+	if(prob(50))
+		icon_state = "stickyweb1"
+	else
+		icon_state = "stickyweb2"
 /obj/structure/spider/stickyweb/Destroy()
 	. = ..()
 	UnregisterSignal(get_turf(src),COMSIG_ATOM_ENTERED)
@@ -62,3 +66,28 @@
 			to_chat(mover, "<span class='danger'>You get stuck in \the [src] for a moment.</span>")
 			return FALSE
 
+/obj/structure/spider/cocoon
+	name = "cocoon"
+	desc = "contains very poor prey to be sucked up by the huntress."
+	icon_state = "cocoon"
+	var/mob/prey
+	var/child =  /mob/living/simple_animal/hostile/giant_spider
+	var/hatch_time = 2 MINUTES
+
+/obj/structure/spider/cocoon/proc/encase(mob/living/target)
+	prey = target
+	target.forceMove(src)
+	target.death(FALSE)
+
+/obj/structure/spider/cocoon/Initialize()
+	. = ..()
+	addtimer(CALLBACK(src, .proc/hatch), hatch_time)
+
+/obj/structure/spider/cocoon/Destroy()
+	prey?.forceMove(src.loc)
+	. = ..()
+
+/obj/structure/spider/cocoon/proc/hatch()
+	if(src && child)
+		new child(src.loc)
+		qdel(src)

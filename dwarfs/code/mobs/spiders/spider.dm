@@ -33,13 +33,19 @@
 	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_VISIBLE
 	mobility_flags = MOBILITY_FLAGS_REST_CAPABLE_DEFAULT
 	attack_vis_effect = ATTACK_EFFECT_BITE
+	stat_attack = UNCONSCIOUS
+	robust_searching = TRUE
 	var/his_sound = 'dwarfs/sounds/mobs/spider/spiderhiss.ogg'
 	var/datum/action/innate/spider/lay_web/lay_web
 	var/poison_per_bite = 5
 	var/poison_type = /datum/reagent/spider_venom
 	var/list/sensed_targets = list()
 	var/nested = FALSE
+	var/cocooning = FALSE
 	COOLDOWN_DECLARE(hiss_cd)
+
+/mob/living/simple_animal/hostile/giant_spider/no_nest
+	nested = TRUE
 
 /mob/living/simple_animal/hostile/giant_spider/Initialize(mapload)
 	. = ..()
@@ -71,8 +77,9 @@
 
 
 	for(var/mob/living/carbon/human/M in oview(5, src))
-		if(M.stat >= SOFT_CRIT)
-			cocoon(M)
+		if(M.stat >= UNCONSCIOUS)
+			if(!cocooning)
+				cocoon(M)
 	var/obj/structure/spider/stickyweb/W = locate() in get_turf(src)
 	if(!W)
 		lay_web.Activate()
@@ -82,7 +89,7 @@
 
 /mob/living/simple_animal/hostile/giant_spider/proc/nesting()
 	stop_automated_movement = TRUE
-	var/list/open_turfs = view(3,src)
+	var/list/open_turfs = view(2,src)
 	for(var/turf/open/T in open_turfs)
 		if(target)
 			stop_automated_movement = FALSE
@@ -96,7 +103,15 @@
 	stop_automated_movement = FALSE
 
 /mob/living/simple_animal/hostile/giant_spider/proc/cocoon(mob/living/carbon/H)
-	return H
+	if(H.stat >= UNCONSCIOUS)
+		stop_automated_movement = TRUE
+		cocooning = TRUE
+		if(do_after(src, 5 SECONDS, H))
+			var/obj/structure/spider/cocoon/C = new(src.loc)
+			C.encase(H)
+		cocooning = FALSE
+		stop_automated_movement = FALSE
+
 
 
 /mob/living/simple_animal/hostile/giant_spider/proc/do_action()
@@ -114,7 +129,7 @@
 
 
 /mob/living/simple_animal/hostile/giant_spider/ListTargets()
-	..()
+	. = ..()
 	. += sensed_targets
 
 // /mob/living/simple_animal/hostile/giant_spider/movement_delay()
