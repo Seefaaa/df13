@@ -12,6 +12,12 @@
 	animal_species = /mob/living/simple_animal/chicken
 	// Used for icon state: see ./Initialize
 	gender = NEUTER
+	deathsound = 'dwarfs/sounds/mobs/chicken/death.ogg'
+	var/list/idle_sounds = list(
+		'dwarfs/sounds/mobs/chicken/idle1.ogg',
+		'dwarfs/sounds/mobs/chicken/idle2.ogg',
+		'dwarfs/sounds/mobs/chicken/idle3.ogg'
+	)
 	var/color_txt = "brown"
 
 /mob/living/simple_animal/chicken/Initialize(mapload, _gender=null, _color=null)
@@ -25,8 +31,10 @@
 		new /mob/living/simple_animal/chicken/hen(src.loc)
 	qdel(src)
 
-/mob/living/simple_animal/chicken/attack_hand(mob/living/carbon/human/M)
+/mob/living/simple_animal/chicken/Life(delta_time, times_fired)
 	. = ..()
+	if(prob(10))
+		playsound(src, pick(idle_sounds), rand(20, 60), TRUE)
 
 /mob/living/simple_animal/chicken/baby
 	name = "baby chicken"
@@ -73,6 +81,12 @@
 	gender = MALE
 	icon_state = "chicken_brown"
 	icon_dead = "chicken_brown_dead"
+	idle_sounds = list(
+		'dwarfs/sounds/mobs/chicken/idle1.ogg',
+		'dwarfs/sounds/mobs/chicken/idle2.ogg',
+		'dwarfs/sounds/mobs/chicken/idle3.ogg',
+		'dwarfs/sounds/mobs/chicken/idle_rooster.ogg',
+	)
 
 /mob/living/simple_animal/chicken/rooster/Life(delta_time, times_fired)
 	. = ..()
