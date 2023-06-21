@@ -95,9 +95,9 @@
 /atom/movable/screen/alert/kingsense
 	name = "King Sense"
 	desc = "Allows you to vind your leader."
-	icon = 'dwarfs/icons/mob/alerts.dmi'
-	icon_state = "cult_sense"
-	alerttooltipstyle = "cult"
+	icon = 'dwarfs/icons/ui/alerts.dmi'
+	icon_state = "king_sense"
+	alerttooltipstyle = "dwarf"
 	var/angle = 0
 	var/atom/movable/king
 
@@ -134,9 +134,7 @@
 	var/target_dist = get_dist(P, Q)
 	cut_overlays()
 	switch(target_dist)
-		if(0 to 1)
-			icon_state = "runed_sense1"
-		if(2 to 8)
+		if(0 to 8)
 			icon_state = "arrow8"
 		if(9 to 15)
 			icon_state = "arrow7"

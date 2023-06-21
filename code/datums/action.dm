@@ -433,7 +433,7 @@
 /datum/action/toggle_attack
 	name = "Toggle Attack"
 	desc = "Switches attack mode on this weapon."
-	icon_icon = 'dwarfs/icons/mob/actions.dmi'
+	icon_icon = 'dwarfs/icons/ui/actions.dmi'
 	button_icon_state = "toggle_attack"
 
 /datum/action/toggle_attack/Trigger()
