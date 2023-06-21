@@ -141,7 +141,7 @@
 	make_babies()
 	if(DT_PROB(1, (world.time-last_produced_milk)/10) && gender == FEMALE && !milk)
 		milk = TRUE
-	if(prob(2))
+	if(prob(10))
 		playsound(src, file("dwarfs/sounds/mobs/goat/goat[rand(1,4)].wav"), rand(20, 60), TRUE)
 
 #undef MAX_GOATS_NEARBY
