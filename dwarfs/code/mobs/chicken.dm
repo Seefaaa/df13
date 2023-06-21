@@ -5,8 +5,8 @@
 	desc = "Loved for its industrial-like quality of mass producing eggs."
 	icon = 'dwarfs/icons/mob/animals.dmi'
 	icon_state = "chicken_brown"
-	maxHealth = 50
-	health = 50
+	maxHealth = 25
+	health = 25
 	butcher_results = list(/obj/item/food/meat/slab/chicken=list(1,4))
 	childtype = list(/mob/living/simple_animal/chicken/baby)
 	animal_species = /mob/living/simple_animal/chicken
@@ -60,7 +60,7 @@
 	icon_state = "chicken_white"
 	icon_dead = "chicken_white_dead"
 	var/egg_progress = 0
-	var/fertile
+	var/fertile = 0
 
 /mob/living/simple_animal/chicken/hen/Life(delta_time,times_fired)
 	. = ..()
@@ -121,8 +121,12 @@
 			return //we never mate when not alone, so just abort early
 	if(alone && partner && (children < 3) && (friends < 8))
 		if(istype(partner,/mob/living/simple_animal/chicken/hen))
-			walk_to(src, partner, 0, 6)
-			fertilize(partner)
+			var/mob/living/simple_animal/chicken/hen/H = partner
+			if(!H.fertile)
+				walk_to(src, H, 0, 6)
+				sleep(get_dist(src,H) * speed)
+				fertilize(H)
+				walk_to(src,0)
 
 /mob/living/simple_animal/chicken/rooster/proc/fertilize(mob/living/simple_animal/chicken/hen/H)
 	if(!H.fertile)

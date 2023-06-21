@@ -70,6 +70,7 @@
 	name = "cocoon"
 	desc = "contains very poor prey to be sucked up by the huntress."
 	icon_state = "cocoon"
+	max_integrity = 50
 	var/mob/prey
 	var/child =  /mob/living/simple_animal/hostile/giant_spider
 	var/hatch_time = 2 MINUTES
