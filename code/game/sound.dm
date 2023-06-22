@@ -41,7 +41,7 @@ falloff_distance - Distance at which falloff begins. Sound is at peak volume (in
 
 */
 
-/proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff_exponent = SOUND_FALLOFF_EXPONENT, frequency = null, channel = 0, pressure_affected = TRUE, ignore_walls = TRUE, falloff_distance = SOUND_DEFAULT_FALLOFF_DISTANCE, use_reverb = TRUE)
+/proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff_exponent = SOUND_FALLOFF_EXPONENT, frequency = null, channel = 0, pressure_affected = TRUE, ignore_walls = TRUE, falloff_distance = SOUND_DEFAULT_FALLOFF_DISTANCE, use_reverb = FALSE)
 	if(isarea(source))
 		CRASH("playsound(): source is an area")
 
@@ -63,6 +63,8 @@ falloff_distance - Distance at which falloff begins. Sound is at peak volume (in
 	var/turf/above_turf = SSmapping.get_turf_above(turf_source)
 	var/turf/below_turf = SSmapping.get_turf_below(turf_source)
 
+	use_reverb = GLOB.surface_z != source.z
+
 	if(!ignore_walls) //these sounds don't carry through walls
 		listeners = listeners & hearers(maxdistance,turf_source)
 
@@ -82,11 +84,11 @@ falloff_distance - Distance at which falloff begins. Sound is at peak volume (in
 	for(var/P in listeners)
 		var/mob/M = P
 		if(get_dist(M, turf_source) <= maxdistance)
-			M.playsound_local(turf_source, soundin, vol, vary, frequency, falloff_exponent, channel, pressure_affected, S, maxdistance, falloff_distance)
+			M.playsound_local(turf_source, soundin, vol, vary, frequency, falloff_exponent, channel, pressure_affected, S, maxdistance, falloff_distance, use_reverb=use_reverb)
 	for(var/P in SSmobs.dead_players_by_zlevel[source_z])
 		var/mob/M = P
 		if(get_dist(M, turf_source) <= maxdistance)
-			M.playsound_local(turf_source, soundin, vol, vary, frequency, falloff_exponent, channel, pressure_affected, S, maxdistance, falloff_distance)
+			M.playsound_local(turf_source, soundin, vol, vary, frequency, falloff_exponent, channel, pressure_affected, S, maxdistance, falloff_distance,  use_reverb=use_reverb)
 
 /*! playsound
 
