@@ -3,6 +3,7 @@
 	desc = "Hairy."
 	icon = 'dwarfs/icons/mob/animals.dmi'
 	icon_state = "furmogus"
+	icon_dead = "furmogus_dead"
 	speak_emote = list("purrs", "meows")
 	speak = list("UwU", "OwO")
 	maxHealth = 15
