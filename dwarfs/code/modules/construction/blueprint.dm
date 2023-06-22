@@ -147,8 +147,14 @@
 		var/amt = reqs[i]
 		var/obj/O = new i
 		var/icon/I = icon(O.icon, O.icon_state)
-		if(O.materials)
+		var/datum/material/M
+		if(i in req_materials)
+			M = req_materials[i]
+		if(O.materials && !M)
 			I = O.build_material_icon(O.icon, O.icon_state)
+		else
+			O.apply_material(M)
+			I = O.icon
 		var/icon_path = icon2path(I, user)
 		var/list/resource = list("name"=O.name,"amount"=amt,"icon"=icon_path)
 		qdel(O)
