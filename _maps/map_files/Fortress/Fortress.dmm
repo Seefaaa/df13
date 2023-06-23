@@ -110,17 +110,39 @@
 /area/fortress/surface)
 "eQ" = (
 /obj/structure/closet/crate/wooden,
-/obj/item/axe,
-/obj/item/chisel,
-/obj/item/pickaxe,
-/obj/item/pickaxe,
-/obj/item/pickaxe,
-/obj/item/smithing_hammer,
-/obj/item/tongs,
-/obj/item/shovel,
-/obj/item/shovel,
-/obj/item/builder_hammer,
-/obj/item/hoe,
+/obj/item/axe{
+	init_grade = 1
+	},
+/obj/item/chisel{
+	init_grade = 1
+	},
+/obj/item/pickaxe{
+	init_grade = 1
+	},
+/obj/item/pickaxe{
+	init_grade = 1
+	},
+/obj/item/pickaxe{
+	init_grade = 1
+	},
+/obj/item/smithing_hammer{
+	init_grade = 1
+	},
+/obj/item/tongs{
+	init_grade = 1
+	},
+/obj/item/shovel{
+	init_grade = 1
+	},
+/obj/item/shovel{
+	init_grade = 1
+	},
+/obj/item/builder_hammer{
+	init_grade = 1
+	},
+/obj/item/hoe{
+	init_grade = 1
+	},
 /obj/item/reagent_containers/glass/bucket,
 /obj/item/damaz,
 /turf/open/floor/dirt/grass,
@@ -314389,7 +314411,7 @@ eN
 bk
 bk
 bk
-bk
+cK
 bk
 bk
 bk
@@ -314693,7 +314715,7 @@ bk
 bk
 bk
 bk
-bk
+cK
 bk
 bk
 bk
@@ -315897,7 +315919,7 @@ cK
 bk
 bk
 bk
-bk
+cK
 bk
 bk
 cK
@@ -316507,7 +316529,7 @@ bk
 bk
 bk
 bk
-bk
+cK
 bk
 bk
 jE
@@ -318011,7 +318033,7 @@ bk
 bk
 bk
 bk
-bk
+cK
 bk
 bk
 bk

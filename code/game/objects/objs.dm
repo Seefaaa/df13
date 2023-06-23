@@ -33,6 +33,7 @@
 	vis_flags = VIS_INHERIT_PLANE //when this be added to vis_contents of something it inherit something.plane, important for visualisation of obj in openspace.
 
 	var/grade = 1 // object grade value. Defaults to 1
+	var/init_grade = FALSE
 	var/part_name = "part"
 
 /obj/vv_edit_var(vname, vval)
@@ -49,6 +50,9 @@
 	else if (!istype(armor, /datum/armor))
 		stack_trace("Invalid type [armor.type] found in .armor during /obj Initialize()")
 	obj_integrity = max_integrity
+
+	if(init_grade)
+		apply_grade(grade)
 
 	. = ..() //Do this after, else mat datums is mad.
 
