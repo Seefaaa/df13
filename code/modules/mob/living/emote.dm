@@ -31,6 +31,18 @@
 			else
 				return 'sound/emotes/burp_male.ogg'
 
+/datum/emote/living/burp
+	key = "fart"
+	key_third_person = "farts"
+	message = "farts."
+	emote_type = EMOTE_AUDIBLE
+
+/datum/emote/living/burp/get_sound(mob/living/user)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(!H.mind || !H.mind.miming)
+			return 'sound/emotes/fart.ogg'
+
 /datum/emote/living/choke
 	key = "choke"
 	key_third_person = "chokes"
