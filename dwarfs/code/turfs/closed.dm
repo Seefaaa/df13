@@ -13,8 +13,9 @@
 /turf/closed/mineral/random/dwarf_lustress/gets_drilled(user, give_exp = FALSE)
 	. = ..()
 
-	if(prob(33))
-		new /obj/item/stack/ore/stone(src)
+	if(prob(40))
+		for(var/i in 1 to rand(1, 4))
+			new /obj/item/stack/ore/stone(src)
 
 	if(prob(SSevents.troll_spawn_change))
 		to_chat(user, span_userdanger("THIS ROCK APPEARS TO BE ESPECIALLY SOFT!"))
