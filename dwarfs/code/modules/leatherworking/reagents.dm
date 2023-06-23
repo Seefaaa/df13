@@ -9,3 +9,7 @@
 		new /obj/item/stack/sheet/leather (get_turf(D), D.leather_amount)
 		qdel(D)
 		holder.remove_reagent(type, 3, 12)
+		var/mob/user = exposed_obj.loc
+		if(!user || !ismob(user))
+			return
+		user.adjust_experience(/datum/skill/skinning, rand(2, 8))

@@ -130,6 +130,7 @@ GLOBAL_LIST_INIT(leather_recipes, list (
 			to_chat(user, span_notice("You cut the hair from this [src.singular_name]."))
 			var/obj/item/stack/sheet/hairlesshide/H = new (user.drop_location(), 1)
 			H.leather_amount = leather_amount
+			user.adjust_experience(/datum/skill/skinning, rand(2, 8))
 			use(1)
 	else
 		return ..()

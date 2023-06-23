@@ -29,6 +29,7 @@
 		to_chat(user, span_notice("You remove [contents[1]] from [src]."))
 		var/mob/living/carbon/human/H = user
 		H.put_in_active_hand(contents[1])
+		user.adjust_experience(/datum/skill/skinning, rand(6, 12))
 		if(active_timers)
 			deltimer(timerid)
 		update_appearance()
