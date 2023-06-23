@@ -5,5 +5,8 @@
 /datum/map_generator/proc/generate_terrain(list/turfs)
 	return
 
-/datum/map_generator/proc/generate_turf_flora(turf, chance)
+/datum/map_generator/proc/generate_turf_flora(turf/T)
+	return
+
+/datum/map_generator/proc/generate_turf_fauna(turf/T)
 	return

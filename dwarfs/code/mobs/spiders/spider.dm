@@ -28,7 +28,6 @@
 	move_to_delay = 6
 	attack_verb_simple = "bites"
 	attack_sound = 'sound/weapons/bite.ogg'
-	unique_name = 1
 	see_in_dark = 4
 	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_VISIBLE
 	mobility_flags = MOBILITY_FLAGS_REST_CAPABLE_DEFAULT
