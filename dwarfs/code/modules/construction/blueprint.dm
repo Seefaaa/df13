@@ -476,3 +476,51 @@
 	target_structure = /obj/structure/stairs
 	reqs = list(/obj/item/stack/sheet/stone=3)
 	cat = "construction"
+
+/obj/structure/blueprint/sign
+	name = "sign"
+	target_structure = /obj/structure/sign
+	cat = "decoration"
+	var/material_required = 3
+	var/material_type
+
+/obj/structure/blueprint/sign/req_examine()
+	. = ..()
+	. += "<br>[material_required-get_amount(contents.len ? contents[1].type : 0)] any valid material"
+
+/obj/structure/blueprint/sign/can_build(mob/user)
+	. = TRUE
+	if(get_amount(contents.len ? contents[1].type : 0) != material_required)
+		to_chat(user, span_warning("[src] is is missing materials to be built!"))
+		return FALSE
+
+/obj/structure/blueprint/sign/can_accept(mob/user, obj/I)
+	. = ..()
+	if(!.)
+		return FALSE
+	if(!I.materials)
+		return FALSE
+	var/datum/material/M = get_material(I.materials)
+	if(!M)
+		return FALSE
+	// if(!M.door_type)
+	// 	return FALSE
+
+/obj/structure/blueprint/sign/additional_check(mob/user, obj/material)
+	. = TRUE
+	if(!material_type)
+		material_type = material.materials
+	if(material.materials != material_type)
+		return FALSE
+
+/obj/structure/blueprint/sign/get_req_amount(type)
+	return material_required
+
+/obj/structure/blueprint/sign/build_ui_resources(mob/user)
+	var/obj/O = /obj/item/stack/sheet/stone
+	var/icon_path = icon2path(initial(O.icon), user, initial(O.icon_state))
+	return list(list("name"="Any Valid Material","amount"=material_required,"icon"=icon_path))
+
+// /obj/structure/blueprint/sign/get_target_structure()
+// 	var/datum/material/M = get_material(material_type)
+// 	return M.door_type

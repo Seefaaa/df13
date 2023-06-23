@@ -20,6 +20,7 @@
 	)
 	var/color_txt = "brown"
 	var/egg_progress = 0
+	var/food = 0
 	var/fertile = 0
 
 /mob/living/simple_animal/chicken/Initialize(mapload, _gender=null, _color=null, set_gender_icon=TRUE)
@@ -41,12 +42,27 @@
 	. = ..()
 	if(prob(10))
 		playsound(src, pick(idle_sounds), rand(20, 60), TRUE)
-	if(FEMALE)
+	if(gender == FEMALE)
 		egg_progress++
-		if(egg_progress > 99)
+		if(food)
+			egg_progress += 2
+			food = max(food - 2, 0)
+		if(egg_progress > 299)
 			lay_egg()
-	if(MALE)
+	if(gender == MALE)
 		make_babies()
+
+/mob/living/simple_animal/chicken/attackby(obj/item/O, mob/user, params)
+	if(isgrowable(O))
+		var/obj/item/growable/G = O
+		if(G.food_flags & GRAIN)
+			to_chat(user, span_notice("You feed [src] [G]."))
+			playsound(src, 'sound/items/eatfood.ogg', rand(10,50), TRUE)
+			qdel(G)
+			food += 100
+			return
+	. = ..()
+
 
 /mob/living/simple_animal/chicken/baby
 	name = "chick"
@@ -101,8 +117,8 @@
 		else if(isliving(M) && !faction_check_mob(M)) //shyness check. we're not shy in front of things that share a faction with us.
 			return //we never mate when not alone, so just abort early
 	if(alone && partner && (children < 3) && (friends < 8))
-		if(istype(partner,/mob/living/simple_animal/chicken/hen))
-			var/mob/living/simple_animal/chicken/hen/H = partner
+		if(istype(partner,/mob/living/simple_animal/chicken && partner.gender == FEMALE))
+			var/mob/living/simple_animal/chicken/H = partner
 			if(!H.fertile)
 				walk_to(src, H, 0, 6)
 				sleep(get_dist(src,H) * speed)

@@ -1,10 +1,12 @@
 #define symbol_path 'dwarfs/icons/structures/sign_symbols.dmi'
 /obj/structure/sign
 	name = "sign"
-	var/sign_text = "test"
-	var/text_color = "#f5c60c"
+	desc = "Informative sign."
+	var/sign_text = ""
+	var/text_color = "#e9c73e"
 	icon = 'dwarfs/icons/structures/sign.dmi'
-	icon_state = "sign_stone"
+	icon_state = "sign"
+	materials = /datum/material/stone
 	var/add_decal_1 = "none"
 	var/add_decal_2 = "none"
 	var/picked_color
@@ -33,6 +35,10 @@
 		decal_overlay_2.pixel_x = 17
 		decal_overlay_2.pixel_y = 15
 		add_overlay(decal_overlay_2)
+
+/obj/structure/sign/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
+
 
 /obj/structure/sign/examine(mob/user)
 	. = ..()

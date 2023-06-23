@@ -135,7 +135,8 @@ GLOBAL_VAR_INIT(king, null)
 			icon_state = "king_sense_up"
 		else
 			icon_state = "king_sense_down"
-		animate(src)
+		var/matrix/final = matrix(transform)
+		animate(src, transform = final, time = 5, loop = 0)
 		return
 	var/target_angle = get_angle(Q, P)
 	var/target_dist = get_dist(P, Q)
