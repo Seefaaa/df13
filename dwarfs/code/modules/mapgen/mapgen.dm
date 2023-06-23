@@ -105,9 +105,13 @@ GLOBAL_VAR(surface_z)
 			if(-0.3 to 0.4)
 				turf_type = /turf/open/floor/dirt/grass
 				if(prob(0.05))
-					new /mob/living/simple_animal/goat(T)
+					spawn_fauna(T)
 			if(0.4 to INFINITY)
 				turf_type = /turf/closed/mineral/random/dwarf_lustress
 		T.ChangeTurf(turf_type, initial(turf_type.baseturfs))
 	to_chat(world, span_green(" -- #<b>[name]</b>:> <b>[(REALTIMEOFDAY - start_time)/10]s</b> -- "))
 	log_world("[name] is done job for [(REALTIMEOFDAY - start_time)/10]s!")
+
+/datum/map_generator/surface/proc/spawn_fauna(turf/T)
+	var/mob_type = pick(/mob/living/simple_animal/goat, /mob/living/simple_animal/chicken)
+	new mob_type(T)

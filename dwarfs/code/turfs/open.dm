@@ -350,7 +350,7 @@
 	if(prob(0.1))
 		return INITIALIZE_HINT_LATELOAD
 	if(prob(1) && !is_blocked_turf())
-		var/pt = pick(/obj/structure/plant/garden/crop/carrot, /obj/structure/plant/garden/crop/barley, /obj/structure/plant/garden/crop/potato)
+		var/pt = pick(/obj/structure/plant/garden/crop/carrot, /obj/structure/plant/garden/crop/barley, /obj/structure/plant/garden/crop/potato, /obj/structure/plant/garden/crop/onion)
 		var/obj/structure/plant/plant = new pt(src)
 		plant.growthstage = rand(0, plant.growthstages)
 		plant.lifespan = INFINITY
