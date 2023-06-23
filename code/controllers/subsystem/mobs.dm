@@ -37,9 +37,9 @@ SUBSYSTEM_DEF(mobs)
 	while(currentrun.len)
 		var/mob/living/L = currentrun[currentrun.len]
 		currentrun.len--
-		if(L)
+		if(L && L.stat != DEAD)
 			L.Life(delta_time, times_fired)
-		else
+		else if(!L)
 			GLOB.mob_living_list.Remove(L)
 		if (MC_TICK_CHECK)
 			return
