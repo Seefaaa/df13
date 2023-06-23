@@ -5,7 +5,7 @@
 #define SPINNING_COCOON 4
 
 /mob/living/simple_animal/hostile/giant_spider
-	name = "Gaint spider"
+	name = "giant spider"
 	desc = "Furry and black, it makes you shudder to look at it. This one has sparkling purple eyes."
 	icon = 'dwarfs/icons/mob/hostile.dmi'
 	icon_state = "spider"
@@ -20,8 +20,8 @@
 	maxHealth = 200
 	health = 200
 	obj_damage = 60
-	melee_damage_lower = 15
-	melee_damage_upper = 25
+	melee_damage_lower = 5
+	melee_damage_upper = 15
 	faction = list("spiders")
 	var/busy = SPIDER_IDLE
 	pass_flags = PASSTABLE

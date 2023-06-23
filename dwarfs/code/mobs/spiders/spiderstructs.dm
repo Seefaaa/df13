@@ -71,11 +71,11 @@
 	desc = "contains very poor prey to be sucked up by the huntress."
 	icon_state = "cocoon"
 	max_integrity = 50
-	var/mob/prey
+	var/mob/living/carbon/human/prey
 	var/child =  /mob/living/simple_animal/hostile/giant_spider
 	var/hatch_time = 2 MINUTES
 
-/obj/structure/spider/cocoon/proc/encase(mob/living/target)
+/obj/structure/spider/cocoon/proc/encase(mob/living/carbon/human/target)
 	prey = target
 	target.forceMove(src)
 	target.death(FALSE)
@@ -91,4 +91,6 @@
 /obj/structure/spider/cocoon/proc/hatch()
 	if(src && child)
 		new child(src.loc)
+		prey?.gib(TRUE, FALSE,FALSE, TRUE)
 		qdel(src)
+
