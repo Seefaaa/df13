@@ -19,25 +19,35 @@
 		'dwarfs/sounds/mobs/chicken/idle3.ogg'
 	)
 	var/color_txt = "brown"
+	var/egg_progress = 0
+	var/fertile = 0
 
-/mob/living/simple_animal/chicken/Initialize(mapload, _gender=null, _color=null)
+/mob/living/simple_animal/chicken/Initialize(mapload, _gender=null, _color=null, set_gender_icon=TRUE)
 	. = ..()
-	if(gender != NEUTER)
+	if(!set_gender_icon)
 		return
-	gender = _gender ? _gender : pick(MALE, FEMALE)
+	if(gender == NEUTER)
+		gender = _gender ? _gender : pick(MALE, FEMALE)
 	if(gender == MALE)
-		new /mob/living/simple_animal/chicken/rooster(src.loc)
+		icon_state = "chicken_brown"
+		icon_dead = "chicken_brown_dead"
 	else
-		new /mob/living/simple_animal/chicken/hen(src.loc)
-	qdel(src)
+		icon_state = "chicken_white"
+		icon_dead = "chicken_white_dead"
 
 /mob/living/simple_animal/chicken/Life(delta_time, times_fired)
 	. = ..()
 	if(prob(10))
 		playsound(src, pick(idle_sounds), rand(20, 60), TRUE)
+	if(FEMALE)
+		egg_progress++
+		if(egg_progress > 99)
+			lay_egg()
+	if(MALE)
+		make_babies()
 
 /mob/living/simple_animal/chicken/baby
-	name = "baby chicken"
+	name = "chick"
 	icon_state = "chicken_baby"
 	icon_dead = "chicken_baby_dead"
 
@@ -48,27 +58,10 @@
 /mob/living/simple_animal/chicken/baby/proc/grow_up()
 	if(!src)
 		return
-	if(gender == FEMALE)
-		new /mob/living/simple_animal/chicken/hen(get_turf(src), gender, color_txt)
-	if(gender == MALE)
-		new /mob/living/simple_animal/chicken/rooster(get_turf(src), gender, color_txt)
+	new /mob/living/simple_animal/chicken(get_turf(src.loc), gender, color_txt, FALSE)
 	qdel(src)
 
-/mob/living/simple_animal/chicken/hen
-	name = "hen"
-	gender = FEMALE
-	icon_state = "chicken_white"
-	icon_dead = "chicken_white_dead"
-	var/egg_progress = 0
-	var/fertile = 0
-
-/mob/living/simple_animal/chicken/hen/Life(delta_time,times_fired)
-	. = ..()
-	egg_progress++
-	if(egg_progress > 99)
-		lay_egg()
-
-/mob/living/simple_animal/chicken/hen/proc/lay_egg()
+/mob/living/simple_animal/chicken/proc/lay_egg()
 	egg_progress = 0
 	if(fertile)
 		new /obj/item/food/egg/fertile(src.loc)
@@ -76,23 +69,7 @@
 	else
 		new /obj/item/food/egg(src.loc)
 
-/mob/living/simple_animal/chicken/rooster
-	name = "rooster"
-	gender = MALE
-	icon_state = "chicken_brown"
-	icon_dead = "chicken_brown_dead"
-	idle_sounds = list(
-		'dwarfs/sounds/mobs/chicken/idle1.ogg',
-		'dwarfs/sounds/mobs/chicken/idle2.ogg',
-		'dwarfs/sounds/mobs/chicken/idle3.ogg',
-		'dwarfs/sounds/mobs/chicken/idle_rooster.ogg',
-	)
-
-/mob/living/simple_animal/chicken/rooster/Life(delta_time, times_fired)
-	. = ..()
-	make_babies()
-
-/mob/living/simple_animal/chicken/rooster/make_babies()
+/mob/living/simple_animal/chicken/make_babies()
 	if(stat || next_scan_time > world.time || !childtype || !animal_species || !SSticker.IsRoundInProgress())
 		return
 	next_scan_time = world.time + 400
@@ -127,6 +104,26 @@
 				fertilize(H)
 				walk_to(src,0)
 
-/mob/living/simple_animal/chicken/rooster/proc/fertilize(mob/living/simple_animal/chicken/hen/H)
+/mob/living/simple_animal/chicken/proc/fertilize(mob/living/simple_animal/chicken/H)
 	if(!H.fertile)
 		H.fertile = TRUE
+
+/mob/living/simple_animal/chicken/hen
+	name = "hen"
+	gender = FEMALE
+	icon_state = "chicken_white"
+	icon_dead = "chicken_white_dead"
+
+
+
+/mob/living/simple_animal/chicken/rooster
+	name = "rooster"
+	gender = MALE
+	idle_sounds = list(
+		'dwarfs/sounds/mobs/chicken/idle1.ogg',
+		'dwarfs/sounds/mobs/chicken/idle2.ogg',
+		'dwarfs/sounds/mobs/chicken/idle3.ogg',
+		'dwarfs/sounds/mobs/chicken/idle_rooster.ogg',
+	)
+
+
