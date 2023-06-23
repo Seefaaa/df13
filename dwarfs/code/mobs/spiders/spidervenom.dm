@@ -10,7 +10,7 @@
 	. = ..()
 	venom_ticks++
 	if(venom_ticks >= 3)
-		if(M.has_status_effect(/datum/status_effect/incapacitating/paralyzed))
+		if(!M.has_status_effect(/datum/status_effect/incapacitating/paralyzed))
 			M.apply_status_effect(/datum/status_effect/incapacitating/paralyzed, 10 SECONDS)
 
 /datum/reagent/spider_venom/on_mob_end_metabolize(mob/living/living_anthill)

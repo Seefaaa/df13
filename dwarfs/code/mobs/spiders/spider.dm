@@ -16,7 +16,7 @@
 	emote_hear = list("chitters")
 	speak_chance = 5
 	turns_per_move = 1
-	butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab/spider = 2, /obj/item/reagent_containers/food/snacks/spiderleg = 8)
+	butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab/spider = list(1,3))
 	maxHealth = 200
 	health = 200
 	obj_damage = 60
