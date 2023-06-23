@@ -88,11 +88,15 @@
 
 /mob/living/simple_animal/hostile/giant_spider/proc/nesting()
 	stop_automated_movement = TRUE
-	var/list/open_turfs = view(2,src)
-	for(var/turf/open/T in open_turfs)
+	for(var/turf/open/T in view(2,src))
+		if(stat == DEAD)
+			walk_to(src,0)
+			return
 		if(target)
 			stop_automated_movement = FALSE
 			return
+		if(isgroundlessturf(T))
+			continue
 		walk_to(src, T, 0, move_to_delay)
 		sleep(get_dist(src,T) * move_to_delay * speed)
 		lay_web.Activate()

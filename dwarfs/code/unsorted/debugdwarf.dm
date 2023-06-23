@@ -1,6 +1,7 @@
 /datum/outfit/dwarf/debug
 	name = "Dwarf debug"
 	back = /obj/item/storage/satchel/debug/filled
+	apply_grade = TRUE
 
 
 /datum/outfit/dwarf/debug/post_equip(mob/living/carbon/human/H, visualsOnly)
@@ -22,6 +23,12 @@
 /obj/item/storage/satchel/debug
 	name = "Satchel of holding"
 
+/obj/item/pickaxe/high_grade
+	grade = 6
+
+/obj/item/axe/high_grade
+	grade = 6
+
 /obj/item/storage/satchel/debug/ComponentInitialize()
 	. = ..()
 	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
@@ -33,14 +40,14 @@
 
 /obj/item/storage/satchel/debug/filled/PopulateContents()
 	. = ..()
-	new /obj/item/pickaxe(src)
+	new /obj/item/pickaxe/high_grade(src)
 	new /obj/item/shovel(src)
 	new /obj/item/builder_hammer(src)
 	new /obj/item/smithing_hammer(src)
 	new /obj/item/trowel(src)
 	new /obj/item/tongs(src)
 	new /obj/item/hoe(src)
-	new /obj/item/axe(src)
+	new /obj/item/axe/high_grade(src)
 	new /obj/item/stack/sheet/stone/fifty(src)
 	new /obj/item/stack/sheet/planks/fifty(src)
 	new /obj/item/chisel(src)

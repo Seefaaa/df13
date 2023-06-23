@@ -85,15 +85,20 @@
 		. = ..()
 
 /turf/closed/mineral/proc/gets_drilled(mob/user, give_exp = FALSE)
-	var/min_mod = user.get_skill_modifier(/datum/skill/mining, SKILL_AMOUNT_MIN_MODIFIER)
-	var/max_mod = user.get_skill_modifier(/datum/skill/mining, SKILL_AMOUNT_MAX_MODIFIER)
-	var/to_spawn = rand(mineralAmt+min_mod, mineralAmt+max_mod)
-	if (mineralType && (mineralAmt > 0) && ispath(mineralType, /obj/item/stack))
-		if(to_spawn > 1)
+	var/to_spawn
+	if(user)
+		var/min_mod = user.get_skill_modifier(/datum/skill/mining, SKILL_AMOUNT_MIN_MODIFIER)
+		var/max_mod = user.get_skill_modifier(/datum/skill/mining, SKILL_AMOUNT_MAX_MODIFIER)
+		to_spawn = rand(mineralAmt+min_mod, mineralAmt+max_mod)
+		if (mineralType && (mineralAmt > 0) && ispath(mineralType, /obj/item/stack))
+			if(to_spawn > 1)
+				new mineralType(src, mineralAmt)
+				SSblackbox.record_feedback("tally", "ore_mined", mineralAmt, mineralType)
+			else
+				to_chat(user, span_warning("You failed to collect any ore from [src]!"))
+	else// if no human caused this
+		if (mineralType && (mineralAmt > 0) && ispath(mineralType, /obj/item/stack))
 			new mineralType(src, mineralAmt)
-			SSblackbox.record_feedback("tally", "ore_mined", mineralAmt, mineralType)
-		else
-			to_chat(user, span_warning("You failed to collect any ore from [src]!"))
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(give_exp)

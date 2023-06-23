@@ -1,3 +1,5 @@
+GLOBAL_VAR_INIT(king, null)
+
 /obj/item/clothing/head/helmet/crown
 	name = "crown"
 	desc = "To show the royal status."
@@ -7,7 +9,6 @@
 	icon_state = "king_crown"
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	var/king_actions = list()
-	var/mob/assigned_count = null
 	var/tracking = FALSE
 
 /obj/item/clothing/head/helmet/crown/Initialize()
@@ -33,7 +34,7 @@
 /obj/item/clothing/head/helmet/crown/ui_action_click(mob/user, actiontype)
 	if(user.stat != CONSCIOUS)
 		return
-	if(assigned_count != user)
+	if(GLOB.king != user)
 		to_chat(user, span_warning("YOU HAVE NO POWER!"))
 		return
 	if(istype(actiontype,/datum/action/item_action/send_message_action))
@@ -64,32 +65,37 @@
 		return
 	if(tracking)
 		tracking = FALSE
-		for(var/mob/M in GLOB.dwarf_list)
-			M.clear_alert("kingsense")
+		for(var/mob/M in GLOB.human_list)
+			if(isdwarf(M))
+				M.clear_alert("kingsense")
 	else
 		tracking = TRUE
-		for(var/mob/M in GLOB.dwarf_list)
-			var/atom/movable/screen/alert/kingsense/K = M.throw_alert("kingsense", /atom/movable/screen/alert/kingsense)
-			K.king = user
+		for(var/mob/M in GLOB.human_list)
+			if(isdwarf(M))
+				var/atom/movable/screen/alert/kingsense/K = M.throw_alert("kingsense", /atom/movable/screen/alert/kingsense)
+				K.king = user
 
 /obj/item/clothing/head/helmet/crown/attack_self(mob/user)
 	. = ..()
-	var/busy = FALSE
-	var/mob/king
-	for(var/obj/item/clothing/head/helmet/crown/C in GLOB.crowns)
-		if(C.assigned_count && C.assigned_count?.stat != DEAD)
-			busy = TRUE
-			king = C.assigned_count
-	if(busy && assigned_count != user)
-		if(user != king)
+	if(GLOB.king)
+		var/mob/living/carbon/human/H = GLOB.king
+		if(H.stat != DEAD)
 			to_chat(user, span_warning("YOU HAVE NO POWER!"))
-		else
-			to_chat(user, span_warning("YOU ALREADY HAVE POWER!"))
+			return
+	if(user == GLOB.king)
+		to_chat(user, span_warning("YOU ALREADY HAVE POWER!"))
 		return
 
-	if(is_species(user, /datum/species/dwarf) && (!assigned_count || assigned_count?.stat == DEAD))
-		assigned_count = user
-		send_message(user, "<b>[user]</b> has been chosen as our leader!")
+
+	if(is_species(user, /datum/species/dwarf))
+		make_king(user)
+		return
+
+	return
+
+/obj/item/clothing/head/helmet/crown/proc/make_king(mob/user)
+	GLOB.king = user
+	send_message(user, "<b>[user]</b> has been chosen as our leader!")
 
 
 
@@ -126,9 +132,9 @@
 		desc = "You are currently tracking [king] in [get_area_name(king)]."
 	if(!P || !Q || (P.get_virtual_z_level()!= Q.get_virtual_z_level())) //The target is on a different Z level, we cannot sense that far.
 		if(Q.get_virtual_z_level() - P.get_virtual_z_level() > 0)
-			icon_state = "runed_sense_up"
+			icon_state = "king_sense_up"
 		else
-			icon_state = "runed_sense_down"
+			icon_state = "king_sense_down"
 		animate(src)
 		return
 	var/target_angle = get_angle(Q, P)
