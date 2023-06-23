@@ -29,9 +29,11 @@
 	if(gender == NEUTER)
 		gender = _gender ? _gender : pick(MALE, FEMALE)
 	if(gender == MALE)
+		name = "rooster"
 		icon_state = "chicken_brown"
 		icon_dead = "chicken_brown_dead"
 	else
+		name = "hen"
 		icon_state = "chicken_white"
 		icon_dead = "chicken_white_dead"
 
@@ -53,6 +55,9 @@
 
 /mob/living/simple_animal/chicken/baby/Initialize(mapload)
 	. = ..()
+	name = "chick"
+	icon_state = "chicken_baby"
+	icon_dead = "chicken_baby_dead"
 	addtimer(CALLBACK(src, .proc/grow_up), 4 MINUTES)
 
 /mob/living/simple_animal/chicken/baby/proc/grow_up()

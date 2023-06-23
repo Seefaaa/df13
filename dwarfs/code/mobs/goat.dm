@@ -129,7 +129,7 @@
 		return
 
 	var/count = 0
-	for(var/mob/living/simple_animal/goat in range(MAX_GOATS_RANGE, src))
+	for(var/mob/living/simple_animal/goat/goat in range(MAX_GOATS_RANGE, src))
 		if(count > MAX_GOATS_NEARBY)
 			return
 		count++
