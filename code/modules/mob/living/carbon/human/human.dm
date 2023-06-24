@@ -575,3 +575,9 @@
 
 /mob/living/carbon/human/species/goblin
 	race = /datum/species/goblin
+
+/mob/living/carbon/human/species/goblin/ai
+
+/mob/living/carbon/human/species/goblin/ai/Initialize()
+	. = ..()
+	ai_controller = new /datum/ai_controller/goblin(src)
