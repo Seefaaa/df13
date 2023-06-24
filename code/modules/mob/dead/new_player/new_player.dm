@@ -153,6 +153,8 @@
 		var/turf/T = locate(x, y, z)
 		if(!isfloorturf(T) || T.is_blocked_turf())
 			continue
+		if((locate(/obj/structure/plant/tree) in oview(5, T)))
+			continue
 		character.forceMove(T)
 		break
 
