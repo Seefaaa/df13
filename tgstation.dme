@@ -1236,6 +1236,7 @@
 #include "dwarfs\code\structures\altar.dm"
 #include "dwarfs\code\structures\chairs.dm"
 #include "dwarfs\code\structures\doors.dm"
+#include "dwarfs\code\structures\dwarf_spawn.dm"
 #include "dwarfs\code\structures\gemcutter.dm"
 #include "dwarfs\code\structures\sarcophage.dm"
 #include "dwarfs\code\structures\tables.dm"

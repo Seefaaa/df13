@@ -843,3 +843,48 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		spawners_menu = new(src)
 
 	spawners_menu.ui_interact(src)
+
+/mob/dead/observer/proc/create_character(transfer_after)
+	var/mob/living/carbon/human/H = new(loc)
+
+	var/frn = CONFIG_GET(flag/force_random_names)
+	var/admin_anon_names = SSticker.anonymousnames
+	if(!frn)
+		frn = is_banned_from(ckey, "Appearance")
+		if(QDELETED(src))
+			return
+	if(frn)
+		client.prefs.random_character()
+		client.prefs.real_name = client.prefs.pref_species.random_name(gender,1)
+
+	if(admin_anon_names)//overrides random name because it achieves the same effect and is an admin enabled event tool
+		client.prefs.random_character()
+		client.prefs.real_name = anonymous_name(src)
+
+	var/is_antag
+	if(mind in GLOB.pre_setup_antags)
+		is_antag = TRUE
+
+
+	H.dna.update_dna_identity()
+	if(mind)
+		if(transfer_after)
+			mind.late_joiner = TRUE
+		mind.active = FALSE					//we wish to transfer the key manually
+		mind.original_character_slot_index = client.prefs.default_slot
+		mind.transfer_to(H) //won't transfer key since the mind is not active
+		mind.set_original_character(H)
+
+	client.prefs.copy_to(H, antagonist = is_antag, is_latejoiner = transfer_after)
+	client.init_verbs()
+	. = H
+	if(transfer_after)
+		transfer_character(H)
+	return .
+
+/mob/dead/observer/proc/transfer_character(mob/body)
+	if(body)
+		body.key = key		//Manually transfer the key to log them in,
+		body.stop_sound_channel(CHANNEL_LOBBYMUSIC)
+		body = null
+		qdel(src)
