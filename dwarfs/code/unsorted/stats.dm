@@ -30,7 +30,7 @@
 			qualtity_text = "Exceptional"
 		if(6)
 			qualtity_text = "Masterful"
-	. += "The [src] is [qualtity_text]"
+	. = "The [src] is [qualtity_text]"
 /obj/proc/apply_grade(_grade=null)
 	if(_grade)
 		src.grade = _grade
