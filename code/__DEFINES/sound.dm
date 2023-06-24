@@ -101,7 +101,6 @@
 						'sound/ambience/ambigen10.ogg',\
 						'sound/ambience/ambigen11.ogg',\
 						'sound/ambience/ambigen12.ogg',\
-						'sound/ambience/ambigen14.ogg',\
 						'sound/ambience/ambigen15.ogg')
 
 #define TURBOLIFT list('white/jhnazar/sound/effects/lift/elevatormusic.ogg',\

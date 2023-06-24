@@ -4,7 +4,7 @@ GLOBAL_LIST_INIT(generic_ambience,list(
 	'sound/ambience/ambigen6.ogg', 'sound/ambience/ambigen7.ogg',
 	'sound/ambience/ambigen8.ogg', 'sound/ambience/ambigen9.ogg',
 	'sound/ambience/ambigen10.ogg', 'sound/ambience/ambigen11.ogg',
-	'sound/ambience/ambigen12.ogg', 'sound/ambience/ambigen14.ogg',
+	'sound/ambience/ambigen12.ogg',
 	'sound/ambience/ambigen15.ogg'))
 
 GLOBAL_LIST_INIT(holy_ambience,list(
@@ -22,15 +22,13 @@ GLOBAL_LIST_INIT(ruins_ambience,list(
 	'sound/ambience/ambiruin3.ogg', 'sound/ambience/ambiruin4.ogg',
 	'sound/ambience/ambiruin5.ogg', 'sound/ambience/ambiruin6.ogg',
 	'sound/ambience/ambiruin7.ogg', 'sound/ambience/ambidanger.ogg',
-	'sound/ambience/ambidanger2.ogg', 'sound/ambience/ambitech3.ogg',
+	'sound/ambience/ambidanger2.ogg',
 	'sound/ambience/ambimystery.ogg', 'sound/ambience/ambimaint1.ogg'))
 
 GLOBAL_LIST_INIT(engi_ambience,list(
 	'sound/ambience/ambisin1.ogg', 'sound/ambience/ambisin2.ogg',
 	'sound/ambience/ambisin3.ogg', 'sound/ambience/ambisin4.ogg',
-	'sound/ambience/ambiatmos.ogg', 'sound/ambience/ambiatmos2.ogg',
-	'sound/ambience/ambitech.ogg', 'sound/ambience/ambitech2.ogg',
-	'sound/ambience/ambitech3.ogg'))
+	'sound/ambience/ambiatmos.ogg', 'sound/ambience/ambiatmos2.ogg'))
 
 GLOBAL_LIST_INIT(mining_ambience,list(
 	'sound/ambience/ambimine.ogg', 'sound/ambience/ambicave.ogg',
@@ -54,14 +52,13 @@ GLOBAL_LIST_INIT(space_ambience,list(
 	'sound/ambience/ambiatmos.ogg'))
 
 GLOBAL_LIST_INIT(maint_ambience,list(
-	'sound/ambience/ambimaint1.ogg', 'sound/ambience/ambimaint2.ogg',
+	'sound/ambience/ambimaint1.ogg',
 	'sound/ambience/ambimaint3.ogg', 'sound/ambience/ambimaint4.ogg',
 	'sound/ambience/ambimaint5.ogg', 'sound/voice/lowHiss2.ogg',
-	'sound/voice/lowHiss3.ogg', 'sound/voice/lowHiss4.ogg',
-	'sound/ambience/ambitech2.ogg'))
+	'sound/voice/lowHiss3.ogg', 'sound/voice/lowHiss4.ogg'))
 
 GLOBAL_LIST_INIT(away_ambience,list(
-	'sound/ambience/ambitech.ogg', 'sound/ambience/ambitech2.ogg',
+	'sound/ambience/ambitech2.ogg',
 	'sound/ambience/ambiruin.ogg', 'sound/ambience/ambiruin2.ogg',
 	'sound/ambience/ambiruin3.ogg', 'sound/ambience/ambiruin4.ogg',
 	'sound/ambience/ambiruin5.ogg', 'sound/ambience/ambiruin6.ogg',
