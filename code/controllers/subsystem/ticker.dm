@@ -435,16 +435,19 @@ SUBSYSTEM_DEF(ticker)
 			x = pick(10, world.maxy-10)
 		for(var/mob/dead/new_player/NP in group)
 			var/mob/living/character = NP.create_character(TRUE) //creates the human and transfers vars and mind
-			SSticker.minds += character.mind
-			character.mind.assigned_role = "Dwarf"
-			character.client.init_verbs() // init verbs for the late join
+			if(character.mind)
+				SSticker.minds += character.mind
+				character.mind.assigned_role = "Dwarf"
+			if(character.client)
+				character.client.init_verbs() // init verbs for the late join
 			var/mob/living/carbon/human/humanc
 			if(ishuman(character))
 				humanc = character	//Let's retypecast the var to be human,
 			if(humanc)	//These procs all expect humans
 				humanc.equipOutfit(humanc.client.prefs.loadout ? humanc.client.prefs.loadout : /datum/outfit/dwarf/miner)// if for SOME reason the pref is null
 			GLOB.joined_player_list += character.ckey
-			log_manifest(character.mind.key,character.mind,character,latejoin = TRUE)
+			if(character.mind)
+				log_manifest(character.mind.key,character.mind,character,latejoin = TRUE)
 			SEND_SOUND(character, sound('sound/misc/notice2.ogg'))
 			to_chat(character, span_italics("You and your fellow travelers have set out on a journey to join a nearby fortress. May fortune smile upon you and guide you safely to your destination."))
 			character.forceMove(locate(x+rand(-5,5), y+rand(-5,5), z))
