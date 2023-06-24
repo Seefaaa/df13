@@ -22,7 +22,7 @@
 	obj_damage = 60
 	melee_damage_lower = 5
 	melee_damage_upper = 15
-	faction = list("spiders")
+	faction = list("spiders", "mining")
 	var/busy = SPIDER_IDLE
 	pass_flags = PASSTABLE
 	move_to_delay = 6
