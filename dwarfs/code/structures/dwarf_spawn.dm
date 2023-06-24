@@ -5,7 +5,8 @@
 	icon_state = "sarcophagus"
 
 /obj/structure/dwarf_spawner/attack_ghost(mob/user)
-	if(SSticker.current_state >= GAME_STATE_PLAYING)
+	if(SSticker.current_state < GAME_STATE_PLAYING)
+		return
 	if(!isobserver(user))
 		return ..()
 	var/check = tgui_alert(user, "Do you wish to spawn as dwarf?", "Dwarf spawn", list("Yes","No"))
