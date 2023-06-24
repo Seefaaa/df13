@@ -41,6 +41,7 @@
 	name = "plump stew in pot"
 	desc = "Almost stew."
 	icon_state = "cooking_pot_dwarven_stew"
+	charges = 6
 	food_inside = /obj/item/food/dish/plump_stew
 	required_container = /obj/item/reagent_containers/glass/plate/bowl
 	original_container = /obj/item/reagent_containers/glass/cooking_pot
@@ -49,6 +50,7 @@
 	name = "veggie stew in pot"
 	desc = "Almost stew."
 	icon_state = "cooking_pot_dwarven_stew"
+	charges = 6
 	food_inside = /obj/item/food/dish/veggie_stew
 	required_container = /obj/item/reagent_containers/glass/plate/bowl
 	original_container = /obj/item/reagent_containers/glass/cooking_pot
