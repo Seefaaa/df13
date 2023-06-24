@@ -132,10 +132,12 @@ GLOBAL_VAR_INIT(king, null)
 		desc = "You are currently tracking [king] in [get_area_name(king)]."
 	if(!P || !Q || (P.get_virtual_z_level()!= Q.get_virtual_z_level())) //The target is on a different Z level, we cannot sense that far.
 		if(Q.get_virtual_z_level() - P.get_virtual_z_level() > 0)
-			icon_state = "king_sense_up"
-		else
 			icon_state = "king_sense_down"
+		else
+			icon_state = "king_sense_up"
 		var/matrix/final = matrix(transform)
+		final.TurnTo(angle, 0)
+		angle = 0
 		animate(src, transform = final, time = 5, loop = 0)
 		return
 	var/target_angle = get_angle(Q, P)
