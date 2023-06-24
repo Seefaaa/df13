@@ -85,7 +85,7 @@
 		vote_on_poll_handler(poll, href_list)
 
 /mob/dead/new_player/proc/Try_Latejion()
-	var/answer = tgui_alert(src, "Confirm latejoin", "Latejoin", list("Yes", "No"))
+	var/answer = tgui_alert(src, "Confirm Migrate", "Migrate", list("Yes", "No"))
 
 	if(answer != "Yes" || QDELETED(src) || !src.client)
 		return
@@ -140,13 +140,23 @@
 	return TRUE
 
 /proc/send_to_latejoin(mob/character, buckle=FALSE)
-	var/atom/destination = pick(GLOB.latejoin_landmarks)
-	character.forceMove(get_turf(destination))
+	for(var/i in 1 to 15)
+		var/x
+		var/y
+		var/z = GLOB.surface_z
+		if(prob(50))//spawn on top/bottom
+			x = rand(10, world.maxx-10)
+			y = pick(10, world.maxy-10)
+		else//spawn on left/right side
+			y = rand(10, world.maxx-10)
+			x = pick(10, world.maxy-10)
+		var/turf/T = locate(x, y, z)
+		if(!isfloorturf(T) || T.is_blocked_turf())
+			continue
+		character.forceMove(T)
+		break
 
 /mob/dead/new_player/proc/AttemptLateSpawn()
-	//Remove the player from the join queue if he was in one and reset the timer
-	SSticker.queued_players -= src
-
 	mind.assigned_role = "Dwarf" // SSjob removed so we assing it manually
 
 	var/mob/living/character = create_character(TRUE) //creates the human and transfers vars and mind
