@@ -435,6 +435,8 @@ SUBSYSTEM_DEF(ticker)
 			x = pick(10, world.maxy-10)
 		for(var/mob/dead/new_player/NP in group)
 			var/mob/living/character = NP.create_character(TRUE) //creates the human and transfers vars and mind
+			if(!character)
+				continue
 			if(character.mind)
 				SSticker.minds += character.mind
 				character.mind.assigned_role = "Dwarf"
