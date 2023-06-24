@@ -29,7 +29,7 @@
 		to_chat(user, span_warning("[src] doesn't have a bucket!"))
 		return
 	var/obj/item/reagent_containers/glass/bucket/B = contents[1]
-	if(B.reagents.total_volume == B.volume)//bucket is full
+	if(B.reagents.total_volume >= B.volume)//bucket is full
 		to_chat(user, span_notice("You remove [B] from [src]."))
 		var/mob/living/carbon/human/H = user
 		H.put_in_active_hand(B)
