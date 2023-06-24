@@ -34,6 +34,8 @@
 /datum/ai_controller/goblin/proc/retaliate(mob/living/L)
 	var/list/enemies = blackboard[BB_GOBLIN_ENEMIES]
 	enemies[L] = 100
+	blackboard[BB_GOBLIN_ATTACK_TARGET] = L
+	queue_behavior(/datum/ai_behavior/goblin_attack_mob)
 
 /datum/ai_controller/goblin/proc/on_attackby(datum/source, obj/item/I, mob/user)
 	SIGNAL_HANDLER

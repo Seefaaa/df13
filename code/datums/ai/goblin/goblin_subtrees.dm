@@ -25,7 +25,6 @@
 		if(!selected_enemy.stat)
 
 			controller.blackboard[BB_GOBLIN_ATTACK_TARGET] = selected_enemy
-			controller.current_movement_target = selected_enemy
 			if(prob(50))
 				controller.queue_behavior(/datum/ai_behavior/battle_screech/goblin)
 			controller.queue_behavior(/datum/ai_behavior/goblin_attack_mob)

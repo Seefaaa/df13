@@ -17,7 +17,7 @@
 	if(!target || target.stat >= HARD_CRIT)
 		finish_action(controller, TRUE)
 		return
-
+	controller.current_movement_target = target
 	attack(controller, delta_time, target)
 
 /datum/ai_behavior/goblin_attack_mob/proc/attack(datum/ai_controller/controller, delta_time, mob/living/target)
