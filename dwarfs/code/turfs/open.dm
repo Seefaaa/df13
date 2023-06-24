@@ -269,7 +269,7 @@
 	SIGNAL_HANDLER
 	if(!waterlevel)
 		source.health -= rand(1,3)
-	if(source.surface && z == GLOB.surface_z)
+	if((source.surface && z != GLOB.surface_z) || (!source.surface && z == GLOB.surface_z))
 		source.health -= rand(1,3)
 
 /turf/open/floor/tilled/proc/on_eat(obj/structure/plant/source)
