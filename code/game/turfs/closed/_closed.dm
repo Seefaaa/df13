@@ -31,7 +31,7 @@
 
 /turf/closed/indestructible/black
 	name = "emptiness"
-	desc = "It look back at you."
+	desc = "It looks back at you."
 	icon_state = "black"
 	bullet_bounce_sound = null
 	baseturfs = /turf/closed/indestructible/black
