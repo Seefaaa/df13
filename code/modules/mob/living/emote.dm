@@ -38,6 +38,8 @@
 	emote_type = EMOTE_AUDIBLE
 
 /datum/emote/living/burp/get_sound(mob/living/user)
+	if(!check_rights_for(user.client, R_ADMIN))
+		return
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(!H.mind || !H.mind.miming)
