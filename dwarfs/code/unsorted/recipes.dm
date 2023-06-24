@@ -64,8 +64,8 @@
 	max_resulting = 2
 
 /datum/smithing_recipe/chisel
-	name = "chisel (stone)"
-	result = /obj/item/chisel
+	name = "\[part\] chisel"
+	result = /obj/item/partial/chisel
 	max_resulting = 2
 
 /datum/smithing_recipe/pan
@@ -241,3 +241,8 @@
 	name = "hoe"
 	result = /obj/item/hoe
 	reqs = list(/obj/item/partial/hoe=1, /obj/item/stick=1)
+
+/datum/workbench_recipe/chisel
+	name = "chisel"
+	result = /obj/item/chisel
+	reqs = list(/obj/item/partial/chisel=1, /obj/item/stick=1)

@@ -175,3 +175,7 @@
 	name = "warhammer head"
 	icon_state = "warhammer_head"
 	part_name = PART_HEAD
+
+/obj/item/partial/chisel
+	name = "chisel head"
+	icon_state = "chisel_head"
