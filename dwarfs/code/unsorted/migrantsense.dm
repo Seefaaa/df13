@@ -18,7 +18,7 @@ GLOBAL_VAR_INIT(fort_center, null)
 	icon_state = "king_sense"
 	alerttooltipstyle = "dwarf"
 	var/angle = 0
-	var/sense_for = 3 SECONDS //MINUTES
+	var/sense_for = 3 MINUTES
 
 /atom/movable/screen/alert/migrant/Initialize(mapload)
 	. = ..()

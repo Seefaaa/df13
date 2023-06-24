@@ -472,7 +472,6 @@
 	new_character.dna.update_dna_identity()
 	new_character.key = G_found.key
 	G_found.client.prefs.copy_to(new_character)
-	new_character.throw_alert("migrantsense", /atom/movable/screen/alert/migrant)
 
 	return new_character
 

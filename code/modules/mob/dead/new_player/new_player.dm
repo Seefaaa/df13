@@ -172,6 +172,8 @@
 	if(humanc)	//These procs all expect humans
 		humanc.equipOutfit(humanc.client.prefs.loadout ? humanc.client.prefs.loadout : /datum/outfit/dwarf/miner)// if for SOME reason the pref is null
 
+	humanc.throw_alert("migrantsense", /atom/movable/screen/alert/migrant)
+
 	GLOB.joined_player_list += character.ckey
 
 	log_manifest(character.mind.key,character.mind,character,latejoin = TRUE)
