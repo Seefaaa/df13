@@ -30,6 +30,7 @@
 		var/client/C = pick_n_take(candidates)
 		var/mob/living/carbon/human/species/goblin/warrior = new(locate(x+rand(-5,5), y+rand(-5,5), z))
 		warrior.equipOutfit(/datum/outfit/goblin)
+		warrior.a_intent = INTENT_HARM
 		if(C)
 			warrior.key = C.key
 		else
@@ -45,6 +46,7 @@
 		leader.key = C.key
 	else
 		leader.ai_controller = new /datum/ai_controller/goblin(leader)
+	leader.a_intent = INTENT_HARM
 	spawned_mobs += leader
 	goblins += leader
 	to_chat(leader, span_announce("You and yor group were tasked to raid a nearby fortress."))
