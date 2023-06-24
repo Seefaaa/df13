@@ -14,7 +14,7 @@
 
 /datum/chemical_reaction/wort_barley_beer
 	required_reagents = list(/datum/reagent/water=10, /datum/reagent/grain/barley=10)
-	results = list(/datum/reagent/wort/beer/barley=10)
+	results = list(/datum/reagent/wort/beer/barley=20)
 	reaction_tags = REACTION_TAG_EASY
 	required_container = /obj/structure/brewery/l
 	required_temp = 400
@@ -35,7 +35,7 @@
 
 /datum/chemical_reaction/wort_cave_wheat_beer
 	required_reagents = list(/datum/reagent/water=10, /datum/reagent/grain/cave_wheat=10)
-	results = list(/datum/reagent/wort/beer/cave_wheat=10)
+	results = list(/datum/reagent/wort/beer/cave_wheat=20)
 	reaction_tags = REACTION_TAG_EASY
 	required_container = /obj/structure/brewery/l
 	required_temp = 400
