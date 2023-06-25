@@ -307,3 +307,19 @@
 		else if(!islist(materials)) // re-check if this is not an emtpy list
 			var/datum/material/M = SSmaterials.materials[materials]
 			. += "<br>It's made out of [M.name]."
+	if(grade)
+		var/qualtity_text
+		switch(grade)
+			if(1)
+				qualtity_text = "poorly-crafted"
+			if(2)
+				qualtity_text = "decently-crafted"
+			if(3)
+				qualtity_text = "finely-crafted"
+			if(4)
+				qualtity_text = "superior quality"
+			if(5)
+				qualtity_text = "exceptional"
+			if(6)
+				qualtity_text = "Masterful"
+		. += "<br>The [src] is [qualtity_text]."
