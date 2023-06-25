@@ -790,6 +790,7 @@
 #include "code\modules\admin\smites\knot_shoes.dm"
 #include "code\modules\admin\smites\lightning.dm"
 #include "code\modules\admin\smites\nugget.dm"
+#include "code\modules\admin\smites\offer.dm"
 #include "code\modules\admin\smites\smite.dm"
 #include "code\modules\admin\verbs\adminhelp.dm"
 #include "code\modules\admin\verbs\adminjump.dm"
