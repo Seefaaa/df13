@@ -43,7 +43,16 @@
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(!H.mind || !H.mind.miming)
-			return 'sound/emotes/fart.ogg'
+			return pick('sound/emotes/fart_1.ogg',\
+						'sound/emotes/fart_2.ogg',\
+						'sound/emotes/fart_3.ogg',\
+						'sound/emotes/fart_4.ogg',\
+						'sound/emotes/fart_5.ogg',\
+						'sound/emotes/fart_6.ogg',\
+						'sound/emotes/fart_7.ogg',\
+						'sound/emotes/fart_8.ogg',\
+						'sound/emotes/fart_9.ogg',\
+						'sound/emotes/fart_all.ogg')
 
 /datum/emote/living/choke
 	key = "choke"
