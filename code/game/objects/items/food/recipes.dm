@@ -46,7 +46,7 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	cooking_text = "Put everything in a bowl and cook in the oven."
 
 /datum/cooking_recipe/oven/bowl/meat_pie
-	req_items = list(/obj/item/food/dough=1, /obj/item/food/meat=3)
+	req_items = list(/obj/item/food/dough=1, /obj/item/food/meat/slab=3)
 	result = /obj/item/food/dish/meat_pie
 	req_lvl = 3
 	cooking_text = "Put everything in a bowl and cook in the oven."
