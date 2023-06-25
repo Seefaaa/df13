@@ -9,6 +9,8 @@
 									//0 here does NOT disable the event, it just makes it extremely unlikely
 
 	var/earliest_start = 20 MINUTES	//The earliest world.time that an event can start (round-duration in deciseconds) default: 20 mins
+	var/delay = 1 MINUTES			//Min delay between this event
+	var/next_occurence = 0
 	var/min_players = 0				//The minimum amount of alive, non-AFK human players on server required to start the event.
 
 	var/occurrences = 0				//How many times this event has occured
@@ -43,12 +45,15 @@
 		return FALSE
 	if(gamemode_whitelist.len && !(gamemode in gamemode_whitelist))
 		return FALSE
+	if(world.time < next_occurence)
+		return FALSE
 	return TRUE
 
 /datum/round_event_control/proc/preRunEvent()
 	if(!ispath(typepath, /datum/round_event))
 		return EVENT_CANT_RUN
 
+	next_occurence = world.time + delay
 	triggering = TRUE
 	if (alert_observers)
 		message_admins("Random Event triggering in 10 seconds: [name] (<a href='?src=[REF(src)];cancel=1'>CANCEL</a>)")
