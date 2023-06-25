@@ -14,23 +14,24 @@
 	. = ..()
 	slowdown = initial(slowdown)
 	melee_cd = initial(melee_cd)
+
 /obj/examine_more(mob/user)
 	. = ..()
 	var/qualtity_text
 	switch(grade)
 		if(1)
-			qualtity_text = "Poorly crafted"
+			qualtity_text = "poorly-crafted"
 		if(2)
-			qualtity_text = "Descently crafted"
+			qualtity_text = "decently-crafted"
 		if(3)
-			qualtity_text = "Finely crafted"
+			qualtity_text = "finely-crafted"
 		if(4)
-			qualtity_text = "Superior quality"
+			qualtity_text = "superior quality"
 		if(5)
-			qualtity_text = "Exceptional"
+			qualtity_text = "exceptional"
 		if(6)
-			qualtity_text = "Masterful"
-	. = "The [src] is [qualtity_text]"
+			qualtity_text = "masterful"
+	. += "It's [qualtity_text]."
 /obj/proc/apply_grade(_grade=null)
 	if(_grade)
 		src.grade = _grade
@@ -42,7 +43,7 @@
 	return
 
 /proc/grade_name(grade)
-	var/list/grades = list("*", "-", "+", "≡", "☼", "☼☼")
+	var/list/grades = list("-", "+", "*", "≡", "☼", "☼☼")
 	return grades[grade]
 
 /*******************************************************************************************************************/
