@@ -57,7 +57,7 @@
 
 /obj/item/log/large/pickup(mob/user)
 	to_chat(user, span_notice("You start lifting [src]..."))
-	if(!do_after(user, 10 SECONDS, src))
+	if(!do_after(user, 2 SECONDS, src))
 		return FALSE
 	. = ..()
 
