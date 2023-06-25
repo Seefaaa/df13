@@ -39,6 +39,7 @@
 		var/speed_mod = user.get_skill_modifier(/datum/skill/construction, SKILL_SPEED_MODIFIER)
 		if(I.use_tool(src, user, 10 SECONDS * speed_mod, volume=50))
 			to_chat(user, span_notice("You build [initial(target_structure.name)]."))
+			user.adjust_experience(/datum/skill/construction, rand(10, 50))
 			var/turf/spawn_turf = get_turf(src)
 			target_structure = get_target_structure()
 			var/list/_materials = list()
