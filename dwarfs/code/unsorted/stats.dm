@@ -30,8 +30,8 @@
 		if(5)
 			qualtity_text = "exceptional"
 		if(6)
-			qualtity_text = "masterful"
-	. += "It's [qualtity_text]."
+			qualtity_text = "Masterful"
+	. = "<br>The [src] is [qualtity_text]"
 /obj/proc/apply_grade(_grade=null)
 	if(_grade)
 		src.grade = _grade
