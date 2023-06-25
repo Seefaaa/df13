@@ -11,9 +11,6 @@ If you want to implement a lock, you need a few things.
 	var/datum/key/key
 	var/locked = FALSE
 	var/static/list/attachable_to = typecacheof(list(/obj/structure/mineral_door,/obj/structure/closet))
-	var/lock_overlay_path = 'dwarfs/icons/items/misc_items.dmi'
-	var/icon_state = "lock"
-	var/mutable_appearance/lock_overlay
 
 
 /datum/component/lock/Initialize(datum/key/locks_key)
@@ -22,15 +19,7 @@ If you want to implement a lock, you need a few things.
 	key = locks_key
 	RegisterSignal(parent, COMSIG_KEY_USE, .proc/try_toggle_lock)
 	RegisterSignal(parent, COMSIG_TRY_LOCKED_ACTION, .proc/try_locked_action)
-	lock_overlay = mutable_appearance(lock_overlay_path, icon_state)
-	var/atom/p = parent
-	p.add_overlay(lock_overlay)
-
-/datum/component/lock/Destroy(force, silent)
-	var/atom/p = parent
-	p?.cut_overlay(lock_overlay)
-	return ..()
-
+	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, .proc/on_examine)
 
 
 /datum/component/lock/proc/try_attach(obj/I)
@@ -60,6 +49,8 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 		return TRUE
 	return FALSE
 
+/datum/component/lock/proc/on_examine(source, atom/user, list/examine_text)
+	examine_text += "<br>It appears to be [locked ? span_warning("locked") : span_notice("unlocked")]"
 
 /datum/key
 
