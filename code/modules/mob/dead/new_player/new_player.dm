@@ -157,7 +157,7 @@
 			continue
 		character.forceMove(T)
 		return
-	character.forceMove(T) //failsafe if we can't find a spot
+	character.forceMove(locate(5, 5, GLOB.surface_z)) //failsafe if we can't find a spot
 
 /mob/dead/new_player/proc/AttemptLateSpawn()
 	mind.assigned_role = "Dwarf" // SSjob removed so we assing it manually

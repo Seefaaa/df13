@@ -31,13 +31,13 @@
 			else
 				return 'sound/emotes/burp_male.ogg'
 
-/datum/emote/living/burp
+/datum/emote/living/fart
 	key = "fart"
 	key_third_person = "farts"
 	message = "farts."
 	emote_type = EMOTE_AUDIBLE
 
-/datum/emote/living/burp/get_sound(mob/living/user)
+/datum/emote/living/fart/get_sound(mob/living/user)
 	if(!check_rights_for(user.client, R_ADMIN))
 		return
 	if(ishuman(user))
