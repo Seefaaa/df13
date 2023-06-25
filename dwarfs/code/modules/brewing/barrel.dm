@@ -18,7 +18,7 @@
 		var/list/r = list()
 		for(var/datum/reagent/R in reagents.reagent_list)
 			r += "[R.volume] [R.name]"
-		. += "\The [src] contains [r.Join(", ")]"
+		. += "<br>\The [src] contains [r.Join(", ")]"
 
 /obj/structure/barrel/Initialize()
 	. = ..()
