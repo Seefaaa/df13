@@ -14,7 +14,14 @@
 	var/spawns = 2
 
 /datum/round_event/ghost_role/goblin_raid/pre_start()
-	spawns = 2 + round(GLOB.dwarf_list.len / 8)
+	var/live_dwarves = 0
+	for(var/mob/living/carbon/human/H in GLOB.dwarf_list)
+		if(!H)
+			continue
+		if(H.stat == DEAD)
+			continue
+		live_dwarves++
+	spawns = 2 + round(live_dwarves / 8)
 
 /datum/round_event/ghost_role/goblin_raid/spawn_role()
 	var/list/candidates = get_candidates("Goblin", null, FALSE)
