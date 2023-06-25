@@ -156,7 +156,8 @@
 		if((locate(/obj/structure/plant/tree) in oview(5, T)))
 			continue
 		character.forceMove(T)
-		break
+		return
+	character.forceMove(T) //failsafe if we can't find a spot
 
 /mob/dead/new_player/proc/AttemptLateSpawn()
 	mind.assigned_role = "Dwarf" // SSjob removed so we assing it manually
