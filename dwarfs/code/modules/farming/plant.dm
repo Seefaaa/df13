@@ -173,10 +173,10 @@
 			harvested += 3
 		if(harvested)
 			for(var/i in 1 to harvested)
-				new P(loc)
+				new P(get_turf(user))
 			if(seed_type)
 				for(var/i in 1 to rand(1,2))
-					new seed_type(get_turf(src))
+					new seed_type(get_turf(user))
 			to_chat(user, span_notice("You harvest [initial(P.name)] from [src]."))
 			user.adjust_experience(/datum/skill/farming, harvested*8)
 		else
