@@ -303,7 +303,7 @@
 					m = materials[m]
 				var/datum/material/M = SSmaterials.materials[m]
 				l.Add(M.name)
-			. += "<br>It's is made out of [l.Join(", ")]."
+			. += "<br>It's made out of [l.Join(", ")]."
 		else if(!islist(materials)) // re-check if this is not an emtpy list
 			var/datum/material/M = SSmaterials.materials[materials]
-			. += "<br>It's is made out of [M.name]."
+			. += "<br>It's made out of [M.name]."
