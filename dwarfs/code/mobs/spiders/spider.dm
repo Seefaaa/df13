@@ -105,16 +105,25 @@
 	nested = TRUE
 	stop_automated_movement = FALSE
 
-/mob/living/simple_animal/hostile/giant_spider/proc/cocoon(mob/living/carbon/H)
+/mob/living/simple_animal/hostile/giant_spider/verb/cocoon(mob/living/carbon/H)
+	if(!Adjacent(H))
+		to_chat(usr, span_warning("You have to be near your target!"))
+		return
 	if(H.stat >= UNCONSCIOUS)
 		stop_automated_movement = TRUE
 		cocooning = TRUE
+		if(locate(/obj/structure/spider/cocoon in loc))
+			to_chat(usr,span_warning("You cannot make a cocoon on another cocoon!"))
+			cocooning = FALSE
+			stop_automated_movement = FALSE
+			return
 		if(do_after(src, 5 SECONDS, H))
 			var/obj/structure/spider/cocoon/C = new(src.loc)
 			C.encase(H)
 		cocooning = FALSE
 		stop_automated_movement = FALSE
-
+	else
+		to_chat(usr,span_warning("You cannot cocoon them while they are alive!"))
 
 
 /mob/living/simple_animal/hostile/giant_spider/proc/do_action()
