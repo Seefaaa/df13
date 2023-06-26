@@ -233,7 +233,7 @@
 	reqs = list(/obj/item/stack/sheet/string=3)
 
 /datum/workbench_recipe/kitchen_knife
-	name = "kitchen_knife"
+	name = "kitchen knife"
 	result = /obj/item/kitchen/knife
 	reqs = list(/obj/item/partial/kitchen_knife=1, /obj/item/weapon_hilt=1)
 
