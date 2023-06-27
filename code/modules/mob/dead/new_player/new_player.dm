@@ -181,6 +181,7 @@
 
 	to_chat(character, span_italics("You have set out on a journey to join a nearby fortress. May fortune smile upon you and guide you safely to your destination."))
 	log_manifest(character.mind.key,character.mind,character,latejoin = TRUE)
+	SSblackbox.record_feedback("amount", "migrated", 1)
 
 /mob/dead/new_player/proc/create_character(transfer_after)
 	spawning = 1

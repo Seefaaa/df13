@@ -1,9 +1,7 @@
 
 #define POPCOUNT_SURVIVORS "survivors"					//Not dead at roundend
 #define POPCOUNT_DEADS "deads"							//Dead at roundend
-#define POPCOUNT_ESCAPEES "escapees"					//Not dead and on centcom/shuttles marked as escaped
-#define POPCOUNT_SHUTTLE_ESCAPEES "shuttle_escapees" 	//Emergency shuttle only
-#define POPCOUNT_ANOTHER_ESCAPEES "another_escapees" 	//Another way than shuttle to escape
+#define POPCOUNT_MIGRATED "migrated"
 #define PERSONAL_LAST_ROUND "personal last round"
 #define SERVER_LAST_ROUND "server last round"
 
@@ -14,9 +12,8 @@
 	var/list/file_data = list("escapees" = list("humans" = list(), "silicons" = list(), "others" = list(), "npcs" = list()), "abandoned" = list("humans" = list(), "silicons" = list(), "others" = list(), "npcs" = list()), "ghosts" = list(), "additional data" = list())
 	var/num_survivors = 0 //Count of non-brain non-camera mobs with mind that are alive
 	var/num_deads = 0 //Count of non-brain non-camera mobs with mind that are dead
-	var/num_escapees = 0 //Above and on centcom z
-	var/num_shuttle_escapees = 0 //Above and on escape shuttle
-	var/num_another_escapees = 0 //Above and on escape pod or anothers ways
+	var/datum/feedback_variable/migrated_bb = SSblackbox.find_feedback_datum("migrated", "amount")
+	var/num_migrated = migrated_bb ? migrated_bb.json["data"] : 0
 	for(var/mob/M in GLOB.mob_list)
 		var/list/mob_data = list()
 		if(isnewplayer(M))
@@ -84,9 +81,7 @@
 	. = list()
 	.[POPCOUNT_SURVIVORS] = num_survivors
 	.[POPCOUNT_DEADS] = num_deads
-	.[POPCOUNT_ESCAPEES] = num_escapees
-	.[POPCOUNT_SHUTTLE_ESCAPEES] = num_shuttle_escapees
-	.[POPCOUNT_ANOTHER_ESCAPEES] = num_another_escapees
+	.[POPCOUNT_MIGRATED] = num_migrated
 
 /datum/controller/subsystem/ticker/proc/gather_antag_data()
 	var/team_gid = 1
@@ -234,25 +229,46 @@
 
 	return parts.Join()
 
+/datum/controller/subsystem/ticker/proc/world_report()
+	var/datum/feedback_variable/ores = SSblackbox.find_feedback_datum("veins_generated", "tally")
+	var/ores_data = ores.json["data"]
+	var/iron = ores_data["/obj/item/stack/ore/smeltable/iron"] || 0
+	var/gold = ores_data["/obj/item/stack/ore/smeltable/gold"] || 0
+	var/coal = ores_data["/obj/item/stack/ore/coal"] || 0
+	var/diamond = ores_data["/obj/item/stack/ore/gem/diamond"] || 0
+	var/ruby = ores_data["/obj/item/stack/ore/gem/ruby"] || 0
+	var/sapphire = ores_data["/obj/item/stack/ore/gem/sapphire"] || 0
+	var/list/parts = list()
+	parts += "<hr><b><font color=\"#60b6ff\">Veins</font></b>"
+	parts += "[FOURSPACES]├ Total: <b>[ores_data["total"]]</b>"
+	parts += "[FOURSPACES]├ Iron: [iron]"
+	parts += "[FOURSPACES]├ Coal: [coal]"
+	parts += "[FOURSPACES]├ Gold: [gold]"
+	parts += "[FOURSPACES]├ Diamond: [diamond]"
+	parts += "[FOURSPACES]├ Ruby: [ruby]"
+	parts += "[FOURSPACES]└ Sapphire: [sapphire]"
+	return parts.Join("<br>")
+
 /datum/controller/subsystem/ticker/proc/survivor_report(popcount)
 	var/list/parts = list()
 
-	parts += "<hr><b><font color=\"#60b6ff\">Round Information //</font></b>"
+	parts += "<hr><b><font color=\"#60b6ff\">Story Information</font></b>"
 	if(GLOB.round_id)
 		var/statspage = CONFIG_GET(string/roundstatsurl)
 		var/info = statspage ? "<a href='?action=openLink&link=[url_encode(statspage)][GLOB.round_id]'>[GLOB.round_id]</a>" : GLOB.round_id
-		parts += "[FOURSPACES]├ Round ID: <b>[info]</b>"
+		parts += "[FOURSPACES]├ Story ID: <b>[info]</b>"
 	else
-		parts += "[FOURSPACES]├ Round ID: <b>(<i>unavailable</i>)</b>"
-	parts += "[FOURSPACES]└ Round Duration: <b>[DisplayTimeText(world.time - SSticker.round_start_time)]</b>"
+		parts += "[FOURSPACES]├ Story ID: <b>(<i>unavailable</i>)</b>"
+	parts += "[FOURSPACES]└ Story Duration: <b>[DisplayTimeText(world.time - SSticker.round_start_time)]</b>"
 
-	parts += "<hr><b><font color=\"#60b6ff\">Player Information //</font></b>"
-	var/total_players = GLOB.joined_player_list.len
+	parts += "<hr><b><font color=\"#60b6ff\">Player Information</font></b>"
+	var/total_players = GLOB.dwarf_list.len
 	if(total_players)
 		parts += "[FOURSPACES]├ Total: <b>[total_players]</b>"
+		parts += "[FOURSPACES]├ Migrated: <b>[popcount[POPCOUNT_MIGRATED]]</b> (or <b>[PERCENT(popcount[POPCOUNT_MIGRATED]/total_players)]%</b> of total)"
 		parts += "[FOURSPACES]├ Dead: <b>[popcount[POPCOUNT_DEADS]]</b> (or <b>[PERCENT(popcount[POPCOUNT_DEADS]/total_players)]%</b> of total)"
-		parts += "[FOURSPACES]├ Survived: <b>[popcount[POPCOUNT_SURVIVORS]]</b> (or <b>[PERCENT(popcount[POPCOUNT_SURVIVORS]/total_players)]%</b> of total)"
-		parts += "<hr><b><font color=\"#60b6ff\">First Death //</font></b>"
+		parts += "[FOURSPACES]└ Survived: <b>[popcount[POPCOUNT_SURVIVORS]]</b> (or <b>[PERCENT(popcount[POPCOUNT_SURVIVORS]/total_players)]%</b> of total)"
+		parts += "<hr><b><font color=\"#60b6ff\">First Death</font></b>"
 		if(SSblackbox.first_death)
 			var/list/first_death = SSblackbox.first_death
 			if(first_death.len)
@@ -320,15 +336,15 @@
 
 /datum/controller/subsystem/ticker/proc/personal_report(client/C, popcount)
 	var/list/parts = list()
-	// var/mob/M = C.mob
-	parts += "<br><center><span class='big bold'>Round End</span></center>"
-	parts += "</div>"
-
+	parts += "<center><span class='big bold'>Round End</span></center>"
+	parts += GLOB.survivor_report
+	parts += GLOB.world_report
 	return parts.Join()
 
 /datum/controller/subsystem/ticker/proc/display_report(popcount)
 	GLOB.common_report = build_roundend_report()
 	GLOB.survivor_report = survivor_report(popcount)
+	GLOB.world_report = world_report()
 	log_roundend_report()
 	for(var/client/C in GLOB.clients)
 		show_roundend_report(C)
