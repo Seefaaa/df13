@@ -112,7 +112,7 @@
 	if(H.stat >= UNCONSCIOUS)
 		stop_automated_movement = TRUE
 		cocooning = TRUE
-		if(locate(/obj/structure/spider/cocoon in loc))
+		if(locate(/obj/structure/spider/cocoon) in loc)
 			to_chat(usr,span_warning("You cannot make a cocoon on another cocoon!"))
 			cocooning = FALSE
 			stop_automated_movement = FALSE
