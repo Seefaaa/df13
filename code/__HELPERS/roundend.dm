@@ -230,23 +230,51 @@
 	return parts.Join()
 
 /datum/controller/subsystem/ticker/proc/world_report()
-	var/datum/feedback_variable/ores = SSblackbox.find_feedback_datum("veins_generated", "tally")
-	var/ores_data = ores.json["data"]
-	var/iron = ores_data["/obj/item/stack/ore/smeltable/iron"] || 0
-	var/gold = ores_data["/obj/item/stack/ore/smeltable/gold"] || 0
-	var/coal = ores_data["/obj/item/stack/ore/coal"] || 0
-	var/diamond = ores_data["/obj/item/stack/ore/gem/diamond"] || 0
-	var/ruby = ores_data["/obj/item/stack/ore/gem/ruby"] || 0
-	var/sapphire = ores_data["/obj/item/stack/ore/gem/sapphire"] || 0
 	var/list/parts = list()
-	parts += "<hr><b><font color=\"#60b6ff\">Veins</font></b>"
-	parts += "[FOURSPACES]├ Total: <b>[ores_data["total"]]</b>"
-	parts += "[FOURSPACES]├ Iron: [iron]"
-	parts += "[FOURSPACES]├ Coal: [coal]"
-	parts += "[FOURSPACES]├ Gold: [gold]"
-	parts += "[FOURSPACES]├ Diamond: [diamond]"
-	parts += "[FOURSPACES]├ Ruby: [ruby]"
-	parts += "[FOURSPACES]└ Sapphire: [sapphire]"
+	var/datum/feedback_variable/ores = SSblackbox.find_feedback_datum("veins_generated", "tally")
+	parts += "<hr><b><font color=\"#60b6ff\">Veins Information</font></b>"
+	if(ores.json.len)
+		var/ores_data = ores.json["data"]
+		var/iron = ores_data["/obj/item/stack/ore/smeltable/iron"] || 0
+		var/gold = ores_data["/obj/item/stack/ore/smeltable/gold"] || 0
+		var/coal = ores_data["/obj/item/stack/ore/coal"] || 0
+		var/diamond = ores_data["/obj/item/stack/ore/gem/diamond"] || 0
+		var/ruby = ores_data["/obj/item/stack/ore/gem/ruby"] || 0
+		var/sapphire = ores_data["/obj/item/stack/ore/gem/sapphire"] || 0
+		parts += "[FOURSPACES]├ Total: <b>[ores_data["total"]]</b>"
+		parts += "[FOURSPACES]├ Iron: [iron]"
+		parts += "[FOURSPACES]├ Coal: [coal]"
+		parts += "[FOURSPACES]├ Gold: [gold]"
+		parts += "[FOURSPACES]├ Diamond: [diamond]"
+		parts += "[FOURSPACES]├ Ruby: [ruby]"
+		parts += "[FOURSPACES]└ Sapphire: [sapphire]"
+	else
+		parts += "[FOURSPACES]└ No ores spawned!"
+	parts += "<hr><b><font color=\"#60b6ff\">Skill Information</font></b>"
+	var/list/skills = list()
+	for(var/mob/living/M in GLOB.dwarf_list)
+		if(!M)
+			continue
+		for(var/datum/skill/skill in M.known_skills)
+			if(!(skill.name in skills))
+				skills[skill.name] = list("title"=skill.title)
+			if(!("mob" in skills[skill.name]))
+				skills[skill.name]["lvl"] = skill.level
+				skills[skill.name]["exp"] = skill.experience
+				skills[skill.name]["mob"] = M.name
+			else
+				if(skill.level > skills[skill.name]["lvl"] || (skill.level == skills[skill.name]["lvl"] && skill.experience > skills[skill.name]["exp"]))
+					skills[skill.name]["lvl"] = skill.level
+					skills[skill.name]["exp"] = skill.experience
+					skills[skill.name]["mob"] = M.name
+	if(skills.len)
+		for(var/i in 1 to skills.len)
+			var/skill_name = skills[i]
+			var/data = skills[skill_name]
+			var/s = i == skills.len ? "└" : "├"
+			parts += "[FOURSPACES][s] Highest in [skill_name]: <b>[data["mob"]]</b>, the [SSskills.level_names[data["lvl"]]] [data["title"]]."
+	else
+		parts += "[FOURSPACES]└ Nobody had skills?"
 	return parts.Join("<br>")
 
 /datum/controller/subsystem/ticker/proc/survivor_report(popcount)
