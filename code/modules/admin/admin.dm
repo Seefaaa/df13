@@ -476,11 +476,8 @@
 	var/mob/target_user
 	if(ismob(target))
 		target_user = target
-	else if (istype(target, /datum/mind))
-		var/datum/mind/target_mind = target
-		target_user = target_mind.current
 	else
-		to_chat(usr, "This can only be used on instances of type /mob and /mind", confidential = TRUE)
+		to_chat(usr, "This can only be used on instances of type /mob", confidential = TRUE)
 		return
 	var/datum/skill_panel/SP  = new(usr, target_user)
 	SP.ui_interact(usr)

@@ -827,20 +827,14 @@
 		if(!check_rights(R_ADMIN))
 			return
 
-		if(!SSticker.HasRoundStarted())
-			tgui_alert(usr,"The game hasn't started yet!")
-			return
-
 		var/mob/target = locate(href_list["skill"])
-		var/datum/mind/target_mind
+		var/mob/target_mob
 		if(ismob(target))
-			target_mind = target.mind
-		else if (istype(target, /datum/mind))
-			target_mind = target
+			target_mob = target
 		else
-			to_chat(usr, "This can only be used on instances of type /mob and /mind", confidential = TRUE)
+			to_chat(usr, "This can only be used on instances of type /mob", confidential = TRUE)
 			return
-		show_skill_panel(target_mind)
+		show_skill_panel(target_mob)
 
 	else if(href_list["initmind"])
 		if(!check_rights(R_ADMIN))
