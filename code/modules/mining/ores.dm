@@ -107,6 +107,7 @@
 	merge_type = /obj/item/stack/ore/gem/sapphire
 	ore_icon = 'dwarfs/icons/turf/ores/sapphire.dmi'
 	ore_basename = "sapphire"
+	vein_type = /datum/vein/cluster
 
 /obj/item/stack/ore/gem/ruby
 	name = "ruby ore"
