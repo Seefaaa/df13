@@ -2,7 +2,10 @@
 	var/first = pick(GLOB.dwarf_first)
 	var/last = ""
 	for(var/i in 1 to 2)
-		var/list/T = pick(GLOB.language_nouns ,GLOB.language_adjectives ,GLOB.language_verbs ,GLOB.language_prefixes)
+		var/list/words = list(GLOB.language_nouns ,GLOB.language_adjectives ,GLOB.language_verbs)
+		if(i == 1)
+			words += list(GLOB.language_prefixes) //wrap in list since we want to add the list itself
+		var/list/T = pick(words)
 		var/picked = pick(T)
 		last+=lowertext(T[picked]["Dwarven"])
 	return "[capitalize(first)] [capitalize(last)]"
