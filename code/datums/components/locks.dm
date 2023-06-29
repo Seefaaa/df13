@@ -17,9 +17,9 @@ If you want to implement a lock, you need a few things.
 	if(attachable_to && !(src.parent.type in attachable_to))
 		return COMPONENT_INCOMPATIBLE
 	key = locks_key
-	RegisterSignal(parent, COMSIG_KEY_USE, .proc/try_toggle_lock)
-	RegisterSignal(parent, COMSIG_TRY_LOCKED_ACTION, .proc/try_locked_action)
-	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, .proc/on_examine)
+	RegisterSignal(parent, COMSIG_KEY_USE, PROC_REF(try_toggle_lock))
+	RegisterSignal(parent, COMSIG_TRY_LOCKED_ACTION, PROC_REF(try_locked_action))
+	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
 
 
 /datum/component/lock/proc/try_attach(obj/I)

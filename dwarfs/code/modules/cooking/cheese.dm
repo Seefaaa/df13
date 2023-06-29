@@ -7,7 +7,7 @@
 
 /obj/item/cheese/Initialize()
 	. = ..()
-	addtimer(CALLBACK(src, .proc/age), 5 MINUTES)
+	addtimer(CALLBACK(src, PROC_REF(age)), 5 MINUTES)
 
 /obj/item/cheese/proc/age()
 	if(QDELETED(src))

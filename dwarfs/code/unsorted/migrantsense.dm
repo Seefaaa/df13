@@ -23,7 +23,7 @@ GLOBAL_VAR_INIT(fort_center, null)
 /atom/movable/screen/alert/migrant/Initialize(mapload)
 	. = ..()
 	START_PROCESSING(SSprocessing, src)
-	addtimer(CALLBACK(src, .proc/cleanup), sense_for)
+	addtimer(CALLBACK(src, PROC_REF(cleanup)), sense_for)
 
 /atom/movable/screen/alert/migrant/Destroy()
 	STOP_PROCESSING(SSprocessing, src)

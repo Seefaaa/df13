@@ -81,7 +81,7 @@
 	if(losebreath >= 1) //You've missed a breath, take oxy damage
 		losebreath--
 		if(prob(10))
-			INVOKE_ASYNC(src, .proc/emote, "gasp")
+			INVOKE_ASYNC(src, PROC_REF(emote), "gasp")
 	else
 		if(lungs)
 			breathing_delta = lungs.check_breath(src, breathing_delta)

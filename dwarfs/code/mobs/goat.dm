@@ -115,7 +115,7 @@
 	. = ..()
 	icon_state = "goat_[color_txt]_baby"
 	icon_dead = "goat_[color_txt]_baby_dead"
-	addtimer(CALLBACK(src, .proc/grow_up), 4 MINUTES)
+	addtimer(CALLBACK(src, PROC_REF(grow_up)), 4 MINUTES)
 
 /mob/living/simple_animal/goat/baby/proc/grow_up()
 	if(!src)

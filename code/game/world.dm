@@ -30,7 +30,8 @@ GLOBAL_VAR(restart_counter)
  */
 /world/New()
 
-	enable_debugger()
+	//enable_debugger()
+	init_debugger()
 
 	log_world("World loaded at [time_stamp()]!")
 
@@ -79,11 +80,11 @@ GLOBAL_VAR(restart_counter)
 	CONFIG_SET(number/round_end_countdown, 0)
 	var/datum/callback/cb
 #ifdef UNIT_TESTS
-	cb = CALLBACK(GLOBAL_PROC, /proc/RunUnitTests)
+	cb = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(RunUnitTests))
 #else
 	cb = VARSET_CALLBACK(SSticker, force_ending, TRUE)
 #endif
-	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, /proc/_addtimer, cb, 10 SECONDS))
+	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(_addtimer), cb, 10 SECONDS))
 
 
 /world/proc/SetupLogs()
@@ -222,6 +223,7 @@ GLOBAL_VAR(restart_counter)
 		shelleo("curl -X POST http://localhost:3636/hard-reboot-dwarf")
 	..()
 
+
 /world/proc/update_status()
 
 	var/s = ""
@@ -267,6 +269,11 @@ GLOBAL_VAR(restart_counter)
 	tick_lag = new_value
 	on_tickrate_change()
 
+/world/proc/init_debugger()
+	var/dll = GetConfig("env", "AUXTOOLS_DEBUG_DLL")
+	if (dll)
+		LIBCALL(dll, "auxtools_init")()
+		enable_debugging()
 
 /world/proc/on_tickrate_change()
 	SStimer?.reset_buckets()

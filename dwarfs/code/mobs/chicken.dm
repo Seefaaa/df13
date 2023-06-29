@@ -74,7 +74,7 @@
 	name = "chick"
 	icon_state = "chicken_baby"
 	icon_dead = "chicken_baby_dead"
-	addtimer(CALLBACK(src, .proc/grow_up), 4 MINUTES)
+	addtimer(CALLBACK(src, PROC_REF(grow_up)), 4 MINUTES)
 
 /mob/living/simple_animal/chicken/baby/proc/grow_up()
 	if(!src)

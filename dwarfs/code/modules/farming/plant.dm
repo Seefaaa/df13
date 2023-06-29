@@ -36,13 +36,12 @@
 /obj/structure/plant/examine(mob/user)
 	. = ..()
 	var/healthtext = "<br>"
-	switch(health)
-		if(maxhealth/2 to INFINITY)
-			healthtext += "[src] looks healthy."
-		if(1 to maxhealth/2)
-			healthtext += "[src] looks unhealthy."
-		else
-			healthtext += "[src] is dead!"
+	if(health >= maxhealth/2)
+		healthtext += "[src] looks healthy."
+	else if(health >= 1)
+		healthtext += "[src] looks unhealthy."
+	else
+		healthtext += "[src] is dead!"
 	. += healthtext
 
 /obj/structure/plant/Initialize()

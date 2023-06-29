@@ -92,6 +92,13 @@ if ls _maps/*.json | grep -P "[A-Z]"; then
     echo "Uppercase in a map json detected, these must be all lowercase."
     st=1
 fi;
+# Check for non-515 compatable .proc/ syntax
+if grep -P --exclude='__byond_version_compat.dm' '\.proc/' code/**/*.dm; then
+    echo "ERROR: Outdated proc reference use detected in code, please use proc reference helpers."
+    st=1
+fi;
+
+
 for json in _maps/*.json
 do
     map_path=$(jq -r '.map_path' $json)

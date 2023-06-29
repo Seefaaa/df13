@@ -385,15 +385,15 @@
 
 //for sorting clients or mobs by ckey
 /proc/sortKey(list/L, order=1)
-	return sortTim(L, order >= 0 ? /proc/cmp_ckey_asc : /proc/cmp_ckey_dsc)
+	return sortTim(L, order >= 0 ? GLOBAL_PROC_REF(cmp_ckey_asc) : GLOBAL_PROC_REF(cmp_ckey_dsc))
 
 //any value in a list
-/proc/sort_list(list/L, cmp=/proc/cmp_text_asc)
+/proc/sort_list(list/L, cmp=GLOBAL_PROC_REF(cmp_text_asc))
 	return sortTim(L.Copy(), cmp)
 
 //uses sort_list() but uses the var's name specifically. This should probably be using mergeAtom() instead
 /proc/sortNames(list/L, order=1)
-	return sortTim(L.Copy(), order >= 0 ? /proc/cmp_name_asc : /proc/cmp_name_dsc)
+	return sortTim(L.Copy(), order >= 0 ? GLOBAL_PROC_REF(cmp_name_asc) : GLOBAL_PROC_REF(cmp_name_dsc))
 
 
 //Converts a bitfield to a list of numbers (or words if a wordlist is provided)

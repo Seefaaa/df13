@@ -105,7 +105,7 @@ GLOBAL_LIST_EMPTY(cats)
 
 /mob/living/simple_animal/pet/cat/kitten/Initialize(_gender=null)
 	. = ..(null)
-	addtimer(CALLBACK(src, .proc/grow), 2.5 MINUTES)
+	addtimer(CALLBACK(src, PROC_REF(grow)), 2.5 MINUTES)
 
 /mob/living/simple_animal/pet/cat/kitten/proc/grow()
 	if(stat == DEAD)

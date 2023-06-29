@@ -184,7 +184,7 @@
 		if(do_after(S, 1, target = T))//40
 			if(S.busy == SPINNING_WEB && S.loc == T)
 				var/obj/structure/spider/stickyweb/newweb = new /obj/structure/spider/stickyweb(T)
-				newweb.register_spider(CALLBACK(owner, /mob/living/simple_animal/hostile/giant_spider/.proc/on_sense, target),CALLBACK(owner, /mob/living/simple_animal/hostile/giant_spider/.proc/on_unsense, target))
+				newweb.register_spider(CALLBACK(owner, TYPE_PROC_REF(/mob/living/simple_animal/hostile/giant_spider, on_sense), target),CALLBACK(owner, TYPE_PROC_REF(/mob/living/simple_animal/hostile/giant_spider, on_unsense), target))
 		S.busy = SPIDER_IDLE
 		S.stop_automated_movement = FALSE
 	else

@@ -143,7 +143,7 @@
 /obj/item/food/egg/fertile/Initialize(mapload)
 	. = ..()
 	fertile = TRUE
-	addtimer(CALLBACK(src, .proc/hatch), time_till_birth)
+	addtimer(CALLBACK(src, PROC_REF(hatch)), time_till_birth)
 
 /obj/item/food/egg/proc/fertelize()
 	new /obj/item/food/egg/fertile(src.loc)

@@ -41,8 +41,8 @@
 /obj/structure/spider/stickyweb/proc/register_spider(enter_callback,leave_callback)
 	web_sensed = enter_callback
 	web_unsensed = leave_callback
-	RegisterSignal(get_turf(src), COMSIG_ATOM_ENTERED, .proc/on_entered)
-	RegisterSignal(get_turf(src), COMSIG_ATOM_EXITED, .proc/on_exited)
+	RegisterSignal(get_turf(src), COMSIG_ATOM_ENTERED, PROC_REF(on_entered))
+	RegisterSignal(get_turf(src), COMSIG_ATOM_EXITED, PROC_REF(on_exited))
 
 /obj/structure/spider/stickyweb/proc/on_entered(datum/source, atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	SIGNAL_HANDLER
@@ -82,7 +82,7 @@
 
 /obj/structure/spider/cocoon/Initialize()
 	. = ..()
-	addtimer(CALLBACK(src, .proc/hatch), hatch_time)
+	addtimer(CALLBACK(src, PROC_REF(hatch)), hatch_time)
 
 /obj/structure/spider/cocoon/Destroy()
 	prey?.forceMove(src.loc)
