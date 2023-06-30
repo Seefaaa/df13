@@ -16,7 +16,7 @@
 	canSmoothWith = list(SMOOTH_GROUP_WALLS, SMOOTH_GROUP_WINDOW_FULLTILE, SMOOTH_GROUP_MINERAL_WALLS, SMOOTH_GROUP_MINERAL_DOOR)
 
 	///lower numbers are harder. Used to determine the probability of a hulk smashing through.
-	var/hardness = 40
+	hardness = 40
 	var/slicing_duration = 100  //default time taken to slice the wall
 	var/atom/sheet_type
 	var/sheet_amount = 2

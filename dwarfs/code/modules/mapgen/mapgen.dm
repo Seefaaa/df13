@@ -36,7 +36,7 @@ GLOBAL_VAR(surface_z)
 				if(temp > 0)
 					turf_type = /turf/closed/mineral/random/sand
 				else
-					turf_type = /turf/closed/mineral/random/dwarf_lustress
+					turf_type = /turf/closed/mineral/random/stone
 		T.ChangeTurf(turf_type, initial(turf_type.baseturfs))
 	to_chat(world, span_green(" -- #<b>[name]</b>:> <b>[(REALTIMEOFDAY - start_time)/10]s</b> -- "))
 	log_world("[name] is done job for [(REALTIMEOFDAY - start_time)/10]s!")
@@ -116,7 +116,7 @@ GLOBAL_VAR(surface_z)
 				if(prob(0.05))
 					spawn_fauna(T)
 			if(0.4 to INFINITY)
-				turf_type = /turf/closed/mineral/random/dwarf_lustress
+				turf_type = /turf/closed/mineral/random/stone
 		T.ChangeTurf(turf_type, initial(turf_type.baseturfs))
 	to_chat(world, span_green(" -- #<b>[name]</b>:> <b>[(REALTIMEOFDAY - start_time)/10]s</b> -- "))
 	log_world("[name] is done job for [(REALTIMEOFDAY - start_time)/10]s!")

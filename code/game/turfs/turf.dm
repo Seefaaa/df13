@@ -56,8 +56,11 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/list/atom/movable/opacity_sources
 
 
-	// border smoothing overlays
+	/// Border smoothing overlays
 	var/list/borders = list()
+
+	///How 'hard' is this mineral. Use case differs from type to type. Minerals and some floors use it for mining, walls use it for breaking.
+	var/hardness = 1
 
 
 /turf/vv_edit_var(var_name, new_value)
@@ -606,3 +609,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			if(rail.dir == test_dir || is_fulltile)
 				return FALSE
 	return TRUE
+
+/turf/proc/set_hardness(new_hardness)
+	hardness = new_hardness

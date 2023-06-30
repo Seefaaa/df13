@@ -1,26 +1,3 @@
-/turf/closed/mineral/random/dwarf_lustress
-	icon = 'dwarfs/icons/turf/walls_cavern.dmi'
-	smooth_icon = 'dwarfs/icons/turf/walls_cavern.dmi'
-	icon_state = "rockwall-0"
-	base_icon_state = "rockwall"
-	environment_type = "stone_raw"
-	turf_type = /turf/open/floor/rock
-	baseturfs = /turf/open/floor/rock
-	mineralSpawnChanceList = list(/obj/item/stack/ore/smeltable/gold = 20, /obj/item/stack/ore/smeltable/iron = 40, /obj/item/stack/ore/gem/diamond=10,/obj/item/stack/ore/gem/ruby=10,/obj/item/stack/ore/gem/sapphire=10,/obj/item/stack/ore/coal=40)
-	mineralChance = 1
-	materials = /datum/material/stone
-
-/turf/closed/mineral/random/dwarf_lustress/gets_drilled(user, give_exp = FALSE)
-	. = ..()
-
-	if(prob(40))
-		for(var/i in 1 to rand(1, 4))
-			new /obj/item/stack/ore/stone(src)
-
-	if(prob(SSevents.troll_spawn_change))
-		to_chat(user, span_userdanger("THIS ROCK APPEARS TO BE ESPECIALLY SOFT!"))
-		new /mob/living/simple_animal/hostile/troll(src)
-
 /turf/closed/wall/stone
 	name = "stone wall"
 	desc = "Just a regular stone wall."
@@ -30,6 +7,29 @@
 	sheet_type = /obj/item/stack/sheet/stone
 	baseturfs = /turf/open/floor/tiles
 	sheet_amount = 3
+
+/turf/closed/mineral/random/stone/attackby(obj/item/I, mob/user, params)
+	if(I.tool_behaviour == TOOL_CHISEL)
+		var/turf/T = src
+		var/time = 5 SECONDS * user.get_skill_modifier(/datum/skill/masonry, SKILL_SPEED_MODIFIER)
+		to_chat(user, span_notice("You start carving stone wall..."))
+		if(I.use_tool(src, user, time, volume=50))
+			to_chat(user, span_notice("You finish carving stone wall."))
+			user.adjust_experience(/datum/skill/masonry, rand(2,6))
+			var/turf/wall = T.PlaceOnTop(/turf/closed/wall/stone)
+			wall.apply_material(materials)
+	else
+		. = ..()
+
+/turf/closed/mineral/random/stone/gets_drilled(mob/user, give_exp)
+	. = ..()
+	if(prob(40))
+		for(var/i in 1 to rand(1, 4))
+			new /obj/item/stack/ore/stone(src)
+
+	if(prob(SSevents.troll_spawn_change))
+		to_chat(user, span_userdanger("THIS ROCK APPEARS TO BE ESPECIALLY SOFT!"))
+		new /mob/living/simple_animal/hostile/troll(src)
 
 /turf/closed/mineral/random/sand
 	name = "sand"
@@ -46,18 +46,6 @@
 	. = ..()
 	if(prob(33))
 		new /obj/item/stack/ore/smeltable/sand(src)
-
-/turf/closed/mineral/random/dwarf_lustress/attackby(obj/item/I, mob/user, params)
-	if(I.tool_behaviour == TOOL_CHISEL)
-		var/turf/T = src
-		var/time = 5 SECONDS * user.get_skill_modifier(/datum/skill/masonry, SKILL_SPEED_MODIFIER)
-		to_chat(user, span_notice("You start carving stone wall..."))
-		if(I.use_tool(src, user, time, volume=50))
-			to_chat(user, span_notice("You finish carving stone wall."))
-			user.adjust_experience(/datum/skill/masonry, rand(2,6))
-			var/turf/wall = T.PlaceOnTop(/turf/closed/wall/stone)
-			wall.apply_material(materials)
-	. = ..()
 
 /turf/closed/wall/wooden
 	name = "wooden wall"

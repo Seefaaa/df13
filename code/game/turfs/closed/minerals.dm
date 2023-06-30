@@ -2,18 +2,18 @@
 
 /turf/closed/mineral //wall piece
 	name = "rock"
-	icon = 'icons/turf/mining.dmi'
-	icon_state = "rock"
+	icon = 'dwarfs/icons/turf/walls_cavern.dmi'
+	icon_state = "rockwall-0"
 	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER | SMOOTH_BORDERS
 	smoothing_groups = list(SMOOTH_GROUP_CLOSED_TURFS, SMOOTH_GROUP_MINERAL_WALLS)
 	canSmoothWith = list(SMOOTH_GROUP_MINERAL_WALLS, SMOOTH_GROUP_CLOSED_TURFS)
 	baseturfs = /turf/open/floor/rock
 	opacity = TRUE
 	density = TRUE
-	base_icon_state = "smoothrocks"
-	var/smooth_icon = 'icons/turf/smoothrocks.dmi'
-	var/environment_type = "asteroid"
-	var/turf/open/floor/turf_type = /turf/open/floor
+	base_icon_state = "rockwall"
+	materials = /datum/material/stone
+	var/smooth_icon = 'dwarfs/icons/turf/walls_cavern.dmi'
+	var/turf/open/floor/turf_type = /turf/open/floor/rock
 	var/obj/item/stack/ore/mineralType = null
 	var/mineralAmt = 3
 	var/last_act = 0
@@ -43,7 +43,6 @@
 		return TRUE
 	return ..()
 
-
 /turf/closed/mineral/attackby(obj/item/I, mob/user, params)
 	if (!ISADVANCEDTOOLUSER(user))
 		to_chat(usr, span_warning("You don't have the dexterity to do this!"))
@@ -53,7 +52,12 @@
 		var/turf/T = user.loc
 		if (!isturf(T))
 			return
-		var/time = 3 SECONDS * user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
+		var/obj/item/pickaxe/pick = I
+		var/hardness_mod = hardness / pick.hardness
+		if(hardness_mod >= 2)
+			to_chat(user, span_warning("\The [pick] is too soft to mine [src]."))
+			return
+		var/time = 3 SECONDS * user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) * hardness_mod
 		if(last_act + time > world.time)//prevents message spam
 			return
 		last_act = world.time
@@ -147,7 +151,7 @@
 	return
 
 /turf/closed/mineral/random
-	var/list/mineralSpawnChanceList = list(/obj/item/stack/ore/gem/diamond = 1, /obj/item/stack/ore/smeltable/gold = 10, /obj/item/stack/ore/smeltable/iron = 40)
+	var/list/mineralSpawnChanceList = list(/obj/item/stack/ore/smeltable/gold = 20, /obj/item/stack/ore/smeltable/iron = 40, /obj/item/stack/ore/gem/diamond=10,/obj/item/stack/ore/gem/ruby=10,/obj/item/stack/ore/gem/sapphire=10,/obj/item/stack/ore/coal=40)
 	var/mineralChance = 1
 
 /turf/closed/mineral/random/Initialize()

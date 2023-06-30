@@ -18,11 +18,17 @@
 	attack_verb_continuous = list("hits", "pierces", "slashes", "attacks")
 	attack_verb_simple = list("hit", "pierce", "slash", "attacks")
 	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
+	var/hardness = 1
 
 /obj/item/pickaxe/build_material_icon(_file, state)
 	var/icon/I = ..()
 	I = apply_palettes(I, list(materials[PART_HANDLE], materials[PART_HEAD]))
 	return I
+
+/obj/item/pickaxe/apply_material_stats()
+	var/datum/material/M = get_material(materials[PART_HEAD])
+	hardness = M.hardness
+	. = ..()
 
 /obj/item/pickaxe/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] begins digging into [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))

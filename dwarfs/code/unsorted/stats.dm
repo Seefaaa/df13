@@ -1,4 +1,5 @@
 /obj/proc/update_stats(_grade=null, use_grade=TRUE)
+	reset_stats()
 	apply_grade(_grade)
 	apply_material_stats()
 

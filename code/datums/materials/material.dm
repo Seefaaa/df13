@@ -28,6 +28,8 @@
 	/// Slowdown modifier (additive). Remember that negative values speed up
 	var/slowdown_mod = 0
 	var/slowdown_mod_handle = 0
+	/// Hardness
+	var/hardness = 1
 
 	// Armor multipliers
 	var/armor_sharp_mod = 1
@@ -159,6 +161,7 @@
 	melee_cd_mod_handle = 1.1
 	slowdown_mod = 0.3
 	slowdown_mod_handle = 0.1
+	hardness = 0.9
 
 	armor_sharp_mod = 0.6
 	armor_pierce_mod = 0.4
@@ -194,6 +197,7 @@
 	melee_cd_mod_handle = 0.9
 	slowdown_mod = -0.3
 	slowdown_mod_handle = -0.1
+	hardness = 0.6
 
 	armor_sharp_mod = 0.4
 	armor_pierce_mod = 0.3
