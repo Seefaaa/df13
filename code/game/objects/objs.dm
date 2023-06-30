@@ -52,7 +52,7 @@
 	obj_integrity = max_integrity
 
 	if(init_grade)
-		apply_grade(grade)
+		update_stats(grade)
 
 	. = ..() //Do this after, else mat datums is mad.
 
