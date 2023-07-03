@@ -4,6 +4,8 @@
 	max_integrity = 1
 	icon = 'dwarfs/icons/structures/32x64.dmi'
 	icon_state = "blueprint"
+	//How long are we building
+	var/build_time = 10 SECONDS
 	//What are we building
 	var/atom/target_structure
 	//What do we need to build it
@@ -37,7 +39,7 @@
 		if(!can_build(user))
 			return
 		var/speed_mod = user.get_skill_modifier(/datum/skill/construction, SKILL_SPEED_MODIFIER)
-		if(I.use_tool(src, user, 10 SECONDS * speed_mod, volume=50))
+		if(I.use_tool(src, user, build_time * speed_mod, volume=50))
 			to_chat(user, span_notice("You build [initial(target_structure.name)]."))
 			user.adjust_experience(/datum/skill/construction, rand(10, 50))
 			var/turf/spawn_turf = get_turf(src)
