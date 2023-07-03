@@ -149,17 +149,19 @@
 	for(var/i in reqs)
 		var/amt = reqs[i]
 		var/obj/O = new i
+		var/req_name = initial(O.name)
 		var/icon/I = icon(O.icon, O.icon_state)
 		var/datum/material/M
 		if(i in req_materials)
-			M = req_materials[i]
+			M = get_material(req_materials[i])
 		if(O.materials && !M)
 			I = O.build_material_icon(O.icon, O.icon_state)
 		else if(M)
-			O.apply_material(M)
+			req_name = "[M.name] [req_name]"
+			O.apply_material(M.type)
 			I = O.icon
 		var/icon_path = icon2path(I, user)
-		var/list/resource = list("name"=O.name,"amount"=amt,"icon"=icon_path)
+		var/list/resource = list("name"=req_name,"amount"=amt,"icon"=icon_path)
 		qdel(O)
 		. += list(resource)
 
