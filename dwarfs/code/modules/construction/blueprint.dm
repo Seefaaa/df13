@@ -525,13 +525,31 @@
 	return list(list("name"="Any Valid Material","amount"=material_required,"icon"=icon_path))
 
 /obj/structure/blueprint/sarcophagus
-	name = "Sarcophagus"
+	name = "sarcophagus"
 	target_structure = /obj/structure/closet/crate/sarcophagus
 	reqs = list(/obj/item/stack/sheet/stone=5)
 	cat = "decoration"
 
 /obj/structure/blueprint/sapling_pot
-	name = "Pot"
+	name = "pot"
 	target_structure = /obj/structure/sapling_pot
 	reqs = list(/obj/item/stack/sheet/stone=5)
 	cat = "utils"
+
+/obj/structure/blueprint/bed
+	name = "bed"
+	target_structure = /obj/structure/bed
+	reqs = list(/obj/item/stack/sheet/planks=8)
+	cat = "decoration"
+
+/obj/structure/blueprint/crate
+	name = "wooden crate"
+	target_structure = /obj/structure/closet/crate/wooden
+	reqs = list(/obj/item/stack/sheet/planks=8)
+	cat = "utils"
+
+/obj/structure/blueprint/demijohn
+	name = "demijohn"
+	target_structure = /obj/structure/demijohn
+	reqs = list(/obj/item/stack/glass=10)
+	cat = "food processing"
