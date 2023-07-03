@@ -240,7 +240,7 @@
 	name = "altar blueprint"
 	target_structure = /obj/structure/dwarf_altar
 	reqs = list(/obj/item/stack/sheet/stone=25, /obj/item/flashlight/fueled/candle=6)
-	cat = "utils"
+	cat = "decoration"
 
 /obj/structure/blueprint/loom
 	name = "loom blueprint"
@@ -524,6 +524,14 @@
 	var/icon_path = icon2path(initial(O.icon), user, initial(O.icon_state))
 	return list(list("name"="Any Valid Material","amount"=material_required,"icon"=icon_path))
 
-// /obj/structure/blueprint/sign/get_target_structure()
-// 	var/datum/material/M = get_material(material_type)
-// 	return M.door_type
+/obj/structure/blueprint/sarcophagus
+	name = "Sarcophagus"
+	target_structure = /obj/structure/closet/crate/sarcophagus
+	reqs = list(/obj/item/stack/sheet/stone=5)
+	cat = "decoration"
+
+/obj/structure/blueprint/sapling_pot
+	name = "Pot"
+	target_structure = /obj/structure/sapling_pot
+	reqs = list(/obj/item/stack/sheet/stone=5)
+	cat = "utils"
