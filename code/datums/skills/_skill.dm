@@ -10,6 +10,7 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
 	var/list/levelUpMessages = list()
 	var/level = 1
 	var/experience = 0
+	var/mob/owner
 
 /datum/skill/proc/get_skill_modifier(modifier, level)
 	return modifiers[modifier][level] //Levels range from 1 (None) to 11 (Legendary)
@@ -18,8 +19,9 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
  *
  *Can't happen in the datum's definition because these lists are not constant expressions
  */
-/datum/skill/New()
+/datum/skill/New(mob/new_owner)
 	. = ..()
+	owner = new_owner
 	levelUpMessages = list(span_green("What the hell is [name]? Tell an admin if you see this message."), //This first index shouldn't ever really be used
 	span_green("I'm starting to figure out what [name] is!"),
 	span_green("I'm getting a little better at [name]!"),

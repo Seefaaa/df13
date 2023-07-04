@@ -13,7 +13,7 @@
 /mob/proc/adjust_experience(skill, amt, silent = FALSE, force_old_level = 0)
 	var/datum/skill/S = get_skill(skill)
 	if(!S)
-		S = new skill
+		S = new skill(src)
 		known_skills.Add(S)
 	var/old_level = force_old_level ? force_old_level : S.level //Get current level of the S skill
 	experience_multiplier = initial(experience_multiplier)
@@ -33,7 +33,7 @@
 /mob/proc/set_experience(skill, amt, silent = FALSE)
 	var/datum/skill/S = get_skill(skill)
 	if(!S)
-		S = new skill
+		S = new skill(src)
 		known_skills.Add(S)
 	var/old_level = S.experience
 	S.experience = amt
@@ -60,7 +60,7 @@
 /mob/proc/get_skill_modifier(skill, modifier)
 	var/datum/skill/S = get_skill(skill)
 	if(!S)
-		S = new skill
+		S = new skill(src)
 		var/skill_modifier = S.get_skill_modifier(modifier, S.level)
 		qdel(S)
 		return skill_modifier
