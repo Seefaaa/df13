@@ -1,27 +1,10 @@
-/* Kitchen tools
- * Contains:
- * Fork
- * Kitchen knives
- * Ritual Knife
- * Bloodletter
- * Butcher's cleaver
- * Combat Knife
- * Rolling Pins
- * Plastic Utensils
- */
-
 /obj/item/kitchen
-	icon = 'icons/obj/tools.dmi'
-	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
-
-/obj/item/kitchen/Initialize()
-	. = ..()
-	ADD_TRAIT(src, TRAIT_APC_SHOCKING, INNATE_TRAIT)
+	icon = 'dwarfs/icons/items/kitchen.dmi'
+	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
+	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 
 /obj/item/kitchen/knife
 	name = "kitchen knife"
-	icon = 'dwarfs/icons/items/kitchen.dmi'
 	icon_state = "kitchen_knife"
 	inhand_icon_state = "knife"
 	worn_icon_state = "knife"
@@ -62,8 +45,8 @@
 /obj/item/kitchen/rollingpin
 	name = "rolling pin"
 	desc = "Used to knock out the Bartender."
-	icon = 'dwarfs/icons/items/kitchen.dmi'
 	icon_state = "rolling_pin"
+	inhand_icon_state = "rolling_pin"
 	worn_icon_state = "rolling_pin"
 	force = 5
 	throwforce = 5
