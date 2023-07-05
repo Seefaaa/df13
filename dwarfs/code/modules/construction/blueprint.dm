@@ -67,7 +67,7 @@
 		target = new target_structure(locate(world.maxx, world.maxy, world.maxz))
 	else
 		target = new target_structure
-	var/mutable_appearance/M = mutable_appearance(target.build_material_icon(initial(target_structure.icon), initial(target_structure.icon_state)), layer=ABOVE_MOB_LAYER)
+	var/mutable_appearance/M = mutable_appearance(target.build_material_icon(initial(target_structure.icon), initial(target_structure.icon_state)))
 	if(!isturf(target))
 		qdel(target)
 	M.color = "#5e8bdf"
