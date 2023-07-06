@@ -46,17 +46,6 @@ SUBSYSTEM_DEF(ticker)
 	var/totalPlayers = 0					//used for pregame stats on statpanel
 	var/totalPlayersReady = 0				//used for pregame stats on statpanel
 
-	/// How long do we wait between migrations
-	var/migration_delay = 10 MINUTES
-	/// When the last migration happened
-	var/last_migration = 0
-	/// Queue for migration
-	var/list/queued_players = list()
-	/// Max mogration group size in dwarves
-	var/max_group_size = 5
-	/// Max groups per migration
-	var/max_groups = 2
-
 	var/news_report
 
 	var/roundend_check_paused = FALSE
@@ -195,8 +184,6 @@ SUBSYSTEM_DEF(ticker)
 
 		if(GAME_STATE_PLAYING)
 			mode.process(wait * 0.1)
-			if(world.time > last_migration+migration_delay)
-				check_queue()
 
 			if(!roundend_check_paused && mode.check_finished(force_ending) || force_ending)
 				current_state = GAME_STATE_FINISHED
@@ -397,63 +384,6 @@ SUBSYSTEM_DEF(ticker)
 	if(m)
 		to_chat(world, span_purple("<b>Tip of the round: </b>[html_encode(m)]"))
 
-/datum/controller/subsystem/ticker/proc/check_queue()
-	last_migration = world.time
-	if(!queued_players.len)
-		return
-	var/group_amount = 1
-	if(queued_players.len > max_group_size)
-		group_amount = 2
-
-	var/players_per_group = max_group_size
-	if(queued_players.len < max_group_size*2)
-		players_per_group = ROUND_UP(queued_players.len / 2)
-
-	/// Create groups
-	var/list/groups = list()
-	for(var/i in 1 to group_amount)
-		var/list/group = list()
-		for(var/mob/dead/new_player/NP in queued_players)
-			if(group.len >= players_per_group)
-				break
-			group += NP
-			queued_players -= NP
-		groups += list(group) // we want to add the list not it's contents
-
-	spawn_migrations(groups)
-
-/datum/controller/subsystem/ticker/proc/spawn_migrations(list/groups)
-	for(var/list/group in groups)
-		var/x
-		var/y
-		var/z = GLOB.surface_z
-		if(prob(50))//spawn on top/bottom
-			x = rand(10, world.maxx-10)
-			y = pick(10, world.maxy-10)
-		else//spawn on left/right side
-			y = rand(10, world.maxx-10)
-			x = pick(10, world.maxy-10)
-		for(var/mob/dead/new_player/NP in group)
-			var/mob/living/character = NP.create_character(TRUE) //creates the human and transfers vars and mind
-			if(!character)
-				continue
-			if(character.mind)
-				SSticker.minds += character.mind
-				character.mind.assigned_role = "Dwarf"
-			if(character.client)
-				character.client.init_verbs() // init verbs for the late join
-			var/mob/living/carbon/human/humanc
-			if(ishuman(character))
-				humanc = character	//Let's retypecast the var to be human,
-			if(humanc)	//These procs all expect humans
-				humanc.equipOutfit(humanc.client.prefs.loadout ? humanc.client.prefs.loadout : /datum/outfit/dwarf/miner)// if for SOME reason the pref is null
-			GLOB.joined_player_list += character.ckey
-			if(character.mind)
-				log_manifest(character.mind.key,character.mind,character,latejoin = TRUE)
-			SEND_SOUND(character, sound('sound/misc/notice2.ogg'))
-			to_chat(character, span_italics("You and your fellow travelers have set out on a journey to join a nearby fortress. May fortune smile upon you and guide you safely to your destination."))
-			character.forceMove(locate(x+rand(-5,5), y+rand(-5,5), z))
-
 /datum/controller/subsystem/ticker/proc/check_maprotate()
 	if(!CONFIG_GET(flag/maprotation))
 		return
@@ -490,12 +420,7 @@ SUBSYSTEM_DEF(ticker)
 	totalPlayers = SSticker.totalPlayers
 	totalPlayersReady = SSticker.totalPlayersReady
 
-	migration_delay = SSticker.migration_delay
-	queued_players = SSticker.queued_players
 	round_start_time = SSticker.round_start_time
-
-	migration_delay = SSticker.migration_delay
-	queued_players = SSticker.queued_players
 
 	if (Master) //Set Masters run level if it exists
 		switch (current_state)

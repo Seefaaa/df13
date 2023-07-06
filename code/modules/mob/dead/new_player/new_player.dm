@@ -50,32 +50,6 @@
 	if(client.interviewee)
 		return FALSE
 
-	if(href_list["SelectedJob"])
-		if(!SSticker?.IsRoundInProgress())
-			to_chat(usr, span_danger("The round is either not ready or has already finished..."))
-			return
-
-		if(SSlag_switch.measures[DISABLE_NON_OBSJOBS])
-			to_chat(usr, span_notice("Not allowed!"))
-			return
-
-		//Determines Relevent Population Cap
-		var/relevant_cap
-		var/hpc = CONFIG_GET(number/hard_popcap)
-		var/epc = CONFIG_GET(number/extreme_popcap)
-		if(hpc && epc)
-			relevant_cap = min(hpc, epc)
-		else
-			relevant_cap = max(hpc, epc)
-
-		if(SSticker.queued_players.len && !(ckey(key) in GLOB.admin_datums))
-			if((living_player_count() >= relevant_cap) || (src != SSticker.queued_players[1]))
-				to_chat(usr, span_warning("Already full."))
-				return
-
-		AttemptLateSpawn(href_list["SelectedJob"])
-		return
-
 	if(href_list["viewpoll"])
 		var/datum/poll_question/poll = locate(href_list["viewpoll"]) in GLOB.polls
 		poll_player(poll)

@@ -163,16 +163,6 @@
 	if(!.)
 		return
 	var/mob/dead/new_player/new_player = hud.mymob
-	// ready = !ready
-	// if(ready)
-	// 	new_player.ready_join = PLAYER_READY_TO_PLAY
-	// 	base_icon_state = "ready"
-	// 	SSticker.queued_players += new_player
-	// else
-	// 	new_player.ready_join = PLAYER_NOT_READY
-	// 	base_icon_state = "not_ready"
-	// 	SSticker.queued_players -= new_player
-	// update_appearance(UPDATE_ICON)
 	new_player.Try_Latejion()
 
 /atom/movable/screen/lobby/button/join/proc/show_join_button()
