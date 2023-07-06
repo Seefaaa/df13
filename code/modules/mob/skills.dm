@@ -88,6 +88,8 @@
 	for(var/datum/skill/S in known_skills)
 		msg += span_notice("\n[S.name] - [get_skill_level_name(S.type)]")
 		if(S.level != 11)
-			msg += span_blue(": [round(S.experience/SKILL_EXP_LIST[S.level+1], 0.01)*100]% until [SSskills.level_names[S.level+1]]")
+			var/exp_req = SKILL_EXP_LIST[S.level+1] - SKILL_EXP_LIST[S.level]
+			var/exp_prog = S.experience - SKILL_EXP_LIST[S.level]
+			msg += span_blue(": [round(1-exp_prog/exp_req, 0.01)*100]% left until [SSskills.level_names[S.level+1]]")
 
 	to_chat(user, "<div class='examine_block'>[msg]</div>")
