@@ -215,3 +215,10 @@
 	value_mode = VALUE_MODE_NUM
 
 /datum/config_entry/flag/native_fov
+
+/datum/config_entry/number/respawn_cooldown
+
+/datum/config_entry/number/respawn_cooldown/ValidateAndSet(str_val)
+	. = ..()
+	if(.)
+		config_entry_value *= 10 //convert it to seconds

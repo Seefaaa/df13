@@ -163,6 +163,12 @@
 	if(!.)
 		return
 	var/mob/dead/new_player/new_player = hud.mymob
+	var/client/C = new_player.client
+	if(!C)
+		return
+	if(!SSrespawns.can_spawn_character(new_player, C.prefs.real_name))
+		alert(new_player, "This character already exists in the game!", "Use another character", "Confirm")
+		return
 	new_player.Try_Latejion()
 
 /atom/movable/screen/lobby/button/join/proc/show_join_button()
