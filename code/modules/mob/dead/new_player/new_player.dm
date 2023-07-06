@@ -1,6 +1,5 @@
 /mob/dead/new_player
 	var/ready = 0
-	var/ready_join = 0
 	var/spawning = 0//Referenced when you want to delete the new_player later on in the code.
 
 	flags_1 = NONE
