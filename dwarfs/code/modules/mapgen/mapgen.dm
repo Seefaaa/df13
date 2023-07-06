@@ -50,7 +50,7 @@ GLOBAL_VAR(surface_z)
 /datum/map_generator/caves/generate_turf_flora(turf/T, chance)
 	if(prob(chance))
 		var/obj/structure/plant/tree/towercap/temp = new (T)
-		temp.growthstage = rand(0, 7)
+		temp.growthstage = rand(1, 7)
 		temp.growthdelta = rand(80, 400) SECONDS
 		temp.update_appearance()
 
