@@ -159,9 +159,6 @@
 	//Set news report and mode result
 	mode.set_round_result()
 
-	if(length(CONFIG_GET(keyed_list/cross_server)))
-		send_news_report()
-
 	CHECK_TICK
 
 	handle_hearts()
