@@ -56,6 +56,7 @@ GLOBAL_LIST_EMPTY(cats)
 							'sound/creatures/meow6.ogg',
 							'sound/creatures/meow7.ogg',
 							'sound/creatures/meow8.ogg')
+	var/fed = FALSE
 
 /mob/living/simple_animal/pet/cat/male
 /mob/living/simple_animal/pet/cat/male/Initialize(_gender=null)
@@ -78,7 +79,16 @@ GLOBAL_LIST_EMPTY(cats)
 	. = ..()
 	GLOB.cats.Remove(src)
 
+/mob/living/simple_animal/pet/cat/attackby(obj/item/O, mob/user, params)
+	if(istype(O, /obj/item/food/meat) || istype(O, /obj/item/food/slice/meat))
+		qdel(O)
+		to_chat(user, "You feed [src].")
+		playsound(src, playsound(src, 'sound/items/eatfood.ogg', rand(10,50), TRUE))
+		fed = TRUE
+
 /mob/living/simple_animal/pet/cat/make_babies()
+	if(!fed)
+		return
 	if(GLOB.cats.len >= MAX_CATS)
 		return
 
@@ -87,6 +97,7 @@ GLOBAL_LIST_EMPTY(cats)
 		if(cat_count >= MAX_CLOSE_CATS)
 			return
 		cat_count++
+	fed = FALSE
 	. = ..()
 
 /mob/living/simple_animal/pet/cat/examine(mob/user)

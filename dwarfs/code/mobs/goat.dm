@@ -65,7 +65,7 @@
 	else if(isgrowable(I))
 		var/obj/item/growable/G = I
 		if(G.food_flags & GRAIN)
-			to_chat(user, span_notice("You feed [src] [G]."))
+			to_chat(user, span_notice("You feed [src]."))
 			playsound(src, 'sound/items/eatfood.ogg', rand(10,50), TRUE)
 			qdel(G)
 			fed = TRUE
