@@ -850,10 +850,6 @@
 #define COMSIG_TOOL_START_USE "tool_start_use"
 ///from [/obj/item/proc/disableEmbedding]:
 #define COMSIG_ITEM_DISABLE_EMBED "item_disable_embed"
-///from [/obj/effect/mine/proc/triggermine]:
-#define COMSIG_MINE_TRIGGERED "minegoboom"
-///from [/obj/structure/closet/supplypod/proc/preOpen]:
-#define COMSIG_SUPPLYPOD_LANDED "supplypodgoboom"
 
 ///from /obj/item/storage/book/bible/afterattack(): (mob/user, proximity)
 #define COMSIG_BIBLE_SMACKED "bible_smacked"
@@ -1272,18 +1268,6 @@
 #define COMSIG_HUMAN_EARLY_UNARMED_ATTACK "human_early_unarmed_attack"
 ///from mob/living/carbon/human/UnarmedAttack(): (atom/target, proximity, modifiers)
 #define COMSIG_HUMAN_MELEE_UNARMED_ATTACK "human_melee_unarmed_attack"
-
-
-// Aquarium related signals
-#define COMSIG_AQUARIUM_BEFORE_INSERT_CHECK "aquarium_about_to_be_inserted"
-#define COMSIG_AQUARIUM_SURFACE_CHANGED "aquarium_surface_changed"
-#define COMSIG_AQUARIUM_FLUID_CHANGED "aquarium_fluid_changed"
-
-///from /obj/item/assembly/proc/pulsed()
-#define COMSIG_ASSEMBLY_PULSED "assembly_pulsed"
-
-///from base of /obj/item/mmi/set_brainmob(): (mob/living/brain/new_brainmob)
-#define COMSIG_MMI_SET_BRAINMOB "mmi_set_brainmob"
 
 /// Sent to an atom when a [/obj/item/usb_cable] attempts to connect to something. (/obj/item/usb_cable/usb_cable, /mob/user)
 #define COMSIG_ATOM_USB_CABLE_TRY_ATTACH "usb_cable_try_attach"
