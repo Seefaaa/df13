@@ -343,7 +343,6 @@ SUBSYSTEM_DEF(ticker)
 			continue
 		var/atom/A = pick(GLOB.dwarf_starts)
 		new_player_human.forceMove(get_turf(A))
-		new_player_human.equipOutfit(new_player_mob.client?.prefs?.loadout ? new_player_mob.client.prefs.loadout : /datum/outfit/dwarf/miner)// if for SOME reason the pref is null
 		new_player_human.mind.assigned_role = "Dwarf"
 
 /datum/controller/subsystem/ticker/proc/transfer_characters()
@@ -358,7 +357,7 @@ SUBSYSTEM_DEF(ticker)
 				var/atom/movable/screen/splash/S = new(living.client, TRUE)
 				S.Fade(TRUE)
 				living.client.init_verbs()
-				SSrespawns.character_respawned(living, living.real_name)
+				SSrespawns.character_spawned(living, living.real_name)
 			livings += living
 	if(livings.len)
 		addtimer(CALLBACK(src, PROC_REF(release_characters), livings), 30, TIMER_CLIENT_TIME)

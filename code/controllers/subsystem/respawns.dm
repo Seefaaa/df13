@@ -24,7 +24,7 @@ SUBSYSTEM_DEF(respawns)
 		return
 	next_respawn[user.key] = world.time + respawn_cooldown
 
-/datum/controller/subsystem/respawns/proc/character_respawned(mob/user, character_name)
+/datum/controller/subsystem/respawns/proc/character_spawned(mob/user, character_name)
 	if(!user.key)
 		return
 	characters[user.key] = character_name

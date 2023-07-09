@@ -1413,6 +1413,12 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 			if(skills[skilltype] > 0)
 				character.adjust_experience(skilltype, SKILL_EXP_LIST[skills[skilltype]+1])
 
+	character.equipOutfit(loadout ? loadout : /datum/outfit/dwarf/miner)
+	var/obj/item/clothing/under/tunic/T = character.w_uniform
+	if(T && istype(T))
+		T.select_color(tunic_color)
+		character.update_inv_w_uniform()
+
 	if(icon_updates)
 		character.update_body()
 		character.update_hair()

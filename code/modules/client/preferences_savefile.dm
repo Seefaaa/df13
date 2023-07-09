@@ -369,6 +369,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["skill_points"], skill_points)
 	READ_FILE(S["loadout"], loadout)
 	READ_FILE(S["skill_points_per_skill"], skill_points_per_skill)
+	READ_FILE(S["tunic_color"], tunic_color)
 	if(!CONFIG_GET(flag/join_with_mutant_humans))
 		features["tail_human"] = "none"
 		features["ears"] = "none"
@@ -512,6 +513,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["skill_points"], skill_points)
 	WRITE_FILE(S["skill_points_per_skill"], skill_points_per_skill)
 	WRITE_FILE(S["loadout"], loadout)
+	WRITE_FILE(S["tunic_color"], tunic_color)
 
 	//Custom names
 	for(var/custom_name_id in GLOB.preferences_custom_names)

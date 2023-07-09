@@ -144,18 +144,14 @@
 	var/mob/living/carbon/human/humanc
 	if(ishuman(character))
 		humanc = character	//Let's retypecast the var to be human,
-
-	if(humanc)	//These procs all expect humans
-		humanc.equipOutfit(humanc.client.prefs.loadout ? humanc.client.prefs.loadout : /datum/outfit/dwarf/miner)// if for SOME reason the pref is null
-
-	humanc.throw_alert("migrantsense", /atom/movable/screen/alert/migrant)
+		humanc.throw_alert("migrantsense", /atom/movable/screen/alert/migrant)
 
 	GLOB.joined_player_list += character.ckey
 
 	to_chat(character, span_italics("You have set out on a journey to join a nearby fortress. May fortune smile upon you and guide you safely to your destination."))
 	log_manifest(character.mind.key,character.mind,character,latejoin = TRUE)
 	SSblackbox.record_feedback("amount", "migrated", 1)
-	SSrespawns.character_respawned(character, character.real_name)
+	SSrespawns.character_spawned(character, character.real_name)
 
 /mob/dead/new_player/proc/create_character(transfer_after)
 	spawning = 1

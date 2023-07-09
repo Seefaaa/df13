@@ -64,10 +64,6 @@
 	var/mob/living/carbon/human/dummy/mannequin = generate_or_wait_for_human_dummy(DUMMY_HUMAN_SLOT_PREFERENCES)
 	copy_to(mannequin, 1, TRUE, TRUE)
 
-	mannequin.equipOutfit(loadout ? loadout : /datum/outfit/dwarf) // white tunic
-	var/obj/item/clothing/under/tunic/T = mannequin.w_uniform
-	T.select_color(tunic_color)
-	mannequin.update_inv_w_uniform()
 	COMPILE_OVERLAYS(mannequin)
 	mannequin.appearance_flags &= ~KEEP_TOGETHER
 	parent.show_character_previews(new /mutable_appearance(mannequin))
