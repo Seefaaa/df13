@@ -96,6 +96,9 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 	var/skill_points = 5
 	var/skill_points_per_skill = 3
 
+	///Tunic color string used in tunic init
+	var/tunic_color = "white"
+
 	var/list/custom_names = list()
 	var/preferred_ai_core_display = "Blue"
 	var/prefered_security_department = SEC_DEPT_RANDOM
@@ -287,6 +290,7 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 				dat += SETUP_NODE_COLOR("Facial Color", "facial", facial_hair_color, RANDOM_FACIAL_HAIR_COLOR)
 				dat += SETUP_NODE_COLOR("Facial Gradient Color", "facial_grad_color", facial_grad_color, null)
 				dat += SETUP_NODE_INPUT("Facial Gradient Style", "facial_grad_style", facial_grad_style)
+				dat += SETUP_NODE_INPUT("Tunic Color", "tunic_color", tunic_color)
 
 			//Mutant stuff
 
@@ -975,6 +979,11 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 					var/desiredlength = input(user, "Choose the max character length of shown Runechat messages. Valid range is 1 to [CHAT_MESSAGE_MAX_LENGTH] (default: [initial(max_chat_length)]))", "Character Preference", max_chat_length)  as null|num
 					if (!isnull(desiredlength))
 						max_chat_length = clamp(desiredlength, 1, CHAT_MESSAGE_MAX_LENGTH)
+				if("tunic_color")
+					var/picked_color = input(user, "Choose new tunic color.", "Tunic Color", "white") as null|anything in list("brown","red","yellow","green","aqua","blue","purple","white","gray","black")
+					if(!picked_color)
+						return
+					tunic_color = picked_color
 
 		else
 			switch(href_list["preference"])

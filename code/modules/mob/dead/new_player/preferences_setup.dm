@@ -65,6 +65,9 @@
 	copy_to(mannequin, 1, TRUE, TRUE)
 
 	mannequin.equipOutfit(loadout ? loadout : /datum/outfit/dwarf) // white tunic
+	var/obj/item/clothing/under/tunic/T = mannequin.w_uniform
+	T.select_color(tunic_color)
+	mannequin.update_inv_w_uniform()
 	COMPILE_OVERLAYS(mannequin)
 	mannequin.appearance_flags &= ~KEEP_TOGETHER
 	parent.show_character_previews(new /mutable_appearance(mannequin))
