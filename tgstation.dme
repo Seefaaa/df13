@@ -895,7 +895,6 @@
 #include "code\modules\clothing\outfits\vv_outfit.dm"
 #include "code\modules\clothing\shoes\_shoes.dm"
 #include "code\modules\clothing\suits\_suits.dm"
-#include "code\modules\clothing\suits\armor.dm"
 #include "code\modules\clothing\under\_under.dm"
 #include "code\modules\clothing\under\accessories.dm"
 #include "code\modules\detectivework\detective_work.dm"

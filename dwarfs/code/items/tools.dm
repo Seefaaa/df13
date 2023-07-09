@@ -4,13 +4,12 @@
 	desc = "Strike the earth!"
 	icon = 'dwarfs/icons/items/tools.dmi'
 	icon_state = "pickaxe"
-	slot_flags = ITEM_SLOT_BACK
+	slot_flags = ITEM_SLOT_BACK | ITEM_SLOT_SUITSTORE
 	force = 15
 	atck_type = PIERCE
 	throwforce = 10
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
-	worn_icon = 'dwarfs/icons/mob/clothing/back.dmi'
 	w_class = WEIGHT_CLASS_BULKY
 	tool_behaviour = TOOL_PICKAXE
 	toolspeed = 1.5
@@ -42,10 +41,9 @@
 	desc = "Shovel made for excavating soils."
 	icon = 'dwarfs/icons/items/tools.dmi'
 	icon_state = "shovel"
-	worn_icon = 'dwarfs/icons/mob/clothing/back.dmi'
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
-	slot_flags = ITEM_SLOT_BACK
+	slot_flags = ITEM_SLOT_BACK | ITEM_SLOT_SUITSTORE
 	force = 8
 	tool_behaviour = TOOL_SHOVEL
 	toolspeed = 1
@@ -76,7 +74,6 @@
 	name = "axe"
 	desc = "A common tool for chopping down trees."
 	icon = 'dwarfs/icons/items/tools.dmi'
-	worn_icon = 'dwarfs/icons/mob/clothing/back.dmi'
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	icon_state = "axe"
@@ -85,7 +82,7 @@
 	throwforce = 5
 	atck_type = SHARP
 	w_class = WEIGHT_CLASS_BULKY
-	slot_flags = ITEM_SLOT_BACK
+	slot_flags = ITEM_SLOT_BACK | ITEM_SLOT_SUITSTORE
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	usesound = 'dwarfs/sounds/tools/axe/axe_chop.ogg'
 	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
@@ -101,6 +98,7 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	icon_state = "smithing_hammer"
 	w_class = WEIGHT_CLASS_NORMAL
+	slot_flags = ITEM_SLOT_BELT
 	force = 20
 	throwforce = 25
 	throw_range = 4
@@ -357,6 +355,7 @@
 	icon_state = "hoe"
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
+	slot_flags = ITEM_SLOT_BACK | ITEM_SLOT_SUITSTORE
 	w_class = WEIGHT_CLASS_BULKY
 	atck_type = PIERCE
 	force = 7

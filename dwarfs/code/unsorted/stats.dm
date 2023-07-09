@@ -773,7 +773,7 @@
 
 /*******************************************************************************************************************/
 
-/obj/item/clothing/suit/armor/light_plate/apply_grade(grade)
+/obj/item/clothing/suit/light_plate/apply_grade(grade)
     ..()
     switch(grade)
         if(1)
@@ -789,7 +789,7 @@
         if(6)
             armor.setRating(sharp=23,pierce=15,blunt=14,fire=9, wound=40)
 
-/obj/item/clothing/suit/armor/heavy_plate/apply_grade(grade)
+/obj/item/clothing/suit/heavy_plate/apply_grade(grade)
     ..()
     switch(grade)
         if(1)
@@ -821,7 +821,7 @@
         if(6)
             armor.setRating(sharp=20,pierce=14,blunt=15,fire=10,wound=35)
 
-/obj/item/clothing/head/helmet/plate_helmet/apply_grade(grade)
+/obj/item/clothing/head/plate_helmet/apply_grade(grade)
     ..()
     switch(grade)
         if(1)
@@ -869,7 +869,7 @@
         if(6)
             armor.setRating(sharp=23,pierce=16,blunt=15,fire=10,wound=40)
 
-/obj/item/clothing/head/helmet/crown/apply_grade(grade)
+/obj/item/clothing/head/crown/apply_grade(grade)
     ..()
     switch(grade)
         if(1)
@@ -917,7 +917,7 @@
         if(6)
             armor.setRating(sharp=0, pierce=0, blunt=0, fire=0, wound=0)
 
-/obj/item/clothing/head/helmet/light_helmet/apply_grade(grade)
+/obj/item/clothing/head/light_helmet/apply_grade(grade)
     ..()
     switch(grade)
         if(1)

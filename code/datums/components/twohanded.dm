@@ -85,7 +85,7 @@
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(on_attack_self))
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK, PROC_REF(on_attack))
 	RegisterSignal(parent, COMSIG_ATOM_UPDATE_ICON, PROC_REF(on_update_icon))
-	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
+	// RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 	RegisterSignal(parent, COMSIG_ITEM_SHARPEN_ACT, PROC_REF(on_sharpen))
 	RegisterSignal(parent, COMSIG_ITEM_CAN_PUT_IN_HAND, PROC_REF(can_wield))
 
@@ -106,7 +106,7 @@
 
 	if(require_twohands && slot == ITEM_SLOT_HANDS) // force equip the item
 		return wield(user)
-	if(!user.is_holding(parent) && wielded && !require_twohands)
+	if(!user.is_holding(parent) && wielded)
 		unwield(user)
 
 /// Triggered on drop of item containing the component
@@ -201,6 +201,7 @@
 
 	// wield update status
 	wielded = FALSE
+	var/equipped_to_slot = FALSE
 	UnregisterSignal(user, COMSIG_MOB_SWAP_HANDS)
 	SEND_SIGNAL(parent, COMSIG_TWOHANDED_UNWIELD, user)
 	REMOVE_TRAIT(parent,TRAIT_WIELDED,src)
@@ -225,13 +226,15 @@
 	parent_item.update_icon()
 
 	if(istype(user)) // tk showed that we might not have a mob here
-		if(user.get_item_by_slot(ITEM_SLOT_BACK) == parent)
+		if(user.get_item_by_slot(ITEM_SLOT_BACK) == parent || user.get_item_by_slot(ITEM_SLOT_SUITSTORE) == parent)
+			equipped_to_slot = TRUE
+			show_message = FALSE
 			user.update_inv_back()
 		else
 			user.update_inv_hands()
 
 		// if the item requires two handed drop the item on unwield
-		if(require_twohands && can_drop)
+		if(require_twohands && can_drop && !equipped_to_slot)
 			user.dropItemToGround(parent, force=TRUE)
 
 		// Show message if requested

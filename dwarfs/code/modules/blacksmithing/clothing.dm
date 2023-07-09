@@ -1,4 +1,4 @@
-/obj/item/clothing/suit/armor/light_plate
+/obj/item/clothing/suit/light_plate
 	name = "chest plate"
 	desc = "Covers only chest area."
 	worn_icon = 'dwarfs/icons/mob/clothing/suit.dmi'
@@ -7,13 +7,14 @@
 	icon = 'dwarfs/icons/items/clothing/suit.dmi'
 	icon_state = "light_plate"
 	inhand_icon_state = "light_plate"
+	allowed = TRUE
 
-/obj/item/clothing/suit/armor/light_plate/build_material_icon(_file, state)
+/obj/item/clothing/suit/light_plate/build_material_icon(_file, state)
 	var/icon/I = ..()
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)
 
-/obj/item/clothing/suit/armor/heavy_plate
+/obj/item/clothing/suit/heavy_plate
 	name = "plate armor"
 	desc = "Sturdy but heavy."
 	worn_icon = 'dwarfs/icons/mob/clothing/suit.dmi'
@@ -21,6 +22,7 @@
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	w_class = WEIGHT_CLASS_GIGANTIC
 	slowdown = 1
+	allowed = TRUE
 	icon = 'dwarfs/icons/items/clothing/suit.dmi'
 	icon_state = "heavy_plate"
 	inhand_icon_state = "heavy_plate"
@@ -34,12 +36,12 @@
 									  'sound/effects/heavystep6.ogg'=1,\
 									  'sound/effects/heavystep7.ogg'=1)
 
-/obj/item/clothing/suit/armor/heavy_plate/build_material_icon(_file, state)
+/obj/item/clothing/suit/heavy_plate/build_material_icon(_file, state)
 	var/icon/I = ..()
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)
 
-/obj/item/clothing/suit/armor/heavy_plate/proc/on_mob_move()
+/obj/item/clothing/suit/heavy_plate/proc/on_mob_move()
 	SIGNAL_HANDLER
 	var/mob/living/carbon/human/H = loc
 	if(!istype(H) || H.wear_suit != src)
@@ -50,7 +52,7 @@
 	else
 		footstep++
 
-/obj/item/clothing/suit/armor/heavy_plate/equipped(mob/user, slot)
+/obj/item/clothing/suit/heavy_plate/equipped(mob/user, slot)
 	. = ..()
 	if(slot != ITEM_SLOT_OCLOTHING)
 		if(listeningTo)
@@ -63,12 +65,12 @@
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(on_mob_move))
 	listeningTo = user
 
-/obj/item/clothing/suit/armor/heavy_plate/dropped()
+/obj/item/clothing/suit/heavy_plate/dropped()
 	. = ..()
 	if(listeningTo)
 		UnregisterSignal(listeningTo, COMSIG_MOVABLE_MOVED)
 
-/obj/item/clothing/suit/armor/heavy_plate/Destroy()
+/obj/item/clothing/suit/heavy_plate/Destroy()
 	listeningTo = null
 	return ..()
 
@@ -86,21 +88,19 @@
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)
 
-/obj/item/clothing/head/helmet/plate_helmet
+/obj/item/clothing/head/plate_helmet
 	name = "plate helmet"
 	desc = "Protects your head from all unexpected and expected attacks."
-	worn_icon = 'dwarfs/icons/mob/clothing/head.dmi'
 	worn_icon_state = "helmet_heavy"
 	icon = 'dwarfs/icons/items/clothing/head.dmi'
 	icon_state = "helmet_heavy"
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 
-/obj/item/clothing/head/helmet/plate_helmet/build_material_icon(_file, state)
+/obj/item/clothing/head/plate_helmet/build_material_icon(_file, state)
 	var/icon/I = ..()
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)
-
 
 /obj/item/clothing/gloves/plate_gloves
 	name = "plate gloves"
@@ -115,7 +115,7 @@
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)
 
-/obj/item/clothing/shoes/jackboots/plate_boots
+/obj/item/clothing/shoes/plate_boots
 	name = "plate boots"
 	desc = "The boots."
 	worn_icon = 'dwarfs/icons/mob/clothing/feet.dmi'
@@ -123,7 +123,7 @@
 	icon = 'dwarfs/icons/items/clothing/feet.dmi'
 	icon_state = "plate_boots"
 
-/obj/item/clothing/shoes/jackboots/build_material_icon(_file, state)
+/obj/item/clothing/shoes/build_material_icon(_file, state)
 	var/icon/I = ..()
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)

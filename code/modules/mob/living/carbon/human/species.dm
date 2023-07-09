@@ -957,14 +957,14 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	if(H.get_item_by_slot(slot))
 		return FALSE
 
-	// this check prevents us from equipping something to a slot it doesn't support, WITH the exceptions of storage slots (pockets, suit storage, and backpacks)
+	// this check prevents us from equipping something to a slot it doesn't support, WITH the exceptions of storage slots (pockets and backpacks)
 	// we don't require having those slots defined in the item's slot_flags, so we'll rely on their own checks further down
 	if(!(I.slot_flags & slot))
 		var/excused = FALSE
 		// Anything that's small or smaller can fit into a pocket by default
 		if((slot == ITEM_SLOT_RPOCKET || slot == ITEM_SLOT_LPOCKET) && I.w_class <= WEIGHT_CLASS_SMALL)
 			excused = TRUE
-		else if(slot == ITEM_SLOT_SUITSTORE || slot == ITEM_SLOT_BACKPACK || slot == ITEM_SLOT_HANDS)
+		else if(slot == ITEM_SLOT_BACKPACK || slot == ITEM_SLOT_HANDS)
 			excused = TRUE
 		if(!excused)
 			return FALSE
@@ -1062,7 +1062,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 				if(!disable_warning)
 					to_chat(H, span_warning("<b>[capitalize(I.name)]</b> is too bulky!")) //should be src?
 				return FALSE
-			if( is_type_in_list(I, H.wear_suit.allowed) )
+			if((H.wear_suit.allowed && !islist(H.wear_suit.allowed)) || is_type_in_list(I, H.wear_suit.allowed))
 				return TRUE
 			return FALSE
 		if(ITEM_SLOT_HANDCUFFED)

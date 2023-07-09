@@ -78,11 +78,11 @@
 
 /datum/smithing_recipe/light_plate
 	name = "chest plate"
-	result = /obj/item/clothing/suit/armor/light_plate
+	result = /obj/item/clothing/suit/light_plate
 
 /datum/smithing_recipe/heavy_plate
 	name = "plate armor"
-	result = /obj/item/clothing/suit/armor/heavy_plate
+	result = /obj/item/clothing/suit/heavy_plate
 
 /datum/smithing_recipe/chainmail
 	name = "chainmail"
@@ -90,7 +90,7 @@
 
 /datum/smithing_recipe/plate_helmet
 	name = "plate helmet"
-	result = /obj/item/clothing/head/helmet/plate_helmet
+	result = /obj/item/clothing/head/plate_helmet
 	max_resulting = 2
 
 /datum/smithing_recipe/plate_gloves
@@ -179,7 +179,7 @@
 
 /datum/workbench_recipe/crown
 	name = "crown"
-	result = /obj/item/clothing/head/helmet/crown
+	result = /obj/item/clothing/head/crown
 	reqs = list(/obj/item/stack/sheet/mineral/gem/sapphire = 3, /obj/item/partial/crown_empty = 1)
 
 /datum/workbench_recipe/pickaxe

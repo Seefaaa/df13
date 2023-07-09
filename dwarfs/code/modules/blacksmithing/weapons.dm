@@ -9,7 +9,8 @@
 	inhand_x_dimension = -32
 	force = 30
 	throwforce = 15
-	w_class = WEIGHT_CLASS_HUGE
+	slot_flags = ITEM_SLOT_SUITSTORE
+	w_class = WEIGHT_CLASS_BULKY
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	block_chance = 5
 	atck_type = SHARP
@@ -39,7 +40,7 @@
 	force = 20
 	atck_type = BLUNT
 	throwforce = 25
-	w_class = WEIGHT_CLASS_HUGE
+	w_class = WEIGHT_CLASS_BULKY
 	attack_verb_simple = list("hit")
 	attack_verb_continuous = list("hits")
 	block_chance = 0
@@ -62,7 +63,7 @@
 	inhand_icon_state = "dagger"
 	force = 8
 	throwforce = 5
-	w_class = WEIGHT_CLASS_NORMAL
+	w_class = WEIGHT_CLASS_SMALL
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	block_chance = 0
 	atck_type = SHARP
@@ -94,7 +95,7 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	inhand_icon_state = "sword"
-	slot_flags = ITEM_SLOT_BACK|ITEM_SLOT_BELT
+	slot_flags = ITEM_SLOT_BACK | ITEM_SLOT_BELT | ITEM_SLOT_SUITSTORE
 	force = 30
 	throwforce = 20
 	w_class = WEIGHT_CLASS_BULKY
@@ -117,9 +118,8 @@
 	icon_state = "spear"
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
-	worn_icon = 'dwarfs/icons/mob/clothing/back.dmi'
 	inhand_icon_state = "spear"
-	slot_flags = ITEM_SLOT_BACK
+	slot_flags = ITEM_SLOT_BACK | ITEM_SLOT_SUITSTORE
 	force = 20
 	throwforce = 30
 	w_class = WEIGHT_CLASS_BULKY
@@ -146,7 +146,8 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	icon_state = "warhammer"
-	w_class = WEIGHT_CLASS_HUGE
+	w_class = WEIGHT_CLASS_BULKY
+	slot_flags = ITEM_SLOT_SUITSTORE
 	atck_type = BLUNT
 	force = 20
 	reach = 2
@@ -169,11 +170,11 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	inhand_icon_state = "halberd"
-	slot_flags = ITEM_SLOT_BACK
+	slot_flags = ITEM_SLOT_BACK | ITEM_SLOT_SUITSTORE
 	force = 20
 	throwforce = 5
 	reach = 2
-	w_class = WEIGHT_CLASS_HUGE
+	w_class = WEIGHT_CLASS_BULKY
 	hitsound = 'sound/weapons/pierce_slow.ogg'
 	block_chance = 15
 	atck_type = PIERCE
@@ -199,8 +200,7 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	inhand_icon_state = "king_scepter"
-	worn_icon = 'dwarfs/icons/mob/clothing/back.dmi'
-	slot_flags = ITEM_SLOT_BACK
+	slot_flags = ITEM_SLOT_BACK | ITEM_SLOT_SUITSTORE
 	force = 5
 	throwforce = 5
 	w_class = WEIGHT_CLASS_BULKY
@@ -210,6 +210,21 @@
 	max_integrity = 50
 	resistance_flags = FIRE_PROOF
 	melee_cd = 0.6 SECONDS
+	///Cooldown between stuns
+	var/cooldown = 2 SECONDS
+	var/next_stun = 0
+	///How long do we stun the target for
+	var/stun_duration = 1.5 SECONDS
+
+/obj/item/scepter/attack(mob/living/M, mob/living/user, params)
+	. = ..()
+	if(.)
+		return
+	if(ishuman(M) && world.time >= next_stun)
+		next_stun = world.time + cooldown
+		var/mob/living/carbon/human/target = M
+		target.Knockdown(stun_duration)
+		target.apply_damage(rand(6, 12), STAMINA)
 
 /obj/item/club
 	name = "club"

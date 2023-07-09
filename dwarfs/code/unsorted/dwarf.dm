@@ -124,5 +124,6 @@ If you want them to actuely show up, go to code\modules\client\preferences.dm on
 
 /datum/outfit/dwarf/king
 	name = "Dwarf King"
-	head = /obj/item/clothing/head/helmet/crown
+	head = /obj/item/clothing/head/crown
+	l_hand = /obj/item/scepter
 	apply_grade = TRUE

@@ -1,6 +1,6 @@
 GLOBAL_VAR_INIT(king, null)
 
-/obj/item/clothing/head/helmet/crown
+/obj/item/clothing/head/crown
 	name = "crown"
 	desc = "To show the royal status."
 	worn_icon = 'dwarfs/icons/mob/clothing/head.dmi'
@@ -11,15 +11,15 @@ GLOBAL_VAR_INIT(king, null)
 	var/king_actions = list()
 	var/tracking = FALSE
 
-/obj/item/clothing/head/helmet/crown/Initialize()
+/obj/item/clothing/head/crown/Initialize()
 	. = ..()
 	GLOB.crowns+=src
 
-/obj/item/clothing/head/helmet/crown/Destroy()
+/obj/item/clothing/head/crown/Destroy()
     . = ..()
     GLOB.crowns-=src
 
-/obj/item/clothing/head/helmet/crown/apply_grade_extra(grade)
+/obj/item/clothing/head/crown/apply_grade_extra(grade)
 	. = ..()
 	for(var/datum/action/a in king_actions)
 		qdel(a)
@@ -31,7 +31,7 @@ GLOBAL_VAR_INIT(king, null)
 		king_actions += new /datum/action/item_action/send_message_action(src)
 		return
 
-/obj/item/clothing/head/helmet/crown/ui_action_click(mob/user, actiontype)
+/obj/item/clothing/head/crown/ui_action_click(mob/user, actiontype)
 	if(user.stat != CONSCIOUS)
 		return
 	if(GLOB.king != user)
@@ -50,7 +50,7 @@ GLOBAL_VAR_INIT(king, null)
 /datum/action/item_action/send_message_action
 	name = "Send message to subjects"
 
-/obj/item/clothing/head/helmet/crown/proc/send_message(mob/user, msg)
+/obj/item/clothing/head/crown/proc/send_message(mob/user, msg)
 	message_admins("DF: [ADMIN_LOOKUPFLW(user)]: [msg]")
 	for(var/mob/M in GLOB.dwarf_list)
 		to_chat(M, span_revenbignotice("[msg]"))
@@ -60,7 +60,7 @@ GLOBAL_VAR_INIT(king, null)
 /datum/action/item_action/show_location
 	name = "Show your location to your subjects"
 
-/obj/item/clothing/head/helmet/crown/proc/show_location(mob/user)
+/obj/item/clothing/head/crown/proc/show_location(mob/user)
 	if(!user)
 		return
 	if(tracking)
@@ -75,7 +75,7 @@ GLOBAL_VAR_INIT(king, null)
 				var/atom/movable/screen/alert/kingsense/K = M.throw_alert("kingsense", /atom/movable/screen/alert/kingsense)
 				K.king = user
 
-/obj/item/clothing/head/helmet/crown/attack_self(mob/user)
+/obj/item/clothing/head/crown/attack_self(mob/user)
 	. = ..()
 	if(GLOB.king)
 		var/mob/living/carbon/human/H = GLOB.king
@@ -93,7 +93,7 @@ GLOBAL_VAR_INIT(king, null)
 
 	return
 
-/obj/item/clothing/head/helmet/crown/proc/make_king(mob/user)
+/obj/item/clothing/head/crown/proc/make_king(mob/user)
 	GLOB.king = user
 	send_message(user, "<b>[user]</b> has been chosen as our leader!")
 
