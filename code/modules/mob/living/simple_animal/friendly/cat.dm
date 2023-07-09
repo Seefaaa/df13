@@ -85,6 +85,8 @@ GLOBAL_LIST_EMPTY(cats)
 		to_chat(user, "You feed [src].")
 		playsound(src, playsound(src, 'sound/items/eatfood.ogg', rand(10,50), TRUE))
 		fed = TRUE
+	else
+		. = ..()
 
 /mob/living/simple_animal/pet/cat/make_babies()
 	if(!fed)
