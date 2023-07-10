@@ -1214,6 +1214,7 @@
 #include "dwarfs\code\modules\cooking\reactions.dm"
 #include "dwarfs\code\modules\cooking\reagent_containers.dm"
 #include "dwarfs\code\modules\cooking\reagents.dm"
+#include "dwarfs\code\modules\cooking\recipes_verb.dm"
 #include "dwarfs\code\modules\cooking\stove.dm"
 #include "dwarfs\code\modules\farming\crops.dm"
 #include "dwarfs\code\modules\farming\decoration.dm"
