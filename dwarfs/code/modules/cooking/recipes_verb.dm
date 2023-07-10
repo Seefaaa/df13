@@ -28,11 +28,11 @@
 				var/datum/reagent/R = reag
 				text += "<br>[FOURSPACES][recipe.req_reagents[reag]] [initial(R.name)]"
 			text += "<br>[FOURSPACES][recipe.cooking_text]"
-			text += "<br>"
+			text += "<hr>"
 	var/datum/browser/recipe_window = new(user, "recipe_window")
 	recipe_window.set_content(text)
 	recipe_window.add_stylesheet("font-awesome", 'html/font-awesome/css/all.min.css') //TODO: add custom stylesheet
 	recipe_window.width = 500
-	recipe_window.height = 300
+	recipe_window.height = 600
 	recipe_window.title = "Known Recipes"
 	recipe_window.open(FALSE)
