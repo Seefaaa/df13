@@ -173,6 +173,7 @@
 				new /obj/item/food/badrecipe(loc)
 				qdel(src)
 			user.adjust_experience(/datum/skill/cooking, 2)
+			return
 
 		var/obj/item/food/F = new R.result
 		user.adjust_experience(/datum/skill/cooking, rand(10, 30))
