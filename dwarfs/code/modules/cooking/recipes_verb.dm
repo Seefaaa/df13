@@ -14,13 +14,12 @@
 	var/datum/skill/S = user.get_skill(/datum/skill/cooking)
 	var/skill_level = S ? S.level : 1
 	var/text = ""
-	text += "<center><b>Cooking Recipes</b></center>"
 	for(var/t in GLOB.cooking_recipes)
 		var/datum/cooking_recipe/recipe = GLOB.cooking_recipes[t]
 		var/recipe_name = initial(recipe.result.name)
 		if(recipe.req_lvl <= skill_level)
 			var/image_path = icon2path(initial(recipe.result.icon), user, initial(recipe.result.icon_state))
-			text += "<br><font color=green><img src=[image_path]>[recipe_name]:</font>"
+			text += "<br><font color=green><img class='dish-image' src=[image_path]><b>[recipe_name]:</b></font>"
 			for(var/item in recipe.req_items)
 				var/obj/item/I = item
 				text += "<br>[FOURSPACES][recipe.req_items[item]] [initial(I.name)]"
@@ -31,7 +30,8 @@
 			text += "<hr>"
 	var/datum/browser/recipe_window = new(user, "recipe_window")
 	recipe_window.set_content(text)
-	recipe_window.add_stylesheet("font-awesome", 'html/font-awesome/css/all.min.css') //TODO: add custom stylesheet
+	recipe_window.add_stylesheet("font-awesome", 'html/font-awesome/css/all.min.css')
+	recipe_window.add_stylesheet("recipe-window", 'html/browser/recipe_window.css')
 	recipe_window.width = 500
 	recipe_window.height = 600
 	recipe_window.title = "Known Recipes"
