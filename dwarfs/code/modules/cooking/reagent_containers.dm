@@ -161,7 +161,7 @@
 
 /obj/item/reagent_containers/glass/plate/bowl/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/kitchen/knife))
-		var/datum/cooking_recipe/R = find_recipe(subtypesof(/datum/cooking_recipe/plate), contents)
+		var/datum/cooking_recipe/R = find_recipe(subtypesof(/datum/cooking_recipe/bowl), contents)
 		var/mob/living/carbon/human/H = user
 		if(!R)
 			var/held_index = H.is_holding(src)
