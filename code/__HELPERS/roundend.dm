@@ -231,20 +231,18 @@
 	var/datum/feedback_variable/ores = SSblackbox.find_feedback_datum("veins_generated", "tally")
 	parts += "<hr><b><font color=\"#60b6ff\">Veins Information</font></b>"
 	if(ores.json.len)
-		var/ores_data = ores.json["data"]
-		var/iron = ores_data["/obj/item/stack/ore/smeltable/iron"] || 0
-		var/gold = ores_data["/obj/item/stack/ore/smeltable/gold"] || 0
-		var/coal = ores_data["/obj/item/stack/ore/coal"] || 0
-		var/diamond = ores_data["/obj/item/stack/ore/gem/diamond"] || 0
-		var/ruby = ores_data["/obj/item/stack/ore/gem/ruby"] || 0
-		var/sapphire = ores_data["/obj/item/stack/ore/gem/sapphire"] || 0
+		var/list/ores_data = ores.json["data"]
 		parts += "[FOURSPACES]├ Total: <b>[ores_data["total"]]</b>"
-		parts += "[FOURSPACES]├ Iron: [iron]"
-		parts += "[FOURSPACES]├ Coal: [coal]"
-		parts += "[FOURSPACES]├ Gold: [gold]"
-		parts += "[FOURSPACES]├ Diamond: [diamond]"
-		parts += "[FOURSPACES]├ Ruby: [ruby]"
-		parts += "[FOURSPACES]└ Sapphire: [sapphire]"
+		for(var/i in 1 to ores_data.len)
+			var/text_type = ores_data[i]
+			if(text_type == "total")
+				continue
+			var/obj/ore_type = text2path(text_type)
+			if(!ore_type)
+				continue
+			var/amount = ores_data[text_type] || 0
+			var/s = i == ores_data.len ? "└" : "├"
+			parts += "[FOURSPACES][s] [capitalize(initial(ore_type.name))]: [amount]"
 	else
 		parts += "[FOURSPACES]└ No ores spawned!"
 	parts += "<hr><b><font color=\"#60b6ff\">Skill Information</font></b>"
