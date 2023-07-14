@@ -16,16 +16,8 @@
 	see_in_dark = 1
 	butcher_results = list(/obj/item/food/meat/slab/troll = list(2,4), /obj/item/stack/ore/stone = list(3,6), /obj/item/stack/sheet/mineral/coal = list(1,5),/obj/item/food/intestines=list(2,4))
 	hide_type = /obj/item/stack/sheet/animalhide/troll
-	response_help_continuous = "pushes"
-	response_help_simple = "pushes"
-	response_disarm_continuous = "pushes"
-	response_disarm_simple = "pushes"
-	response_harm_continuous = "hits"
-	response_harm_simple = "hits"
 	melee_damage_lower = 15
 	melee_damage_upper = 25
-	attack_verb_continuous = "attacks"
-	attack_verb_simple = "attacks"
 	minbodytemp = 0
 	maxbodytemp = INFINITY
 	gold_core_spawnable = HOSTILE_SPAWN
