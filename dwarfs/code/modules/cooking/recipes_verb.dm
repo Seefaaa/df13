@@ -22,10 +22,10 @@
 			text += "<br><font color=green><img class='dish-image' src=[image_path]><b>[recipe_name]:</b></font>"
 			for(var/item in recipe.req_items)
 				var/obj/item/I = item
-				text += "<br>[FOURSPACES][recipe.req_items[item]] [initial(I.name)]"
+				text += "<br>[FOURSPACES]&#8226 [recipe.req_items[item]] [initial(I.name)]"
 			for(var/reag in recipe.req_reagents)
 				var/datum/reagent/R = reag
-				text += "<br>[FOURSPACES][recipe.req_reagents[reag]] [initial(R.name)]"
+				text += "<br>[FOURSPACES]&#8226 [recipe.req_reagents[reag]] [initial(R.name)]"
 			text += "<br>[FOURSPACES][recipe.cooking_text]"
 			text += "<hr>"
 	var/datum/browser/recipe_window = new(user, "recipe_window")
