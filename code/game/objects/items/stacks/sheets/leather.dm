@@ -58,6 +58,18 @@
 	singular_name = "torn troll hide piece"
 	leather_amount = 2
 
+/obj/item/stack/sheet/animalhide/bear
+	name = "bear hide"
+	icon_state = "hide_bear"
+	singular_name = "bear hide piece"
+	leather_amount = 6
+	damaged_type = /obj/item/stack/sheet/animalhide/bear/damaged
+
+/obj/item/stack/sheet/animalhide/bear/damaged
+	name = "torn bear hide"
+	singular_name = "torn bear hide piece"
+	leather_amount = 3
+
 /obj/item/stack/sheet/hairlesshide
 	name = "hairless hide"
 	desc = "This hide was stripped of its hair, but still needs washing and tanning."

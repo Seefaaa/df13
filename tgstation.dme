@@ -1174,6 +1174,7 @@
 #include "dwarfs\code\items\damaz.dm"
 #include "dwarfs\code\items\ores.dm"
 #include "dwarfs\code\items\tools.dm"
+#include "dwarfs\code\mobs\bear.dm"
 #include "dwarfs\code\mobs\chicken.dm"
 #include "dwarfs\code\mobs\furmogus.dm"
 #include "dwarfs\code\mobs\goat.dm"

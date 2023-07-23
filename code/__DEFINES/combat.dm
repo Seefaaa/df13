@@ -18,8 +18,11 @@
 
 //Damage flag defines //
 /// Involves a melee attack or a thrown object.
+/// Melee slashing attack, used for butchering and dismembering
 #define SHARP "sharp"
+/// Melee heavy blunt attack, causes concussions
 #define BLUNT "blunt"
+/// Melee piercing attack, causes bleeding etc.
 #define PIERCE "pierce"
 /// Involves fire or temperature extremes.
 #define FIRE "fire"
