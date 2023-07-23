@@ -64,6 +64,9 @@
 	singular_name = "bear hide piece"
 	leather_amount = 6
 	damaged_type = /obj/item/stack/sheet/animalhide/bear/damaged
+	worn_icon_state = "hide_bear"
+	slot_flags = ITEM_SLOT_HEAD
+	flags_inv = HIDEHAIR
 
 /obj/item/stack/sheet/animalhide/bear/damaged
 	name = "torn bear hide"
