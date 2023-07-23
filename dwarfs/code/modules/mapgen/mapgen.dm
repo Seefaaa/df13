@@ -122,5 +122,5 @@ GLOBAL_VAR(surface_z)
 	log_world("[name] is done job for [(REALTIMEOFDAY - start_time)/10]s!")
 
 /datum/map_generator/surface/proc/spawn_fauna(turf/T)
-	var/mob_type = pick(/mob/living/simple_animal/goat, /mob/living/simple_animal/chicken)
+	var/mob_type = pick(/mob/living/simple_animal/goat, /mob/living/simple_animal/chicken, /mob/living/simple_animal/hostile/bear)
 	new mob_type(T)
