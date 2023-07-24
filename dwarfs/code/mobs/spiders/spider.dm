@@ -34,6 +34,8 @@
 	attack_vis_effect = ATTACK_EFFECT_BITE
 	stat_attack = UNCONSCIOUS
 	robust_searching = TRUE
+	atck_type = PIERCE
+	armour_penetration = 10
 	var/his_sound = 'dwarfs/sounds/mobs/spider/spiderhiss.ogg'
 	var/datum/action/innate/spider/lay_web/lay_web
 	var/poison_per_bite = 5
@@ -56,6 +58,8 @@
 	. = ..()
 	if(. && isliving(target))
 		var/mob/living/L = target
+		if(L.run_armor_check(zone_selected, atck_type, armour_penetration = armour_penetration) >= 15)
+			return
 		if(L.reagents)
 			L.reagents.add_reagent(poison_type, poison_per_bite)
 
