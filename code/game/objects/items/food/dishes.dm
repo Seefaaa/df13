@@ -86,6 +86,14 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment=60)
 	mood_event_type = /datum/mood_event/ate_meal
 
+/obj/item/food/dish/potato_salad
+	name = "potato salad"
+	desc = "It's  a sour snack with sweet potatoes."
+	icon_state = "potato_salad"
+	plate_type = /obj/item/reagent_containers/glass/plate/bowl
+	food_reagents = list(/datum/reagent/consumable/nutriment=80)
+	mood_event_type = /datum/mood_event/ate_meal
+
 //**********************SECOND TIER DISHES*****************************//
 
 /obj/item/food/dish/plump_stew
@@ -102,6 +110,14 @@
 	icon_state = "veggie_stew"
 	plate_type = /obj/item/reagent_containers/glass/plate/bowl
 	food_reagents = list(/datum/reagent/consumable/nutriment=100)
+	mood_event_type = /datum/mood_event/ate_meal/decent
+
+/obj/item/food/dish/egg_steak
+	name = "fried egg with steak"
+	desc = "Classic lunch meal. Desperately needs some veggies."
+	icon_state = "fried_egg_steak"
+	plate_type = /obj/item/reagent_containers/glass/plate/regular
+	food_reagents = list(/datum/reagent/consumable/nutriment=140)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
 /obj/item/food/dish/plump_pie
@@ -136,6 +152,22 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment=120)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
+/obj/item/food/dish/carrot_soup
+	name = "carrot soup"
+	desc = "Refreshing taste of carrots."
+	icon_state = "carrot_soup"
+	plate_type = /obj/item/reagent_containers/glass/plate/bowl
+	food_reagents = list(/datum/reagent/consumable/nutriment=140)
+	mood_event_type = /datum/mood_event/ate_meal/decent
+
+/obj/item/food/dish/plump_soup
+	name = "plump soup"
+	desc = "Refreshing taste of plump helmets."
+	icon_state = "plump_soup"
+	plate_type = /obj/item/reagent_containers/glass/plate/bowl
+	food_reagents = list(/datum/reagent/consumable/nutriment=140)
+	mood_event_type = /datum/mood_event/ate_meal/decent
+
 //**********************THIRD TIER DISHES*****************************//
 
 /obj/item/food/dish/balanced_roll
@@ -160,4 +192,20 @@
 	icon_state = "allwurst"
 	plate_type = /obj/item/reagent_containers/glass/plate/regular
 	food_reagents = list(/datum/reagent/consumable/nutriment=240)
+	mood_event_type = /datum/mood_event/ate_meal/luxurious
+
+/obj/item/food/dish/plump_quiche
+	name = "plump quiche"
+	desc = "A cheesy delicacy filled with sweet plumps."
+	icon_state = "plump_quiche"
+	plate_type = /obj/item/reagent_containers/glass/plate/flat
+	food_reagents = list(/datum/reagent/consumable/nutriment=260)
+	mood_event_type = /datum/mood_event/ate_meal/luxurious
+
+/obj/item/food/dish/meat_quiche
+	name = "meat quiche"
+	desc = "A cheesy delicacy filled with juicy meat."
+	icon_state = "meat_quiche"
+	plate_type = /obj/item/reagent_containers/glass/plate/flat
+	food_reagents = list(/datum/reagent/consumable/nutriment=280)
 	mood_event_type = /datum/mood_event/ate_meal/luxurious

@@ -1,6 +1,6 @@
 /obj/item/transfer_food
 	name = "almost food"
-	desc = "This shouldn't exist"
+	desc = "Almost ready to be eaten."
 	icon = 'dwarfs/icons/items/kitchen.dmi'
 	//Our original container we cooking this stuff in
 	var/original_container
@@ -36,37 +36,63 @@
 	else
 		. = ..()
 
+/obj/item/transfer_food/examine(mob/user)
+	. = ..()
+	var/obj/item/I = original_container
+	. += "<br>This needs to be transferred to [initial(I.name)]."
 
 /obj/item/transfer_food/plump_stew
 	name = "plump stew in pot"
-	desc = "Almost stew."
 	icon_state = "cooking_pot_dwarven_stew"
-	charges = 6
+	charges = 3
 	food_inside = /obj/item/food/dish/plump_stew
 	required_container = /obj/item/reagent_containers/glass/plate/bowl
 	original_container = /obj/item/reagent_containers/glass/cooking_pot
 
 /obj/item/transfer_food/veggie_stew
 	name = "veggie stew in pot"
-	desc = "Almost stew."
-	icon_state = "cooking_pot_dwarven_stew"
-	charges = 6
+	icon_state = "cooking_pot_veggie_stew"
+	charges = 3
 	food_inside = /obj/item/food/dish/veggie_stew
+	required_container = /obj/item/reagent_containers/glass/plate/bowl
+	original_container = /obj/item/reagent_containers/glass/cooking_pot
+
+/obj/item/transfer_food/carrot_soup
+	name = "carrot soup in pot"
+	icon_state = "cooking_pot_carrot_soup"
+	charges = 3
+	food_inside = /obj/item/food/dish/carrot_soup
+	required_container = /obj/item/reagent_containers/glass/plate/bowl
+	original_container = /obj/item/reagent_containers/glass/cooking_pot
+
+/obj/item/transfer_food/plump_soup
+	name = "plump soup in pot"
+	icon_state = "cooking_pot_plump_soup"
+	charges = 3
+	food_inside = /obj/item/food/dish/plump_soup
 	required_container = /obj/item/reagent_containers/glass/plate/bowl
 	original_container = /obj/item/reagent_containers/glass/cooking_pot
 
 /obj/item/transfer_food/beer_wurst
 	name = "beer wurst in pan"
-	desc = "Almost that."
 	icon_state = "skillet_beer_wurst"
+	charges = 2
 	food_inside = /obj/item/food/dish/roasted_beer_wurst
 	required_container = /obj/item/reagent_containers/glass/plate/regular
 	original_container = /obj/item/reagent_containers/glass/pan
 
 /obj/item/transfer_food/allwurst
 	name = "allwurst in pan"
-	desc = "Everything sausage."
 	icon_state = "skillet_allwurst"
+	charges = 3
 	food_inside = /obj/item/food/dish/allwurst
+	required_container = /obj/item/reagent_containers/glass/plate/regular
+	original_container = /obj/item/reagent_containers/glass/pan
+
+/obj/item/transfer_food/egg_steak
+	name = "fried egg with steak in pan"
+	icon_state = "skillet_egg_steak"
+	charges = 2
+	food_inside = /obj/item/food/dish/egg_steak
 	required_container = /obj/item/reagent_containers/glass/plate/regular
 	original_container = /obj/item/reagent_containers/glass/pan
