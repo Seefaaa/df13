@@ -200,13 +200,13 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 /datum/cooking_recipe/sausage
 
 /datum/cooking_recipe/sausage/regular
-	req_items = list(/obj/item/food/slice/meat=3)
+	req_items = list(/obj/item/food/slice/meat=2)
 	result = /obj/item/food/sausage
 	req_lvl = 5
 	cooking_text = "Throw everything into casings and tie them up."
 
 /datum/cooking_recipe/sausage/luxurious
-	req_items = list(/obj/item/food/slice/meat/troll=1, /obj/item/food/slice/meat=1, /obj/item/growable/carrot=1, /obj/item/growable/plump_helmet=1, /obj/item/growable/turnip=1)
+	req_items = list(/obj/item/food/slice/meat/troll=1, /obj/item/food/slice/meat=2, /obj/item/growable/carrot=1, /obj/item/growable/plump_helmet=1)
 	result = /obj/item/food/sausage/luxurious
 	req_lvl = 7
 	cooking_text = "Throw everything into casings and tie them up."
