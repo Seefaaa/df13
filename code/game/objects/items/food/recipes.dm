@@ -155,7 +155,7 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 /datum/cooking_recipe/bowl/potato_salad
 	req_items = list(/obj/item/growable/potato=2, /obj/item/growable/onion=1)
 	req_reagents = list(/datum/reagent/consumable/vinegar=5)
-	result = /obj/item/food/dish/salad
+	result = /obj/item/food/dish/potato_salad
 	req_lvl = 2
 	cooking_text = "Throw everything into a bowl and mix with a kitchen knife."
 
