@@ -20,8 +20,8 @@ GLOBAL_LIST_INIT(cloth_recipes, list(
 	return amount*2
 
 /obj/item/stack/sheet/string
-	name = "yarn string"
-	desc = "Long strings of fibers rolled into a ball. Processen in loom into fabric."
+	name = "string ball"
+	desc = "Long strings of fibers rolled into a ball. Processed in loom into fabric."
 	singular_name = "string"
 	icon = 'dwarfs/icons/items/components.dmi'
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'

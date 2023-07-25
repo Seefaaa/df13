@@ -8,12 +8,9 @@
 	var/datum/callback/web_sensed
 	var/datum/callback/web_unsensed
 
-
-
 /obj/structure/spider/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	if(damage_type == BURN)//the stickiness of the web mutes all attack sounds except fire damage type
 		playsound(loc, 'sound/items/welder.ogg', 100, 1)
-
 
 /obj/structure/spider/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
 	if(damage_flag == "melee")
@@ -29,10 +26,8 @@
 
 /obj/structure/spider/stickyweb/Initialize(mapload)
 	. = ..()
-	if(prob(50))
-		icon_state = "stickyweb1"
-	else
-		icon_state = "stickyweb2"
+	icon_state = "stickyweb[rand(1,2)]"
+
 /obj/structure/spider/stickyweb/Destroy()
 	. = ..()
 	UnregisterSignal(get_turf(src),COMSIG_ATOM_ENTERED)
@@ -54,7 +49,6 @@
 	if(web_unsensed && !locate(/obj/structure/spider/stickyweb) in get_step(src,direction))
 		web_unsensed.InvokeAsync(gone)
 
-
 /obj/structure/spider/stickyweb/CanAllowThrough(atom/movable/mover, turf/target)
 	. = ..()
 	if(istype(mover, /mob/living/simple_animal/hostile/giant_spider))
@@ -66,10 +60,19 @@
 			to_chat(mover, "<span class='danger'>You get stuck in \the [src] for a moment.</span>")
 			return FALSE
 
+/obj/structure/spider/stickyweb/attack_hand(mob/user)
+	to_chat(user, span_notice("You start collecting [src]..."))
+	if(!do_after(user, 5 SECONDS, src))
+		return
+	to_chat(user, span_notice("You collect some webs."))
+	var/obj/item/stack/sheet/string/string = new(get_turf(src), rand(1, 3))
+	string.apply_material(/datum/material/cloth/silk)
+	qdel(src)
+
 /obj/structure/spider/cocoon
 	name = "cocoon"
 	desc = "contains very poor prey to be sucked up by the huntress."
-	icon_state = "cocoon"
+	icon_state = "cocoon1"
 	max_integrity = 50
 	var/mob/living/carbon/human/prey
 	var/child =  /mob/living/simple_animal/hostile/giant_spider
@@ -83,6 +86,7 @@
 /obj/structure/spider/cocoon/Initialize()
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(hatch)), hatch_time)
+	icon_state = "cocoon[rand(1,4)]"
 
 /obj/structure/spider/cocoon/Destroy()
 	prey?.forceMove(src.loc)
@@ -93,4 +97,3 @@
 		new child(src.loc)
 		prey?.gib(TRUE, FALSE,FALSE, TRUE)
 		qdel(src)
-

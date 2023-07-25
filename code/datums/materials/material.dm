@@ -292,5 +292,17 @@
 	wall_type = /turf/closed/wall/sand
 	door_type = /obj/structure/mineral_door/sand
 
+/datum/material/cloth
+	palettes = list("cloth")
+
+/datum/material/cloth/silk
+	name = "spider silk"
+
+/datum/material/cloth/cotton
+	name = "cotton"
+
+/datum/material/cloth/pig_tail_cotton
+	name = "pig_tail_cotton"
+
 #undef TOOLSPEED_MIN_VALUE
 #undef MELEE_CD_MIN_VALUE
