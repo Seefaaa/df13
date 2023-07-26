@@ -5,12 +5,9 @@
 	anchored = TRUE
 	density = FALSE
 	max_integrity = 15
+	hit_sound = 'dwarfs/sounds/structures/web_hit.ogg'
 	var/datum/callback/web_sensed
 	var/datum/callback/web_unsensed
-
-/obj/structure/spider/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
-	if(damage_type == BURN)//the stickiness of the web mutes all attack sounds except fire damage type
-		playsound(loc, 'sound/items/welder.ogg', 100, 1)
 
 /obj/structure/spider/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
 	if(damage_flag == "melee")

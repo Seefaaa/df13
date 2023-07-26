@@ -9,6 +9,7 @@
 	pass_flags_self = PASSSTRUCTURE
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	var/broken = 0 //similar to machinery's stat BROKEN
+	hit_sound = 'dwarfs/sounds/structures/generic_hit.ogg'
 
 /obj/structure/Initialize()
 	if (!armor)
