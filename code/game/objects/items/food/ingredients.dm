@@ -122,12 +122,21 @@
 	mood_gain = -5
 	mood_duration = 5 MINUTES
 	food_reagents = list(/datum/reagent/consumable/nutriment=30)
+	var/extra_desc = "This sausage is made for beer wurst."
+
+/obj/item/food/sausage/examine(mob/user)
+	. = ..()
+	var/cooking_level = user.get_skill_level(/datum/skill/cooking)
+	if(cooking_level > 5)
+		. += "<br>[extra_desc]"
 
 /obj/item/food/sausage/luxurious
 	food_reagents = list(/datum/reagent/consumable/nutriment=50)
+	extra_desc = "This sausage is made for allwurst."
 
 /obj/item/food/sausage/failed // bad sausage; gives poop when cooked
 	food_reagents = list(/datum/reagent/consumable/nutriment=10)
+	extra_desc = "This sausage is a failed sausage. It's useless."
 
 /obj/item/food/egg
 	name = "egg"
