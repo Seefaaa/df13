@@ -54,6 +54,32 @@
 	else
 		icon_state = "cooking_pot_closed"
 
+/obj/item/reagent_containers/glass/cooking_pot/update_overlays()
+	. = ..()
+	if(!contents.len || !open)
+		return
+	for(var/i=1;i<=min(contents.len,4);i++)
+		var/obj/item/I = contents[i]
+		var/mutable_appearance/M = mutable_appearance(I.icon, I.icon_state)
+		M.pixel_x = -16
+		M.pixel_y = -16
+		switch(i)
+			if(1)
+				M.pixel_x += 12
+				M.pixel_y += 18
+			if(2)
+				M.pixel_x += 19
+				M.pixel_y += 18
+			if(3)
+				M.pixel_x += 13
+				M.pixel_y += 13
+			if(4)
+				M.pixel_x += 20
+				M.pixel_y += 13
+		M.transform *= 0.6
+		. += M
+	. += mutable_appearance(initial(icon), "pot_overlay")
+
 /obj/item/reagent_containers/glass/cooking_pot/attack_self_secondary(mob/user, modifiers)
 	open = !open
 	update_appearance()
@@ -202,7 +228,7 @@
 		var/obj/item/I = contents[i]
 		var/mutable_appearance/M = mutable_appearance(I.icon, I.icon_state)
 		M.pixel_x = -14
-		M.pixel_y = -14
+		M.pixel_y = -12
 		switch(i)
 			if(1)
 				M.pixel_x += 8
@@ -253,6 +279,32 @@
 	. = ..()
 	AddComponent(/datum/component/storage/concrete/cooking/pot)
 
+/obj/item/reagent_containers/glass/cake_pan/update_overlays()
+	. = ..()
+	if(!contents.len)
+		return
+	for(var/i=1;i<=min(contents.len,4);i++)
+		var/obj/item/I = contents[i]
+		var/mutable_appearance/M = mutable_appearance(I.icon, I.icon_state)
+		M.pixel_x = -16
+		M.pixel_y = -16
+		switch(i)
+			if(1)
+				M.pixel_x += 16
+				M.pixel_y += 21
+			if(2)
+				M.pixel_x += 21
+				M.pixel_y += 21
+			if(3)
+				M.pixel_x += 15
+				M.pixel_y += 17
+			if(4)
+				M.pixel_x += 20
+				M.pixel_y += 17
+		M.transform *= 0.6
+		. += M
+	. += mutable_appearance(initial(icon), "cake_pan_overlay")
+
 
 /obj/item/reagent_containers/glass/baking_sheet
 	name = "baking sheet"
@@ -267,3 +319,28 @@
 /obj/item/reagent_containers/glass/baking_sheet/ComponentInitialize()
 	. = ..()
 	AddComponent(/datum/component/storage/concrete/cooking/pot)
+
+/obj/item/reagent_containers/glass/baking_sheet/update_overlays()
+	. = ..()
+	if(!contents.len)
+		return
+	for(var/i=1;i<=min(contents.len,4);i++)
+		var/obj/item/I = contents[i]
+		var/mutable_appearance/M = mutable_appearance(I.icon, I.icon_state)
+		M.pixel_x = -16
+		M.pixel_y = -16
+		switch(i)
+			if(1)
+				M.pixel_x += 13
+				M.pixel_y += 18
+			if(2)
+				M.pixel_x += 19
+				M.pixel_y += 18
+			if(3)
+				M.pixel_x += 14
+				M.pixel_y += 16
+			if(4)
+				M.pixel_x += 20
+				M.pixel_y += 16
+		M.transform *= 0.6
+		. += M
