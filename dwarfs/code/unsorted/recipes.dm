@@ -76,6 +76,14 @@
 	name = "cooking pot"
 	result = /obj/item/reagent_containers/glass/cooking_pot
 
+/datum/smithing_recipe/baking_sheet
+	name = "baking sheet"
+	result = /obj/item/reagent_containers/glass/baking_sheet
+
+/datum/smithing_recipe/cake_pan
+	name = "cake pan"
+	result = /obj/item/reagent_containers/glass/cake_pan
+
 /datum/smithing_recipe/light_plate
 	name = "chest plate"
 	result = /obj/item/clothing/suit/light_plate

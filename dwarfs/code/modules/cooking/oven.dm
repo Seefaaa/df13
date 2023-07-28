@@ -42,7 +42,7 @@
 	. += M
 
 /obj/structure/oven/attackby(obj/item/I, mob/user, params)
-	if(istype(I, /obj/item/reagent_containers/glass/plate))
+	if(istype(I, /obj/item/reagent_containers/glass/baking_sheet) || istype(I, /obj/item/reagent_containers/glass/cake_pan))
 		if(contents.len)
 			to_chat(user, span_warning("There is already something cooking inside."))
 			return
@@ -71,12 +71,10 @@
 
 /obj/structure/oven/proc/try_cook(obj/item/I, mob/user)
 	var/list/possible_recipes = list()
-	if(istype(I, /obj/item/reagent_containers/glass/plate/regular))
-		possible_recipes = subtypesof(/datum/cooking_recipe/oven/plate)
-	else if(istype(I, /obj/item/reagent_containers/glass/plate/flat))
-		possible_recipes = subtypesof(/datum/cooking_recipe/oven/flat_plate)
-	else if(istype(I, /obj/item/reagent_containers/glass/plate/bowl))
-		possible_recipes = subtypesof(/datum/cooking_recipe/oven/bowl)
+	if(istype(I, /obj/item/reagent_containers/glass/baking_sheet))
+		possible_recipes = subtypesof(/datum/cooking_recipe/oven/sheet)
+	else if(istype(I, /obj/item/reagent_containers/glass/cake_pan))
+		possible_recipes = subtypesof(/datum/cooking_recipe/oven/cake)
 	var/datum/cooking_recipe/R = find_recipe(possible_recipes, I.contents, I.reagents.reagent_list)
 	if(!R)
 		qdel(I)

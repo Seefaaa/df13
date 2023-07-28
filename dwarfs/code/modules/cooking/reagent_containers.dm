@@ -238,3 +238,32 @@
 /obj/item/reagent_containers/glass/cup/iron
 	name = "iron cup"
 	icon_state = "iron_cup"
+
+/obj/item/reagent_containers/glass/cake_pan
+	name = "cake pan"
+	desc = "A kitchen utencil used for making cake-shaped things."
+	icon = 'dwarfs/icons/items/kitchen.dmi'
+	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
+	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
+	icon_state = "cake_pan"
+	amount_per_transfer_from_this = 10
+	volume = 100
+
+/obj/item/reagent_containers/glass/cooking_pot/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/storage/concrete/cooking/pot)
+
+
+/obj/item/reagent_containers/glass/baking_sheet
+	name = "baking sheet"
+	desc = "It's a sheet of baking."
+	icon = 'dwarfs/icons/items/kitchen.dmi'
+	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
+	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
+	icon_state = "sheet"
+	amount_per_transfer_from_this = 10
+	volume = 100
+
+/obj/item/reagent_containers/glass/cooking_pot/ComponentInitialize()
+	. = ..()
+	AddComponent(/datum/component/storage/concrete/cooking/pot)

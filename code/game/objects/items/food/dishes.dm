@@ -21,7 +21,6 @@
 	name = "baked potato"
 	desc = "Very basic meal for a quick snack."
 	icon_state = "baked_potato"
-	plate_type = /obj/item/reagent_containers/glass/plate/regular
 	food_reagents = list(/datum/reagent/consumable/nutriment=30)
 	mood_event_type = /datum/mood_event/ate_meal
 	mood_gain = 2
@@ -38,7 +37,6 @@
 	name = "bread"
 	desc = "A loaf of fresh bread. Classic staple food."
 	icon_state = "bread"
-	plate_type = /obj/item/reagent_containers/glass/plate/flat
 	food_reagents = list(/datum/reagent/consumable/nutriment=40)
 	mood_event_type = /datum/mood_event/ate_meal
 	mood_gain = 5
@@ -174,7 +172,6 @@
 	name = "balanced roll"
 	desc = "Coming from the eastern human cities, this dish became popular among dwarves."
 	icon_state = "gyros"
-	plate_type = /obj/item/reagent_containers/glass/plate/flat
 	food_reagents = list(/datum/reagent/consumable/nutriment=240)
 	mood_event_type = /datum/mood_event/ate_meal/luxurious
 
