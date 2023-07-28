@@ -71,7 +71,8 @@
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount && hit_sound)
-				playsound(src, hit_sound, 80, TRUE)
+				var/sound_to_play = islist(hit_sound) ? pick(hit_sound) : hit_sound
+				playsound(src, sound_to_play, 80, TRUE)
 			else
 				playsound(src, 'sound/weapons/tap.ogg', 50, TRUE)
 		if(BURN)
