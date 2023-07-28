@@ -7,6 +7,7 @@
 	reagent_flags = OPENCONTAINER | DUNKABLE
 	spillable = TRUE
 	resistance_flags = ACID_PROOF
+	w_class = WEIGHT_CLASS_NORMAL
 
 
 /obj/item/reagent_containers/glass/attack(mob/living/M, mob/user, obj/target)
