@@ -36,7 +36,7 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	req_lvl = 6
 	cooking_text = "Place everything in the cake pan and bake it in the oven."
 
-/datum/cooking_recipe/oven/sheet/plump_pie
+/datum/cooking_recipe/oven/cake/plump_pie
 	req_items = list(/obj/item/food/dough=1, /obj/item/growable/plump_helmet=3, /obj/item/growable/sweet_pod=2)
 	result = /obj/item/transfer_food/cake/plump_pie
 	req_lvl = 4

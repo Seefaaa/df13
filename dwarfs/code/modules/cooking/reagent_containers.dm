@@ -249,7 +249,7 @@
 	amount_per_transfer_from_this = 10
 	volume = 100
 
-/obj/item/reagent_containers/glass/cooking_pot/ComponentInitialize()
+/obj/item/reagent_containers/glass/cake_pan/ComponentInitialize()
 	. = ..()
 	AddComponent(/datum/component/storage/concrete/cooking/pot)
 
@@ -264,6 +264,6 @@
 	amount_per_transfer_from_this = 10
 	volume = 100
 
-/obj/item/reagent_containers/glass/cooking_pot/ComponentInitialize()
+/obj/item/reagent_containers/glass/baking_sheet/ComponentInitialize()
 	. = ..()
 	AddComponent(/datum/component/storage/concrete/cooking/pot)
