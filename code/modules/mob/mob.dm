@@ -699,8 +699,6 @@
 		to_chat(src, span_red("Respawn is on cooldown. Wait another [DisplayTimeText(SSrespawns.respawn_time(src))]."))
 		return
 
-	SSrespawns.mob_respawned(src)
-
 	client.is_respawned = TRUE
 
 	log_game("[key_name(usr)] used abandon mob.")

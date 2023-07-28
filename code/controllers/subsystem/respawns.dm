@@ -19,7 +19,7 @@ SUBSYSTEM_DEF(respawns)
 		return FALSE
 	return world.time > next_respawn[user.key]
 
-/datum/controller/subsystem/respawns/proc/mob_respawned(mob/user)
+/datum/controller/subsystem/respawns/proc/mob_died(mob/user)
 	if(!user.key)
 		return
 	next_respawn[user.key] = world.time + respawn_cooldown
