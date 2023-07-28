@@ -48,7 +48,7 @@ Behavior that's still missing from this component that original food items had t
 	list/initial_reagents,
 	food_flags = NONE,
 	foodtypes = NONE,
-	volume = 50,
+	volume = 1000,
 	eat_time = 10,
 	list/tastes,
 	list/eatverbs = list("bite","chew","nibble","gnaw","gobble","chomp"),

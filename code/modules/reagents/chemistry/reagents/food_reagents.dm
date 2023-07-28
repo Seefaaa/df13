@@ -22,7 +22,7 @@
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(!HAS_TRAIT(H, TRAIT_NOHUNGER))
-			H.adjust_nutrition(nutriment_factor * REM * volume)
+			H.adjust_nutrition(volume)
 	if(length(reagent_removal_skip_list))
 		return
 	holder.remove_reagent(type, volume)
@@ -56,7 +56,6 @@
 
 	var/brute_heal = 1
 	var/burn_heal = 0
-	hydration_factor = 0.1
 
 /datum/reagent/consumable/nutriment/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
 	if(DT_PROB(30, delta_time))
