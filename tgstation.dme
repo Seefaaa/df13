@@ -697,7 +697,6 @@
 #include "code\game\objects\items\mop.dm"
 #include "code\game\objects\items\paint.dm"
 #include "code\game\objects\items\pet_carrier.dm"
-#include "code\game\objects\items\shields.dm"
 #include "code\game\objects\items\soap.dm"
 #include "code\game\objects\items\trash.dm"
 #include "code\game\objects\items\food\_food.dm"

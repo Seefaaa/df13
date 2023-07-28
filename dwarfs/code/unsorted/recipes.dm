@@ -254,3 +254,13 @@
 	name = "chisel"
 	result = /obj/item/chisel
 	reqs = list(/obj/item/partial/chisel=1, /obj/item/stick=1)
+
+/datum/workbench_recipe/s_shield
+	name = "small shield"
+	result = /obj/item/shield
+	reqs = list(/obj/item/stack/sheet/planks=4, /obj/item/ingot=1)
+
+/datum/workbench_recipe/b_shield
+	name = "large shield"
+	result = /obj/item/shield/large
+	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/ingot=2)

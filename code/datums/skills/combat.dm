@@ -26,7 +26,7 @@
 			SKILL_MISS_MODIFIER=list(20, 10, 5, 0, 0, 0, 0, 0, 0, 0, 0),
 			SKILL_PARRY_MODIFIER=list(8, 12, 15, 17, 19, 20, 25, 30, 36, 44, 55),
 			SKILL_DAMAGE_MODIFIER=list(0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4))
-	exp_per_parry = 17
+	exp_per_parry = 23
 	exp_per_attack = 2
 
 /datum/skill/combat/dagger

@@ -241,3 +241,30 @@
 
 /obj/item/club/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials))
+
+/obj/item/shield
+	name = "shield"
+	icon = 'dwarfs/icons/items/weapons.dmi'
+	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
+	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
+	icon_state = "small_shield"
+	block_chance = 30
+	force = 5
+	atck_type = BLUNT
+	w_class = WEIGHT_CLASS_BULKY
+	parrysound = 'dwarfs/sounds/weapons/shield/shield_parry.ogg'
+	skill = /datum/skill/combat/shield
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron)
+
+/obj/item/shield/build_material_icon(_file, state)
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT]))
+
+/obj/item/shield/large
+	name = "large shield"
+	icon_state = "big_shield"
+	w_class = WEIGHT_CLASS_HUGE
+	block_chance = 40
+
+/obj/item/shield/large/Initialize()
+	. = ..()
+	AddComponent(/datum/component/two_handed, force_unwielded=5, use_grades=TRUE, require_twohands=TRUE)
