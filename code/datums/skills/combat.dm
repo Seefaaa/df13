@@ -16,7 +16,8 @@
 	desc = "Wrestling and martial arts - are dwarven last resort, but those tho master it will never get down easily. Increases bare hand combat stats"
 	title = "Martial Artist"
 	modifiers = list(
-			SKILL_MISS_MODIFIER=list(40, 30, 20, 15, 12, 10, 8, 6, 4, 2, 0))
+			SKILL_MISS_MODIFIER=list(40, 30, 20, 15, 12, 10, 8, 6, 4, 2, 0),
+			SKILL_DAMAGE_MODIFIER=list(-1, 0, 0, 1, 1, 2, 2, 3, 4, 5, 6))
 
 /datum/skill/combat/shield
 	name = "Shield Combat"

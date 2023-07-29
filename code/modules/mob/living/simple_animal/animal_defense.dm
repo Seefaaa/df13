@@ -50,7 +50,7 @@
 							span_userdanger("[M] [response_harm_continuous] you!") , null, COMBAT_MESSAGE_RANGE, M)
 			to_chat(M, span_danger("You [response_harm_simple] [name]!"))
 			playsound(loc, attacked_sound, 25, TRUE, -1)
-			var/damage = rand(M.dna.species.punchdamagelow, M.dna.species.punchdamagehigh)
+			var/damage = rand(M.dna.species.punchdamagelow, M.dna.species.punchdamagehigh) + M.get_skill_modifier(/datum/skill/martial, SKILL_DAMAGE_MODIFIER)
 			attack_threshold_check(damage, attack_type = BLUNT)
 			log_combat(M, src, "attacked")
 			updatehealth()
