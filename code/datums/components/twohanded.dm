@@ -155,6 +155,8 @@
 	// wield update status
 	if(SEND_SIGNAL(parent, COMSIG_TWOHANDED_WIELD, user) & COMPONENT_TWOHANDED_BLOCK_WIELD)
 		return // blocked wield from item
+	if(user.get_inactive_held_item())
+		return
 	wielded = TRUE
 	ADD_TRAIT(parent,TRAIT_WIELDED,src)
 	RegisterSignal(user, COMSIG_MOB_SWAP_HANDS, PROC_REF(on_swap_hands))
