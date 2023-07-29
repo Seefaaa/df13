@@ -256,7 +256,7 @@
 			if(!("mob" in skills[skill.name]))
 				skills[skill.name]["lvl"] = skill.level
 				skills[skill.name]["exp"] = skill.experience
-				skills[skill.name]["mob"] = M.name
+				skills[skill.name]["mob"] = M.real_name
 			else
 				if(skill.level > skills[skill.name]["lvl"] || (skill.level == skills[skill.name]["lvl"] && skill.experience > skills[skill.name]["exp"]))
 					skills[skill.name]["lvl"] = skill.level
