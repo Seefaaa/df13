@@ -206,7 +206,7 @@
 	user.do_attack_animation(M)
 	M.do_damaged_animation(user)
 	M.attacked_by(src, user)
-	if(skill && M.stat != DEAD)
+	if(skill && M.stat != DEAD && M != user)
 		user.adjust_experience(skill, initial(skill.exp_per_attack))
 
 	log_combat(user, M, "attacked", src.name, "(DAMTYPE: [uppertext(damtype)])")

@@ -79,7 +79,7 @@
 
 				return BULLET_ACT_FORCE_PIERCE // complete projectile permutation
 
-		if(check_shields(P, P.damage, "[P.name]", PROJECTILE_ATTACK, P.armour_penetration))
+		if(check_shields(P, P.damage, "[P.name]"))
 			P.on_hit(src, 100, def_zone, piercing_hit)
 			return BULLET_ACT_HIT
 
@@ -98,28 +98,15 @@
 			return TRUE
 	return FALSE
 
-/mob/living/carbon/human/proc/check_shields(atom/AM, damage, attack_text = "the attack", attack_type = MELEE_ATTACK, armour_penetration = 0)
+/mob/living/carbon/human/proc/check_shields(atom/AM, damage=1, attack_text = null)
 	var/obj/item/to_parry = get_active_held_item()
 	var/obj/item/offhand = get_inactive_held_item()
 	if(offhand && istype(offhand, /obj/item/shield))
 		to_parry = offhand
-	if(to_parry && to_parry.skill)
+	if(to_parry && to_parry.skill && damage && AM != src)
 		if(prob(get_skill_modifier(to_parry.skill, SKILL_PARRY_MODIFIER)+to_parry.block_chance))
-			visible_message(span_danger("<b>[src]</b> parries [attack_text]!"), span_danger("You parry [attack_text] attack!"))
-			if(to_parry.parrysound)
-				playsound(src, to_parry.parrysound, 60, TRUE, -1)
-			adjust_experience(to_parry.skill, initial(to_parry.skill.exp_per_parry))
-			return TRUE
-	return FALSE
-
-/mob/living/carbon/human/proc/check_block()
-	var/obj/item/to_parry = get_active_held_item()
-	var/obj/item/offhand = get_inactive_held_item()
-	if(offhand && istype(offhand, /obj/item/shield))
-		to_parry = offhand
-	if(to_parry && to_parry.skill)
-		if(prob(get_skill_modifier(to_parry.skill, SKILL_PARRY_MODIFIER) + to_parry.block_chance))
-			visible_message(span_danger("<b>[src]</b> parries the attack!"), span_danger("You parry the attack!"))
+			if(attack_text)
+				visible_message(span_danger("<b>[src]</b> parries [attack_text]!"), span_danger("You parry [attack_text]!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, AM)
 			if(to_parry.parrysound)
 				playsound(src, to_parry.parrysound, 60, TRUE, -1)
 			adjust_experience(to_parry.skill, initial(to_parry.skill.exp_per_parry))
@@ -138,7 +125,7 @@
 		throwpower = I.throwforce
 		if(I.thrownby == WEAKREF(src)) //No throwing stuff at yourself to trigger hit reactions
 			return ..()
-	if(check_shields(AM, throwpower, "[AM.name]", THROWN_PROJECTILE_ATTACK))
+	if(check_shields(AM, throwpower, "[AM.name]"))
 		hitpush = FALSE
 		skipcatch = TRUE
 		blocked = TRUE
@@ -230,7 +217,7 @@
 	if(!.)
 		return
 	var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
-	if(check_shields(M, damage, "[M.name]", MELEE_ATTACK, M.armour_penetration))
+	if(check_shields(M, damage, "[M.name]"))
 		return FALSE
 	var/dam_zone = dismembering_strike(M, pick(BODY_ZONE_CHEST, BODY_ZONE_PRECISE_L_HAND, BODY_ZONE_PRECISE_R_HAND, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG))
 	if(!dam_zone) //Dismemberment successful

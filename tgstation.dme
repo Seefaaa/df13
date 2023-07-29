@@ -706,7 +706,6 @@
 #include "code\game\objects\items\food\misc.dm"
 #include "code\game\objects\items\food\reactions.dm"
 #include "code\game\objects\items\food\recipes.dm"
-#include "code\game\objects\items\melee\misc.dm"
 #include "code\game\objects\items\stacks\stack.dm"
 #include "code\game\objects\items\stacks\sheets\leather.dm"
 #include "code\game\objects\items\stacks\sheets\mineral.dm"

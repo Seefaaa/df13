@@ -1247,7 +1247,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 
 /datum/species/proc/grab(mob/living/carbon/human/user, mob/living/carbon/human/target)
-	if(target.check_block())
+	if(target.check_shields(user))
 		target.visible_message(span_warning("<b>[target]</b> blocks <b>[user]'s</b> grab!") , \
 							span_userdanger("You block <b>[user]'s</b> grab!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
 		to_chat(user, span_warning("Your grab at <b>[target]</b> was blocked!"))
@@ -1269,7 +1269,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		playsound(target.loc, user.dna.species.miss_sound, 25, TRUE, -1)
 		return FALSE
 
-	if(target.check_block() && user != target)
+	if(target.check_shields(user) && user != target)
 		target.visible_message(span_warning("[target] blocks [user]'s attack!") , \
 							span_userdanger("You block [user]'s attack!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
 		to_chat(user, span_warning("Your attack at [target] was blocked!"))
@@ -1326,7 +1326,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		target.apply_damage(damage*1.5, STAMINA, affecting, armor_block)
 		log_combat(user, target, "punched")
 
-	if(target.stat != DEAD)
+	if(target.stat != DEAD && target != user)
 		user.adjust_experience(/datum/skill/martial, 4)
 
 	if((target.stat != DEAD) && damage >= user.dna.species.punchstunthreshold)
@@ -1341,7 +1341,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	return
 
 /datum/species/proc/disarm(mob/living/carbon/human/user, mob/living/carbon/human/target)
-	if(target.check_block())
+	if(target.check_shields(user))
 		target.visible_message(span_warning("[user]'s shove is blocked by [target]!") , \
 							span_userdanger("You block [user]'s shove!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
 		to_chat(user, span_warning("Your shove at [target] was blocked!"))
@@ -1366,7 +1366,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 	if(!istype(M)) //sanity check for drones.
 		return
-	if((M != H) && M.a_intent != INTENT_HELP && H.check_shields(M, 0, M.name, attack_type = UNARMED_ATTACK))
+	if((M != H) && M.a_intent != INTENT_HELP && H.check_shields(M))
 		log_combat(M, H, "attempted to touch")
 		H.visible_message(span_warning("[M] attempts to touch [H]!") , \
 						span_userdanger("[M] attempts to touch you!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, M)
@@ -1394,9 +1394,9 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 /datum/species/proc/spec_attacked_by(obj/item/I, mob/living/user, obj/item/bodypart/affecting, intent, mob/living/carbon/human/H)
 	if(user != H)
-		if(H.check_shields(I, I.force, "[I.name]", MELEE_ATTACK, I.get_armorpen()))
+		if(H.check_shields(I, I.force, "[I.name]"))
 			return FALSE
-	if(H.check_block())
+	if(H.check_shields(user))
 		H.visible_message(span_warning("[H] blocks [I]!") , \
 						span_userdanger("You block [I]!"))
 		return FALSE
