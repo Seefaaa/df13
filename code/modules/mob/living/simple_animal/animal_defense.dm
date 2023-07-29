@@ -38,15 +38,24 @@
 			if(HAS_TRAIT(M, TRAIT_PACIFISM))
 				to_chat(M, span_warning("You don't want to hurt [name]!"))
 				return
+			if(prob(M.get_skill_modifier(/datum/skill/martial, SKILL_MISS_MODIFIER)))
+				M.visible_message(span_warning("[M]'s attack misses [src]!") , \
+									span_userdanger("Your attack misses [src]!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, M)
+				to_chat(src, span_warning("[M]'s attack misses you!"))
+				playsound(M.loc, M.dna.species.miss_sound, 25, TRUE, -1)
+				return
 			M.do_attack_animation(src, ATTACK_EFFECT_PUNCH)
 			do_damaged_animation(M)
 			visible_message(span_danger("[M] [response_harm_continuous] [name]!") ,\
 							span_userdanger("[M] [response_harm_continuous] you!") , null, COMBAT_MESSAGE_RANGE, M)
 			to_chat(M, span_danger("You [response_harm_simple] [name]!"))
 			playsound(loc, attacked_sound, 25, TRUE, -1)
-			attack_threshold_check(harm_intent_damage, attack_type = BLUNT)
+			var/damage = rand(M.dna.species.punchdamagelow, M.dna.species.punchdamagehigh)
+			attack_threshold_check(damage, attack_type = BLUNT)
 			log_combat(M, src, "attacked")
 			updatehealth()
+			if(stat != DEAD)
+				M.adjust_experience(/datum/skill/martial, 5)
 			return TRUE
 
 /**
