@@ -2,7 +2,7 @@
 	name = "bear"
 	desc = "Perfect for hugging. Don't complain later."
 	icon = 'dwarfs/icons/mob/64x64.dmi'
-	base_pixel_x = -32
+	pixel_x = -16
 	icon_state = "bear"
 	icon_living = "bear"
 	icon_dead = "bear_dead"
