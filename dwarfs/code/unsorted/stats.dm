@@ -836,7 +836,7 @@
         if(6)
             armor.setRating(sharp=23,pierce=16,blunt=15,fire=10,wound=40)
 
-/obj/item/clothing/shoes/jackboots/plate_boots/apply_grade(grade)
+/obj/item/clothing/shoes/plate_boots/apply_grade(grade)
     ..()
     switch(grade)
         if(1)

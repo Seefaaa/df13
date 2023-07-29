@@ -108,7 +108,7 @@
 
 /datum/smithing_recipe/plate_boots
 	name = "plate boots"
-	result = /obj/item/clothing/shoes/jackboots/plate_boots
+	result = /obj/item/clothing/shoes/plate_boots
 	max_resulting = 3
 
 /datum/smithing_recipe/torch_fixture
