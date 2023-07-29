@@ -267,7 +267,8 @@
 			var/skill_name = skills[i]
 			var/data = skills[skill_name]
 			var/s = i == skills.len ? "└" : "├"
-			parts += "[FOURSPACES][s] Highest in [skill_name]: <b>[data["mob"]]</b>, the [SSskills.level_names[data["lvl"]]] [data["title"]]."
+			var/skill_color = SSskills.level_colors[data["lvl"]]
+			parts += "[FOURSPACES][s] Highest in [skill_name]: <b>[data["mob"]]</b>, the <font color=[skill_color]>[SSskills.level_names[data["lvl"]]]</font> [data["title"]]."
 	else
 		parts += "[FOURSPACES]└ Nobody had skills?"
 	return parts.Join("<br>")

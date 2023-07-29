@@ -9,6 +9,7 @@ SUBSYSTEM_DEF(skills)
 	///List of level names with index corresponding to skill level
 	//List of skill level names. Note that indexes can be accessed like so: level_names[SKILL_LEVEL_NOVICE]
 	var/list/level_names = list("Unskilled", "Novice", "Adequate", "Competent", "Proficient", "Adept", "Expert", "Accomplished", "Master", "Grand Master", "Legendary")
+	var/list/level_colors = list("white", "green", "aqua", "teal", "blue", "navy", "magenta", "purple", "red", "yellow", "#FFC300")
 
 /datum/controller/subsystem/skills/Initialize(timeofday)
 	InitializeSkills()
