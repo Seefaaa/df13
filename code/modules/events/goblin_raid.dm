@@ -4,7 +4,7 @@
 	weight = 5
 	max_occurrences = INFINITY
 	earliest_start = 30 MINUTES
-	delay = 10 MINUTES
+	delay = 20 MINUTES
 	min_players = 10
 
 /datum/round_event/ghost_role/goblin_raid
