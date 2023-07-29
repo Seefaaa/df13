@@ -16,23 +16,6 @@
 	slowdown = initial(slowdown)
 	melee_cd = initial(melee_cd)
 
-/obj/examine_more(mob/user)
-	. = ..()
-	var/qualtity_text
-	switch(grade)
-		if(1)
-			qualtity_text = "poorly-crafted"
-		if(2)
-			qualtity_text = "decently-crafted"
-		if(3)
-			qualtity_text = "finely-crafted"
-		if(4)
-			qualtity_text = "superior quality"
-		if(5)
-			qualtity_text = "exceptional"
-		if(6)
-			qualtity_text = "Masterful"
-	. += "<br>The [src] is [qualtity_text]."
 /obj/proc/apply_grade(_grade=null)
 	if(_grade)
 		src.grade = _grade

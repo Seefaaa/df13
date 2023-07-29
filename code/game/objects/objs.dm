@@ -322,5 +322,5 @@
 			if(5)
 				qualtity_text = "exceptional"
 			if(6)
-				qualtity_text = "Masterful"
-		. += "<br>The [src] is [qualtity_text]."
+				qualtity_text = "masterful"
+		. += "<br>\The [src] is [qualtity_text]."
