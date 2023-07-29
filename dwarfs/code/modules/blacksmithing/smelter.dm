@@ -70,7 +70,7 @@
 		if(!S.use(5))
 			to_chat(user, span_warning("You need at least 5 pieces."))
 			return
-		to_chat(user, span_notice("[src] you place [S] into [src]."))
+		to_chat(user, span_notice("You place [S] into [src]."))
 		if(working && !contents.len)
 			start_smelting()
 		var/obj/O = new S.refined_type(src)
