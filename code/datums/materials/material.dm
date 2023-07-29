@@ -302,7 +302,7 @@
 	name = "cotton"
 
 /datum/material/cloth/pig_tail_cotton
-	name = "pig_tail_cotton"
+	name = "pig tail cotton"
 
 #undef TOOLSPEED_MIN_VALUE
 #undef MELEE_CD_MIN_VALUE
