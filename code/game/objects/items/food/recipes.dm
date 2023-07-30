@@ -260,12 +260,12 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 			var/matched = 0
 			for(var/O in recipe.req_items)
 				matched += recipe_matches_items[recipe.type][O]/recipe.req_items[O]
-			i_p = matched/recipe.req_items.len
+			i_p = round(matched/recipe.req_items.len, 0.01)
 		if(recipe.req_reagents.len)
 			var/matched = 0
 			for(var/R in recipe.req_reagents)
 				matched += recipe_matches_reagents[recipe.type][R]/recipe.req_reagents[R]
-			r_p = matched/recipe.req_reagents.len
+			r_p = round(matched/recipe.req_reagents.len, 0.01)
 
 		if(i_p == 1 && r_p == 1)
 			return recipe
