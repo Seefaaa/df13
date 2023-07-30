@@ -80,7 +80,7 @@
 	name = "salad"
 	desc = "Eat your veggies, son."
 	icon_state = "salad"
-	plate_type = /obj/item/reagent_containers/glass/plate/regular
+	plate_type = /obj/item/reagent_containers/glass/plate/bowl
 	food_reagents = list(/datum/reagent/consumable/nutriment=60)
 	mood_event_type = /datum/mood_event/ate_meal
 
@@ -122,7 +122,7 @@
 	name = "plump pie"
 	desc = "Mushroom pie. A bit weird combination, but dwarves like it."
 	icon_state = "plump_pie"
-	plate_type = /obj/item/reagent_containers/glass/plate/bowl
+	plate_type = /obj/item/reagent_containers/glass/plate/flat
 	food_reagents = list(/datum/reagent/consumable/nutriment=120)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
@@ -130,15 +130,15 @@
 	name = "meat pie"
 	desc = "A pie full of juicy meat."
 	icon_state = "meat_pie"
-	plate_type = /obj/item/reagent_containers/glass/plate/bowl
+	plate_type = /obj/item/reagent_containers/glass/plate/flat
 	food_reagents = list(/datum/reagent/consumable/nutriment=150)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
 /obj/item/food/dish/apple_pie
-	name = "meat pie"
+	name = "apple pie"
 	desc = "Sweet delicacy with a sour aftertaste."
 	icon_state = "apple_pie"
-	plate_type = /obj/item/reagent_containers/glass/plate/bowl
+	plate_type = /obj/item/reagent_containers/glass/plate/flat
 	food_reagents = list(/datum/reagent/consumable/nutriment=100)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
