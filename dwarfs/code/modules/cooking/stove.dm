@@ -204,6 +204,8 @@
 	var/datum/cooking_recipe/R = find_recipe(possible_recipes, I.contents, I.reagents.reagent_list)
 	LAZYCLEARLIST(I.contents)
 	I.reagents.clear_reagents()
+	update_appearance()
+	I.update_appearance()
 	if(!R)
 		user.adjust_experience(/datum/skill/cooking, 2)
 		new /obj/item/food/badrecipe(get_turf(src))

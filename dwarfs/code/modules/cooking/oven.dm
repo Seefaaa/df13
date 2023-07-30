@@ -77,7 +77,10 @@
 		possible_recipes = subtypesof(/datum/cooking_recipe/oven/cake)
 	var/datum/cooking_recipe/R = find_recipe(possible_recipes, I.contents, I.reagents.reagent_list)
 	if(!R)
-		qdel(I)
+		I.contents.Cut()
+		I.reagents.clear_reagents()
+		I.update_appearance()
+		I.forceMove(get_turf(src))
 		new /obj/item/food/badrecipe(get_turf(src))
 		user.adjust_experience(/datum/skill/cooking, 2)
 		return

@@ -190,14 +190,11 @@
 		var/datum/cooking_recipe/R = find_recipe(subtypesof(/datum/cooking_recipe/bowl), contents, reagents.reagent_list)
 		var/mob/living/carbon/human/H = user
 		if(!R)
-			var/held_index = H.is_holding(src)
-			if(held_index)
-				qdel(src)
-				var/obj/item/food/badrecipe/S = new
-				H.put_in_hand(S, held_index)
-			else
-				new /obj/item/food/badrecipe(loc)
-				qdel(src)
+			reagents.clear_reagents()
+			contents.Cut()
+			var/obj/item/food/badrecipe/S = new
+			if(!H.put_in_hands(S))
+				S.forceMove(get_turf(src))
 			user.adjust_experience(/datum/skill/cooking, 2)
 			return
 
