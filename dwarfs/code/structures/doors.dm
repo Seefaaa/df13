@@ -1,17 +1,13 @@
-/obj/structure/mineral_door/stone
-	name = "stone door"
-	icon_state = "stone"
-	sheetType = /obj/item/stack/sheet/stone
+/obj/structure/mineral_door/material
+	name = "door"
+	icon_state = "material"
+	materials = list(PART_STONE=/datum/material/stone, PART_INGOT=/datum/material/iron)
 
-/obj/structure/mineral_door/wooden
-	name = "wooden door"
-	icon_state = "wood"
-	sheetType = /obj/item/stack/sheet/planks
-
-/obj/structure/mineral_door/sand
-	name = "sand door"
-	icon_state = "sand"
-	sheetType = /obj/item/stack/ore/smeltable/sand
+/obj/structure/mineral_door/material/build_material_icon(_file, state)
+	if(PART_STONE in materials)
+		return apply_palettes(..(), list(materials[PART_STONE], materials[PART_INGOT]))
+	else
+		return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT]))
 
 /obj/structure/mineral_door/placeholder
 	name = "door"

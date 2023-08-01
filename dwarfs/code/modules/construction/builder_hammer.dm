@@ -29,10 +29,10 @@
 	for(var/s in buildable)
 		var/obj/structure/blueprint/S = new s
 		var/atom/original
-		if(ispath(S.target_structure, /turf))
-			original = new S.target_structure(locate(world.maxx, world.maxy, world.maxz))
+		if(ispath(S.display_structure, /turf))
+			original = new S.display_structure(locate(world.maxx, world.maxy, world.maxz))
 		else
-			original = new S.target_structure
+			original = new S.display_structure
 		var/category = S.cat
 		var/list/blueprint = list()
 		var/list/resources = S.build_ui_resources(user)

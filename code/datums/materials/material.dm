@@ -182,7 +182,7 @@
 	var/treated_type
 	floor_type = /turf/open/floor/wooden
 	wall_type = /turf/closed/wall/wooden
-	door_type = /obj/structure/mineral_door/wooden
+	door_type = /obj/structure/mineral_door/material
 
 /datum/material/wood/towercap
 	name = "towercap wood"
@@ -283,14 +283,14 @@
 	palettes = list("soapstone")
 	mat = MATERIAL_STONE
 	wall_type = /turf/closed/wall/stone
-	door_type = /obj/structure/mineral_door/stone
+	door_type = /obj/structure/mineral_door/material
 
 /datum/material/sandstone
 	name = "sandstone"
 	palettes = list("sand")
 	mat = MATERIAL_STONE
 	wall_type = /turf/closed/wall/sand
-	door_type = /obj/structure/mineral_door/sand
+	door_type = /obj/structure/mineral_door/material
 
 /datum/material/cloth
 	palettes = list("cloth")

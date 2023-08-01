@@ -209,13 +209,6 @@
 		O.forceMove(drop_location())
 		update_appearance()
 
-#define TROWEL_BUILD_FLOOR 1
-#define TROWEL_BUILD_WALL 2
-#define TROWEL_BUILD_DOOR 3
-#define TROWEL_BUILD_TABLE 4
-#define TROWEL_BUILD_CHAIR 5
-#define TROWEL_BUILD_STAIRS 6
-
 /obj/item/trowel
 	name = "trowel"
 	desc = "Used for building purposes."
@@ -229,122 +222,10 @@
 	atck_type = PIERCE
 	throwforce = 12
 	throw_range = 3
-	var/mode = TROWEL_BUILD_FLOOR
-	var/mat_need = 0
 	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/trowel/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/trowel/afterattack(atom/A, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	do_job(A, user)
-
-/obj/item/trowel/proc/check_resources()
-	var/mat_to = 0
-	mat_need = 0
-	for(var/obj/item/stack/sheet/stone/B in view(1))
-		mat_to += B.amount
-	switch(mode)
-		if(TROWEL_BUILD_WALL) mat_need = 4
-		if(TROWEL_BUILD_FLOOR) mat_need = 1
-		if(TROWEL_BUILD_STAIRS) mat_need = 3
-		if(TROWEL_BUILD_DOOR) mat_need = 3
-	if(mat_to >= mat_need)
-		return TRUE
-	else
-		return FALSE
-
-/obj/item/trowel/proc/use_resources(turf/T, mob/user)
-	var/needed = mat_need
-	for(var/obj/item/stack/sheet/stone/B in view(1))
-		var/temp_needed = needed
-		while(!B.use(temp_needed))
-			temp_needed--
-		needed -= temp_needed
-		if(needed == 0) break
-	switch(mode)
-		if(TROWEL_BUILD_WALL)
-			T.ChangeTurf(/turf/closed/wall/stone, /turf/open/floor/rock)
-			user.visible_message(span_notice("<b>[user]</b> constructs a stone wall.") , \
-								span_notice("You construct a stone wall."))
-		if(TROWEL_BUILD_FLOOR)
-			if(isopenspace(T))
-				var/obj/L = locate(/obj/structure/lattice) in T
-				if(!L)
-					to_chat(user, span_warning("[src] requires a lattice to build floor."))
-					return
-				else
-					qdel(L)
-			T.ChangeTurf(/turf/open/floor/tiles)
-			user.visible_message(span_notice("<b>[user]</b> constructs stone floor.") , \
-								span_notice("You construct stone floor."))
-		if(TROWEL_BUILD_STAIRS)
-			var/obj/structure/stairs/S = new(T)
-			S.dir = user.dir
-			user.visible_message(span_notice("<b>[user]</b> constructs stone stairs."), span_notice("You construct stone stairs."))
-		if(TROWEL_BUILD_DOOR)
-			var/obj/structure/mineral_door/stone/D = new(T)
-			D.dir = user.dir
-			user.visible_message(span_notice("<b>[user]</b> constructs stone door."), span_notice("You construct stone door."))
-
-/obj/item/trowel/proc/do_job(atom/A, mob/user)
-	if(mode != TROWEL_BUILD_FLOOR && !isfloorturf(A))
-		to_chat(user, span_warning("Can't build here!"))
-		return
-	else if((mode == TROWEL_BUILD_FLOOR && !isfloorturf(A) && !isopenspace(A)) || (mode == TROWEL_BUILD_FLOOR && isopenspace(A) && !(locate(/obj/structure/lattice) in A)))
-		to_chat(user, span_warning("Can't build here!"))
-		return
-	else if(mode == TROWEL_BUILD_DOOR && !isfloorturf(A))
-		to_chat(user, span_warning("Can't build here!"))
-		return
-	var/turf/T = get_turf(A)
-	if(check_resources())
-		var/channel = playsound(src.loc, 'dwarfs/sounds/tools/trowel/trowel_dig.ogg', 50, TRUE)
-		if(do_after(user, 5 SECONDS, target = A))
-			stop_sound_channel_nearby(src, channel)
-			if(check_resources())
-				use_resources(T, user)
-				playsound(src.loc, 'sound/machines/click.ogg', 50, TRUE)
-				return TRUE
-	else
-		to_chat(user, span_warning("Not enough materials!"))
-
-/obj/item/trowel/proc/check_menu(mob/living/user)
-	if(!istype(user))
-		return FALSE
-	if(user.incapacitated() || !user.Adjacent(src))
-		return FALSE
-	return TRUE
-
-/obj/item/trowel/attack_self(mob/user)
-	..()
-	var/list/choices = list(
-		"Floor" = image(icon = 'dwarfs/icons/turf/floors.dmi', icon_state = "stone_floor"),
-		"Wall" = image(icon = 'dwarfs/icons/turf/walls_dwarven.dmi', icon_state = "rich_wall-0"),
-		"Stairs" = image(icon='dwarfs/icons/structures/stone_stairs.dmi', icon_state = "stairs_t"),
-		"Door" = image(icon='dwarfs/icons/structures/doors.dmi', icon_state = "stone")
-	)
-	var/choice = show_radial_menu(user, src, choices, custom_check = CALLBACK(src, PROC_REF(check_menu), user), require_near = TRUE, tooltips = TRUE)
-	if(!check_menu(user))
-		return
-	switch(choice)
-		if("Floor")
-			mode = TROWEL_BUILD_FLOOR
-		if("Wall")
-			mode = TROWEL_BUILD_WALL
-		if("Stairs")
-			mode = TROWEL_BUILD_STAIRS
-		if("Door")
-			mode = TROWEL_BUILD_DOOR
-
-#undef TROWEL_BUILD_FLOOR
-#undef TROWEL_BUILD_WALL
-#undef TROWEL_BUILD_DOOR
-#undef TROWEL_BUILD_TABLE
-#undef TROWEL_BUILD_CHAIR
 
 /obj/item/hoe
 	name = "hoe"

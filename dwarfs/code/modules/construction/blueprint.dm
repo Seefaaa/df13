@@ -8,6 +8,8 @@
 	var/build_time = 10 SECONDS
 	//What are we building
 	var/atom/target_structure
+	//What is shown in yje UI
+	var/atom/display_structure
 	//What do we need to build it
 	var/list/reqs = list()
 	//What materials are allowed or what is the user using
@@ -16,6 +18,11 @@
 	var/list/dimensions = list(0,0)
 	var/cat = "misc"
 
+/obj/structure/blueprint/Initialize()
+	. = ..()
+	if(!display_structure)
+		display_structure = target_structure
+
 /obj/structure/blueprint/examine(mob/user)
 	. = ..()
 	. += "<br>Required materials:"
@@ -23,9 +30,8 @@
 
 /obj/structure/blueprint/proc/req_examine()
 	. = list()
-	for(var/i in reqs)
-		var/obj/O = i
-		. += "<br>[get_req_amount(i)-get_amount(i)] [initial(O.name)]"
+	for(var/req in reqs)
+		. += "<br>[get_req_amount(req)-get_amount(req)] [get_req_name(req)]"
 
 /obj/structure/blueprint/Destroy()
 	for(var/obj/item/I in contents)
@@ -63,11 +69,11 @@
 
 /obj/structure/blueprint/proc/structure_overlay()
 	var/atom/target
-	if(ispath(target_structure, /turf))
-		target = new target_structure(locate(world.maxx, world.maxy, world.maxz))
+	if(ispath(display_structure, /turf))
+		target = new display_structure(locate(world.maxx, world.maxy, world.maxz))
 	else
-		target = new target_structure
-	var/mutable_appearance/M = mutable_appearance(target.build_material_icon(initial(target_structure.icon), initial(target_structure.icon_state)))
+		target = new display_structure
+	var/mutable_appearance/M = mutable_appearance(target.build_material_icon(initial(display_structure.icon), initial(display_structure.icon_state)))
 	if(!isturf(target))
 		qdel(target)
 	M.color = "#5e8bdf"
@@ -79,20 +85,78 @@
 	var/mutable_appearance/M = structure_overlay()
 	. += M
 
-/obj/structure/blueprint/proc/get_amount(type)
+/obj/structure/blueprint/proc/get_amount(obj/item/O)
 	. = 0
 	for(var/obj/item/I in contents)
-		if(istype(I, type))
-			if(isstack(I))
-				var/obj/item/stack/S = I
-				. += S.amount
+		if(isatom(O))
+			if(istype(I, O.type) || (O.part_name != "part" && O.part_name == I.part_name))
+				if(isstack(I))
+					var/obj/item/stack/S = I
+					. += S.amount
+				else
+					.++
+		else if(ispath(O))
+			if(istype(I, O))
+				if(isstack(I))
+					var/obj/item/stack/S = I
+					. += S.amount
+				else
+					.++
+		else
+			if(islist(O))
+				var/list/parts = O
+				if((I.part_name in parts) || O == PART_ANY)
+					if(isstack(I))
+						var/obj/item/stack/S = I
+						. += S.amount
+					else
+						.++
 			else
-				.++
+				if(I.part_name == O || O == PART_ANY)
+					if(isstack(I))
+						var/obj/item/stack/S = I
+						. += S.amount
+					else
+						.++
 
-/obj/structure/blueprint/proc/get_req_amount(type)
-	. = reqs[type]
+/obj/structure/blueprint/proc/get_req(obj/O)
+	. = (O.type in reqs) ? O.type : null
+	if(!. && O.part_name != "part")//check for part names
+		for(var/req in reqs)
+			if(ispath(req))
+				continue
+			if(islist(req))
+				var/list/combined_req = req
+				if(O.part_name in combined_req)
+					return combined_req
+			if(req == O.part_name || req == PART_ANY)
+				return req
 	if(!.)
-		return -1
+		return null
+
+/obj/structure/blueprint/proc/get_req_amount(obj/item/O)
+	var/req = isatom(O) ? get_req(O) : O
+	return req ? reqs[req] : -1
+
+/obj/structure/blueprint/proc/get_total_req_amount()
+	. = 0
+	for(var/req in reqs)
+		. += reqs[req]
+
+/obj/structure/blueprint/proc/get_req_name(req)
+	if(ispath(req))
+		var/atom/A = req
+		return initial(A.name)
+	if(istext(req))
+		return get_part_name(req)
+	if(islist(req))
+		. = ""
+		var/list/lreq = req
+		for(var/i in 1 to lreq.len)
+			. += get_part_name(lreq[i])
+			if(i != lreq.len)
+				. += " or "
+		return .
 
 /obj/structure/blueprint/proc/add_material(mob/user, obj/item/I)
 	if(!can_accept(user, I))
@@ -101,7 +165,7 @@
 		return
 	if(isstack(I))
 		var/obj/item/stack/S = I
-		var/diff = get_req_amount(S.type) - get_amount(S.type)
+		var/diff = get_req_amount(S) - get_amount(S)
 		var/to_use = diff <= S.amount ? diff : S.amount
 		S.use(to_use)
 		var/added = FALSE
@@ -122,16 +186,17 @@
 /// Check whether obj/I can be accepted by the blueprint (primary check)
 /obj/structure/blueprint/proc/can_accept(mob/user, obj/I)
 	. = TRUE
-	var/diff = get_req_amount(I.type)-get_amount(I.type)
+	var/req = get_req(I)
+	var/diff = get_req_amount(req)-get_amount(req)
 	if(diff < 1)
 		to_chat(user, span_warning("[src] already has enough of [I]."))
 		return FALSE
-	if(I.type in req_materials)
-		if(I.materials != req_materials[I.type])
-			to_chat(user, span_warning("[I] has to be made out of [get_material_name(req_materials[I.type])]"))
+	if(req in req_materials)
+		if(I.materials != req_materials[req])
+			to_chat(user, span_warning("[I] has to be made out of [get_material_name(req_materials[req])]"))
 			return FALSE
-	else
-		req_materials[I.type] = I.materials
+	else //we accept and remember the material
+		req_materials[req] = I.materials
 
 /// Extra check after we figure obj/material is accepted by can_accept proc
 /obj/structure/blueprint/proc/additional_check(mob/user, obj/material)
@@ -146,14 +211,23 @@
 
 /obj/structure/blueprint/proc/build_ui_resources(mob/user)
 	. = list() // list of lists where each list is a resource data
-	for(var/i in reqs)
-		var/amt = reqs[i]
-		var/obj/O = new i
-		var/req_name = initial(O.name)
+	for(var/req in reqs)
+		var/amt = reqs[req]
+		var/obj/O
+		var/req_name = get_req_name(req)
+		if(islist(req))
+			var/list/lreq = req
+			var/_type = get_default_part(lreq[1])
+			O = new _type
+		else if(istext(req))
+			var/_type = get_default_part(req)
+			O = new _type
+		else
+			O = new req
 		var/icon/I = icon(O.icon, O.icon_state)
 		var/datum/material/M
-		if(i in req_materials)
-			M = get_material(req_materials[i])
+		if(req in req_materials)
+			M = get_material(req_materials[req])
 		if(O.materials && !M)
 			I = O.build_material_icon(O.icon, O.icon_state)
 		else if(M)
@@ -416,7 +490,7 @@
 	if(material.materials != material_type)
 		return FALSE
 
-/obj/structure/blueprint/wall/get_req_amount(type)
+/obj/structure/blueprint/wall/get_req_amount(obj/item/O)
 	return material_required
 
 /obj/structure/blueprint/wall/build_ui_resources(mob/user)
@@ -430,51 +504,10 @@
 
 /obj/structure/blueprint/door
 	name = "door"
-	target_structure = /obj/structure/mineral_door/placeholder
+	display_structure = /obj/structure/mineral_door/placeholder
+	target_structure = /obj/structure/mineral_door/material
+	reqs = list(list(PART_PLANKS, PART_STONE)=3, PART_INGOT=1)
 	cat = "construction"
-	var/material_required = 3
-	var/material_type
-
-/obj/structure/blueprint/door/req_examine()
-	. = ..()
-	. += "<br>[material_required-get_amount(contents.len ? contents[1].type : 0)] any valid material"
-
-/obj/structure/blueprint/door/can_build(mob/user)
-	. = TRUE
-	if(get_amount(contents.len ? contents[1].type : 0) != material_required)
-		to_chat(user, span_warning("[src] is is missing materials to be built!"))
-		return FALSE
-
-/obj/structure/blueprint/door/can_accept(mob/user, obj/I)
-	. = ..()
-	if(!.)
-		return FALSE
-	if(!I.materials)
-		return FALSE
-	var/datum/material/M = get_material(I.materials)
-	if(!M)
-		return FALSE
-	if(!M.door_type)
-		return FALSE
-
-/obj/structure/blueprint/door/additional_check(mob/user, obj/material)
-	. = TRUE
-	if(!material_type)
-		material_type = material.materials
-	if(material.materials != material_type)
-		return FALSE
-
-/obj/structure/blueprint/door/get_req_amount(type)
-	return material_required
-
-/obj/structure/blueprint/door/build_ui_resources(mob/user)
-	var/obj/O = /obj/item/stack/sheet/stone
-	var/icon_path = icon2path(initial(O.icon), user, initial(O.icon_state))
-	return list(list("name"="Any Valid Material","amount"=material_required,"icon"=icon_path))
-
-/obj/structure/blueprint/door/get_target_structure()
-	var/datum/material/M = get_material(material_type)
-	return M.door_type
 
 /obj/structure/blueprint/stairs
 	name = "stairs"
@@ -486,45 +519,7 @@
 	name = "sign"
 	target_structure = /obj/structure/sign
 	cat = "decoration"
-	var/material_required = 3
-	var/material_type
-
-/obj/structure/blueprint/sign/req_examine()
-	. = ..()
-	. += "<br>[material_required-get_amount(contents.len ? contents[1].type : 0)] any valid material"
-
-/obj/structure/blueprint/sign/can_build(mob/user)
-	. = TRUE
-	if(get_amount(contents.len ? contents[1].type : 0) != material_required)
-		to_chat(user, span_warning("[src] is is missing materials to be built!"))
-		return FALSE
-
-/obj/structure/blueprint/sign/can_accept(mob/user, obj/I)
-	. = ..()
-	if(!.)
-		return FALSE
-	if(!I.materials)
-		return FALSE
-	var/datum/material/M = get_material(I.materials)
-	if(!M)
-		return FALSE
-	// if(!M.door_type)
-	// 	return FALSE
-
-/obj/structure/blueprint/sign/additional_check(mob/user, obj/material)
-	. = TRUE
-	if(!material_type)
-		material_type = material.materials
-	if(material.materials != material_type)
-		return FALSE
-
-/obj/structure/blueprint/sign/get_req_amount(type)
-	return material_required
-
-/obj/structure/blueprint/sign/build_ui_resources(mob/user)
-	var/obj/O = /obj/item/stack/sheet/stone
-	var/icon_path = icon2path(initial(O.icon), user, initial(O.icon_state))
-	return list(list("name"="Any Valid Material","amount"=material_required,"icon"=icon_path))
+	reqs = list(PART_ANY=3)
 
 /obj/structure/blueprint/sarcophagus
 	name = "sarcophagus"

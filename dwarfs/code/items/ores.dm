@@ -31,5 +31,6 @@
 	throwforce = 10
 	resistance_flags = FIRE_PROOF
 	w_class = WEIGHT_CLASS_TINY
+	part_name = PART_STONE
 	merge_type = /obj/item/stack/sheet/stone
 	materials = /datum/material/stone

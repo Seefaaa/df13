@@ -171,6 +171,7 @@
 					to_chat(user, span_warning("You have to free the space required to place the blueprint first!"))
 					return
 		var/obj/structure/blueprint/new_blueprint = new H.selected_blueprint(src)
+		new_blueprint.dir = user.dir
 		new_blueprint.update_appearance()
 	else if(istype(I, /obj/item/sapling))
 		var/obj/item/offhand = user.get_inactive_held_item()

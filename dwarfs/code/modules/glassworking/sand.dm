@@ -4,6 +4,7 @@
 	icon_state = "sand"
 	singular_name = "pile of sand"
 	novariants = FALSE
+	part_name = PART_STONE
 	refined_type = /obj/item/stack/glass
 	materials = /datum/material/sandstone
 
