@@ -19,6 +19,7 @@
 /obj/proc/apply_grade(_grade=null)
 	if(_grade)
 		src.grade = _grade
+	obj_flags |= USES_GRADES
 	var/grd_name = grade_name(grade)
 	name = "[grd_name][initial(name)][grd_name]"
 	apply_grade_extra(_grade)

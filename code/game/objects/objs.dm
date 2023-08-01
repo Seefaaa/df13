@@ -308,7 +308,7 @@
 		else if(!islist(materials)) // re-check if this is not an emtpy list
 			var/datum/material/M = SSmaterials.materials[materials]
 			. += "<br>It's made out of [M.name]."
-	if(grade)
+	if(grade && (obj_flags & USES_GRADES))
 		var/qualtity_text
 		switch(grade)
 			if(1)
