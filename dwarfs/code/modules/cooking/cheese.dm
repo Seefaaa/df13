@@ -15,4 +15,4 @@
 	desc = "Aged cheese wheel bursting with flavor."
 	icon_state = "cheese"
 	aged = TRUE
-	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/slice/cheese, 3, 2 SECONDS)
+	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/slice/cheese, 6, 2 SECONDS)
