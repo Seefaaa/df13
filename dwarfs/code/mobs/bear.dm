@@ -20,9 +20,6 @@
 	melee_damage_upper = 25
 	attack_vis_effect = ATTACK_EFFECT_CLAW
 	gold_core_spawnable = HOSTILE_SPAWN
-	move_force = MOVE_FORCE_VERY_STRONG
-	move_resist = MOVE_FORCE_VERY_STRONG
-	pull_force = MOVE_FORCE_VERY_STRONG
 	a_intent = INTENT_HARM
 	stat_attack = HARD_CRIT
 	atck_type = SHARP // bear claws are sharp
