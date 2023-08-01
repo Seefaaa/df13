@@ -174,7 +174,7 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	req_lvl = 5
 	cooking_text = "Prepare everything on a pan and roast at a stove."
 
-/datum/cooking_recipe/oven/plate/egg_steak
+/datum/cooking_recipe/pan/egg_steak
 	req_items = list(/obj/item/food/egg=2, /obj/item/food/meat/slab=1)
 	result = /obj/item/transfer_food/skillet/egg_steak
 	req_lvl = 3
