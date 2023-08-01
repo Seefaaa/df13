@@ -16,10 +16,17 @@
 		if(O.reagents?.total_volume || O.contents.len)
 			to_chat(user, span_warning("[O] has to be empty!"))
 			return
-		var/obj/item/I = new food_inside(O.loc)
+		var/atom/new_loc = O.loc
+		var/obj/item/I = new food_inside
 		I.pixel_x = O.pixel_x
 		I.pixel_y = O.pixel_y
 		qdel(O)
+		if(ismob(new_loc))
+			var/mob/living/carbon/human/H = new_loc
+			if(!H.put_in_hands(I))
+				I.forceMove(get_turf(H))
+		else
+			I.forceMove(get_turf(new_loc))
 		to_chat(user, span_notice("You transfer [initial(food_inside.name)] into [O]."))
 		charges--
 		if(charges)
