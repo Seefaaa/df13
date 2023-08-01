@@ -43,7 +43,7 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	cooking_text = "Place everything in the cake pan and bake it in the oven."
 
 /datum/cooking_recipe/oven/cake/meat_pie
-	req_items = list(/obj/item/food/dough=1, /obj/item/food/meat/slab=3)
+	req_items = list(/obj/item/food/dough=1, /obj/item/food/slice/meat=2, /obj/item/growable/onion=1)
 	result = /obj/item/transfer_food/cake/meat_pie
 	req_lvl = 3
 	cooking_text = "Place everything in the cake pan and bake it in the oven."
@@ -55,7 +55,7 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	cooking_text = "Place everything in the cake pan and bake it in the oven."
 
 /datum/cooking_recipe/oven/sheet/balanced_roll
-	req_items = list(/obj/item/food/flat_dough=2, /obj/item/food/slice/meat=3, /obj/item/growable/carrot=2, /obj/item/food/slice/plump_helmet=2)
+	req_items = list(/obj/item/food/flat_dough=2, /obj/item/food/slice/meat/chicken=3, /obj/item/growable/carrot=2, /obj/item/food/slice/plump_helmet=2)
 	result = /obj/item/transfer_food/sheet/roll
 	req_lvl = 6
 	cooking_text = "Place everything on the baking sheet and bake it in the oven."
@@ -84,7 +84,7 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	cooking_text = "Put everything in a pot and cook on the stove."
 
 /datum/cooking_recipe/pot/plump_stew
-	req_items = list(/obj/item/food/slice/meat=2, /obj/item/food/slice/plump_helmet=3, /obj/item/growable/turnip=1)
+	req_items = list(/obj/item/food/slice/meat=3, /obj/item/growable/plump_helmet=2, /obj/item/growable/turnip=1)
 	req_reagents = list(/datum/reagent/water=15)
 	result = /obj/item/transfer_food/pot/plump_stew
 	req_lvl = 3
@@ -99,14 +99,21 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 
 /datum/cooking_recipe/pot/carrot_soup
 	req_items = list(/obj/item/growable/onion=1, /obj/item/growable/carrot=3)
-	req_reagents = list(/datum/reagent/water=15)
+	req_reagents = list(/datum/reagent/water=20)
 	result = /obj/item/transfer_food/pot/carrot_soup
+	req_lvl = 4
+	cooking_text = "Put everything in a pot and cook on the stove."
+
+/datum/cooking_recipe/pot/potato_soup
+	req_items = list(/obj/item/growable/onion=1, /obj/item/growable/potato=3)
+	req_reagents = list(/datum/reagent/water=20)
+	result = /obj/item/transfer_food/pot/potato_soup
 	req_lvl = 4
 	cooking_text = "Put everything in a pot and cook on the stove."
 
 /datum/cooking_recipe/pot/plump_soup
 	req_items = list(/obj/item/growable/onion=1, /obj/item/growable/plump_helmet=3)
-	req_reagents = list(/datum/reagent/water=15)
+	req_reagents = list(/datum/reagent/water=20)
 	result = /obj/item/transfer_food/pot/plump_soup
 	req_lvl = 4
 	cooking_text = "Put everything in a pot and cook on the stove."
@@ -145,7 +152,7 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 	cooking_text = "Throw everything into a bowl and mix with a kitchen knife."
 
 /datum/cooking_recipe/bowl/potato_salad
-	req_items = list(/obj/item/growable/potato=2, /obj/item/growable/onion=1)
+	req_items = list(/obj/item/growable/potato=3, /obj/item/growable/onion=1)
 	req_reagents = list(/datum/reagent/consumable/vinegar=5)
 	result = /obj/item/food/dish/potato_salad
 	req_lvl = 2
@@ -175,7 +182,7 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 
 /datum/cooking_recipe/pan/allwurst
 	req_items = list(/obj/item/food/sausage/luxurious=1)
-	req_reagents = list(/datum/reagent/consumable/ethanol/beer/cave_wheat=10, /datum/reagent/consumable/juice/sweet_pod=10)
+	req_reagents = list(/datum/reagent/consumable/ethanol/beer/cave_wheat=10)
 	result = /obj/item/transfer_food/skillet/allwurst
 	req_lvl = 7
 	cooking_text = "Prepare everything on a pan and roast at a stove."
@@ -189,7 +196,7 @@ GLOBAL_LIST_EMPTY(cooking_recipes)
 
 /datum/cooking_recipe/pan/allwurst_alternative
 	req_items = list(/obj/item/food/sausage/luxurious=1)
-	req_reagents = list(/datum/reagent/consumable/ethanol/beer/barley=10, /datum/reagent/consumable/juice/sweet_pod=10)
+	req_reagents = list(/datum/reagent/consumable/ethanol/beer/barley=10)
 	result = /obj/item/transfer_food/skillet/allwurst
 	req_lvl = 7
 	cooking_text = "Prepare everything on a pan and roast at a stove."

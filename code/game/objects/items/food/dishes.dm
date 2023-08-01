@@ -94,22 +94,6 @@
 
 //**********************SECOND TIER DISHES*****************************//
 
-/obj/item/food/dish/plump_stew
-	name = "plump stew"
-	desc = "Simple yet tasteful stew, dwarves would cook in their hold."
-	icon_state = "plump_stew"
-	plate_type = /obj/item/reagent_containers/glass/plate/bowl
-	food_reagents = list(/datum/reagent/consumable/nutriment=120)
-	mood_event_type = /datum/mood_event/ate_meal/decent
-
-/obj/item/food/dish/veggie_stew
-	name = "veggie stew"
-	desc = "Simple yet tasteful stew, dwarves would cook in their hold."
-	icon_state = "veggie_stew"
-	plate_type = /obj/item/reagent_containers/glass/plate/bowl
-	food_reagents = list(/datum/reagent/consumable/nutriment=100)
-	mood_event_type = /datum/mood_event/ate_meal/decent
-
 /obj/item/food/dish/egg_steak
 	name = "fried egg with steak"
 	desc = "Classic lunch meal. Desperately needs some veggies."
@@ -139,7 +123,7 @@
 	desc = "Sweet delicacy with a sour aftertaste."
 	icon_state = "apple_pie"
 	plate_type = /obj/item/reagent_containers/glass/plate/flat
-	food_reagents = list(/datum/reagent/consumable/nutriment=100)
+	food_reagents = list(/datum/reagent/consumable/nutriment=120)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
 /obj/item/food/dish/roasted_beer_wurst
@@ -156,6 +140,14 @@
 	icon_state = "carrot_soup"
 	plate_type = /obj/item/reagent_containers/glass/plate/bowl
 	food_reagents = list(/datum/reagent/consumable/nutriment=140)
+	mood_event_type = /datum/mood_event/ate_meal/decent
+
+/obj/item/food/dish/potato_soup
+	name = "potato soup"
+	desc = "Refreshing taste of potatoes."
+	icon_state = "potato_soup"
+	plate_type = /obj/item/reagent_containers/glass/plate/bowl
+	food_reagents = list(/datum/reagent/consumable/nutriment=150)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
 /obj/item/food/dish/plump_soup
@@ -206,3 +198,19 @@
 	plate_type = /obj/item/reagent_containers/glass/plate/flat
 	food_reagents = list(/datum/reagent/consumable/nutriment=280)
 	mood_event_type = /datum/mood_event/ate_meal/luxurious
+
+/obj/item/food/dish/plump_stew
+	name = "plump stew"
+	desc = "Simple yet tasteful stew, dwarves would cook in their hold."
+	icon_state = "plump_stew"
+	plate_type = /obj/item/reagent_containers/glass/plate/bowl
+	food_reagents = list(/datum/reagent/consumable/nutriment=240)
+	mood_event_type = /datum/mood_event/ate_meal/decent
+
+/obj/item/food/dish/veggie_stew
+	name = "veggie stew"
+	desc = "Simple yet tasteful stew, dwarves would cook in their hold."
+	icon_state = "veggie_stew"
+	plate_type = /obj/item/reagent_containers/glass/plate/bowl
+	food_reagents = list(/datum/reagent/consumable/nutriment=220)
+	mood_event_type = /datum/mood_event/ate_meal/decent

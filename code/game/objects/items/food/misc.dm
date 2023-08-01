@@ -94,6 +94,13 @@
 	food_inside = /obj/item/food/dish/veggie_stew
 	required_container = /obj/item/reagent_containers/glass/plate/bowl
 
+/obj/item/transfer_food/pot/potato_soup
+	name = "potato soup in pot"
+	icon_state = "cooking_pot_potato_soup"
+	charges = 3
+	food_inside = /obj/item/food/dish/potato_soup
+	required_container = /obj/item/reagent_containers/glass/plate/bowl
+
 /obj/item/transfer_food/pot/carrot_soup
 	name = "carrot soup in pot"
 	icon_state = "cooking_pot_carrot_soup"
