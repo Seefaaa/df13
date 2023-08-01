@@ -4,6 +4,7 @@
 	icon = 'dwarfs/icons/items/components.dmi'
 	icon_state = "sconce"
 	w_class = WEIGHT_CLASS_SMALL
+	anchored = TRUE
 	var/result_path = /obj/structure/sconce
 	materials = /datum/material/iron
 
