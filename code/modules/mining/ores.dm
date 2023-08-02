@@ -70,16 +70,26 @@
 /obj/item/stack/ore/smeltable/gold
 	name = "gold ore"
 	icon_state = "gold"
-	inhand_icon_state = "Gold ore"
 	singular_name = "gold ore chunk"
 	mine_experience = 5
 	refined_type = /obj/item/ingot
-	merge_type = /obj/item/stack/ore/smeltable/gold
 	ore_icon = 'dwarfs/icons/turf/ores/gold.dmi'
 	ore_basename = "gold"
 	vein_type = /datum/vein/line
 	inhand_icon_state = "gold_ore"
 	materials = /datum/material/gold
+
+/obj/item/stack/ore/smeltable/copper
+	name = "malachite ore"
+	icon_state = "malachite"
+	inhand_icon_state = "malachite_ore"
+	singular_name = "malachite ore chunk"
+	mine_experience = 5
+	refined_type = /obj/item/ingot
+	ore_icon = 'dwarfs/icons/turf/ores/malachite.dmi'
+	ore_basename = "malachite"
+	vein_type = /datum/vein/line
+	materials = /datum/material/copper
 
 /obj/item/stack/ore/gem
 	max_amount = 1

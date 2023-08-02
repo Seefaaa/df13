@@ -149,6 +149,34 @@
 	palettes = list("iron")
 	//iron is a baseline material, hence no modifiers
 
+/datum/material/copper
+	name = "copper"
+	palettes = list("copper")
+	force_mod = 0.8
+	toolspeed_mod = 0.7
+	toolspeed_mod_handle = 1.1
+	integrity_mod = 0.7
+	integrity_mod_handle = 0.9
+	melee_cd_mod = 1
+	melee_cd_mod_handle = 1
+	slowdown_mod = 0
+	slowdown_mod_handle = 0
+	hardness = 0.7
+
+	armor_sharp_mod = 0.6
+	armor_pierce_mod = 0.4
+	armor_blunt_mod = 0.5
+	armor_fire_mod = 1
+	armor_acid_mod = 1
+	armor_magic_mod = 1
+	armor_wound_mod = 1
+	armorpen_sharp_mod = 0.5
+	armorpen_pierce_mod = 0.5
+	armorpen_blunt_mod = 1.2
+	armorpen_fire_mod = 1
+	armorpen_acid_mod = 1
+	armorpen_magic_mod = 1
+
 /datum/material/gold
 	name = "gold"
 	palettes = list("gold")
