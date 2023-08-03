@@ -150,6 +150,8 @@
 
 	to_chat(character, span_italics("You have set out on a journey to join a nearby fortress. May fortune smile upon you and guide you safely to your destination."))
 	log_manifest(character.mind.key,character.mind,character,latejoin = TRUE)
+	character.log_message("has migrated.", LOG_GAME)
+	deadchat_broadcast("[character] has migrated.", follow_target=character, message_type=DEADCHAT_ARRIVALRATTLE)
 	SSblackbox.record_feedback("amount", "migrated", 1)
 	SSrespawns.character_spawned(character, character.real_name)
 
