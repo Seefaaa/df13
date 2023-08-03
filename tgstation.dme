@@ -53,7 +53,6 @@
 #include "code\__DEFINES\DNA.dm"
 #include "code\__DEFINES\do_afters.dm"
 #include "code\__DEFINES\dwarf.dm"
-#include "code\__DEFINES\dye_keys.dm"
 #include "code\__DEFINES\dynamic.dm"
 #include "code\__DEFINES\economy.dm"
 #include "code\__DEFINES\electrified_buckle.dm"

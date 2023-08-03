@@ -58,11 +58,6 @@
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
-/obj/item/stack/on_grind()
-	. = ..()
-	for(var/i in 1 to length(grind_results)) //This should only call if it's ground, so no need to check if grind_results exists
-		grind_results[grind_results[i]] *= get_amount() //Gets the key at position i, then the reagent amount of that key, then multiplies it by stack size
-
 /obj/item/stack/proc/get_main_recipes()
 	SHOULD_CALL_PARENT(TRUE)
 	return list()//empty list

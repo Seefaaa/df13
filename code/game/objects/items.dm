@@ -178,21 +178,6 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 	///The list of slots by priority. equip_to_appropriate_slot() uses this list. Doesn't matter if a mob type doesn't have a slot. For default list, see [/mob/proc/equip_to_appropriate_slot]
 	var/list/slot_equipment_priority = null
 
-	///Determines who can shoot this
-	var/trigger_guard = TRIGGER_GUARD_NONE
-
-	///Used as the dye color source in the washing machine only (at the moment). Can be a hex color or a key corresponding to a registry entry, see washing_machine.dm
-	var/dye_color
-	///Whether the item is unaffected by standard dying.
-	var/undyeable = FALSE
-	///What dye registry should be looked at when dying this item; see washing_machine.dm
-	var/dying_key
-
-	///Grinder var:A reagent list containing the reagents this item produces when ground up in a grinder - this can be an empty list to allow for reagent transferring only
-	var/list/grind_results
-	//Grinder var:A reagent list containing blah blah... but when JUICED in a grinder!
-	var/list/juice_results
-
 	var/canMouseDown = FALSE
 
 	/// Used in obj/item/examine to give additional notes on what the weapon does, separate from the predetermined output variables
@@ -683,13 +668,6 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 		MO.pixel_y = rand(-16,16)
 		MO.desc = "Looks like this was <b>[src.name]</b> some time ago."
 		..()
-
-///Called BEFORE the object is ground up - use this to change grind results based on conditions. Use "return -1" to prevent the grinding from occurring
-/obj/item/proc/on_grind()
-	return SEND_SIGNAL(src, COMSIG_ITEM_ON_GRIND)
-
-/obj/item/proc/on_juice()
-	return SEND_SIGNAL(src, COMSIG_ITEM_ON_JUICE)
 
 /// Called when a mob tries to use the item as a tool. Handles most checks.
 /obj/item/proc/use_tool(atom/target, mob/living/user, delay, amount=0, volume=0, datum/callback/extra_checks)

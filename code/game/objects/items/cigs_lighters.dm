@@ -119,7 +119,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	inhand_icon_state = "cigoff"
 	w_class = WEIGHT_CLASS_TINY
 	body_parts_covered = null
-	grind_results = list()
 	heat = 1000
 	var/dragtime = 10
 	var/nextdragtime = 0

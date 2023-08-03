@@ -973,10 +973,7 @@
 	return TRUE
 
 /mob/living/proc/can_use_guns(obj/item/G)//actually used for more than guns!
-	if(G.trigger_guard == TRIGGER_GUARD_NONE)
-		to_chat(src, span_warning("It is unable to shoot!"))
-		return FALSE
-	if(G.trigger_guard != TRIGGER_GUARD_ALLOW_ALL && !ISADVANCEDTOOLUSER(src))
+	if(!ISADVANCEDTOOLUSER(src))
 		to_chat(src, span_warning("You try to shoot from [G.name], but nothing happens!"))
 		return FALSE
 	return TRUE
