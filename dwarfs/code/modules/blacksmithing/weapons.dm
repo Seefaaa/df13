@@ -250,6 +250,7 @@
 	icon_state = "small_shield"
 	block_chance = 30
 	force = 5
+	parry_cooldown = 0.3 SECONDS
 	atck_type = BLUNT
 	w_class = WEIGHT_CLASS_BULKY
 	parrysound = 'dwarfs/sounds/weapons/shield/shield_parry.ogg'

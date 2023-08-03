@@ -104,7 +104,10 @@
 	if(offhand && istype(offhand, /obj/item/shield))
 		to_parry = offhand
 	if(to_parry && to_parry.skill && damage && AM != src)
+		if(world.time < to_parry.next_parry)
+			return FALSE
 		if(prob(get_skill_modifier(to_parry.skill, SKILL_PARRY_MODIFIER)+to_parry.block_chance))
+			to_parry.next_parry = world.time + to_parry.parry_cooldown
 			if(attack_text)
 				visible_message(span_danger("<b>[src]</b> parries [attack_text]!"), span_danger("You parry [attack_text]!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, AM)
 			if(to_parry.parrysound)
