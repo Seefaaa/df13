@@ -542,11 +542,11 @@
 /obj/structure/blueprint/crate
 	name = "wooden crate"
 	target_structure = /obj/structure/closet/crate/wooden
-	reqs = list(/obj/item/stack/sheet/planks=8)
+	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/ingot=1)
 	cat = "utils"
 
 /obj/structure/blueprint/demijohn
 	name = "demijohn"
 	target_structure = /obj/structure/demijohn
-	reqs = list(/obj/item/stack/glass=10)
+	reqs = list(/obj/item/stack/glass=6, /obj/item/stack/sheet/planks=2)
 	cat = "food processing"

@@ -5,6 +5,7 @@
 	icon_state = "barrel"
 	var/open = TRUE
 	density = 1
+	anchored = TRUE
 	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron)
 
 /obj/structure/barrel/build_material_icon(_file, state)
@@ -23,7 +24,7 @@
 /obj/structure/barrel/Initialize()
 	. = ..()
 	create_reagents(300)
-	AddComponent(/datum/component/liftable, 5)
+	AddComponent(/datum/component/liftable)
 
 /obj/structure/barrel/update_overlays()
 	. = ..()

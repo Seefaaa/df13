@@ -2,9 +2,11 @@
 	name = "demijohn"
 	desc = "A rigid container used for fermenting."
 	density = 1
+	anchored = TRUE
 	layer = ABOVE_MOB_LAYER
 	icon = 'dwarfs/icons/structures/workshops.dmi'
 	icon_state = "demijohn"
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated)
 	var/max_volume = 300
 	var/timerid
 	var/wait_before_start = 1 MINUTES // amount of time to wait before starting the work; also wait before starting to convert a converted product (juice->wine->vinegar)
@@ -14,6 +16,9 @@
 	AddComponent(/datum/component/liftable, slowdown = 5, worn_icon='dwarfs/icons/mob/inhand/righthand.dmi', inhand_icon_state="demijohn")
 	create_reagents(max_volume)
 	RegisterSignal(src, COSMIG_DEMIJOHN_STOP, PROC_REF(restart_fermentation))
+
+/obj/structure/demijohn/build_material_icon(_file, state)
+	return apply_palettes(..(), materials[PART_PLANKS])
 
 /obj/structure/demijohn/Destroy()
 	. = ..()

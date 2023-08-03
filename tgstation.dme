@@ -1104,7 +1104,6 @@
 #include "code\modules\reagents\chemistry\reagents\food_reagents.dm"
 #include "code\modules\reagents\chemistry\reagents\other_reagents.dm"
 #include "code\modules\reagents\chemistry\reagents\toxin_reagents.dm"
-#include "code\modules\reagents\reagent_containers\blood_pack.dm"
 #include "code\modules\reagents\reagent_containers\bottle.dm"
 #include "code\modules\reagents\reagent_containers\glass.dm"
 #include "code\modules\reagents\withdrawal\_addiction.dm"

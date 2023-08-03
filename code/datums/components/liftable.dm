@@ -1,9 +1,15 @@
 /obj/item/liftable //placeholder item that you pick up when picking up parent
 	var/obj/parent
+	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
+	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
+	materials = TRUE
 
 /obj/item/liftable/Initialize()
 	. = ..()
 	AddComponent(/datum/component/two_handed, require_twohands=TRUE)
+
+/obj/item/liftable/build_material_icon(_file, state)
+	return parent ? parent.build_material_icon(_file, state) : ..()//at init the parent is still null
 
 /obj/item/liftable/dropped(mob/user, silent)
 	. = ..()
@@ -17,7 +23,7 @@
 	var/lift_delay
 	var/obj/item/liftable/item
 
-/datum/component/liftable/Initialize(lift_delay = 10 SECONDS, slowdown = 5, worn_icon = null, inhand_icon_state = null)
+/datum/component/liftable/Initialize(lift_delay = 5 SECONDS, slowdown = 5, worn_icon = null, inhand_icon_state = null, use_default_sprite=FALSE)
 	src.lift_delay = lift_delay
 
 	//Create placeholder item that will be picked up
@@ -27,10 +33,10 @@
 	var/obj/P = parent
 	item.name = P.name
 	item.desc = P.desc
-	if(!worn_icon)
-		worn_icon = P.icon
-	item.lefthand_file = worn_icon
-	item.righthand_file = worn_icon
+	if(!worn_icon && use_default_sprite)
+		worn_icon = initial(P.icon)
+		item.lefthand_file = worn_icon
+		item.righthand_file = worn_icon
 	if(inhand_icon_state)
 		item.inhand_icon_state = inhand_icon_state
 	update_item()
@@ -46,6 +52,7 @@
 	if(!(src_location in range(1, over)) && !forced)
 		return
 	var/mob/living/carbon/human/H = src_location
+	H.face_atom(over)
 	to_chat(H, span_notice("You start lifting \the [over]."))
 	if(!do_after(H, lift_delay, over))
 		return
