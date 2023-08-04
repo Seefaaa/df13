@@ -44,7 +44,7 @@
 			warrior.key = C.key
 		else
 			warrior.ai_controller = new /datum/ai_controller/goblin(warrior)
-		spawned_mobs += warrior
+		// spawned_mobs += warrior // we want to announce goblin leader only
 		goblins += warrior
 		to_chat(warrior, span_announce("You are a goblin raider. Your tribe spotted a nearby fortress and sent out your group to deal with it."))
 		spawns--
