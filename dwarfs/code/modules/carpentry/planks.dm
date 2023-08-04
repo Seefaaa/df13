@@ -60,4 +60,4 @@ GLOBAL_LIST_INIT(plank_recipes, list (
 	icon = 'dwarfs/icons/structures/construction.dmi'
 	icon_state = "lattice"
 	anchored = 1
-	obj_flags = BLOCK_Z_IN_UP | BLOCK_Z_IN_DOWN | BLOCK_Z_OUT_DOWN | CAN_BE_HIT
+	obj_flags = BLOCK_Z_IN_UP | BLOCK_Z_OUT_DOWN | CAN_BE_HIT
