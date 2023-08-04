@@ -46,7 +46,8 @@
 		message_admins("[role_name] spawned successfully.")
 		if(spawned_mobs.len)
 			for (var/mob/M in spawned_mobs)
-				announce_to_ghosts(M)
+				// we add timer here since some mobs need time to init their appearance like humans
+				addtimer(CALLBACK(src, PROC_REF(announce_to_ghosts), M), 1 SECONDS)
 		else
 			message_admins("No mobs found in the `spawned_mobs` list, this is \
 				a bug.")
