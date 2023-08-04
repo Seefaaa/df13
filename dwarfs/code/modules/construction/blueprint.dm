@@ -338,14 +338,14 @@
 
 /obj/structure/blueprint/throne
 	name = "stone throne"
-	target_structure = /obj/structure/chair/comfy/stone/throne
+	target_structure = /obj/structure/chair/stone/throne
 	reqs = list(/obj/item/ingot=2, /obj/item/stack/sheet/stone=15, /obj/item/stack/sheet/mineral/gem/diamond=3)
 	req_materials = list(/obj/item/ingot=/datum/material/gold)
 	cat = "decoration"
 
 /obj/structure/blueprint/stone_chair
 	name = "stone chair"
-	target_structure = /obj/structure/chair/comfy/stone
+	target_structure = /obj/structure/chair/stone
 	reqs = list(/obj/item/stack/sheet/stone=5)
 	cat = "decoration"
 

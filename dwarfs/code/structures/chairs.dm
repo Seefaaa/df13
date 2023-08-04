@@ -1,17 +1,17 @@
-/obj/structure/chair/comfy/stone
+/obj/structure/chair/stone
 	name = "stone chair"
 	desc = "Not so comfy."
 	icon = 'dwarfs/icons/structures/chairs.dmi'
-	icon_state = "sandstonechair"
+	icon_state = "stonechair"
 	color = rgb(255,255,255)
 	resistance_flags = LAVA_PROOF
 	max_integrity = 150
 	buildstacktype = /obj/item/stack/sheet/stone
 
-/obj/structure/chair/comfy/stone/GetArmrest()
-	return mutable_appearance('dwarfs/icons/structures/chairs.dmi', "sandstonechair_armrest")
+/obj/structure/chair/stone/GetArmrest()
+	return mutable_appearance('dwarfs/icons/structures/chairs.dmi', "stonechair_armrest")
 
-/obj/structure/chair/comfy/stone/attackby(obj/item/W, mob/user, params)
+/obj/structure/chair/stone/attackby(obj/item/W, mob/user, params)
 	if(W.tool_behaviour == TOOL_WRENCH && !(flags_1&NODECONSTRUCT_1))
 		W.play_tool_sound(src)
 		user.visible_message(span_notice("[user] tries to disasseble stone chair using <b>wrench</b>.") , \
@@ -20,12 +20,12 @@
 	else
 		return ..()
 
-/obj/structure/chair/comfy/stone/throne
+/obj/structure/chair/stone/throne
 	name = "stone throne"
 	desc = "Amazing looks, still not very comfy."
 	icon = 'dwarfs/icons/structures/chairs.dmi'
 	icon_state = "throne"
 	max_integrity = 650
 
-/obj/structure/chair/comfy/stone/throne/GetArmrest()
+/obj/structure/chair/stone/throne/GetArmrest()
 	return mutable_appearance('dwarfs/icons/structures/chairs.dmi', "throne_armrest")

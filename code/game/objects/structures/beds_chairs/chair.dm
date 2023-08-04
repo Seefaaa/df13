@@ -22,6 +22,10 @@
 	armrest.plane = ABOVE_GAME_PLANE
 	return ..()
 
+/obj/structure/chair/Destroy()
+	. = ..()
+	QDEL_NULL(armrest)
+
 /obj/structure/chair/proc/GetArmrest()
 	return
 
@@ -115,10 +119,6 @@
 // Chair types
 
 ///Material chair
-/obj/structure/chair/greyscale
-	item_chair = /obj/item/chair/greyscale
-	buildstacktype = null //Custom mats handle this
-
 
 /obj/structure/chair/wood
 	name = "wooden chair"
@@ -137,37 +137,6 @@
 
 /obj/structure/chair/wood/GetArmrest()
 	return mutable_appearance(icon, "wooden_chair_armrest")
-
-/obj/structure/chair/comfy
-	name = "comfy chair"
-	desc = "It looks comfy."
-	icon = 'icons/obj/chairs.dmi'
-	icon_state = "comfychair"
-	color = rgb(255,255,255)
-	resistance_flags = FLAMMABLE
-	max_integrity = 70
-	buildstackamount = 2
-	item_chair = null
-
-/obj/structure/chair/comfy/Destroy()
-	QDEL_NULL(armrest)
-	return ..()
-
-/obj/structure/chair/comfy/brown
-	color = rgb(255,113,0)
-
-/obj/structure/chair/comfy/beige
-	color = rgb(255,253,195)
-
-/obj/structure/chair/comfy/teal
-	color = rgb(0,255,255)
-
-/obj/structure/chair/comfy/black
-	color = rgb(167,164,153)
-
-/obj/structure/chair/comfy/lime
-	color = rgb(255,251,0)
-
 
 /obj/structure/chair/MouseDrop(over_object, src_location, over_location)
 	. = ..()
@@ -225,8 +194,10 @@
 
 	user.visible_message(span_notice("[user] rights \the [src.name]."), span_notice("You right \the [name]."))
 	var/obj/structure/chair/C = new origin_type(get_turf(loc))
+	if(src.materials)
+		C.apply_material(src.materials)
 	TransferComponents(C)
-	C.setDir(dir)
+	C.setDir(user.dir)
 	qdel(src)
 
 /obj/item/chair/proc/smash(mob/living/user)
@@ -237,7 +208,9 @@
 	remaining_mats-- //Part of the chair was rendered completely unusable. It magically dissapears. Maybe make some dirt?
 	if(remaining_mats)
 		for(var/M=1 to remaining_mats)
-			new stack_type(get_turf(loc))
+			var/obj/O = new stack_type(get_turf(loc))
+			if(materials)
+				O.apply_material(materials)
 	qdel(src)
 
 
@@ -260,9 +233,6 @@
 			if(C.health < C.maxHealth*0.5)
 				C.Paralyze(20)
 		smash(user)
-
-/obj/item/chair/greyscale
-	origin_type = /obj/structure/chair/greyscale
 
 /obj/item/chair/wood
 	name = "wooden chair"
