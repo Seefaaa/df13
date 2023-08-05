@@ -1,5 +1,7 @@
 /obj/item/food/dish
 	var/plate_type
+	materials = /datum/material/wood/pine/treated
+	init_materials = FALSE
 
 /obj/item/food/dish/on_consume(mob/living/eater, mob/living/feeder)
 	. = ..()

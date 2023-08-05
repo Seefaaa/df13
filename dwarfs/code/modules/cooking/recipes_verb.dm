@@ -16,9 +16,12 @@
 	var/text = ""
 	for(var/t in GLOB.cooking_recipes)
 		var/datum/cooking_recipe/recipe = GLOB.cooking_recipes[t]
+		if(!recipe.result)
+			continue
 		var/recipe_name = initial(recipe.result.name)
+		var/obj/result = new recipe.result
 		if(recipe.req_lvl <= skill_level)
-			var/image_path = icon2path(initial(recipe.result.icon), user, initial(recipe.result.icon_state))
+			var/image_path = icon2path(result.build_material_icon(result.icon, result.icon_state), user)
 			text += "<br><font color=green><img class='dish-image' src=[image_path]><b>[recipe_name]:</b></font>"
 			for(var/item in recipe.req_items)
 				var/obj/item/I = item
@@ -28,6 +31,7 @@
 				text += "<br>[FOURSPACES]&#8226 [recipe.req_reagents[reag]] [initial(R.name)]"
 			text += "<br>[FOURSPACES][recipe.cooking_text]"
 			text += "<hr>"
+		qdel(result)
 	var/datum/browser/recipe_window = new(user, "recipe_window")
 	recipe_window.set_content(text)
 	recipe_window.add_stylesheet("font-awesome", 'html/font-awesome/css/all.min.css')

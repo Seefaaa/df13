@@ -74,24 +74,28 @@
 
 /obj/item/transfer_food/pot
 	original_container = /obj/item/reagent_containers/glass/cooking_pot
+	materials = /datum/material/iron
 
 /obj/item/transfer_food/pot/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
 
 /obj/item/transfer_food/skillet
 	original_container = /obj/item/reagent_containers/glass/pan
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/transfer_food/skillet/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_HEAD]))
 
 /obj/item/transfer_food/cake //cake_pan
 	original_container = /obj/item/reagent_containers/glass/cake_pan
+	materials = /datum/material/iron
 
 /obj/item/transfer_food/cake/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
 
 /obj/item/transfer_food/sheet //baking_sheet
 	original_container = /obj/item/reagent_containers/glass/baking_sheet
+	materials = /datum/material/iron
 
 /obj/item/transfer_food/sheet/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
