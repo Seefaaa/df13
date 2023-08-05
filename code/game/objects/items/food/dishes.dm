@@ -15,6 +15,9 @@
 		else
 			I.forceMove(get_turf(feeder))
 
+/obj/item/food/dish/build_material_icon(_file, state)
+	return materials ? apply_palettes(..(), materials) : ..()
+
 //**********************FIRST TIER DISHES*****************************//
 
 /obj/item/food/dish/baked_potato

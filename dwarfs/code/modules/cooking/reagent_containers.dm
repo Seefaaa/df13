@@ -34,7 +34,11 @@
 	icon_state = "cooking_pot_open"
 	amount_per_transfer_from_this = 10
 	volume = 100
+	materials = /datum/material/iron
 	var/open = TRUE
+
+/obj/item/reagent_containers/glass/cooking_pot/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/item/reagent_containers/glass/cooking_pot/ComponentInitialize()
 	. = ..()
@@ -78,7 +82,7 @@
 				M.pixel_y += 13
 		M.transform *= 0.6
 		. += M
-	. += mutable_appearance(initial(icon), "pot_overlay")
+	. += build_material_icon(initial(icon), "pot_overlay")
 
 /obj/item/reagent_containers/glass/cooking_pot/attack_self_secondary(mob/user, modifiers)
 	open = !open
@@ -89,10 +93,14 @@
 /obj/item/reagent_containers/glass/plate
 	icon = 'dwarfs/icons/items/kitchen.dmi'
 	volume = 20
+	materials = /datum/material/wood/pine/treated
 
 /obj/item/reagent_containers/glass/plate/Initialize(mapload, vol)
 	. = ..()
 	AddComponent(/datum/component/storage/concrete/cooking/plate)
+
+/obj/item/reagent_containers/glass/plate/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/item/reagent_containers/glass/plate/regular
 	name = "plate"
@@ -183,7 +191,7 @@
 				M.pixel_y += 8
 		M.transform *= 0.6
 		. += M
-	. += mutable_appearance(icon, "wooden_bowl_overlay")
+	. += build_material_icon(icon, "wooden_bowl_overlay")
 
 /obj/item/reagent_containers/glass/plate/bowl/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/kitchen/knife))
@@ -197,8 +205,8 @@
 				S.forceMove(get_turf(src))
 			user.adjust_experience(/datum/skill/cooking, 2)
 			return
-
 		var/obj/item/food/F = new R.result
+		F.apply_material(materials)
 		user.adjust_experience(/datum/skill/cooking, rand(10, 30))
 		var/held_index = H.is_holding(src)
 		if(held_index)
@@ -218,6 +226,10 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	icon_state = "skillet"
 	volume = 30
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/iron)
+
+/obj/item/reagent_containers/glass/pan/build_material_icon(_file, state)
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_HEAD]))
 
 /obj/item/reagent_containers/glass/pan/update_overlays()
 	. = ..()
@@ -271,6 +283,10 @@
 	icon_state = "cake_pan"
 	amount_per_transfer_from_this = 10
 	volume = 100
+	materials = /datum/material/iron
+
+/obj/item/reagent_containers/glass/cake_pan/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/item/reagent_containers/glass/cake_pan/ComponentInitialize()
 	. = ..()
@@ -300,8 +316,7 @@
 				M.pixel_y += 17
 		M.transform *= 0.6
 		. += M
-	. += mutable_appearance(initial(icon), "cake_pan_overlay")
-
+	. += build_material_icon(initial(icon), "cake_pan_overlay")
 
 /obj/item/reagent_containers/glass/baking_sheet
 	name = "baking sheet"
@@ -312,6 +327,10 @@
 	icon_state = "sheet"
 	amount_per_transfer_from_this = 10
 	volume = 100
+	materials = /datum/material/iron
+
+/obj/item/reagent_containers/glass/baking_sheet/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/item/reagent_containers/glass/baking_sheet/ComponentInitialize()
 	. = ..()

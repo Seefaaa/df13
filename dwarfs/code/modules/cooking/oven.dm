@@ -85,7 +85,8 @@
 		user.adjust_experience(/datum/skill/cooking, 2)
 		return
 	user.adjust_experience(/datum/skill/cooking, rand(10, 30))
-	new R.result(get_turf(src))
+	var/obj/O = new R.result(get_turf(src))
+	O.apply_material(I.materials)
 	qdel(I)
 
 /obj/structure/oven/process(delta_time)

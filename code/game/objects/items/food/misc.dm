@@ -2,6 +2,7 @@
 	name = "almost food"
 	desc = "Almost ready to be eaten."
 	icon = 'dwarfs/icons/items/kitchen.dmi'
+	init_materials = FALSE
 	//Our original container we cooking this stuff in
 	var/original_container
 	//Container we need to transfer your stuff to
@@ -18,6 +19,8 @@
 			return
 		var/atom/new_loc = O.loc
 		var/obj/item/I = new food_inside
+		if(O.materials)
+			I.apply_material(O.materials)
 		I.pixel_x = O.pixel_x
 		I.pixel_y = O.pixel_y
 		qdel(O)
@@ -72,14 +75,26 @@
 /obj/item/transfer_food/pot
 	original_container = /obj/item/reagent_containers/glass/cooking_pot
 
+/obj/item/transfer_food/pot/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
+
 /obj/item/transfer_food/skillet
 	original_container = /obj/item/reagent_containers/glass/pan
+
+/obj/item/transfer_food/skillet/build_material_icon(_file, state)
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_HEAD]))
 
 /obj/item/transfer_food/cake //cake_pan
 	original_container = /obj/item/reagent_containers/glass/cake_pan
 
+/obj/item/transfer_food/cake/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
+
 /obj/item/transfer_food/sheet //baking_sheet
 	original_container = /obj/item/reagent_containers/glass/baking_sheet
+
+/obj/item/transfer_food/sheet/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/item/transfer_food/pot/cooked_egg
 	name = "cooked eggs in pot"

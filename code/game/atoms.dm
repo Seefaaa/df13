@@ -135,7 +135,7 @@
 	///Materials this atom is made of
 	var/list/materials = null
 	///Whether to apply default material when spawned
-	var/spawn_with_materials = TRUE
+	var/init_materials = TRUE
 
 /**
  * Called when an atom is created in byond (built in engine proc)
@@ -213,7 +213,7 @@
 	if(color)
 		add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
-	if(materials && spawn_with_materials)
+	if(materials && init_materials)
 		apply_material(materials)
 
 	if (light_system == STATIC_LIGHT && light_power && light_range)

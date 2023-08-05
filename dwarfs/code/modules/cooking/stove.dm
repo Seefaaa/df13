@@ -53,7 +53,7 @@
 		var/mutable_appearance/M
 		if(istype(left_item, /obj/item/reagent_containers/glass/cooking_pot))
 			var/obj/item/reagent_containers/glass/cooking_pot/P = left_item
-			M = mutable_appearance('dwarfs/icons/items/kitchen.dmi', "[P.open ? "cooking_pot_world_open" : "cooking_pot_world_closed"]")
+			M = mutable_appearance(left_item.icon, "[P.open ? "cooking_pot_world_open" : "cooking_pot_world_closed"]")
 			if(P.reagents.total_volume && P.open)
 				var/mutable_appearance/O = mutable_appearance('dwarfs/icons/items/kitchen.dmi', "cooking_pot_world_overlay")
 				O.color = mix_color_from_reagents(P.reagents.reagent_list)
@@ -66,7 +66,7 @@
 		var/mutable_appearance/M
 		if(istype(right_item, /obj/item/reagent_containers/glass/cooking_pot))
 			var/obj/item/reagent_containers/glass/cooking_pot/P = right_item
-			M = mutable_appearance('dwarfs/icons/items/kitchen.dmi', "[P.open ? "cooking_pot_world_open" : "cooking_pot_world_closed"]")
+			M = mutable_appearance(right_item.icon, "[P.open ? "cooking_pot_world_open" : "cooking_pot_world_closed"]")
 			if(P.reagents.total_volume && P.open)
 				var/mutable_appearance/O = mutable_appearance('dwarfs/icons/items/kitchen.dmi', "cooking_pot_world_overlay")
 				O.color = mix_color_from_reagents(P.reagents.reagent_list)
@@ -210,9 +210,9 @@
 		user.adjust_experience(/datum/skill/cooking, 2)
 		new /obj/item/food/badrecipe(get_turf(src))
 		return
-	var/obj/item/food/F = initial(R.result)
+	var/obj/item/food/F = new R.result(get_turf(src))
+	F.apply_material(I.materials)
 	user.adjust_experience(/datum/skill/cooking, rand(10, 30))
-	new F(get_turf(src))
 	if(R.consume_container)
 		if(left_item == I)
 			left_item = null

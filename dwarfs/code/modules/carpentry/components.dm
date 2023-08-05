@@ -70,7 +70,7 @@
 			return
 
 		var/obj/item/food/dish/F = new R.result
-		F.materials = materials // save materials to dish itself
+		F.apply_material(materials)
 		user.adjust_experience(/datum/skill/cooking, rand(5, 15))
 		var/held_index = H.is_holding(src)
 		if(held_index)
