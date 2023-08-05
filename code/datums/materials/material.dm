@@ -134,6 +134,10 @@
  * - materials: list of material types. Place the types in the correct oder according to what templates will be used.
  */
 /proc/apply_palettes(icon/I, list/materials)
+	if(!I)
+		CRASH("Called apply_palettes with a null icon.")
+	if(!materials)
+		return I
 	if(!islist(materials))
 		materials = list(materials)
 	for(var/i in 1 to materials.len)
