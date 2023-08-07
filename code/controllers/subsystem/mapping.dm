@@ -65,6 +65,7 @@ SUBSYSTEM_DEF(mapping)
 	repopulate_sorted_areas()
 	process_teleport_locs()			//Sets up the wizard teleport locations
 	preloadTemplates()
+	generate_station_area_list()
 	run_map_generation()
 
 	// Add the transit level
@@ -72,7 +73,6 @@ SUBSYSTEM_DEF(mapping)
 	repopulate_sorted_areas()
 	// Set up Z-level transitions.
 	setup_map_transitions()
-	generate_station_area_list()
 	return ..()
 
 /* Nuke threats, for making the blue tiles on the station go RED
@@ -197,6 +197,8 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 /datum/controller/subsystem/mapping/proc/generate_station_area_list()
 	var/list/station_areas_blacklist = typecacheof(list())
 	for(var/area/A in world)
+		if(istype(A, /area/surface))
+			GLOB.surface_z = A.z
 		if (is_type_in_typecache(A, station_areas_blacklist))
 			continue
 		if (!A.contents.len || !(A.area_flags & UNIQUE_AREA))

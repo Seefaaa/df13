@@ -4,55 +4,37 @@ GLOBAL_VAR(surface_z)
 /datum/map_generator/caves
 	var/name = "Caves"
 
-/datum/map_generator/caves/generate_terrain(list/turfs)
+/datum/map_generator/caves/generate_turfs(list/turfs)
 	if(CONFIG_GET(flag/disable_generation))
 		return
 	if(!GLOB.temperature_seed)
 		GLOB.temperature_seed = rand(1, 2000)
-	var/start_time = REALTIMEOFDAY
 	var/list/height_values = fbm(world.maxx, world.maxy)
-	var/turf/first_turf = turfs[1]
-	var/list/temp_values = fbm3d(world.maxx, world.maxy, first_turf.z, GLOB.temperature_seed, frequency=0.006, lacunarity=0.4, persistence=0.4)
-	for(var/turf/T in turfs)
-		var/height = text2num(height_values[world.maxx * (T.y - 2) + T.x])
-		var/temp = text2num(temp_values[world.maxx * (T.y - 2) + T.x])
-		var/turf/turf_type
-		switch(height)
-			if(-INFINITY to -0.7)
-				turf_type = /turf/open/water
-			if(-0.7 to -0.45)
-				turf_type = /turf/open/floor/dirt
-				generate_turf_flora(T, 8)
-				generate_turf_fauna(T, 2)
-			if(-0.45 to -0.3)
-				if(temp > 0)
-					turf_type = /turf/open/floor/sand
-					generate_turf_fauna(T, 0.05)
-				else
-					turf_type = /turf/open/floor/rock
-					generate_turf_flora(T, 1)
-					generate_turf_fauna(T, 0.1)
-			if(-0.3 to INFINITY)
-				if(temp > 0)
-					turf_type = /turf/closed/mineral/random/sand
-				else
-					turf_type = /turf/closed/mineral/random/stone
-		T.ChangeTurf(turf_type, initial(turf_type.baseturfs))
-	to_chat(world, span_green(" -- #<b>[name]</b>:> <b>[(REALTIMEOFDAY - start_time)/10]s</b> -- "))
-	log_world("[name] is done job for [(REALTIMEOFDAY - start_time)/10]s!")
-
-/datum/map_generator/caves/generate_turf_fauna(turf/T, chance)
-	if(prob(chance))
-		if((locate(/mob/living/simple_animal/hostile/giant_spider) in range(30, T)))
-			return
-		new /mob/living/simple_animal/hostile/giant_spider (T)
-
-/datum/map_generator/caves/generate_turf_flora(turf/T, chance)
-	if(prob(chance))
-		var/obj/structure/plant/tree/towercap/temp = new (T)
-		temp.growthstage = rand(1, 7)
-		temp.growthdelta = rand(80, 400) SECONDS
-		temp.update_appearance()
+	var/list/temp_values = fbm3d(world.maxx, world.maxy, area.z, GLOB.temperature_seed, frequency=0.006, lacunarity=0.4, persistence=0.4)
+	for(var/y in 1 to world.maxy)
+		for(var/x in 1 to world.maxx)
+			var/turf/T = locate(x, y, area.z)
+			if(T.loc != area)
+				continue
+			var/height = text2num(height_values[world.maxx * (y-1) + x])
+			var/temp = text2num(temp_values[world.maxx * (y-1) + x])
+			var/turf/turf_type
+			switch(height)
+				if(-INFINITY to -0.7)
+					turf_type = /turf/open/water
+				if(-0.7 to -0.45)
+					turf_type = /turf/open/floor/dirt
+				if(-0.45 to -0.3)
+					if(temp > 0)
+						turf_type = /turf/open/floor/sand
+					else
+						turf_type = /turf/open/floor/rock
+				if(-0.3 to INFINITY)
+					if(temp > 0)
+						turf_type = /turf/closed/mineral/random/sand
+					else
+						turf_type = /turf/closed/mineral/random/stone
+			T.ChangeTurf(turf_type, initial(turf_type.baseturfs))
 
 /datum/map_generator/caves/upper
 	name = "Upper Caves"
@@ -89,38 +71,66 @@ GLOBAL_VAR(surface_z)
 	map_generator = /datum/map_generator/surface
 	ambientsounds = GENERIC_AMBIGEN
 
-/area/surface/Initialize(mapload)
-	. = ..()
-	GLOB.surface_z = z
-
 /datum/map_generator/surface
 	var/name = "Surface"
 
-/datum/map_generator/surface/generate_terrain(list/turfs)
+/datum/map_generator/surface/generate_turfs()
 	if(CONFIG_GET(flag/disable_generation))
 		return
-	var/start_time = REALTIMEOFDAY
 	var/list/some_values = fbm(world.maxx, world.maxy)
-	for(var/turf/T in turfs)
-		var/value = text2num(some_values[world.maxx * (T.y-2) + T.x])
-		var/turf/turf_type
-		switch(value)
-			if(-INFINITY to -0.6)
-				turf_type = /turf/open/water
-			if(-0.6 to -0.45)
-				turf_type = /turf/open/floor/sand
-			if(-0.45 to -0.3)
-				turf_type = /turf/open/floor/dirt
-			if(-0.3 to 0.4)
-				turf_type = /turf/open/floor/dirt/grass
-				if(prob(0.05))
-					spawn_fauna(T)
-			if(0.4 to INFINITY)
-				turf_type = /turf/closed/mineral/random/stone
-		T.ChangeTurf(turf_type, initial(turf_type.baseturfs))
-	to_chat(world, span_green(" -- #<b>[name]</b>:> <b>[(REALTIMEOFDAY - start_time)/10]s</b> -- "))
-	log_world("[name] is done job for [(REALTIMEOFDAY - start_time)/10]s!")
+	for(var/y in 1 to world.maxy)
+		for(var/x in 1 to world.maxx)
+			var/turf/T = locate(x, y, area.z)
+			if(T.loc != area)
+				continue
+			var/value = text2num(some_values[world.maxx * (y-1) + x])
+			var/turf/turf_type
+			switch(value)
+				if(-INFINITY to -0.6)
+					turf_type = /turf/open/water
+				if(-0.6 to -0.45)
+					turf_type = /turf/open/floor/sand
+				if(-0.45 to -0.3)
+					turf_type = /turf/open/floor/dirt
+				if(-0.3 to 0.4)
+					turf_type = /turf/open/floor/dirt/grass
+				if(0.4 to INFINITY)
+					turf_type = /turf/closed/mineral/random/stone
+			T.ChangeTurf(turf_type, initial(turf_type.baseturfs))
 
-/datum/map_generator/surface/proc/spawn_fauna(turf/T)
-	var/mob_type = pick(/mob/living/simple_animal/goat, /mob/living/simple_animal/chicken, /mob/living/simple_animal/hostile/bear)
-	new mob_type(T)
+/datum/map_generator/surface/generate_rest(list/turfs)
+	for(var/i in 5 to rand(5, 20)) //at least 5 forests are guaranteed
+		var/x = rand(1, world.maxx)
+		var/y = rand(1, world.maxy)
+		var/turf/center = locate(x, y, GLOB.surface_z)
+		generate_forest(center)
+
+/datum/map_generator/surface/proc/generate_forest(turf/center)
+	if((locate(/obj/structure/plant/tree) in view(40, center)))
+		return
+	var/r = rand(10, 20)
+	var/list/s_range = circlerangeturfs(center, r)
+	for(var/turf/T in s_range)
+		if(prob(40))
+			continue
+		if(!T || !istype(T, /turf/open/floor/dirt) || T.is_blocked_turf() || (locate(/obj/structure/plant) in view(0, T)) || istype(T.loc, /area/fortress))
+			continue
+		var/tree = /obj/structure/plant/tree/pine
+		if(prob(0.1))
+			tree = /obj/structure/plant/tree/apple
+		var/obj/structure/plant/tree/TR = new tree(T)
+		TR.growthstage = rand(1, 7)
+		TR.growthdelta += rand(-10 SECONDS, 1 MINUTES)
+		TR.update_appearance(UPDATE_ICON)
+	for(var/turf/T in (circlerangeturfs(center, r+rand(15, 25))-s_range))
+		if(prob(80))
+			continue
+		if(!T || !istype(T, /turf/open/floor/dirt) || T.is_blocked_turf() || (locate(/obj/structure/plant) in view(0, T)) || istype(T.loc, /area/fortress))
+			continue
+		var/tree = /obj/structure/plant/tree/pine
+		if(prob(0.1))
+			tree = /obj/structure/plant/tree/apple
+		var/obj/structure/plant/tree/TR = new tree(T)
+		TR.growthstage = rand(1, 7)
+		TR.growthdelta += rand(-10 SECONDS, 1 MINUTES)
+		TR.update_appearance(UPDATE_ICON)

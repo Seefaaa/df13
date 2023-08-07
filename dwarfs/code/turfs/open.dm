@@ -353,8 +353,6 @@
 		add_overlay(rock)
 	if(prob(1))
 		new /obj/structure/plant/decor/flower(src)
-	if(prob(0.1))
-		return INITIALIZE_HINT_LATELOAD
 	if(prob(1) && !is_blocked_turf())
 		var/pt = pick(/obj/structure/plant/garden/crop/carrot, /obj/structure/plant/garden/crop/barley, /obj/structure/plant/garden/crop/potato, /obj/structure/plant/garden/crop/onion)
 		var/obj/structure/plant/plant = new pt(src)
@@ -362,37 +360,6 @@
 		plant.lifespan = INFINITY
 		plant.growthdelta += rand(-plant.growthdelta*0.2, plant.growthdelta*0.6)
 		plant.update_appearance(UPDATE_ICON)
-
-/turf/open/floor/dirt/grass/LateInitialize()
-	. = ..()
-	if((locate(/obj/structure/plant/tree) in view(40, src)))
-		return
-	var/r = rand(10, 20)
-	var/list/s_range = circlerangeturfs(src, r)
-	for(var/turf/T in s_range)
-		if(prob(40))
-			continue
-		if(!T || !istype(T, /turf/open/floor/dirt) || T.is_blocked_turf() || (locate(/obj/structure/plant) in view(0, T)) || istype(T.loc, /area/fortress))
-			continue
-		var/tree = /obj/structure/plant/tree/pine
-		if(prob(0.1))
-			tree = /obj/structure/plant/tree/apple
-		var/obj/structure/plant/tree/TR = new tree(T)
-		TR.growthstage = rand(1, 7)
-		TR.growthdelta += rand(-10 SECONDS, 1 MINUTES)
-		TR.update_appearance(UPDATE_ICON)
-	for(var/turf/T in (circlerangeturfs(src, r+rand(15, 25))-s_range))
-		if(prob(80))
-			continue
-		if(!T || !istype(T, /turf/open/floor/dirt) || T.is_blocked_turf() || (locate(/obj/structure/plant) in view(0, T)) || istype(T.loc, /area/fortress))
-			continue
-		var/tree = /obj/structure/plant/tree/pine
-		if(prob(0.1))
-			tree = /obj/structure/plant/tree/apple
-		var/obj/structure/plant/tree/TR = new tree(T)
-		TR.growthstage = rand(1, 7)
-		TR.growthdelta += rand(-10 SECONDS, 1 MINUTES)
-		TR.update_appearance(UPDATE_ICON)
 
 /turf/open/floor/wooden
 	name = "wooden floor"
