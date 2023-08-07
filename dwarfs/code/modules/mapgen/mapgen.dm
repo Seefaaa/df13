@@ -45,6 +45,10 @@ GLOBAL_VAR(surface_z)
 		var/turf/T = area.random_turf()
 		generate_wild_plants(T, SSplants.cave_plants, 3, 7)
 
+	for(var/i in 1 to rand(50, 150))
+		var/turf/T = area.random_turf()
+		generate_turf_fauna(T)
+
 /datum/map_generator/caves/upper
 	name = "Upper Caves"
 
@@ -112,6 +116,10 @@ GLOBAL_VAR(surface_z)
 	for(var/i in 1 to rand(60, 200))
 		var/turf/T = area.random_turf()
 		generate_wild_plants(T, SSplants.surface_plants, 2)
+
+	for(var/i in 1 to rand(50, 150))
+		var/turf/T = area.random_turf()
+		generate_turf_fauna(T)
 
 /datum/map_generator/proc/generate_wild_plants(turf/center, list/plant_types, min_plants=1, max_plants=5)
 	var/plant_type = pick(plant_types)
@@ -198,3 +206,32 @@ GLOBAL_VAR(surface_z)
 		TR.growthstage = rand(1, 7)
 		TR.growthdelta += rand(-10 SECONDS, 1 MINUTES)
 		TR.update_appearance(UPDATE_ICON)
+
+/datum/map_generator/surface/generate_turf_fauna(turf/center)
+	var/list/possible_animals = list(
+		/mob/living/simple_animal/chicken=60,
+		/mob/living/simple_animal/goat=40,
+		/mob/living/simple_animal/hostile/bear=20
+	)
+	var/animal_type = pickweight(possible_animals)
+	//hostile mobs spawn alone; other mobs can spawn in a group
+	var/max_amount = ispath(animal_type, /mob/living/simple_animal/hostile) ? 1 : 3
+	for(var/i in 1 to rand(1, max_amount))
+		var/turf/T = locate(center.x + rand(-3, 3), center.y + rand(-3, 3), area.z)
+		if(!isopenturf(T) || T.is_blocked_turf())
+			continue
+		new animal_type(T)
+
+/datum/map_generator/caves/generate_turf_fauna(turf/center)
+	var/list/possible_animals = list(
+		/mob/living/simple_animal/hostile/giant_spider=20,
+		/mob/living/simple_animal/hostile/troll=50
+	)
+	var/animal_type = pickweight(possible_animals)
+	//hostile mobs spawn alone; other mobs can spawn in a group
+	var/max_amount = ispath(animal_type, /mob/living/simple_animal/hostile) ? 1 : 3
+	for(var/i in 1 to rand(1, max_amount))
+		var/turf/T = locate(center.x + rand(-3, 3), center.y + rand(-3, 3), area.z)
+		if(!isopenturf(T) || T.is_blocked_turf())
+			continue
+		new animal_type(T)
