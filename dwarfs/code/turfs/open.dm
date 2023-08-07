@@ -351,15 +351,8 @@
 		rock.pixel_x += rand(-12, 12)
 		rock.pixel_y += rand(0, 12)
 		add_overlay(rock)
-	if(prob(1))
-		new /obj/structure/plant/decor/flower(src)
 	if(prob(1) && !is_blocked_turf())
-		var/pt = pick(/obj/structure/plant/garden/crop/carrot, /obj/structure/plant/garden/crop/barley, /obj/structure/plant/garden/crop/potato, /obj/structure/plant/garden/crop/onion)
-		var/obj/structure/plant/plant = new pt(src)
-		plant.growthstage = rand(0, plant.growthstages)
-		plant.lifespan = INFINITY
-		plant.growthdelta += rand(-plant.growthdelta*0.2, plant.growthdelta*0.6)
-		plant.update_appearance(UPDATE_ICON)
+		new /obj/structure/plant/decor/flower(src)
 
 /turf/open/floor/wooden
 	name = "wooden floor"

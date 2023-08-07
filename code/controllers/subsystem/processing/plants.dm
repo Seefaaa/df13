@@ -1,13 +1,20 @@
 SUBSYSTEM_DEF(plants)
 	name = "Plants"
 	priority = FIRE_PRIORITY_PROCESS
-	flags = SS_POST_FIRE_TIMING|SS_NO_INIT
+	flags = SS_POST_FIRE_TIMING
+	init_order = INIT_ORDER_PLANTS
 	wait = 1 SECONDS
 
 	var/stat_tag = "Pl" //Used for logging
 	var/list/processing = list()
 	var/list/currentrun = list()
 
+	var/list/surface_plants = list()
+	var/list/cave_plants = list()
+
+/datum/controller/subsystem/plants/Initialize(start_timeofday)
+	generate_plant_list()
+	. = ..()
 
 /datum/controller/subsystem/plants/stat_entry(msg)
 	msg = "[stat_tag]:[length(processing)]"
@@ -29,3 +36,15 @@ SUBSYSTEM_DEF(plants)
 			STOP_PROCESSING(src, thing)
 		if (MC_TICK_CHECK)
 			return
+
+/datum/controller/subsystem/plants/proc/generate_plant_list()
+	for(var/plant_type in subtypesof(/obj/structure/plant))
+		var/obj/structure/plant/plant = plant_type
+		if(!initial(plant.seed_type))
+			continue
+		if(ispath(plant, /obj/structure/plant/tree))
+			continue
+		if(initial(plant.surface))
+			surface_plants += plant
+		else
+			cave_plants += plant

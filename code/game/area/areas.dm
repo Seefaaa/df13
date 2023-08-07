@@ -326,3 +326,10 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 /area/get_virtual_z_level()
 	return get_virtual_z(get_turf(src))
+
+/// Returns a random turf in this area. We are assuming that each area is responsible for one z-level
+/area/proc/random_turf()
+	while(TRUE)
+		var/turf/T = locate(rand(1, world.maxx), rand(1, world.maxy), z)
+		if(T.loc == src)
+			return T

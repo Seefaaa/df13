@@ -129,6 +129,7 @@
 #define INIT_ORDER_TICKER			55
 #define INIT_ORDER_TCG				55
 #define INIT_ORDER_REAGENTS 		55 //HAS to be before mapping - mapping creates objects, which creates reagents, which relies on lists made in this subsystem
+#define INIT_ORDER_PLANTS			52
 #define INIT_ORDER_MAPPING			50
 #define INIT_ORDER_TIMETRACK		47
 #define INIT_ORDER_NETWORKS			45
