@@ -51,8 +51,6 @@ GLOBAL_VAR(surface_z)
 	static_lighting = TRUE
 	base_lighting_alpha = 0
 	area_flags = CAVES_ALLOWED | FLORA_ALLOWED | MOB_SPAWN_ALLOWED
-	sound_environment = SOUND_ENVIRONMENT_CAVE
-	ambientsounds = list('sound/ambience/caves8.ogg', 'sound/ambience/caves_old.ogg')
 	map_generator = /datum/map_generator/caves
 
 /area/cavesgen/upper_level
@@ -69,7 +67,6 @@ GLOBAL_VAR(surface_z)
 	static_lighting = FALSE
 	base_lighting_alpha = 255
 	map_generator = /datum/map_generator/surface
-	ambientsounds = GENERIC_AMBIGEN
 
 /datum/map_generator/surface
 	var/name = "Surface"
