@@ -8,6 +8,9 @@
 	baseturfs = /turf/open/floor/tiles
 	sheet_amount = 3
 
+/turf/closed/mineral/stone
+	var/has_troll = FALSE
+
 /turf/closed/mineral/stone/attackby(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_CHISEL)
 		var/turf/T = src
@@ -22,14 +25,13 @@
 		. = ..()
 
 /turf/closed/mineral/stone/gets_drilled(mob/user, give_exp)
-	. = ..()
 	if(prob(40))
 		for(var/i in 1 to rand(1, 4))
 			new /obj/item/stack/ore/stone(src)
-
-	if(prob(SSevents.troll_spawn_change))
+	if(has_troll)
 		to_chat(user, span_userdanger("THIS ROCK APPEARS TO BE ESPECIALLY SOFT!"))
 		new /mob/living/simple_animal/hostile/troll(src)
+	. = ..()
 
 /turf/closed/mineral/sand
 	name = "sand"
@@ -41,9 +43,9 @@
 	materials = /datum/material/sandstone
 
 /turf/closed/mineral/sand/gets_drilled(user, give_exp)
-	. = ..()
 	if(prob(33))
 		new /obj/item/stack/ore/smeltable/sand(src)
+	. = ..()
 
 /turf/closed/wall/wooden
 	name = "wooden wall"

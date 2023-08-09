@@ -3,7 +3,7 @@ GLOBAL_VAR(surface_z)
 
 /datum/map_generator/caves
 	var/name = "Caves"
-	keys = list("ore", "plants", "mobs", "forest")
+	keys = list("ore", "plants", "mobs", "forest", "troll_rock")
 	var/list/ores = list(
 		/obj/item/stack/ore/smeltable/gold = 20,
 		/obj/item/stack/ore/smeltable/iron = 40,
@@ -48,6 +48,7 @@ GLOBAL_VAR(surface_z)
 						turf_type = /turf/closed/mineral/sand
 					else
 						turf_type = /turf/closed/mineral/stone
+						prob_queue(0.5, "troll_rock", list(x, y, T.z))
 			T.ChangeTurf(turf_type, initial(turf_type.baseturfs))
 
 /datum/map_generator/caves/generate_rest()
@@ -67,6 +68,9 @@ GLOBAL_VAR(surface_z)
 		var/turf/T = locate(data[1], data[2], data[3])
 		generate_ore(T)
 
+	for(var/list/data in post_queue["troll_rock"])
+		var/turf/closed/mineral/stone/T = locate(data[1], data[2], data[3])
+		T.has_troll = TRUE
 /datum/map_generator/caves/upper
 	name = "Upper Caves"
 

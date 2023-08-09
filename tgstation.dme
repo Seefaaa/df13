@@ -901,7 +901,6 @@
 #include "code\modules\events\_event.dm"
 #include "code\modules\events\ghost_role.dm"
 #include "code\modules\events\goblin_raid.dm"
-#include "code\modules\events\troll.dm"
 #include "code\modules\fields\fields.dm"
 #include "code\modules\fields\turf_objects.dm"
 #include "code\modules\flufftext\Dreaming.dm"
