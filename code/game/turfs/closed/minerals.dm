@@ -149,24 +149,3 @@
 		if(1)
 			gets_drilled(null, FALSE)
 	return
-
-/turf/closed/mineral/random
-	var/list/mineralSpawnChanceList = list(/obj/item/stack/ore/smeltable/gold = 20, /obj/item/stack/ore/smeltable/iron = 40, /obj/item/stack/ore/gem/diamond=10,/obj/item/stack/ore/gem/ruby=10,/obj/item/stack/ore/gem/sapphire=10,/obj/item/stack/ore/coal=40)
-	var/mineralChance = 1
-
-/turf/closed/mineral/random/Initialize()
-	. = ..()
-	if(prob(mineralChance))
-		return INITIALIZE_HINT_LATELOAD
-
-/turf/closed/mineral/random/LateInitialize()
-	. = ..()
-	var/obj/item/stack/ore/O = pickweight(mineralSpawnChanceList)
-	var/vein_type = initial(O.vein_type)
-	if(!vein_type)
-		mineralType = O
-		mineralAmt = rand(1,5)
-	else
-		var/datum/vein/V = new vein_type(src)
-		V.generate(O)
-		qdel(V)

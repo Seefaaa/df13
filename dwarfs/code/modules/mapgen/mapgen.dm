@@ -3,6 +3,14 @@ GLOBAL_VAR(surface_z)
 
 /datum/map_generator/caves
 	var/name = "Caves"
+	var/list/ores = list(
+		/obj/item/stack/ore/smeltable/gold = 20,
+		/obj/item/stack/ore/smeltable/iron = 40,
+		/obj/item/stack/ore/gem/diamond=10,
+		/obj/item/stack/ore/gem/ruby=10,
+		/obj/item/stack/ore/gem/sapphire=10,
+		/obj/item/stack/ore/coal=40,
+		/obj/item/stack/ore/smeltable/copper=30)
 
 /datum/map_generator/caves/generate_turfs()
 	if(CONFIG_GET(flag/disable_generation))
@@ -31,9 +39,9 @@ GLOBAL_VAR(surface_z)
 						turf_type = /turf/open/floor/rock
 				if(-0.3 to INFINITY)
 					if(temp > 0)
-						turf_type = /turf/closed/mineral/random/sand
+						turf_type = /turf/closed/mineral/sand
 					else
-						turf_type = /turf/closed/mineral/random/stone
+						turf_type = /turf/closed/mineral/stone
 			T.ChangeTurf(turf_type, initial(turf_type.baseturfs))
 
 /datum/map_generator/caves/generate_rest()
@@ -48,6 +56,11 @@ GLOBAL_VAR(surface_z)
 	for(var/i in 1 to rand(50, 150))
 		var/turf/T = area.random_turf()
 		generate_turf_fauna(T)
+
+	for(var/i in 1 to rand(200, 800))
+		var/turf/T = area.random_turf()
+		if(istype(T, /turf/closed/mineral))
+			generate_ore(T)
 
 /datum/map_generator/caves/upper
 	name = "Upper Caves"
@@ -105,7 +118,7 @@ GLOBAL_VAR(surface_z)
 				if(-0.3 to 0.4)
 					turf_type = /turf/open/floor/dirt/grass
 				if(0.4 to INFINITY)
-					turf_type = /turf/closed/mineral/random/stone
+					turf_type = /turf/closed/mineral/stone
 			T.ChangeTurf(turf_type, initial(turf_type.baseturfs))
 
 /datum/map_generator/surface/generate_rest()
@@ -235,3 +248,14 @@ GLOBAL_VAR(surface_z)
 		if(!isopenturf(T) || T.is_blocked_turf())
 			continue
 		new animal_type(T)
+
+/datum/map_generator/caves/proc/generate_ore(turf/closed/mineral/center)
+	var/obj/item/stack/ore/O = pickweight(ores)
+	var/vein_type = initial(O.vein_type)
+	if(!vein_type)
+		center.mineralType = O
+		center.mineralAmt = rand(1, 5)
+	else
+		var/datum/vein/V = new vein_type(center)
+		V.generate(O)
+		qdel(V)

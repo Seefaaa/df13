@@ -8,7 +8,7 @@
 	baseturfs = /turf/open/floor/tiles
 	sheet_amount = 3
 
-/turf/closed/mineral/random/stone/attackby(obj/item/I, mob/user, params)
+/turf/closed/mineral/stone/attackby(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_CHISEL)
 		var/turf/T = src
 		var/time = 5 SECONDS * user.get_skill_modifier(/datum/skill/masonry, SKILL_SPEED_MODIFIER)
@@ -21,7 +21,7 @@
 	else
 		. = ..()
 
-/turf/closed/mineral/random/stone/gets_drilled(mob/user, give_exp)
+/turf/closed/mineral/stone/gets_drilled(mob/user, give_exp)
 	. = ..()
 	if(prob(40))
 		for(var/i in 1 to rand(1, 4))
@@ -31,10 +31,8 @@
 		to_chat(user, span_userdanger("THIS ROCK APPEARS TO BE ESPECIALLY SOFT!"))
 		new /mob/living/simple_animal/hostile/troll(src)
 
-/turf/closed/mineral/random/sand
+/turf/closed/mineral/sand
 	name = "sand"
-	mineralSpawnChanceList = list(/obj/item/stack/ore/smeltable/gold = 20, /obj/item/stack/ore/smeltable/iron = 40, /obj/item/stack/ore/gem/diamond=10,/obj/item/stack/ore/gem/ruby=10,/obj/item/stack/ore/gem/sapphire=10,/obj/item/stack/ore/coal=40)
-	mineralChance = 1.5
 	baseturfs = /turf/open/floor/sand
 	smooth_icon = 'dwarfs/icons/turf/walls_sandstone.dmi'
 	base_icon_state = "rockwall"
@@ -42,7 +40,7 @@
 	icon_state = "rockwall-0"
 	materials = /datum/material/sandstone
 
-/turf/closed/mineral/random/sand/gets_drilled(user, give_exp)
+/turf/closed/mineral/sand/gets_drilled(user, give_exp)
 	. = ..()
 	if(prob(33))
 		new /obj/item/stack/ore/smeltable/sand(src)
