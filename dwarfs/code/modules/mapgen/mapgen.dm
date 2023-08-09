@@ -3,6 +3,7 @@ GLOBAL_VAR(surface_z)
 
 /datum/map_generator/caves
 	var/name = "Caves"
+	keys = list("ore", "plants", "mobs", "forest")
 	var/list/ores = list(
 		/obj/item/stack/ore/smeltable/gold = 20,
 		/obj/item/stack/ore/smeltable/iron = 40,
@@ -32,12 +33,17 @@ GLOBAL_VAR(surface_z)
 					turf_type = /turf/open/water
 				if(-0.7 to -0.45)
 					turf_type = /turf/open/floor/dirt
+					prob_queue(1, "mobs", list(x, y, T.z))
+					prob_queue(2, "plants", list(x, y, T.z))
+					prob_queue(0.5, "forest", list(x, y, T.z))
 				if(-0.45 to -0.3)
+					prob_queue(0.7, "mobs", list(x, y, T.z))
 					if(temp > 0)
 						turf_type = /turf/open/floor/sand
 					else
 						turf_type = /turf/open/floor/rock
 				if(-0.3 to INFINITY)
+					prob_queue(1, "ore", list(x, y, T.z))
 					if(temp > 0)
 						turf_type = /turf/closed/mineral/sand
 					else
@@ -45,22 +51,21 @@ GLOBAL_VAR(surface_z)
 			T.ChangeTurf(turf_type, initial(turf_type.baseturfs))
 
 /datum/map_generator/caves/generate_rest()
-	for(var/i in 1 to rand(20, 60))
-		var/turf/center = area.random_turf()
-		generate_forest(center)
+	for(var/list/data in post_queue["forest"])
+		var/turf/T = locate(data[1], data[2], data[3])
+		generate_forest(T)
 
-	for(var/i in 1 to rand(100, 300))
-		var/turf/T = area.random_turf()
+	for(var/list/data in post_queue["plants"])
+		var/turf/T = locate(data[1], data[2], data[3])
 		generate_wild_plants(T, SSplants.cave_plants, 3, 7)
 
-	for(var/i in 1 to rand(50, 150))
-		var/turf/T = area.random_turf()
+	for(var/list/data in post_queue["mobs"])
+		var/turf/T = locate(data[1], data[2], data[3])
 		generate_turf_fauna(T)
 
-	for(var/i in 1 to rand(200, 800))
-		var/turf/T = area.random_turf()
-		if(istype(T, /turf/closed/mineral))
-			generate_ore(T)
+	for(var/list/data in post_queue["ore"])
+		var/turf/T = locate(data[1], data[2], data[3])
+		generate_ore(T)
 
 /datum/map_generator/caves/upper
 	name = "Upper Caves"
@@ -96,6 +101,7 @@ GLOBAL_VAR(surface_z)
 
 /datum/map_generator/surface
 	var/name = "Surface"
+	keys = list("plants", "mobs", "forest")
 
 /datum/map_generator/surface/generate_turfs()
 	if(CONFIG_GET(flag/disable_generation))
@@ -115,23 +121,28 @@ GLOBAL_VAR(surface_z)
 					turf_type = /turf/open/floor/sand
 				if(-0.45 to -0.3)
 					turf_type = /turf/open/floor/dirt
+					prob_queue(0.1, "mobs", list(x, y, T.z))
+					prob_queue(0.3, "plants", list(x, y, T.z))
 				if(-0.3 to 0.4)
 					turf_type = /turf/open/floor/dirt/grass
+					prob_queue(0.1, "mobs", list(x, y, T.z))
+					prob_queue(0.5, "plants", list(x, y, T.z))
+					prob_queue(0.5, "forest", list(x, y, T.z))
 				if(0.4 to INFINITY)
 					turf_type = /turf/closed/mineral/stone
 			T.ChangeTurf(turf_type, initial(turf_type.baseturfs))
 
 /datum/map_generator/surface/generate_rest()
-	for(var/i in 1 to rand(5, 20)) //at least 5 forests are guaranteed
-		var/turf/center = area.random_turf()
-		generate_forest(center)
+	for(var/list/data in post_queue["forest"])
+		var/turf/T = locate(data[1], data[2], data[3])
+		generate_forest(T)
 
-	for(var/i in 1 to rand(60, 200))
-		var/turf/T = area.random_turf()
-		generate_wild_plants(T, SSplants.surface_plants, 2)
+	for(var/list/data in post_queue["plants"])
+		var/turf/T = locate(data[1], data[2], data[3])
+		generate_wild_plants(T, SSplants.surface_plants, 3, 7)
 
-	for(var/i in 1 to rand(50, 150))
-		var/turf/T = area.random_turf()
+	for(var/list/data in post_queue["mobs"])
+		var/turf/T = locate(data[1], data[2], data[3])
 		generate_turf_fauna(T)
 
 /datum/map_generator/proc/generate_wild_plants(turf/center, list/plant_types, min_plants=1, max_plants=5)
@@ -243,6 +254,9 @@ GLOBAL_VAR(surface_z)
 	var/animal_type = pickweight(possible_animals)
 	//hostile mobs spawn alone; other mobs can spawn in a group
 	var/max_amount = ispath(animal_type, /mob/living/simple_animal/hostile) ? 1 : 3
+	//we don't want hostile animals too close to each other
+	if((locate(/mob/living/simple_animal/hostile) in range(25, center)))
+		return
 	for(var/i in 1 to rand(1, max_amount))
 		var/turf/T = locate(center.x + rand(-3, 3), center.y + rand(-3, 3), area.z)
 		if(!isopenturf(T) || T.is_blocked_turf())
