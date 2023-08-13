@@ -269,3 +269,24 @@
 /obj/item/shield/large/Initialize()
 	. = ..()
 	AddComponent(/datum/component/two_handed, force_unwielded=5, use_grades=TRUE, require_twohands=TRUE)
+
+/obj/item/battleaxe
+	name = "battleaxe"
+	desc = "A handy tool for chopping your enemies."
+	icon = 'dwarfs/icons/items/weapons.dmi'
+	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
+	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
+	icon_state = "battleaxe"
+	w_class = WEIGHT_CLASS_BULKY
+	slot_flags = ITEM_SLOT_SUITSTORE
+	atck_type = SHARP
+	tool_behaviour = TOOL_AXE
+	toolspeed = 2
+	force = 20
+	skill = /datum/skill/combat/axe
+	melee_cd = 1 SECONDS
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
+
+/obj/item/battleaxe/Initialize()
+	. = ..()
+	AddComponent(/datum/component/two_handed, require_twohands=TRUE)

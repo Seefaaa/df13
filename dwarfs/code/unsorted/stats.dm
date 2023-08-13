@@ -314,6 +314,46 @@
             toolspeed = 1
             armor_penetration.setRating(sharp=18,pierce=18,blunt=0, fire=0, magic=0)
 
+/obj/item/battleaxe/apply_grade(grade)
+    ..()
+    switch(grade)
+        if(1)
+            force = 15
+            throwforce = 15
+            block_chance = 0
+            toolspeed = 2
+            armor_penetration.setRating(sharp=0, pierce=0, blunt=5, fire=0, magic=0)
+        if(2)
+            force = 19
+            throwforce = 17
+            block_chance = 0
+            toolspeed = 2
+            armor_penetration.setRating(sharp=1, pierce=2, blunt=7, fire=0, magic=0)
+        if(3)
+            force = 23
+            throwforce = 24
+            block_chance = 0
+            toolspeed = 2
+            armor_penetration.setRating(sharp=2, pierce=3, blunt=9, fire=0, magic=0)
+        if(4)
+            force = 28
+            throwforce = 29
+            block_chance = 0
+            toolspeed = 1
+            armor_penetration.setRating(sharp=3, pierce=5, blunt=11,fire=0, magic=0)
+        if(5)
+            force = 32
+            throwforce = 35
+            block_chance = 0
+            toolspeed = 1
+            armor_penetration.setRating(sharp=3, pierce=5, blunt=12,fire=0, magic=0)
+        if(6)
+            force = 36
+            throwforce = 45
+            block_chance = 0
+            toolspeed = 1
+            armor_penetration.setRating(sharp=4, pierce=6, blunt=13,fire=0, magic=0)
+
 /obj/item/scepter/apply_grade(grade)
     ..()
     switch(grade)

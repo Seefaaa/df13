@@ -114,6 +114,11 @@
 	icon_state = "axe_head"
 	part_name = PART_HEAD
 
+/obj/item/partial/battleaxe
+	name = "battleaxe blade"
+	icon_state = "battleaxe_blade"
+	part_name = PART_HEAD
+
 /obj/item/partial/builder_hammer
 	name = "builder's hammer head"
 	icon_state = "hammer_head"

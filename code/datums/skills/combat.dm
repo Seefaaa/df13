@@ -107,3 +107,13 @@
 	exp_per_parry = 20
 	exp_per_attack = 35
 
+/datum/skill/combat/axe
+	name = "Battleaxe Combat"
+	desc = "The art of wielding a battle axe."
+	title = "Axedwarf"
+	modifiers = list(
+			SKILL_MISS_MODIFIER=list(28, 20, 15, 10, 7, 4, 2, 0, 0, 0, 0),
+			SKILL_PARRY_MODIFIER=list(0, 0, 0, 1, 5, 7, 10, 13, 15, 18, 22),
+			SKILL_DAMAGE_MODIFIER=list(0, 0, 0, 1, 2, 2, 2, 3, 3, 4, 6))
+	exp_per_parry = 15
+	exp_per_attack = 20

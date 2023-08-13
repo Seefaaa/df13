@@ -23,6 +23,10 @@
 	result = /obj/item/partial/dagger
 	max_resulting = 3
 
+/datum/smithing_recipe/battleaxe
+	name = "\[part\] battle axe"
+	result = /obj/item/partial/battleaxe
+
 /datum/smithing_recipe/pickaxe
 	name = "\[part\] pickaxe"
 	result = /obj/item/partial/pickaxe
@@ -204,6 +208,11 @@
 	name = "axe"
 	result = /obj/item/axe
 	reqs = list(/obj/item/partial/axe=1, /obj/item/stick=1)
+
+/datum/workbench_recipe/axe
+	name = "battle axe"
+	result = /obj/item/battleaxe
+	reqs = list(/obj/item/partial/battleaxe=1, /obj/item/stick=1)
 
 /datum/workbench_recipe/shovel
 	name = "shovel"
