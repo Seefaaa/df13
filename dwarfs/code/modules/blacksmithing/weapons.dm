@@ -290,3 +290,6 @@
 /obj/item/battleaxe/Initialize()
 	. = ..()
 	AddComponent(/datum/component/two_handed, require_twohands=TRUE)
+
+/obj/item/battleaxe/build_material_icon(_file, state)
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
