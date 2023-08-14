@@ -1328,7 +1328,7 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 	ShowChoices(user)
 	return 1
 
-/datum/preferences/proc/copy_to(mob/living/carbon/human/character, icon_updates = 1, roundstart_checks = TRUE, character_setup = FALSE, antagonist = FALSE, is_latejoiner = TRUE)
+/datum/preferences/proc/copy_to(mob/living/carbon/human/character, icon_updates = 1, roundstart_checks = TRUE, character_setup = FALSE, antagonist = FALSE, is_latejoiner = TRUE, equip_loadout=TRUE)
 
 	hardcore_survival_score = 0 //Set to 0 to prevent you getting points from last another time.
 
@@ -1413,7 +1413,8 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 			if(skills[skilltype] > 0)
 				character.adjust_experience(skilltype, SKILL_EXP_LIST[skills[skilltype]+1])
 
-	character.equipOutfit(loadout ? loadout : /datum/outfit/dwarf/miner)
+	if(equip_loadout)
+		character.equipOutfit(loadout ? loadout : /datum/outfit/dwarf/miner)
 	var/obj/item/clothing/under/tunic/T = character.w_uniform
 	if(T && istype(T))
 		T.select_color(tunic_color)

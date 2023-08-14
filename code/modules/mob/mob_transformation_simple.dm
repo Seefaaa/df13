@@ -52,7 +52,7 @@
 		D.updateappearance(mutcolor_update=1, mutations_overlay_update=1)
 	else if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		M.client.prefs.copy_to(H)
+		M.client.prefs.copy_to(H, equip_loadout=FALSE)
 		H.dna.update_dna_identity()
 
 	if(delete_old_mob)
