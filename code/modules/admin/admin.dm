@@ -152,14 +152,6 @@
 			//Human
 			body += "<B>Human</B>: "
 
-
-			if(ishuman(M))
-				body += "<A href='?_src_=holder;[HrefToken()];makeai=[REF(M)]'>AI</A>"
-				body += "<A href='?_src_=holder;[HrefToken()];makerobot=[REF(M)]'>Robot</A>"
-				body += "<A href='?_src_=holder;[HrefToken()];makealien=[REF(M)]'>Alien</A>"
-				body += "<A href='?_src_=holder;[HrefToken()];makeslime=[REF(M)]'>Slime</A>"
-				body += "<A href='?_src_=holder;[HrefToken()];makeblob=[REF(M)]'>Blob</A>"
-
 			//Simple Animals
 			if(isanimal(M))
 				body += "<A href='?_src_=holder;[HrefToken()];makeanimal=[REF(M)]'>Re-Animalize</A>"
@@ -170,6 +162,8 @@
 			body += "<b>Transform:</b><br>Use when you know what you are doing.<br>"
 			body += "<b>Humans:</b> <A href='?_src_=holder;[HrefToken()];simplemake=observer;mob=[REF(M)]'>Ghost</A>"
 			body += "<A href='?_src_=holder;[HrefToken()];simplemake=human;mob=[REF(M)]'>Human</A>"
+			body += "<A href='?_src_=holder;[HrefToken()];simplemake=goblin;mob=[REF(M)]'>Goblin</A>"
+			body += "<A href='?_src_=holder;[HrefToken()];simplemake=dwarf;mob=[REF(M)]'>Dwarf</A>"
 			body += "<br><b>Misc:</b> "
 			body += "<A href='?_src_=holder;[HrefToken()];simplemake=cat;mob=[REF(M)]'>Cat</A>"
 			body += "<br>"
