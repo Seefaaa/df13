@@ -302,12 +302,10 @@
 			for(var/m in materials)
 				if(istext(m)) // m is a part key
 					m = materials[m]
-				var/datum/material/M = SSmaterials.materials[m]
-				l.Add(M.name)
+				l.Add(get_material_name(m))
 			. += "<br>It's made out of [l.Join(", ")]."
 		else if(!islist(materials)) // re-check if this is not an emtpy list
-			var/datum/material/M = SSmaterials.materials[materials]
-			. += "<br>It's made out of [M.name]."
+			. += "<br>It's made out of [get_material_name(materials)]."
 	if(grade && (obj_flags & USES_GRADES))
 		var/qualtity_text
 		switch(grade)

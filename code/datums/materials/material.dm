@@ -145,6 +145,8 @@
 		if(istext(mat_type))
 			mat_type = materials[mat_type]
 		var/datum/material/M = SSmaterials.materials[mat_type]
+		if(!M)
+			continue
 		I = M.apply2icon_default(I, i-1)
 	return I
 
