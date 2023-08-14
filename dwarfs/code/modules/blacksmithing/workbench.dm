@@ -5,7 +5,6 @@
 	icon_state = "workshop"
 	density = TRUE
 	anchored = TRUE
-	layer = TABLE_LAYER
 	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron)
 	var/datum/workbench_recipe/recipe
 	var/ready = FALSE
@@ -41,6 +40,7 @@
 		qdel(recipe)
 		recipe = null
 		to_chat(user, span_notice("You cancel the assembly of [recipe]."))
+		update_appearance()
 		return
 	if(ready)
 		busy = TRUE
@@ -59,6 +59,7 @@
 		to_chat(user, span_notice("You assemble [O]."))
 		qdel(recipe)
 		contents.Cut()
+		update_appearance()
 		recipe = null
 		ready = FALSE
 	else
@@ -93,6 +94,16 @@
 			.+="<hr>[recipe] is ready to be assembled."
 	else
 		.+="<br>[src] is empty!"
+
+/obj/structure/workbench/update_overlays()
+	. = ..()
+	for(var/i in 1 to contents.len)
+		var/obj/O = contents[i]
+		var/mutable_appearance/item = new(O)
+		item.pixel_y = -16 + 17
+		item.pixel_x = -16 + 18 + (i-1) * 8
+		item.transform *= 0.7
+		. += item
 
 /obj/structure/workbench/proc/is_required(obj/item/I)
 	. = FALSE
@@ -137,6 +148,7 @@
 			I.forceMove(src)
 			visible_message(span_notice("[user] places [I] on \the [src].") ,span_notice("You place [I] on \the [src]."))
 			check_ready()
+			update_appearance()
 		else
 			to_chat(user, span_warning("There is enough [I]."))
 	else
