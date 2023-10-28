@@ -6,6 +6,8 @@
 	anchored = TRUE
 	density = TRUE
 	layer = BELOW_OBJ_LAYER
+	light_range = 2
+	light_color = "#BB661E"
 	var/fuel = 0
 	var/fuel_consumption = 0.5
 	var/working = FALSE
@@ -16,6 +18,8 @@
 	. = ..()
 	START_PROCESSING(SSprocessing, src)
 	update_appearance()
+	set_light_on(working)
+	update_light()
 
 /obj/structure/oven/Destroy()
 	. = ..()
@@ -60,6 +64,8 @@
 		to_chat(user, span_notice("You light up [src]."))
 		playsound(src, 'dwarfs/sounds/effects/ignite.ogg', 50, TRUE)
 		working = TRUE
+		set_light_on(TRUE)
+		update_light()
 		if(contents.len)
 			timerid = addtimer(CALLBACK(src, PROC_REF(try_cook), contents[1], user), cooking_time, TIMER_STOPPABLE)
 		update_appearance()
@@ -96,5 +102,7 @@
 		playsound(src, 'dwarfs/sounds/effects/fire_cracking_short.ogg', 100, TRUE)
 	if(fuel<1)
 		working = FALSE
+		set_light_on(FALSE)
+		update_light()
 		update_appearance()
 	fuel = max(fuel-fuel_consumption, 0)

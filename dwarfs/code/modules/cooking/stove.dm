@@ -8,6 +8,8 @@
 	density = 1
 	anchored = 1
 	materials = /datum/material/iron
+	light_range = 2
+	light_color = "#BB661E"
 	var/open = FALSE
 	var/fuel = 0
 	var/fuel_consumption = 0.5
@@ -22,6 +24,8 @@
 /obj/structure/stove/Initialize()
 	. = ..()
 	START_PROCESSING(SSprocessing, src)
+	set_light_on(working)
+	update_light()
 
 /obj/structure/stove/Destroy()
 	. = ..()
@@ -97,6 +101,8 @@
 			to_chat(user, span_warning("[src] is already lit."))
 			return TRUE
 		working = TRUE
+		set_light_on(TRUE)
+		update_light()
 		update_appearance()
 		to_chat(user, span_notice("You light up [src]."))
 		playsound(src, 'dwarfs/sounds/effects/ignite.ogg', 50, TRUE)
@@ -165,6 +171,8 @@
 		playsound(src, 'dwarfs/sounds/effects/fire_cracking_short.ogg', 100, TRUE)
 	if(!fuel)
 		working = FALSE
+		set_light_on(FALSE)
+		update_light()
 		visible_message(span_notice("[src]'s flames die out."))
 		update_appearance()
 		return

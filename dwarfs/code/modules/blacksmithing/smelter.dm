@@ -5,7 +5,7 @@
 	icon_state = "smelter"
 	density = TRUE
 	anchored = TRUE
-	light_range = 0
+	light_range = 3
 	light_color = "#BB661E"
 	var/working = FALSE
 	var/fuel = 0
@@ -17,6 +17,8 @@
 /obj/structure/smelter/Initialize()
 	. = ..()
 	START_PROCESSING(SSprocessing, src)
+	set_light_on(working)
+	update_light()
 
 /obj/structure/smelter/Destroy()
 	. = ..()
@@ -37,16 +39,6 @@
 		icon_state = "smelter_fueled"
 	else
 		icon_state = "smelter"
-
-/obj/structure/smelter/proc/_update_light()
-	if(working)
-		light_range = 3
-	else
-		light_range = 0
-
-/obj/structure/smelter/update_appearance(updates)
-	. = ..()
-	_update_light()
 
 /obj/structure/smelter/proc/smelted_thing()
 	var/obj/item/I = contents[1]
@@ -83,6 +75,8 @@
 		if(working)
 			to_chat(user, span_warning("[src] is already lit."))
 			return
+		set_light_on(TRUE)
+		update_light()
 		to_chat(user, span_notice("You light up [src]."))
 		playsound(src, 'dwarfs/sounds/effects/ignite.ogg', 50, TRUE)
 		working = TRUE
@@ -104,6 +98,8 @@
 		playsound(src, 'dwarfs/sounds/effects/fire_cracking_short.ogg', 100, TRUE)
 	if(!fuel)
 		working = FALSE
+		set_light_on(FALSE)
+		update_light()
 		update_appearance()
 		remove_timer()
 		return

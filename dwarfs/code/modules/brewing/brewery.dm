@@ -6,6 +6,8 @@
 	layer = ABOVE_MOB_LAYER
 	icon = 'dwarfs/icons/structures/32x64.dmi'
 	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron)
+	light_range = 2
+	light_color = "#BB661E"
 
 /obj/structure/brewery/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT]))
@@ -44,6 +46,8 @@
 	. = ..()
 	create_reagents(300)
 	START_PROCESSING(SSprocessing, src)
+	set_light_on(working)
+	update_light()
 
 /obj/structure/brewery/l/AltClick(mob/user)
 	if(!CanReach(user))
@@ -82,6 +86,8 @@
 			to_chat(user, span_warning("[src] is already lit."))
 			return TRUE
 		working = TRUE
+		set_light_on(TRUE)
+		update_light()
 		update_appearance()
 		to_chat(user, span_notice("You light up [src]."))
 		playsound(src, 'dwarfs/sounds/effects/ignite.ogg', 50, TRUE)
@@ -121,6 +127,8 @@
 	fuel = max(fuel-1, 0)
 	if(!fuel)
 		working = FALSE
+		set_light_on(FALSE)
+		update_light()
 		update_appearance()
 		return
 	reagents.expose_temperature(temp)

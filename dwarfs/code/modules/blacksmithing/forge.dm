@@ -3,13 +3,13 @@
 	desc = "Heats up various things, sometimes even ingots."
 	icon = 'dwarfs/icons/structures/32x64.dmi'
 	icon_state = "forge"
-	light_range = 9
+	light_range = 6
 	light_color = "#BB661E"
 	layer = ABOVE_MOB_LAYER
 	density = TRUE
 	anchored = TRUE
 	var/fuel = 0
-	var/fuel_consumption = 0.5 // consumes x fuel per /process
+	var/fuel_consumption = 0.5 // consumes x fuel per second
 	var/working = FALSE
 
 /obj/structure/forge/update_icon_state()
@@ -24,6 +24,8 @@
 /obj/structure/forge/Initialize(mapload)
 	. = ..()
 	START_PROCESSING(SSprocessing, src)
+	set_light_on(working)
+	update_light()
 
 /obj/structure/forge/Destroy(force)
 	. = ..()
@@ -37,9 +39,10 @@
 	if(!fuel)
 		working = FALSE
 		update_appearance()
+		set_light_on(FALSE)
+		update_light()
 		return
-	fuel = clamp(fuel-fuel_consumption, 0, fuel)
-
+	fuel = clamp(fuel-fuel_consumption*delta_time, 0, fuel)
 
 /obj/structure/forge/attackby(obj/item/I, mob/living/user, params)
 	if(user.a_intent == INTENT_HARM)
@@ -54,6 +57,8 @@
 			to_chat(user, span_warning("[src] has no fuel."))
 			return
 		working = TRUE
+		set_light_on(TRUE)
+		update_light()
 		update_appearance()
 		to_chat(user, span_notice("You light up [src]."))
 		playsound(src, 'dwarfs/sounds/effects/ignite.ogg', 50, TRUE)
