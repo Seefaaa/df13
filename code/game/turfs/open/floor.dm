@@ -43,8 +43,7 @@
 		broken = TRUE
 	if(!burnt && burnt_states && (icon_state in burnt_states))
 		burnt = TRUE
-	if(is_fortress_level(z))
-		GLOB.station_turfs += src
+
 
 /turf/open/floor/proc/setup_broken_states()
 	return
@@ -61,11 +60,6 @@
 		user.visible_message(span_notice("[user] digs out a hole in the ground."), span_notice("You dig out a hole in the ground."))
 	else
 		to_chat(user, span_warning("Something very dense underneath!"))
-
-/turf/open/floor/Destroy()
-	if(is_fortress_level(z))
-		GLOB.station_turfs -= src
-	return ..()
 
 /turf/open/floor/ex_act(severity, target)
 	var/shielded = is_shielded()
