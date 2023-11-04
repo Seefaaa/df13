@@ -133,7 +133,13 @@
 					playsound(src, 'dwarfs/sounds/tools/anvil/anvil_hit.ogg', 70, TRUE)
 					to_chat(user, span_notice("You begin to upgrade \the [current_ingot]."))
 			else
-				var/list/metal_allowed_list = allowed_things
+				var/list/metal_allowed_list = list()
+				for(var/datum/smithing_recipe/recipe in allowed_things)
+					if(recipe.whitelisted_materials && !(current_ingot.materials in recipe.whitelisted_materials))
+						continue
+					if(recipe.blacklisted_materials && (current_ingot.materials in recipe.blacklisted_materials))
+						continue
+					metal_allowed_list += recipe
 				var/datum/smithing_recipe/sel_recipe = input("Choose:", "What to forge?", null, null) as null|anything in metal_allowed_list
 				if(!sel_recipe)
 					to_chat(user, span_warning("You did not decide what to forge yet."))

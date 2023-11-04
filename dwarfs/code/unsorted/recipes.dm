@@ -5,6 +5,10 @@
 	var/result
 	/// How much of that item is being made
 	var/max_resulting = 1
+	/// Whitelisted materials for this recipe
+	var/list/whitelisted_materials
+	/// Blacklisted materials for this recipe
+	var/list/blacklisted_materials
 
 /datum/smithing_recipe/zwei
 	name = "\[part\] zweihander blade"
