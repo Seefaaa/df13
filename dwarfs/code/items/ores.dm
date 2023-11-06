@@ -6,6 +6,10 @@
 	max_amount = 1
 	merge_type = /obj/item/stack/ore/stone
 
+/obj/item/stack/ore/stone/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
+	. = ..()
+	AddComponent(/datum/component/grindable, item_type=/obj/item/stack/sheet/flux)
+
 /obj/item/stack/ore/stone/attackby(obj/item/I, mob/living/user, params)
 	if(I.tool_behaviour == TOOL_CHISEL)
 		var/speed_mod = user.get_skill_modifier(/datum/skill/masonry, SKILL_SPEED_MODIFIER)
