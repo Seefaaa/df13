@@ -3,7 +3,7 @@ SUBSYSTEM_DEF(plants)
 	priority = FIRE_PRIORITY_PROCESS
 	flags = SS_POST_FIRE_TIMING
 	init_order = INIT_ORDER_PLANTS
-	wait = 1 SECONDS
+	wait = 3 SECONDS
 
 	var/stat_tag = "Pl" //Used for logging
 	var/list/processing = list()
