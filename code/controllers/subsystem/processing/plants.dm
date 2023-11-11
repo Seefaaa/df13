@@ -5,7 +5,7 @@ SUBSYSTEM_DEF(plants)
 	init_order = INIT_ORDER_PLANTS
 	wait = 3 SECONDS
 
-	var/stat_tag = "Pl" //Used for logging
+	var/stat_tag = "Plants" //Used for logging
 	var/list/processing = list()
 	var/list/currentrun = list()
 

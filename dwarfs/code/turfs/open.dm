@@ -271,12 +271,12 @@
 		if(user)
 			user.examinate(src)
 
-/turf/open/floor/tilled/proc/on_damage(obj/structure/plant/source)
+/turf/open/floor/tilled/proc/on_damage(obj/structure/plant/source, delta_time)
 	SIGNAL_HANDLER
 	if(!waterlevel)
-		source.health -= rand(1,3)
+		source.health -= rand(1,3) * delta_time
 	if((source.surface && z != GLOB.surface_z) || (!source.surface && z == GLOB.surface_z))
-		source.health -= rand(1,3)
+		source.health -= rand(1,3) * delta_time
 
 /turf/open/floor/tilled/proc/on_eat(obj/structure/plant/source)
 	SIGNAL_HANDLER

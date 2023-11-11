@@ -70,11 +70,17 @@
 
 /obj/structure/plant/process(delta_time)
 	if(dead)
-		return
+		return PROCESS_KILL
+
+	if(!produced.len && growthstage == growthstages && lifespan == INFINITY)
+		return PROCESS_KILL
+
 	var/needs_update = 0 // Checks if the icon needs updating so we don't redraw empty trays every time
 	var/temp_growthdelta = growthdelta
+
 	for(var/modifier in growth_modifiers)
 		temp_growthdelta *= growth_modifiers[modifier]
+
 	var/time_until_growth = lastcycle_growth+temp_growthdelta // time to advance age
 	if(world.time >= time_until_growth)
 		lastcycle_growth = world.time
@@ -83,6 +89,7 @@
 		if(age == growthstages)
 			lastcycle_produce = world.time
 			grown()
+
 	if(world.time >= lastcycle_produce+produce_delta)
 		lastcycle_produce = world.time
 		producecycle()
@@ -96,7 +103,7 @@
 
 	if(world.time >= lastcycle_health+health_delta)
 		lastcycle_health = world.time
-		damagecycle()
+		damagecycle(delta_time)
 
 	if(world.time > lastcycle_eat+eat_delta)
 		lastcycle_eat = world.time
@@ -104,7 +111,6 @@
 
 	if(needs_update)
 		update_appearance()
-
 
 /obj/structure/plant/proc/plantdies()
 	SEND_SIGNAL(src, COSMIG_PLANT_DIES)
@@ -150,10 +156,10 @@
 	if(can_grow_harvestable())
 		harvestable = TRUE
 
-/obj/structure/plant/proc/damagecycle()
-	SEND_SIGNAL(src, COSMIG_PLANT_DAMAGE_TICK)
+/obj/structure/plant/proc/damagecycle(delta_time)
+	SEND_SIGNAL(src, COSMIG_PLANT_DAMAGE_TICK, )
 	if(age > lifespan)
-		health -= rand(1,3)
+		health -= rand(1,3) * delta_time
 
 /obj/structure/plant/proc/harvest(mob/user)
 	. = TRUE

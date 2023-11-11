@@ -21,12 +21,12 @@
 		QDEL_NULL(myplant)
 	. = ..()
 
-/obj/structure/sapling_pot/proc/on_damage(obj/structure/plant/source)
+/obj/structure/sapling_pot/proc/on_damage(obj/structure/plant/source, delta_time)
 	SIGNAL_HANDLER
 	if(!waterlevel)
-		source.health -= rand(1, 3)
+		source.health -= rand(1, 3) * delta_time
 	if(source.age >= 2)
-		source.health -= rand(1, 3)
+		source.health -= rand(1, 3) * delta_time
 
 /obj/structure/sapling_pot/proc/on_grow(obj/structure/plant/source)
 	SIGNAL_HANDLER
