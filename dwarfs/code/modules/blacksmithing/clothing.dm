@@ -169,3 +169,23 @@
 	icon = 'dwarfs/icons/items/clothing/under.dmi'
 	icon_state = "loincloth"
 	body_parts_covered = GROIN|LEGS
+
+/obj/item/clothing/shoes/leather_boots
+	name = "leather boots"
+	icon_state = "leather_boots"
+	icon = 'dwarfs/icons/items/clothing/feet.dmi'
+
+/obj/item/clothing/gloves/leather
+	name = "leather gloves"
+	icon_state = "leather_gloves"
+	icon = 'dwarfs/icons/items/clothing/gloves.dmi'
+
+/obj/item/clothing/suit/leather_vest
+	name = "leather vest"
+	icon_state = "leather_vest"
+	icon = 'dwarfs/icons/items/clothing/suit.dmi'
+
+/obj/item/clothing/head/leather_helmet
+	name = "leather_helmet"
+	icon_state = "leather_helmet"
+	icon = 'dwarfs/icons/items/clothing/head.dmi'
