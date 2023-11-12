@@ -271,8 +271,12 @@ GLOBAL_VAR(restart_counter)
 
 /world/proc/init_debugger()
 	var/dll = GetConfig("env", "AUXTOOLS_DEBUG_DLL")
+	if(fexists("debug_server.dll"))
+		dll = "debug_server.dll"
 	if (dll)
-		LIBCALL(dll, "auxtools_init")()
+		var/res = LIBCALL(dll, "auxtools_init")()
+		if(res != "SUCCESS")
+			CRASH("Auxtools: [res]")
 		enable_debugging()
 
 /world/proc/on_tickrate_change()
