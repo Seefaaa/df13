@@ -306,7 +306,7 @@
 			. += "<br>It's made out of [l.Join(", ")]."
 		else if(!islist(materials)) // re-check if this is not an emtpy list
 			. += "<br>It's made out of [get_material_name(materials)]."
-	if(grade && (obj_flags & USES_GRADES))
+	if(grade && (obj_flags & USES_GRADES) && !(obj_flags & IGNORES_GRADES))
 		var/qualtity_text
 		switch(grade)
 			if(1)

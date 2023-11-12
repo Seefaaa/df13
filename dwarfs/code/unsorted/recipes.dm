@@ -3,12 +3,20 @@
 	var/name = ""
 	/// What are we making
 	var/result
+	/// If we want to force a resulting material
+	var/list/result_material
 	/// How much of that item is being made
 	var/max_resulting = 1
 	/// Whitelisted materials for this recipe
 	var/list/whitelisted_materials
 	/// Blacklisted materials for this recipe
 	var/list/blacklisted_materials
+
+/datum/smithing_recipe/steel
+	name = "steel ingot"
+	result = /obj/item/ingot
+	whitelisted_materials = list(/datum/material/pig_iron)
+	result_material = /datum/material/steel
 
 /datum/smithing_recipe/zwei
 	name = "\[part\] zweihander blade"

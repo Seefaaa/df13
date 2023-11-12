@@ -15,7 +15,8 @@
 #define BLOCK_Z_IN_DOWN (1<<11) // Should this object block z falling from above?
 #define BLOCK_Z_IN_UP (1<<12) // Should this object block z uprise from below?
 #define NO_BUILD (1<<13) // Can we build on this object?
-#define USES_GRADES (1<<14) //does this use grades?
+#define USES_GRADES (1<<14) // Does this show grade in examine
+#define IGNORES_GRADES (1<<15) // Same as above but we don't show grade regardless
 
 // If you add new ones, be sure to add them to /obj/Initialize as well for complete mapping support
 

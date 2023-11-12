@@ -155,6 +155,14 @@
 	palettes = list("iron")
 	//iron is a baseline material, hence no modifiers
 
+/datum/material/pig_iron
+	name = "pig iron"
+	palettes = list("black_iron")
+
+/datum/material/steel
+	name = "steel"
+	palettes = list("steel")
+
 /datum/material/copper
 	name = "copper"
 	palettes = list("copper")
