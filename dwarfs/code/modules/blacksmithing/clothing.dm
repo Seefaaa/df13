@@ -172,20 +172,25 @@
 
 /obj/item/clothing/shoes/leather_boots
 	name = "leather boots"
+	desc = "Sturdy boots made of leather. Slightly better than regular cloth boots."
 	icon_state = "leather_boots"
 	icon = 'dwarfs/icons/items/clothing/feet.dmi'
 
 /obj/item/clothing/gloves/leather
 	name = "leather gloves"
+	desc = "Decent protection for your fingers."
 	icon_state = "leather_gloves"
 	icon = 'dwarfs/icons/items/clothing/gloves.dmi'
 
 /obj/item/clothing/suit/leather_vest
 	name = "leather vest"
+	desc = "A vest made of leather. Light and gives good enough protection."
 	icon_state = "leather_vest"
 	icon = 'dwarfs/icons/items/clothing/suit.dmi'
+	body_parts_covered = CHEST | ARMS
 
 /obj/item/clothing/head/leather_helmet
 	name = "leather_helmet"
+	desc = "A leather helmet. Protects your brain from goblin clubs."
 	icon_state = "leather_helmet"
 	icon = 'dwarfs/icons/items/clothing/head.dmi'
