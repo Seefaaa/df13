@@ -11,11 +11,37 @@
 	growthstages = 7
 	var/small_log_type = /obj/item/log
 	var/large_log_type = /obj/item/log/large
-	var/list/small_log_amount = list(0,1,1,2,0,2,0) //a list of small logs with amount corresponding to the growthstage
-	var/list/large_log_amount = list(0,0,0,0,1,1,2) //a list of large logs with amount corresponding to the growthstage
-	var/cutting_time = 4 SECONDS //time between each chop
-	var/cutting_steps = 4 //how many times you have to chop the tree, 1 less because on the last chop you actuely cut it down
-	var/current_step = 0
+	/// a list of small logs with amount corresponding to the growthstage
+	var/list/small_log_amount = list(0,1,1,2,0,2,0)
+	/// a list of large logs with amount corresponding to the growthstage
+	var/list/large_log_amount = list(0,0,0,0,1,1,2)
+	/// Required amount of chops for each growthstage
+	var/list/required_chops = list(1,1,1,3,3,4,4)
+	/// Amount of chops already made to the tree
+	var/chops = 0
+	/// `pixel_y` offset for the chop mask for each growthstage
+	var/list/chop_offsets = list(0, 0, 0, 0, 0, 0, 0)
+	/// Time between each chop
+	var/cutting_time = 4 SECONDS
+
+/obj/structure/plant/tree/examine(mob/user)
+	. = ..()
+	if(chops)
+		. += "<br>It has chop cut[chops > 1 ? "s" : ""] visible."
+
+/obj/structure/plant/tree/update_overlays()
+	. = ..()
+	if(chops)
+		var/icon/cut = icon(src::icon, "cut[chops]")
+		var/icon/mask = icon(src::icon, "cut[chops]")
+		mask.Shift(NORTH, chop_offsets[growthstage])
+		cut.Shift(NORTH, chop_offsets[growthstage])
+		var/icon/tree = icon(src::icon, icon_state)
+		cut = apply_palettes(cut, materials)
+		mask.Blend(tree, ICON_AND)
+		mask.MapColors(rgb(1,1,1), rgb(1,1,1), rgb(1,1,1), rgb(1,1,1))
+		cut.Blend(mask, BLEND_MULTIPLY)
+		. += cut
 
 /obj/structure/plant/tree/proc/try_chop(obj/item/tool, mob/living/user)
 	to_chat(user, span_notice("You start chopping down [src]..."))
@@ -26,13 +52,14 @@
 		stop_sound_channel_nearby(src, channel)
 
 		user.adjust_experience(/datum/skill/logging, 3.6)
-		if(current_step >= cutting_steps)
+		if(chops >= required_chops[growthstage])
 			to_chat(user, span_notice("You chop down [src]."))
 			chop_tree(get_turf(src))
 			qdel(src)
 		else
 			to_chat(user, span_notice("You cut a fine notch into [src]."))
-			current_step++
+			chops++
+			update_appearance(UPDATE_ICON)
 	else
 		stop_sound_channel_nearby(src, channel)
 
@@ -63,23 +90,26 @@
 	growthdelta = 80 SECONDS
 	produce_delta = 120 SECONDS
 	materials = /datum/material/wood/towercap
+	chop_offsets = list(-15, -15, -10, -5, -2, -3, -3)
 
 /obj/structure/plant/tree/apple
 	name = "apple tree"
-	desc = ""
+	desc = "A fruit-bearing tree. Good source of apples for your food."
 	species = "apple"
 	seed_type = /obj/item/growable/seeds/tree/apple
 	produced = list(/obj/item/growable/apple=4)
 	growthdelta = 1.5 MINUTES
 	produce_delta = 5 MINUTES
 	materials = /datum/material/wood/apple
+	chop_offsets = list(-15, -15, -15, -5, -5, 0, 0)
 
 /obj/structure/plant/tree/pine
 	name = "pine tree"
-	desc = ""
+	desc = "Common tree found in a forest. Mostly used as lumber."
 	species = "pine"
 	seed_type = /obj/item/growable/seeds/tree/pine
 	produced = list()
 	growthdelta = 2 MINUTES
 	produce_delta = 1 MINUTES
 	materials = /datum/material/wood/pine
+	chop_offsets = list(-15, -15, -15, -10, -10, -10, -10)
