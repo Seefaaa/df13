@@ -1,3 +1,5 @@
+#define TORCH_LIGHT_COLOR "#FFE0B3"
+
 /obj/item/sconce
 	name = "sconce"
 	desc = "Can be attached to a wall."
