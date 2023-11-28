@@ -84,6 +84,16 @@
 	result = /obj/item/partial/chisel
 	max_resulting = 2
 
+/datum/smithing_recipe/compass_needle
+	name = "\[part\] compass needle"
+	result = /obj/item/partial/compass_needle
+	whitelisted_materials = list(/datum/material/pig_iron)
+
+/datum/smithing_recipe/magnet_core
+	name = "\[part\] magnet core"
+	result = /obj/item/partial/magnet_core
+	whitelisted_materials = list(/datum/material/pig_iron)
+
 /datum/smithing_recipe/pan
 	name = "frying pan"
 	result = /obj/item/reagent_containers/glass/pan
