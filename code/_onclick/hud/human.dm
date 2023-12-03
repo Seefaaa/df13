@@ -273,7 +273,12 @@
 	for(var/atom/movable/screen/inventory/inv in (static_inventory + toggleable_inventory))
 		if(inv.slot_id)
 			inv.hud = src
-			inv_slots[TOBITSHIFT(inv.slot_id) + 1] = inv
+			var/num = TOBITSHIFT(inv.slot_id) + 1
+			/* Why the fuck is this line here? Good question. Something happened (presumably 515) and this shit doesn't recognize num as number anymore unless I do
+			 * `num = text2num("[num]")`. In the first place, everything worked except for number 16, it was just fucking void every time and shift index 16 to 15 - Maxsc
+			*/
+			num = text2num("[num]")
+			inv_slots[num] = inv
 			inv.update_icon()
 
 	if(owner)
