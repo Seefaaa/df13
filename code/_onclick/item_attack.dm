@@ -192,7 +192,7 @@
 	if(prob(miss_prob) && user != M)
 		user.visible_message(span_danger("<b>[user]</b> misses <b>[M]</b> with [src]!"), span_danger("You miss <b>[M]</b> with [src]!"))
 		if(misssound)
-			playsound(src, misssound, 60, TRUE, -1)
+			playsound(src, misssound, 40, TRUE, -1)
 		return TRUE
 
 	if(!force)
