@@ -63,7 +63,7 @@ falloff_distance - Distance at which falloff begins. Sound is at peak volume (in
 	var/turf/above_turf = SSmapping.get_turf_above(turf_source)
 	var/turf/below_turf = SSmapping.get_turf_below(turf_source)
 
-	use_reverb = GLOB.surface_z != source.z
+	use_reverb = GLOB.surface_z != turf_source.z
 
 	if(!ignore_walls) //these sounds don't carry through walls
 		listeners = listeners & hearers(maxdistance,turf_source)
