@@ -33,7 +33,7 @@
 	var/mood_trait
 
 	var/ambience_volume = 15
-	var/ambience_index = AMBIENCE_GENERIC
+	var/ambience_index = AMBIENCE_NONE
 	var/list/ambientsounds
 	var/list/ambigensounds
 	flags_1 = CAN_BE_DIRTY_1
