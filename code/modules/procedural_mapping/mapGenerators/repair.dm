@@ -67,7 +67,7 @@
 	var/x_high = 0
 	var/y_low = 0
 	var/y_high = 0
-	var/z = 0
+	z = 0
 	var/cleanload = FALSE
 	var/datum/map_generator_module/reload_station_map/loader
 	buildmode_name = "Repair: Reload Block \[DO NOT USE\]"

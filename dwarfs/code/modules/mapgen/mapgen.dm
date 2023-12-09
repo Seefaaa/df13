@@ -12,6 +12,14 @@ GLOBAL_VAR(surface_z)
 		/obj/item/stack/ore/gem/sapphire=10,
 		/obj/item/stack/ore/coal=40,
 		/obj/item/stack/ore/smeltable/copper=30)
+	/// Controls mineral hardness for each z-level. See closed/mineral code to how exactly it works. Each index corresponds to one cave z-level
+	var/list/mineral_hardness = list(
+		1,
+		1,
+		1,
+		1,
+		1,
+	)
 
 /datum/map_generator/caves/generate_turfs()
 	if(CONFIG_GET(flag/disable_generation))
@@ -19,11 +27,11 @@ GLOBAL_VAR(surface_z)
 	if(!GLOB.temperature_seed)
 		GLOB.temperature_seed = rand(1, 2000)
 	var/list/height_values = fbm(world.maxx, world.maxy)
-	var/list/temp_values = fbm3d(world.maxx, world.maxy, area.z, GLOB.temperature_seed, frequency=0.006, lacunarity=0.4, persistence=0.4)
+	var/list/temp_values = fbm3d(world.maxx, world.maxy, z, GLOB.temperature_seed, frequency=0.006, lacunarity=0.4, persistence=0.4)
 	for(var/y in 1 to world.maxy)
 		for(var/x in 1 to world.maxx)
-			var/turf/T = locate(x, y, area.z)
-			if(T.loc != area)
+			var/turf/T = locate(x, y, z)
+			if(!(T.loc.type in allowed_areas))
 				continue
 			var/height = text2num(height_values[world.maxx * (y-1) + x])
 			var/temp = text2num(temp_values[world.maxx * (y-1) + x])
@@ -80,29 +88,6 @@ GLOBAL_VAR(surface_z)
 /datum/map_generator/caves/bottom
 	name = "Bottom Caves"
 
-/area/cavesgen
-	name = "Caverns"
-	icon_state = "cavesgen"
-	static_lighting = TRUE
-	base_lighting_alpha = 0
-	area_flags = CAVES_ALLOWED | FLORA_ALLOWED | MOB_SPAWN_ALLOWED
-	map_generator = /datum/map_generator/caves
-
-/area/cavesgen/upper_level
-	map_generator = /datum/map_generator/caves/upper
-
-/area/cavesgen/middle_level
-	map_generator = /datum/map_generator/caves/middle
-
-/area/cavesgen/bottom_level
-	map_generator = /datum/map_generator/caves/bottom
-
-/area/surface
-	name = "surface"
-	static_lighting = FALSE
-	base_lighting_alpha = 255
-	map_generator = /datum/map_generator/surface
-
 /datum/map_generator/surface
 	var/name = "Surface"
 	keys = list("plants", "mobs", "forest")
@@ -113,8 +98,8 @@ GLOBAL_VAR(surface_z)
 	var/list/some_values = fbm(world.maxx, world.maxy)
 	for(var/y in 1 to world.maxy)
 		for(var/x in 1 to world.maxx)
-			var/turf/T = locate(x, y, area.z)
-			if(T.loc != area)
+			var/turf/T = locate(x, y, z)
+			if(!(T.loc.type in allowed_areas))
 				continue
 			var/value = text2num(some_values[world.maxx * (y-1) + x])
 			var/turf/turf_type
@@ -152,7 +137,7 @@ GLOBAL_VAR(surface_z)
 /datum/map_generator/proc/generate_wild_plants(turf/center, list/plant_types, min_plants=1, max_plants=5)
 	var/plant_type = pick(plant_types)
 	for(var/i in 1 to rand(min_plants, max_plants))
-		var/turf/T = locate(center.x + rand(-3, 3), center.y + rand(-3, 3), area.z)
+		var/turf/T = locate(center.x + rand(-3, 3), center.y + rand(-3, 3), z)
 		if(!istype(T, /turf/open/floor/dirt))
 			continue
 		if(is_blocked_turf(T))
@@ -245,7 +230,7 @@ GLOBAL_VAR(surface_z)
 	//hostile mobs spawn alone; other mobs can spawn in a group
 	var/max_amount = ispath(animal_type, /mob/living/simple_animal/hostile) ? 1 : 3
 	for(var/i in 1 to rand(1, max_amount))
-		var/turf/T = locate(center.x + rand(-3, 3), center.y + rand(-3, 3), area.z)
+		var/turf/T = locate(center.x + rand(-3, 3), center.y + rand(-3, 3), z)
 		if(!isopenturf(T) || T.is_blocked_turf())
 			continue
 		new animal_type(T)
@@ -262,7 +247,7 @@ GLOBAL_VAR(surface_z)
 	if((locate(/mob/living/simple_animal/hostile) in range(25, center)))
 		return
 	for(var/i in 1 to rand(1, max_amount))
-		var/turf/T = locate(center.x + rand(-3, 3), center.y + rand(-3, 3), area.z)
+		var/turf/T = locate(center.x + rand(-3, 3), center.y + rand(-3, 3), z)
 		if(!isopenturf(T) || T.is_blocked_turf())
 			continue
 		new animal_type(T)

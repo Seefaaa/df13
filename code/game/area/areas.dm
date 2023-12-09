@@ -41,9 +41,6 @@
 	///Typepath to limit the areas (subtypes included) that atoms in this area can smooth with. Used for shuttles.
 	var/area/area_limited_icon_smoothing
 
-	///This datum, if set, allows terrain generation behavior to be ran on Initialize()
-	var/datum/map_generator/map_generator
-
 	///Used to decide what kind of reverb the area makes sound have
 	var/sound_environment = SOUND_ENVIRONMENT_HANGAR
 
@@ -132,18 +129,6 @@ GLOBAL_LIST_EMPTY(teleportlocs)
  */
 /area/LateInitialize()
 	update_beauty()
-
-/area/proc/RunGeneration()
-	if(map_generator)
-		map_generator = new map_generator(src)
-		map_generator.generate_turfs()
-		map_generator.generate_rest()
-
-/area/proc/test_gen()
-	if(map_generator)
-		map_generator.generate_turfs()
-		map_generator.generate_rest()
-
 
 /**
  * Register this area as belonging to a z level

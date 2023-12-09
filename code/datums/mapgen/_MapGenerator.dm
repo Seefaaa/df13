@@ -1,15 +1,17 @@
-///This type is responsible for any map generation behavior that is done in areas, override this to allow for area-specific map generation. This generation is ran by areas in initialize.
+///This type is responsible for any map generation behavior that is done in z levels.
 /datum/map_generator
-	var/area/area
+	var/allowed_areas = list(/area/cavesgen, /area/surface)
+	/// Z level of this generator
+	var/z
 	/// A list that is used in generate_rest proc. We populate it in generate_turfs proc to avoid looping multiple times
 	var/list/post_queue = list()
 	/// A list of keys used in post_queue. We use it to prevent crashes during generation if it so happens that a key doesn't get populated
 	var/list/keys = list()
 
-/datum/map_generator/New(my_area=null)
-	if(!my_area)
-		CRASH("Initialized map_generator datum without an area")
-	area = my_area
+/datum/map_generator/New(zlevel=null)
+	if(!zlevel)
+		CRASH("Initialized map_generator datum without a z level!")
+	z = zlevel
 	for(var/key in keys)
 		post_queue[key] = list()
 	. = ..()
@@ -22,6 +24,11 @@
 /datum/map_generator/proc/prob_queue(chance, key, value)
 	if(prob(chance))
 		queue(key, value)
+
+/// Main proc for starting generation
+/datum/map_generator/proc/run_generation()
+	generate_turfs()
+	generate_rest()
 
 ///This proc will be ran by areas on Initialize
 /datum/map_generator/proc/generate_turfs()

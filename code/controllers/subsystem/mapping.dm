@@ -36,6 +36,19 @@ SUBSYSTEM_DEF(mapping)
 	var/datum/space_level/transit
 	var/datum/space_level/empty_space
 	var/num_of_res_levels = 1
+
+	/// List of map generator datums associated to z levels.
+	/// Z1 - lobby; Z2 - surface; Z3 - upper level and so on till lowest level
+	var/list/map_generators = list(
+		null,//lobby
+		/datum/map_generator/caves/bottom,
+		/datum/map_generator/caves/middle,
+		/datum/map_generator/caves/middle,
+		/datum/map_generator/caves/middle,
+		/datum/map_generator/caves/upper,
+		/datum/map_generator/surface,//surface
+	)
+
 	/// True when in the process of adding a new Z-level, global locking
 	var/adding_new_zlevel = FALSE
 
@@ -211,13 +224,18 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 		log_world("ERROR: Station areas list failed to generate!")
 
 /datum/controller/subsystem/mapping/proc/run_map_generation()
-	for(var/area/A in world)
-		A.RunGeneration()
+	for(var/zlevel in 1 to map_generators.len)
+		var/gen_type = map_generators[zlevel]
+		if(!gen_type)
+			continue
+		var/datum/map_generator/gen = new gen_type(zlevel)
+		map_generators[zlevel] = gen
+		gen.run_generation()
 
 /datum/controller/subsystem/mapping/proc/run_map_generation_in_z(desired_z_level)
-	for(var/ar in SSmapping.areas_in_z["[desired_z_level]"])
-		var/area/A = ar
-		A.RunGeneration()
+	var/datum/map_generator/gen = map_generators[desired_z_level]
+	if(gen)
+		gen.run_generation()
 
 /datum/controller/subsystem/mapping/proc/maprotate()
 	if(map_voted || SSmapping.next_map_config) //If voted or set by other means.
