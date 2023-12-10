@@ -38,6 +38,9 @@ SUBSYSTEM_DEF(ambience)
 		ambience_listening_clients -= to_process
 		return
 
+	if(!current_area.ambigensounds.len)
+		return
+
 	var/sound = pick(current_area.ambigensounds)
 
 	SEND_SOUND(to_process.mob, sound(sound, repeat = 0, wait = 0, volume = 25, channel = CHANNEL_AMBIGEN))
