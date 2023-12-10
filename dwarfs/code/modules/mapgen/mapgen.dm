@@ -12,14 +12,6 @@ GLOBAL_VAR(surface_z)
 		/obj/item/stack/ore/gem/sapphire=10,
 		/obj/item/stack/ore/coal=40,
 		/obj/item/stack/ore/smeltable/copper=30)
-	/// Controls mineral hardness for each z-level. See closed/mineral code to how exactly it works. Each index corresponds to one cave z-level
-	var/list/mineral_hardness = list(
-		1,
-		1,
-		1,
-		1,
-		1,
-	)
 
 /datum/map_generator/caves/generate_turfs()
 	if(CONFIG_GET(flag/disable_generation))

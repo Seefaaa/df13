@@ -22,6 +22,8 @@
 /turf/closed/mineral/Initialize()
 	. = ..()
 	icon = smooth_icon
+	if(z > 0 && z <= SSmapping.mineral_hardness.len)
+		hardness = SSmapping.mineral_hardness[z]
 
 /turf/closed/mineral/set_smoothed_icon_state(new_junction)
 	. = ..()

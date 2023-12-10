@@ -49,6 +49,18 @@ SUBSYSTEM_DEF(mapping)
 		/datum/map_generator/surface,//surface
 	)
 
+	/// Controls mineral hardness for each z-level. See closed/mineral code to how exactly it works. Each index corresponds to one cave z-level
+	/// Why this is here? Because I want to have related stuff together especially since I want to use these in mineral/Initialize to reduce mapgen time
+	var/list/mineral_hardness = list(
+		1,//lobby
+		2,//bottom level
+		2,
+		2,
+		1,
+		1,//upper level
+		1,//surface
+	)
+
 	/// True when in the process of adding a new Z-level, global locking
 	var/adding_new_zlevel = FALSE
 

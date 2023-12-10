@@ -29,6 +29,11 @@
 	baseturfs = /turf/open/lava
 	var/digged_up = FALSE
 
+/turf/open/floor/rock/Initialize(mapload)
+	. = ..()
+	if(z > 0 && z <= SSmapping.mineral_hardness.len)
+		hardness = SSmapping.mineral_hardness[z]
+
 /turf/open/floor/rock/ScrapeAway(amount, flags)
 	return ChangeTurf(/turf/open/lava)
 
