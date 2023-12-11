@@ -84,12 +84,29 @@ GLOBAL_VAR(surface_z)
 		T.has_troll = TRUE
 /datum/map_generator/caves/upper
 	name = "Upper Caves"
+	ores = list(
+		/obj/item/stack/ore/smeltable/iron = 30,
+		/obj/item/stack/ore/coal=40,
+		/obj/item/stack/ore/smeltable/copper=30)
 
 /datum/map_generator/caves/middle
 	name = "Middle Caves"
+	ores = list(
+		/obj/item/stack/ore/smeltable/gold = 40,
+		/obj/item/stack/ore/smeltable/iron = 40,
+		/obj/item/stack/ore/gem/diamond=5,
+		/obj/item/stack/ore/gem/ruby=5,
+		/obj/item/stack/ore/gem/sapphire=5,
+		/obj/item/stack/ore/coal=20,
+		/obj/item/stack/ore/smeltable/copper=20)
 
 /datum/map_generator/caves/bottom
 	name = "Bottom Caves"
+	ores = list(
+		/obj/item/stack/ore/smeltable/gold = 20,
+		/obj/item/stack/ore/gem/diamond=20,
+		/obj/item/stack/ore/gem/ruby=20,
+		/obj/item/stack/ore/gem/sapphire=20)
 
 /datum/map_generator/surface
 	var/name = "Surface"
