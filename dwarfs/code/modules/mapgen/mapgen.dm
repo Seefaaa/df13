@@ -13,6 +13,16 @@ GLOBAL_VAR(surface_z)
 		/obj/item/stack/ore/coal=40,
 		/obj/item/stack/ore/smeltable/copper=30)
 
+	var/troll_chance = list(
+		1,//lobby
+		2,//bottom level
+		1,
+		0.5,
+		0.3,
+		0.1,//upper level
+		0,//surface
+	)
+
 /datum/map_generator/caves/generate_turfs()
 	if(CONFIG_GET(flag/disable_generation))
 		return
@@ -48,7 +58,8 @@ GLOBAL_VAR(surface_z)
 						turf_type = /turf/closed/mineral/sand
 					else
 						turf_type = /turf/closed/mineral/stone
-						prob_queue(0.5, "troll_rock", list(x, y, T.z))
+						var/chance = troll_chance[T.z]
+						prob_queue(chance, "troll_rock", list(x, y, T.z))
 			T.ChangeTurf(turf_type, initial(turf_type.baseturfs))
 
 /datum/map_generator/caves/generate_rest()
