@@ -5,7 +5,7 @@ SUBSYSTEM_DEF(icon_smooth)
 	priority = FIRE_PRIOTITY_SMOOTHING
 	flags = SS_TICKER
 
-	var/border_smooth = TRUE
+	var/border_smooth = FALSE
 
 	///Blueprints assemble an image of what pipes/manifolds/wires look like on initialization, and thus should be taken after everything's been smoothed
 	var/list/blueprint_queue = list()
@@ -85,7 +85,6 @@ SUBSYSTEM_DEF(icon_smooth)
 		item_loc.add_blueprints(movable_item)
 
 	return ..()
-
 
 /datum/controller/subsystem/icon_smooth/proc/add_to_queue(atom/thing)
 	if(thing.smoothing_flags & SMOOTH_QUEUED)

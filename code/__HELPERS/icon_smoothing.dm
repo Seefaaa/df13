@@ -552,6 +552,9 @@ DEFINE_BITFIELD(smoothing_junction, list(
 					A.smooth_icon()
 				else
 					QUEUE_SMOOTH(A)
+	// Don't even try to smooth borders if it's disabled
+	if(!SSicon_smooth.border_smooth)
+		return
 	for(var/V in away_turfs)
 		var/turf/T = V
 		if(T.smoothing_flags & SMOOTH_BORDERS)
