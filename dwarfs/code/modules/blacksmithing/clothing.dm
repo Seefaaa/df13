@@ -94,7 +94,8 @@
 	worn_icon_state = "helmet_heavy"
 	icon = 'dwarfs/icons/items/clothing/head.dmi'
 	icon_state = "helmet_heavy"
-	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
+	dynamic_hair_suffix = ""
+	flags_inv = HIDEMASK|HIDEEARS|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 
 /obj/item/clothing/head/plate_helmet/build_material_icon(_file, state)
