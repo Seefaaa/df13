@@ -88,8 +88,8 @@
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)
 
-/obj/item/clothing/head/plate_helmet
-	name = "plate helmet"
+/obj/item/clothing/head/heavy_plate
+	name = "heavy plate helmet"
 	desc = "Protects your head from all unexpected and expected attacks."
 	worn_icon_state = "helmet_heavy"
 	icon = 'dwarfs/icons/items/clothing/head.dmi'
@@ -98,10 +98,21 @@
 	flags_inv = HIDEMASK|HIDEEARS|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 
-/obj/item/clothing/head/plate_helmet/build_material_icon(_file, state)
+/obj/item/clothing/head/heavy_plate/build_material_icon(_file, state)
 	var/icon/I = ..()
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)
+
+/obj/item/clothing/head/light_plate
+	name = "light plate helmet"
+	desc = "Protects your head from dangers. A good compromise between protection and usability."
+	icon = 'dwarfs/icons/items/clothing/head.dmi'
+	icon_state = "helmet_light"
+	dynamic_hair_suffix = ""
+	flags_inv = HIDEHAIR
+
+/obj/item/clothing/head/light_plate/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/item/clothing/gloves/plate_gloves
 	name = "plate gloves"

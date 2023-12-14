@@ -122,9 +122,14 @@
 	name = "chainmail"
 	result = /obj/item/clothing/under/chainmail
 
-/datum/smithing_recipe/plate_helmet
-	name = "plate helmet"
-	result = /obj/item/clothing/head/plate_helmet
+/datum/smithing_recipe/heavy_plate_helmet
+	name = "heavy plate helmet"
+	result = /obj/item/clothing/head/heavy_plate
+	max_resulting = 2
+
+/datum/smithing_recipe/light_plate_helmet
+	name = "light plate helmet"
+	result = /obj/item/clothing/head/light_plate
 	max_resulting = 2
 
 /datum/smithing_recipe/plate_gloves

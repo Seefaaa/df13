@@ -845,7 +845,7 @@
         if(6)
             armor.setRating(sharp=20,pierce=14,blunt=15,fire=10,wound=35)
 
-/obj/item/clothing/head/plate_helmet/apply_grade(grade)
+/obj/item/clothing/head/heavy_plate/apply_grade(grade)
     ..()
     switch(grade)
         if(1)
