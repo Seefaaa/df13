@@ -45,9 +45,9 @@
 	if(I.tool_behaviour == TOOL_PICKAXE)
 		var/obj/item/pickaxe/pick = I
 		var/hardness_mod = hardness / pick.hardness
-		if(hardness_mod >= 2)
-			to_chat(user, span_warning("\The [pick] is too soft to mine [src]."))
-			return
+		// if(hardness_mod >= 2)
+		// 	to_chat(user, span_warning("\The [pick] is too soft to mine [src]."))
+		// 	return
 		var/time = 3 SECONDS * user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) * hardness_mod
 		if(I.use_tool(src, user, time, volume=50))
 			if(QDELETED(src))
