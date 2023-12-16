@@ -31,8 +31,9 @@
 
 /turf/open/floor/rock/Initialize(mapload)
 	. = ..()
-	if(z > 0 && z <= SSmapping.mineral_hardness.len)
-		hardness = SSmapping.mineral_hardness[z]
+	if(z > 0 && z <= SSmapping.map_generators.len)
+		var/datum/map_generator/caves/generator = SSmapping.map_generators[z]
+		hardness = generator.hardness_level
 
 /turf/open/floor/rock/ScrapeAway(amount, flags)
 	return ChangeTurf(/turf/open/lava)

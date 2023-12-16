@@ -22,6 +22,8 @@ GLOBAL_VAR(surface_z)
 		0.1,//upper level
 		0,//surface
 	)
+	/// Controls mineral hardness for this cave generator across the whole z-level. See closed/mineral code to how exactly it works.
+	var/hardness_level = 1
 
 /datum/map_generator/caves/generate_turfs()
 	if(CONFIG_GET(flag/disable_generation))
@@ -84,6 +86,7 @@ GLOBAL_VAR(surface_z)
 		T.has_troll = TRUE
 /datum/map_generator/caves/upper
 	name = "Upper Caves"
+	hardness_level = 1
 	ores = list(
 		/obj/item/stack/ore/smeltable/iron = 30,
 		/obj/item/stack/ore/coal=40,
@@ -91,6 +94,7 @@ GLOBAL_VAR(surface_z)
 
 /datum/map_generator/caves/middle
 	name = "Middle Caves"
+	hardness_level = 2
 	ores = list(
 		/obj/item/stack/ore/smeltable/gold = 40,
 		/obj/item/stack/ore/smeltable/iron = 40,
@@ -102,6 +106,7 @@ GLOBAL_VAR(surface_z)
 
 /datum/map_generator/caves/bottom
 	name = "Bottom Caves"
+	hardness_level = 3
 	ores = list(
 		/obj/item/stack/ore/smeltable/gold = 20,
 		/obj/item/stack/ore/gem/diamond=20,
