@@ -33,7 +33,7 @@
 	. = ..()
 	if(z > 0 && z <= SSmapping.map_generators.len)
 		var/datum/map_generator/generator = SSmapping.map_generators[z]
-		hardness = generator.hardness_level
+		hardness = generator?.hardness_level ? generator?.hardness_level : src::hardness
 
 /turf/open/floor/rock/ScrapeAway(amount, flags)
 	return ChangeTurf(/turf/open/lava)
