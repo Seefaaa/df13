@@ -1,6 +1,6 @@
 /obj/structure/blueprint
 	name = "blueprint"
-	desc = "Build it."
+	desc = "A blueprint for some structure. Build it."
 	max_integrity = 1
 	icon = 'dwarfs/icons/structures/32x64.dmi'
 	icon_state = "blueprint"
@@ -23,6 +23,7 @@
 	. = ..()
 	if(!display_structure)
 		display_structure = target_structure
+	name += " blueprint"
 
 /obj/structure/blueprint/examine(mob/user)
 	. = ..()
