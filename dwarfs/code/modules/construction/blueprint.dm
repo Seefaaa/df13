@@ -4,18 +4,19 @@
 	max_integrity = 1
 	icon = 'dwarfs/icons/structures/32x64.dmi'
 	icon_state = "blueprint"
-	//How long are we building
+	///How long are we building
 	var/build_time = 10 SECONDS
-	//What are we building
+	///What are we building
 	var/atom/target_structure
-	//What is shown in yje UI
+	///What is shown in yje UI
 	var/atom/display_structure
-	//What do we need to build it
+	///What do we need to build it
 	var/list/reqs = list()
-	//What materials are allowed or what is the user using
+	///What materials are allowed or what is the user using
 	var/list/req_materials = list()
-	//The size of our blueprint = list(x,y)
+	///The size of our blueprint = list(x,y)
 	var/list/dimensions = list(0,0)
+	///Blueprint category displayed in the ui
 	var/cat = "misc"
 
 /obj/structure/blueprint/Initialize()
