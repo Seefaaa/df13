@@ -551,3 +551,9 @@
 	target_structure = /obj/structure/demijohn
 	reqs = list(/obj/item/stack/glass=6, /obj/item/stack/sheet/planks=2)
 	cat = BLUEPRINT_CAT_FOOD_PROCESSING
+
+/obj/structure/blueprint/beacon
+	name = "beacon"
+	target_structure = /obj/structure/beacon
+	reqs = list(/obj/item/partial/magnet_core=1, PART_PLANKS=5)
+	cat = BLUEPRINT_CAT_UTILS
