@@ -8,6 +8,9 @@
 	/// A list of keys used in post_queue. We use it to prevent crashes during generation if it so happens that a key doesn't get populated
 	var/list/keys = list()
 
+	/// Controls mineral hardness for this cave generator across the whole z-level. See closed/mineral code to how exactly it works.
+	var/hardness_level = 1
+
 /datum/map_generator/New(zlevel=null)
 	if(!zlevel)
 		CRASH("Initialized map_generator datum without a z level!")

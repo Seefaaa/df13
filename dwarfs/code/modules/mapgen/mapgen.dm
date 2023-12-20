@@ -22,8 +22,6 @@ GLOBAL_VAR(surface_z)
 		0.1,//upper level
 		0,//surface
 	)
-	/// Controls mineral hardness for this cave generator across the whole z-level. See closed/mineral code to how exactly it works.
-	var/hardness_level = 1
 
 /datum/map_generator/caves/generate_turfs()
 	if(CONFIG_GET(flag/disable_generation))
