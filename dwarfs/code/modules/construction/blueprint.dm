@@ -17,7 +17,7 @@
 	///The size of our blueprint = list(x,y)
 	var/list/dimensions = list(0,0)
 	///Blueprint category displayed in the ui
-	var/cat = "misc"
+	var/cat = BLUEPRINT_CAT_MISC
 
 /obj/structure/blueprint/Initialize()
 	. = ..()
@@ -251,126 +251,126 @@
 	name = "brewery blueprint"
 	target_structure = /obj/structure/brewery/spawner
 	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/stack/sheet/stone=4 ,/obj/item/ingot=4)
-	cat = "food processing"
+	cat = BLUEPRINT_CAT_FOOD_PROCESSING
 
 /obj/structure/blueprint/large/workbench
 	name = "workbench blueprint"
 	target_structure = /obj/structure/workbench
 	reqs = list(/obj/item/stack/sheet/planks=10, /obj/item/ingot=2)
-	cat = "craftsmanship"
+	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
 
 /obj/structure/blueprint/stove
 	name = "stove blueprint"
 	target_structure = /obj/structure/stove
 	reqs = list(/obj/item/stack/sheet/stone=10, /obj/item/ingot=1)
-	cat = "food processing"
+	cat = BLUEPRINT_CAT_FOOD_PROCESSING
 
 /obj/structure/blueprint/oven
 	name = "oven blueprint"
 	target_structure = /obj/structure/oven
 	reqs = list(/obj/item/stack/sheet/stone=15)
-	cat = "food processing"
+	cat = BLUEPRINT_CAT_FOOD_PROCESSING
 
 /obj/structure/blueprint/smelter
 	name = "smelter blueprint"
 	target_structure = /obj/structure/smelter
 	reqs = list(/obj/item/stack/sheet/stone=15)
-	cat = "craftsmanship"
+	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
 
 /obj/structure/blueprint/forge
 	name = "forge blueprint"
 	target_structure = /obj/structure/forge
 	reqs = list(/obj/item/stack/sheet/stone=20)
-	cat = "craftsmanship"
+	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
 
 /obj/structure/blueprint/quern
 	name = "quern blueprint"
 	target_structure = /obj/structure/quern
 	reqs = list(/obj/item/stack/sheet/stone=8, /obj/item/stack/sheet/planks=2)
-	cat = "food processing"
+	cat = BLUEPRINT_CAT_FOOD_PROCESSING
 
 /obj/structure/blueprint/well
 	name = "well blueprint"
 	target_structure = /obj/structure/well
 	reqs = list(/obj/item/stack/sheet/stone=15, /obj/item/stack/sheet/planks=4, /obj/item/ingot=1, /obj/item/stack/sheet/string=5)
-	cat = "utils"
+	cat = BLUEPRINT_CAT_UTILS
 
 /obj/structure/blueprint/anvil
 	name = "anvil blueprint"
 	target_structure = /obj/structure/anvil
 	reqs = list(/obj/item/ingot=5)
-	cat = "craftsmanship"
+	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
 
 /obj/structure/blueprint/barrel
 	name = "barrel blueprint"
 	target_structure = /obj/structure/barrel
 	reqs = list(/obj/item/ingot=1, /obj/item/stack/sheet/planks=6)
-	cat = "utils"
+	cat = BLUEPRINT_CAT_UTILS
 
 /obj/structure/blueprint/gemcutter
 	name = "gemstone grinder blueprint"
 	target_structure = /obj/structure/gemcutter
 	reqs = list(/obj/item/ingot=1, /obj/item/stack/sheet/planks=6, /obj/item/stack/glass=1)
-	cat = "craftsmanship"
+	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
 
 /obj/structure/blueprint/altar
 	name = "altar blueprint"
 	target_structure = /obj/structure/dwarf_altar
 	reqs = list(/obj/item/stack/sheet/stone=25, /obj/item/flashlight/fueled/candle=6)
-	cat = "decoration"
+	cat = BLUEPRINT_CAT_DECORATION
 
 /obj/structure/blueprint/loom
 	name = "loom blueprint"
 	target_structure = /obj/structure/loom
 	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/ingot=1)
-	cat = "craftsmanship"
+	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
 
 /obj/structure/blueprint/press
 	name = "press"
 	target_structure = /obj/structure/press
 	reqs = list(/obj/item/stack/sheet/planks=10, /obj/item/ingot=1)
-	cat = "food processing"
+	cat = BLUEPRINT_CAT_FOOD_PROCESSING
 
 /obj/structure/blueprint/dryer
 	name = "tanning rack"
 	target_structure = /obj/structure/tanning_rack
 	reqs = list(/obj/item/stack/sheet/planks=7)
-	cat = "craftsmanship"
+	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
 
 /obj/structure/blueprint/throne
 	name = "stone throne"
 	target_structure = /obj/structure/chair/stone/throne
 	reqs = list(/obj/item/ingot=2, /obj/item/stack/sheet/stone=15, /obj/item/stack/sheet/mineral/gem/diamond=3)
 	req_materials = list(/obj/item/ingot=/datum/material/gold)
-	cat = "decoration"
+	cat = BLUEPRINT_CAT_DECORATION
 
 /obj/structure/blueprint/stone_chair
 	name = "stone chair"
 	target_structure = /obj/structure/chair/stone
 	reqs = list(/obj/item/stack/sheet/stone=5)
-	cat = "decoration"
+	cat = BLUEPRINT_CAT_DECORATION
 
 /obj/structure/blueprint/wood_chair
 	name = "wooden chair"
 	target_structure = /obj/structure/chair/wood
 	reqs = list(/obj/item/stack/sheet/planks=5)
-	cat = "decoration"
+	cat = BLUEPRINT_CAT_DECORATION
 
 /obj/structure/blueprint/wood_table
 	name = "wooden table"
 	target_structure = /obj/structure/table/wood
 	reqs = list(/obj/item/stack/sheet/planks=6)
-	cat = "decoration"
+	cat = BLUEPRINT_CAT_DECORATION
 
 /obj/structure/blueprint/stone_table
 	name = "stone table"
 	target_structure = /obj/structure/table/stone
 	reqs = list(/obj/item/stack/sheet/stone=6)
-	cat = "decoration"
+	cat = BLUEPRINT_CAT_DECORATION
 
 /obj/structure/blueprint/floor
 	name = "floor"
-	cat = "construction"
+	cat = BLUEPRINT_CAT_CONSTRUCTION
 	var/material_required = 1
 	var/material_type
 
@@ -458,7 +458,7 @@
 /obj/structure/blueprint/wall
 	name = "wall"
 	target_structure = /turf/closed/wall/placeholder
-	cat = "construction"
+	cat = BLUEPRINT_CAT_CONSTRUCTION
 	var/material_required = 4
 	var/material_type
 
@@ -508,46 +508,46 @@
 	display_structure = /obj/structure/mineral_door/placeholder
 	target_structure = /obj/structure/mineral_door/material
 	reqs = list(list(PART_PLANKS, PART_STONE)=3, PART_INGOT=1)
-	cat = "construction"
+	cat = BLUEPRINT_CAT_CONSTRUCTION
 
 /obj/structure/blueprint/stairs
 	name = "stairs"
 	target_structure = /obj/structure/stairs
 	reqs = list(/obj/item/stack/sheet/stone=3)
-	cat = "construction"
+	cat = BLUEPRINT_CAT_CONSTRUCTION
 
 /obj/structure/blueprint/sign
 	name = "sign"
 	target_structure = /obj/structure/sign
-	cat = "decoration"
+	cat = BLUEPRINT_CAT_DECORATION
 	reqs = list(PART_ANY=3)
 
 /obj/structure/blueprint/sarcophagus
 	name = "sarcophagus"
 	target_structure = /obj/structure/closet/crate/sarcophagus
 	reqs = list(/obj/item/stack/sheet/stone=5)
-	cat = "decoration"
+	cat = BLUEPRINT_CAT_DECORATION
 
 /obj/structure/blueprint/sapling_pot
 	name = "pot"
 	target_structure = /obj/structure/sapling_pot
 	reqs = list(/obj/item/stack/sheet/stone=5)
-	cat = "utils"
+	cat = BLUEPRINT_CAT_UTILS
 
 /obj/structure/blueprint/bed
 	name = "bed"
 	target_structure = /obj/structure/bed
 	reqs = list(/obj/item/stack/sheet/planks=8)
-	cat = "decoration"
+	cat = BLUEPRINT_CAT_DECORATION
 
 /obj/structure/blueprint/crate
 	name = "wooden crate"
 	target_structure = /obj/structure/closet/crate/wooden
 	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/ingot=1)
-	cat = "utils"
+	cat = BLUEPRINT_CAT_UTILS
 
 /obj/structure/blueprint/demijohn
 	name = "demijohn"
 	target_structure = /obj/structure/demijohn
 	reqs = list(/obj/item/stack/glass=6, /obj/item/stack/sheet/planks=2)
-	cat = "food processing"
+	cat = BLUEPRINT_CAT_FOOD_PROCESSING
