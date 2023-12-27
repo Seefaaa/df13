@@ -1180,6 +1180,7 @@
 #include "dwarfs\code\mobs\spiders\spiderstructs.dm"
 #include "dwarfs\code\mobs\spiders\spidervenom.dm"
 #include "dwarfs\code\modules\blacksmithing\anvils.dm"
+#include "dwarfs\code\modules\blacksmithing\blast_furnace.dm"
 #include "dwarfs\code\modules\blacksmithing\clothing.dm"
 #include "dwarfs\code\modules\blacksmithing\crown.dm"
 #include "dwarfs\code\modules\blacksmithing\forge.dm"

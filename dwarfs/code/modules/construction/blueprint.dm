@@ -293,7 +293,7 @@
 /obj/structure/blueprint/well
 	name = "well blueprint"
 	target_structure = /obj/structure/well
-	reqs = list(/obj/item/stack/sheet/stone=15, /obj/item/stack/sheet/planks=4, /obj/item/ingot=1, /obj/item/stack/sheet/string=5)
+	reqs = list(/obj/item/stack/sheet/stone=10, /obj/item/stack/sheet/planks=4, /obj/item/ingot=1, /obj/item/stack/sheet/string=5)
 	cat = BLUEPRINT_CAT_UTILS
 
 /obj/structure/blueprint/anvil
@@ -558,3 +558,9 @@
 	target_structure = /obj/structure/beacon
 	reqs = list(/obj/item/partial/magnet_core=1, PART_PLANKS=5)
 	cat = BLUEPRINT_CAT_UTILS
+
+/obj/structure/blueprint/blast_furnace
+	name = "blast furnace"
+	target_structure = /obj/structure/blast_furnace
+	reqs = list(PART_INGOT=2, /obj/item/stack/sheet/stone=20)
+	cat = BLUEPRINT_CAT_CRAFTSMANSHIP

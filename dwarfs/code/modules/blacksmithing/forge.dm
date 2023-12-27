@@ -58,7 +58,7 @@
 		if(!fuel)
 			to_chat(user, span_warning("[src] has no fuel."))
 			return
-		particles.spawning = 1
+		particles.spawning = 0.5
 		working = TRUE
 		set_light_on(TRUE)
 		update_light()
