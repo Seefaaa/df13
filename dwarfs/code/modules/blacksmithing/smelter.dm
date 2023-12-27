@@ -7,6 +7,7 @@
 	anchored = TRUE
 	light_range = 3
 	light_color = "#BB661E"
+	particles = new/particles/smoke/smelter
 	var/working = FALSE
 	var/fuel = 0
 	var/fuel_consumption = 0.5
@@ -80,6 +81,7 @@
 		to_chat(user, span_notice("You light up [src]."))
 		playsound(src, 'dwarfs/sounds/effects/ignite.ogg', 50, TRUE)
 		working = TRUE
+		particles.spawning = 0.3
 		if(contents.len)
 			start_smelting()
 		update_appearance()
@@ -102,5 +104,6 @@
 		update_light()
 		update_appearance()
 		remove_timer()
+		particles.spawning = 0
 		return
 	fuel = max(fuel-fuel_consumption, 0)

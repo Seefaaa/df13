@@ -8,6 +8,7 @@
 	layer = ABOVE_MOB_LAYER
 	density = TRUE
 	anchored = TRUE
+	particles = new/particles/smoke/forge
 	var/fuel = 0
 	var/fuel_consumption = 0.5 // consumes x fuel per second
 	var/working = FALSE
@@ -37,6 +38,7 @@
 	if(prob(20))
 		playsound(src, 'dwarfs/sounds/effects/fire_cracking_short.ogg', 100, TRUE)
 	if(!fuel)
+		particles.spawning = 0
 		working = FALSE
 		update_appearance()
 		set_light_on(FALSE)
@@ -56,6 +58,7 @@
 		if(!fuel)
 			to_chat(user, span_warning("[src] has no fuel."))
 			return
+		particles.spawning = 1
 		working = TRUE
 		set_light_on(TRUE)
 		update_light()

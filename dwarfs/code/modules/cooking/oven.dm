@@ -13,9 +13,17 @@
 	var/working = FALSE
 	var/cooking_time = 10 SECONDS
 	var/timerid
+	var/obj/particle_source
 
 /obj/structure/oven/Initialize()
 	. = ..()
+	particle_source = new/obj(src)
+	particle_source.icon = src::icon
+	particle_source.icon_state = "oven_empty_upper"
+	particle_source.vis_flags |= VIS_INHERIT_ID
+	particle_source.layer = ABOVE_MOB_LAYER
+	particle_source.particles = new/particles/smoke/oven
+	vis_contents += particle_source
 	START_PROCESSING(SSprocessing, src)
 	update_appearance()
 	set_light_on(working)
@@ -23,6 +31,7 @@
 
 /obj/structure/oven/Destroy()
 	. = ..()
+	QDEL_NULL(particle_source)
 	STOP_PROCESSING(SSprocessing, src)
 
 /obj/structure/oven/update_icon_state()
@@ -33,17 +42,6 @@
 		icon_state = "oven_fueled_lower"
 	else
 		icon_state = "oven_empty_lower"
-
-/obj/structure/oven/update_overlays()
-	. = ..()
-	var/mutable_appearance/M = mutable_appearance(initial(icon), layer=ABOVE_MOB_LAYER)
-	if(working)
-		M.icon_state = "oven_on_upper"
-	else if(fuel)
-		M.icon_state = "oven_fueled_upper"
-	else
-		M.icon_state = "oven_empty_upper"
-	. += M
 
 /obj/structure/oven/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/reagent_containers/glass/baking_sheet) || istype(I, /obj/item/reagent_containers/glass/cake_pan))
@@ -64,6 +62,7 @@
 		to_chat(user, span_notice("You light up [src]."))
 		playsound(src, 'dwarfs/sounds/effects/ignite.ogg', 50, TRUE)
 		working = TRUE
+		particle_source.particles.spawning = 0.3
 		set_light_on(TRUE)
 		update_light()
 		if(contents.len)
@@ -102,6 +101,7 @@
 		playsound(src, 'dwarfs/sounds/effects/fire_cracking_short.ogg', 100, TRUE)
 	if(fuel<1)
 		working = FALSE
+		particle_source.particles.spawning = 0
 		set_light_on(FALSE)
 		update_light()
 		update_appearance()
