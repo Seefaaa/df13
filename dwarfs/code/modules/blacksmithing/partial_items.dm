@@ -108,3 +108,7 @@
 /obj/item/partial/magnet_core
 	name = "magnet core"
 	icon_state = "magnet_core"
+
+/obj/item/partial/shield
+	name = "shield parts"
+	icon_state = "shield_parts"

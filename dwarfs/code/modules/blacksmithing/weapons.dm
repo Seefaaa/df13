@@ -248,6 +248,7 @@
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	icon_state = "small_shield"
+	slot_flags = ITEM_SLOT_BACK
 	block_chance = 30
 	force = 5
 	parry_cooldown = 0.3 SECONDS
@@ -264,6 +265,7 @@
 	name = "large shield"
 	icon_state = "big_shield"
 	w_class = WEIGHT_CLASS_HUGE
+	slot_flags = ITEM_SLOT_BACK
 	block_chance = 40
 
 /obj/item/shield/large/Initialize()

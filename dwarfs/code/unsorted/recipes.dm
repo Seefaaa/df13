@@ -147,6 +147,10 @@
 	result = /obj/item/sconce
 	max_resulting = 5
 
+/datum/smithing_recipe/shield_parts
+	name = "\[part\] shield"
+	result = /obj/item/partial/shield
+
 // /datum/smithing_recipe/trowel
 // 	name = "trowel"
 // 	result = /obj/item/trowel
@@ -294,9 +298,9 @@
 /datum/workbench_recipe/s_shield
 	name = "small shield"
 	result = /obj/item/shield
-	reqs = list(/obj/item/stack/sheet/planks=4, /obj/item/ingot=1)
+	reqs = list(/obj/item/stack/sheet/planks=4, /obj/item/partial/shield=1)
 
 /datum/workbench_recipe/b_shield
 	name = "large shield"
 	result = /obj/item/shield/large
-	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/ingot=2)
+	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/partial/shield=1)
