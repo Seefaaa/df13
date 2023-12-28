@@ -44,6 +44,21 @@
 /obj/structure/blast_furnace/build_material_icon(_file, state)
 	return apply_palettes(..(), materials[PART_INGOT])
 
+/obj/structure/blast_furnace/examine(mob/user)
+	. = ..()
+	if(working)
+		. += "<br>It's is working."
+	else if(fuel && ore)
+		. += "<br>It's full and ready to be lit."
+	if(!ore)
+		. += "<br>It's missing iron ore."
+	if(!fuel)
+		. += "<br>It's missing coal."
+	var/smithing_level = user.get_skill_level(/datum/skill/smithing)
+	if(!flux && smithing_level > 5)
+		. += "<br>It's missing flux."
+	. += span_notice("<hr>Alt-click to toggle open.")
+
 /obj/structure/blast_furnace/update_icon_state()
 	. = ..()
 	if(working)
