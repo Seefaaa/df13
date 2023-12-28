@@ -19,8 +19,8 @@
 	var/working = FALSE
 	/// Whether the fuel opening is open. Closed by default
 	var/open = FALSE
-	/// Amount of time it takes to smelt its contents
-	var/smelting_time = 10 SECONDS
+	/// Amount of time it takes to smelt its contents. This times 2 if there's no flux so it has to be a reasonable amount
+	var/smelting_time = 30 SECONDS
 	/// Particle source since we use two layers for the structure
 	var/obj/particle_source
 
