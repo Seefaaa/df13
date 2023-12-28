@@ -1,5 +1,6 @@
 /obj/item/stack/ore/stone
 	name = "rock"
+	desc = "A rock. Can be chiseled into a brick or ground into flux."
 	icon = 'dwarfs/icons/items/ores_gems.dmi'
 	icon_state = "rock"
 	singular_name = "Rock piece"
