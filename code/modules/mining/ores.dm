@@ -67,6 +67,15 @@
 /obj/item/stack/ore/coal/get_fuel()
 	return 15 * amount
 
+/obj/item/stack/ore/coal/five
+	amount = 5
+
+/obj/item/stack/ore/coal/ten
+	amount = 10
+
+/obj/item/stack/ore/coal/fifty
+	amount = 50
+
 /obj/item/stack/ore/smeltable/gold
 	name = "gold ore"
 	icon_state = "gold"

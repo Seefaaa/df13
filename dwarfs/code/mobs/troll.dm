@@ -14,7 +14,7 @@
 	faction = list("mining")
 	weather_immunities = list("lava","ash")
 	see_in_dark = 1
-	butcher_results = list(/obj/item/food/meat/slab/troll = list(2,4), /obj/item/stack/ore/stone = list(3,6), /obj/item/stack/sheet/mineral/coal = list(1,5),/obj/item/food/intestines=list(2,4))
+	butcher_results = list(/obj/item/food/meat/slab/troll = list(2,4), /obj/item/stack/ore/stone = list(3,6), /obj/item/stack/ore/coal = list(1,5),/obj/item/food/intestines=list(2,4))
 	hide_type = /obj/item/stack/sheet/animalhide/troll
 	melee_damage_lower = 15
 	melee_damage_upper = 25
