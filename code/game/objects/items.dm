@@ -177,7 +177,6 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 
 	///Cooldown for parrying for items that have combat skills
 	var/parry_cooldown = 0.8 SECONDS
-	var/next_parry = 0
 
 	///The list of slots by priority. equip_to_appropriate_slot() uses this list. Doesn't matter if a mob type doesn't have a slot. For default list, see [/mob/proc/equip_to_appropriate_slot]
 	var/list/slot_equipment_priority = null

@@ -236,3 +236,6 @@
 	var/experience_multiplier = 1
 	///Skill multiplier list, just slap your multiplier change onto this with the type it is coming from as key.
 	var/list/experience_multiplier_reasons = list()
+
+	/// Next time the mob can parry
+	var/next_parry = 0
