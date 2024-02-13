@@ -81,6 +81,9 @@
 	/// The degree of pressure protection that mobs in list/contents have from the external environment, between 0 and 1
 	var/contents_pressure_protection = 0
 
+	/// damage on impact when falling
+	var/impact_damage = 0
+
 
 /atom/movable/Initialize(mapload)
 	. = ..()
@@ -166,16 +169,26 @@
 	if(emissive_block)
 		. += emissive_block
 
+/**
+ * Called when an atom hits a surface after a fall
+ */
 /atom/movable/proc/onZImpact(turf/impacted_turf, levels, message = TRUE)
 	if(message)
 		visible_message(span_danger("[src] falls on [impacted_turf]!"))
-	var/atom/highest = impacted_turf
-	for(var/atom/hurt_atom as anything in impacted_turf.contents)
-		if(!hurt_atom.density)
-			continue
-		if(isobj(hurt_atom) || ismob(hurt_atom))
-			if(hurt_atom.layer > highest.layer)
-				highest = hurt_atom
+	if(impact_damage)
+		for(var/atom/hurt_atom as anything in impacted_turf.contents)
+			// damage is impact damage +- 20%
+			var/damage_taken = impact_damage + rand(-1, 1) * impact_damage * 0.2
+			if(isobj(hurt_atom))
+				var/obj/hurt_obj = hurt_atom
+				hurt_obj.take_damage(damage_taken)
+			else if(isliving(hurt_atom))
+				var/mob/living/hurt_mob = hurt_atom
+				var/blocked = hurt_mob.run_armor_check(attack_flag=BLUNT)
+				blocked = min(90, blocked) // cap 90% armor
+				hurt_mob.apply_damage(damage_taken, BRUTE, null, blocked)
+				if(prob(damage_taken))
+					hurt_mob.Knockdown(5 SECONDS)
 	INVOKE_ASYNC(src, PROC_REF(SpinAnimation), 5, 2)
 	return TRUE
 

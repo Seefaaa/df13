@@ -8,6 +8,7 @@
 	receive_ricochet_chance_mod = 0.6
 	pass_flags_self = PASSSTRUCTURE
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
+	impact_damage = 30
 	var/broken = 0 //similar to machinery's stat BROKEN
 	hit_sound = 'dwarfs/sounds/structures/generic_hit.ogg'
 
@@ -63,3 +64,18 @@
 		take_damage(power/8000, BURN, "energy")
 	power -= power/2000 //walls take a lot out of ya
 	. = ..()
+
+/obj/structure/onZImpact(turf/impacted_turf, levels, message)
+	. = ..()
+	addtimer(CALLBACK(src, PROC_REF(spawn_debris)), 0.5 SECONDS)
+
+/obj/structure/proc/spawn_debris()
+	var/obj/structure/debris/structure/debris = new(get_turf(src))
+	var/list/mats = materials2mats(materials)
+	var/image/debris_icon = mats2debris(mats)
+	debris.add_overlay(debris_icon)
+	debris.materials = materials
+	qdel(src)
+
+/obj/structure/obj_destruction(damage_flag)
+	spawn_debris()

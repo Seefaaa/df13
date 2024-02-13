@@ -61,6 +61,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	///How 'hard' is this mineral. Use case differs from type to type. Minerals and some floors use it for mining, walls use it for breaking.
 	var/hardness = 1
+	collapse_sound = 'dwarfs/sounds/effects/collapse.ogg'
 
 
 /turf/vv_edit_var(var_name, new_value)
@@ -612,3 +613,46 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /turf/proc/set_hardness(new_hardness)
 	hardness = new_hardness
+
+/// Proc to check whether the turf is connected to neighbors. Used to determine whether the turf should collapse.
+/turf/proc/check_stability()
+	if(flags_cavein & CAVEIN_IGNORE)
+		return
+	var/finished = FALSE
+	var/list/connected = list()
+	var/list/next = list(src)
+	while(!finished && connected.len < CAVEIN_MAX_SIZE)
+		for(var/turf/T in next)
+			next -= T
+			for(var/direction in GLOB.cardinals)
+				var/turf/N = get_step(T, direction)
+				if((N.flags_cavein & CAVEIN_IGNORE) || (N.flags_cavein & CAVEIN_QUEUED))
+					continue
+				if((N in next) || (N in connected))
+					continue
+				next += N
+			var/turf/D = SSmapping.get_turf_below(T)
+			if(isclosedturf(D) && !((D in next) || (D in connected) || (D.flags_cavein & CAVEIN_IGNORE)))
+				next += D
+			var/turf/U = SSmapping.get_turf_above(T)
+			if(isclosedturf(T) && U && !((U in next) || (U in connected) || (U.flags_cavein & CAVEIN_IGNORE)))
+				next += U
+			T.flags_cavein |= CAVEIN_QUEUED
+			connected |= T
+		if(!next.len)
+			finished = TRUE
+	if(finished)
+		for(var/turf/T in connected)
+			T.collapse()
+	else
+		/// this feels like a terrible solution but idk how else to avoid dublicate checks with queue system
+		for(var/turf/T in connected)
+			T.flags_cavein &= ~CAVEIN_QUEUED
+
+/turf/collapse(force)
+	. = ..()
+	for(var/atom/movable/A in src)
+		A.collapse(force)
+	if(flags_cavein & CAVEIN_IGNORE)
+		return
+	ChangeTurf(/turf/open/openspace)

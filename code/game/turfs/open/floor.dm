@@ -6,7 +6,7 @@
 	desc = "This is a floor."
 	icon = 'dwarfs/icons/turf/floors.dmi'
 	base_icon_state = "floor"
-	baseturfs = /turf/open/floor/rock
+	baseturfs = /turf/open/openspace
 
 	footstep = FOOTSTEP_FLOOR
 	barefootstep = FOOTSTEP_HARD_BAREFOOT
@@ -18,6 +18,8 @@
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_OPEN_FLOOR)
 	intact = TRUE
 	tiled_dirt = TRUE
+
+	var/list/digging_tools = list()
 
 	var/broken = FALSE
 	var/burnt = FALSE
@@ -51,13 +53,20 @@
 /turf/open/floor/proc/setup_burnt_states()
 	return
 
-/turf/open/floor/proc/try_digdown(obj/item/I,mob/user)
-	var/turf/TD = SSmapping.get_turf_below(src)
-	if(ismineralturf(TD) || isopenturf(TD))
-		if(ismineralturf(TD))
+/turf/open/floor/proc/try_digdown(obj/item/I, mob/user)
+	var/dig_time = digging_tools[I.tool_behaviour]
+	to_chat(user, span_notice("You start digging [src]..."))
+	if(I.use_tool(src, user, dig_time, volume=50))
+		digdown(user)
+
+/turf/open/floor/proc/digdown(mob/user)
+	var/turf/closed/TD = SSmapping.get_turf_below(src)
+	if(TD)
+		var/turf/newturf = ScrapeAway()
+		if(isclosedturf(TD) && TD.floor_type == type)
 			TD.ScrapeAway()
-		ChangeTurf(/turf/open/openspace)
-		user.visible_message(span_notice("[user] digs out a hole in the ground."), span_notice("You dig out a hole in the ground."))
+		if(isopenspace(newturf))
+			user.visible_message(span_notice("[user] digs out a hole in the ground."), span_notice("You dig out a hole in the ground."))
 	else
 		to_chat(user, span_warning("Something very dense underneath!"))
 
@@ -140,12 +149,22 @@
 	W?.update_icon()
 	return W
 
+/turf/open/floor/AfterChange(flags, oldType)
+	. = ..()
+	var/turf/closed/TD = SSmapping.get_turf_below(src)
+	if(isclosedturf(TD) && TD.floor_type)
+		apply_material(TD.materials)
+
 /turf/open/floor/attackby(obj/item/I, mob/user, params)
 	if(!I || !user)
 		return TRUE
 	. = ..()
 	if(.)
 		return .
+
+	if(I.tool_behaviour in digging_tools)
+		try_digdown(I, user)
+		return
 	if(user.a_intent == INTENT_HARM && istype(I, /obj/item/stack/sheet))
 		var/obj/item/stack/sheet/sheets = I
 		return sheets.on_attack_floor(user, params)

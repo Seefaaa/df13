@@ -12,6 +12,7 @@
 	density = TRUE
 	base_icon_state = "rockwall"
 	materials = /datum/material/stone
+	debris_type = /obj/structure/debris/rock/large
 	var/smooth_icon = 'dwarfs/icons/turf/walls_cavern.dmi'
 	var/turf/open/floor/turf_type = /turf/open/floor/rock
 	var/obj/item/stack/ore/mineralType = null

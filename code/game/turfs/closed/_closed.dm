@@ -5,12 +5,12 @@
 	flags_1 = RAD_PROTECT_CONTENTS_1 | RAD_NO_CONTAMINATE_1
 	pass_flags_self = PASSCLOSEDTURF
 	gender = FEMALE
+	var/floor_type = null
 
 /turf/closed/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
 	return FALSE
 
 /turf/closed/ChangeTurf(path, list/new_baseturfs, flags)
-	. = ..()
 	if(!ispath(path, /turf/closed))
 		for(var/d in GLOB.cardinals)
 			var/turf/T = get_step(src, d)
@@ -23,6 +23,33 @@
 					if(sconce.torch)
 						sconce.torch.forceMove(sconce.loc)
 					qdel(sconce)
+	if(floor_type)
+		var/turf/TU = SSmapping.get_turf_above(src)
+		if(!TU)
+			return ..()
+
+		if(TU.type != floor_type)
+			if(!length(TU.baseturfs) || length(TU.baseturfs) < 2)
+				return ..()
+			if(TU.baseturfs[2] == floor_type)
+				TU.baseturfs.Cut(2, 3)
+		// else//TU is a turf that got placed when we built the wall
+		// 	TU.ScrapeAway()
+	. = ..()
+
+/turf/closed/AfterChange(flags, oldType)
+	. = ..()
+	if(floor_type)
+		var/turf/TU = SSmapping.get_turf_above(src)
+		if(!TU)
+			return
+		if(!isopenspace(TU))
+			if(!islist(TU.baseturfs))
+				TU.baseturfs = list(TU.baseturfs)
+			//we assume first element in baseturfs is always openspace or lava
+			TU.baseturfs.Insert(2, floor_type)
+		else
+			TU.PlaceOnTop(floor_type)
 
 /turf/closed/indestructible
 	name = "wall"

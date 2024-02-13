@@ -13,20 +13,22 @@
 	clawfootstep = FOOTSTEP_SAND
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 	materials = /datum/material/stone
+	digging_tools = list(TOOL_PICKAXE=5 SECONDS)
+	debris_type = /obj/structure/debris/brick
 	var/busy = FALSE
 
 /turf/open/floor/tiles/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
-
-/turf/open/floor/tiles/ScrapeAway(amount, flags)
-	return ChangeTurf(/turf/open/floor/rock)
 
 /turf/open/floor/rock
 	name = "rock"
 	desc = "Terrible."
 	icon_state = "stone"
 	slowdown = 0.7
-	baseturfs = /turf/open/lava
+	baseturfs = /turf/open/openspace
+	materials = /datum/material/stone
+	digging_tools = list(TOOL_PICKAXE)
+	debris_type = /obj/structure/debris/rock
 	var/digged_up = FALSE
 
 /turf/open/floor/rock/Initialize(mapload)
@@ -78,38 +80,74 @@
 	else
 		. = ..()
 
+/turf/open/floor/rock/try_digdown(obj/item/I, mob/user)
+	var/obj/item/pickaxe/pick = I
+	var/hardness_mod = hardness / pick.hardness
+	if(hardness_mod >= 2)
+		to_chat(user, span_warning("\The [pick] is too soft to mine [src]."))
+		return
+	var/time = 3 SECONDS * user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) * hardness_mod
+	if(I.use_tool(src, user, time, volume=50))
+		if(QDELETED(src))
+			return
+		if(digged_up)
+			digdown(user)
+		else
+			for(var/i in 1 to rand(2, 5))
+				var/obj/item/S = new /obj/item/stack/ore/stone(src)
+				S.pixel_x = rand(-8, 8)
+				S.pixel_y = rand(-8, 8)
+			digged_up = TRUE
+			icon_state = "stone_dug"
+			user.visible_message(span_notice("<b>[user]</b> digs up some stones.") ,span_notice("You dig up some stones."))
+
 /turf/open/floor/sand
 	name = "sand"
-	desc = "Cheese?"
+	desc = "You feel warm looking at it."
 	icon_state = "sand"
 	baseturfs = /turf/open/floor/sand
 	slowdown = 0.4
+	digging_tools = list(TOOL_PICKAXE, TOOL_SHOVEL)
+	materials = /datum/material/sandstone
+	debris_type = /obj/structure/debris/rock
 	var/digged_up = FALSE
 
-/turf/open/floor/sand/attackby(obj/item/I, mob/user, params)
-	if(I.tool_behaviour == TOOL_SHOVEL || I.tool_behaviour == TOOL_PICKAXE)
-		to_chat(user, span_notice("You start digging [src]..."))
-		var/dig_time = I.tool_behaviour == TOOL_SHOVEL ? 5 SECONDS : 10 SECONDS
-		if(I.use_tool(src, user, dig_time, volume=50))
-			if(QDELETED(src))
-				return
-			if(digged_up)
-				try_digdown(I,user)
-			else
-				new/obj/item/stack/ore/smeltable/sand(src, rand(3,6))
-				digged_up = TRUE
-				icon_state = "sand_dug"
-				user.visible_message(span_notice("<b>[user]</b> digs up some stones.") , \
-					span_notice("You dig up some stones."))
-	else
-		. = ..()
+/turf/open/floor/sand/try_digdown(obj/item/I, mob/user)
+	to_chat(user, span_notice("You start digging [src]..."))
+	var/dig_time = I.tool_behaviour == TOOL_SHOVEL ? 5 SECONDS : 10 SECONDS
+	if(I.use_tool(src, user, dig_time, volume=50))
+		if(QDELETED(src))
+			return
+		if(digged_up)
+			digdown(user)
+		else
+			new/obj/item/stack/ore/smeltable/sand(src, rand(3,6))
+			digged_up = TRUE
+			icon_state = "sand_dug"
+			user.visible_message(span_notice("<b>[user]</b> digs up some stones.") , \
+				span_notice("You dig up some stones."))
 
 /turf/open/floor/dirt
 	name = "dirt"
 	desc = "Found near bodies of water. Can be farmed on."
 	icon_state = "soil"
 	slowdown = 1
+	digging_tools = list(TOOL_PICKAXE, TOOL_SHOVEL)
+	debris_type = /obj/structure/debris/dirt
 	var/digged_up = FALSE
+
+/turf/open/floor/dirt/try_digdown(obj/item/I, mob/user)
+	to_chat(user, span_notice("You start digging [src]..."))
+	var/dig_time = I.tool_behaviour == TOOL_SHOVEL ? 5 SECONDS : 10 SECONDS
+	if(I.use_tool(src, user, dig_time, volume=50))
+		if(digged_up)
+			digdown(user)
+		else
+			new/obj/item/stack/dirt(src, rand(2,5))
+			user.visible_message(span_notice("<b>[user]</b> digs up some dirt.") , \
+				span_notice("You dig up some dirt."))
+			digged_up = TRUE
+			icon_state = "soil_dug"
 
 /turf/open/floor/dirt/attackby(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_HOE)
@@ -127,18 +165,6 @@
 			user.adjust_experience(/datum/skill/farming, 7)
 		else
 			stop_sound_channel_nearby(src, channel)
-	else if(I.tool_behaviour == TOOL_SHOVEL || I.tool_behaviour == TOOL_PICKAXE)
-		to_chat(user, span_notice("You start digging [src]..."))
-		var/dig_time = I.tool_behaviour == TOOL_SHOVEL ? 5 SECONDS : 10 SECONDS
-		if(I.use_tool(src, user, dig_time, volume=50))
-			if(digged_up)
-				try_digdown(I,user)
-			else
-				new/obj/item/stack/dirt(src, rand(2,5))
-				user.visible_message(span_notice("<b>[user]</b> digs up some dirt.") , \
-					span_notice("You dig up some dirt."))
-				digged_up = TRUE
-				icon_state = "soil_dug"
 	else
 	 . = ..()
 
@@ -147,6 +173,8 @@
 	desc = "Ready for plants."
 	icon_state = "soil_tilled"
 	slowdown = 1
+	digging_tools = list(TOOL_SHOVEL)
+	debris_type = /obj/structure/debris/dirt
 	var/digged_up = FALSE
 	var/waterlevel = 0
 	var/watermax = 100
@@ -219,28 +247,6 @@
 		else
 			to_chat(user, span_warning("[capitalize(src.name)] already has seeds in it!"))
 			return
-
-	else if(O.tool_behaviour == TOOL_SHOVEL && user.a_intent != INTENT_HARM && !digged_up)
-		user.visible_message(span_notice("[user] starts digging out [src]'s plants...") ,
-			span_notice("You start digging out [src]'s plants..."))
-		if(O.use_tool(src, user, 50, volume=50) || !myplant)
-			user.visible_message(span_notice("[user] digs out the plants in [src]!") , span_notice("You dig out all of [src]'s plants!"))
-			if(myplant) //Could be that they're just using it as a de-weeder
-				QDEL_NULL(myplant)
-				name = initial(name)
-				desc = initial(desc)
-			update_appearance()
-	else if(O.tool_behaviour == TOOL_SHOVEL && (user.a_intent == INTENT_HARM || digged_up))
-		to_chat(user, span_notice("You start digging [src]..."))
-		if(O.use_tool(src, user, 5 SECONDS, volume=50))
-			if(digged_up)
-				try_digdown(O,user)
-			else
-				new/obj/item/stack/dirt(src, rand(2,5))
-				user.visible_message(span_notice("<b>[user]</b> digs up some dirt.") , \
-					span_notice("You dig up some dirt."))
-				digged_up = TRUE
-				icon_state = "soil_dug"
 	else if(istype(O, /obj/item/fertilizer))
 		user.visible_message(span_notice("[user] adds [O] to \the [src]."), span_notice("You add [O] to \the [src]."))
 		var/obj/item/fertilizer/F = O
@@ -263,6 +269,29 @@
 		update_appearance()
 	else
 		return ..()
+
+/turf/open/floor/tilled/try_digdown(obj/item/I, mob/user)
+	if(I.tool_behaviour == TOOL_SHOVEL && user.a_intent != INTENT_HARM && !digged_up)
+		user.visible_message(span_notice("[user] starts digging out [src]'s plants...") ,
+			span_notice("You start digging out [src]'s plants..."))
+		if(I.use_tool(src, user, 50, volume=50) || !myplant)
+			user.visible_message(span_notice("[user] digs out the plants in [src]!") , span_notice("You dig out all of [src]'s plants!"))
+			if(myplant) //Could be that they're just using it as a de-weeder
+				QDEL_NULL(myplant)
+				name = initial(name)
+				desc = initial(desc)
+			update_appearance()
+	else if(I.tool_behaviour == TOOL_SHOVEL && (user.a_intent == INTENT_HARM || digged_up))
+		to_chat(user, span_notice("You start digging [src]..."))
+		if(I.use_tool(src, user, 5 SECONDS, volume=50))
+			if(digged_up)
+				digdown(user)
+			else
+				new/obj/item/stack/dirt(src, rand(2,5))
+				user.visible_message(span_notice("<b>[user]</b> digs up some dirt.") , \
+					span_notice("You dig up some dirt."))
+				digged_up = TRUE
+				icon_state = "soil_dug"
 
 /turf/open/floor/tilled/attack_hand(mob/user)
 	. = ..()
@@ -360,6 +389,11 @@
 	if(prob(1) && !is_blocked_turf())
 		new /obj/structure/plant/decor/flower(src)
 
+/turf/open/floor/dirt/grass/Destroy(force)
+	for(var/obj/structure/plant/decor/flower/flower in src)
+		qdel(flower)
+	. = ..()
+
 /turf/open/floor/wooden
 	name = "wooden floor"
 	desc = "Cozy."
@@ -367,6 +401,8 @@
 	icon_state = "wooden"
 	slowdown = -0.2
 	materials = list(PART_PLANKS=/datum/material/wood/pine/treated)
+	digging_tools = list(TOOL_AXE=5 SECONDS)
+	debris_type = /obj/structure/debris/wood
 
 /turf/open/floor/wooden/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
@@ -377,6 +413,8 @@
 	icon_state = "big_tiles"
 	slowdown = -0.1
 	materials = /datum/material/sandstone
+	debris_type = /obj/structure/debris/brick
+	digging_tools = list(TOOL_PICKAXE=5 SECONDS)
 
 /turf/open/floor/bigtiles/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)

@@ -5,6 +5,7 @@
 	icon_state = "0"
 	anchored = TRUE
 	layer = OBJ_LAYER
+	impact_damage = 5
 	var/species = "plant" // used for icons and to whitelist plants in plots
 	var/seed_type
 	var/health = 40
@@ -32,6 +33,9 @@
 	var/spread_x = 8
 	var/spread_y = 12
 	var/surface = TRUE
+
+/obj/structure/plant/spawn_debris()
+	qdel(src)
 
 /obj/structure/plant/examine(mob/user)
 	. = ..()

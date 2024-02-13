@@ -19,6 +19,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	baseturfs = /turf/open/openspace
 	baseturfs = /turf/open/openspace
 	intact = FALSE //this means wires go on top
+	flags_cavein = CAVEIN_IGNORE | CAVEIN_AIR
 	//mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	var/can_cover_up = TRUE
 	var/can_build_on = TRUE
@@ -92,7 +93,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	return FALSE
 
 /turf/open/openspace/zPassOut(atom/movable/A, direction, turf/destination)
-	if(A.anchored)
+	if(A.flags_cavein & CAVEIN_IGNORE)
 		return FALSE
 	if(direction == DOWN)
 		for(var/obj/O in contents)

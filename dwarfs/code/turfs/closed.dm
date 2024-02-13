@@ -4,11 +4,16 @@
 	icon = 'dwarfs/icons/turf/walls_dwarven.dmi'
 	icon_state = "rich_wall-0"
 	base_icon_state = "rich_wall"
+	materials = /datum/material/stone
 	sheet_type = /obj/item/stack/sheet/stone
-	baseturfs = /turf/open/floor/tiles
 	sheet_amount = 3
+	floor_type = /turf/open/floor/tiles
+	debris_type = /obj/structure/debris/brick/large
 
 /turf/closed/mineral/stone
+	baseturfs = /turf/open/floor/rock
+	floor_type = /turf/open/floor/rock
+	materials = /datum/material/stone
 	var/has_troll = FALSE
 
 /turf/closed/mineral/stone/attackby(obj/item/I, mob/user, params)
@@ -36,6 +41,7 @@
 /turf/closed/mineral/sand
 	name = "sand"
 	baseturfs = /turf/open/floor/sand
+	floor_type = /turf/open/floor/sand
 	smooth_icon = 'dwarfs/icons/turf/walls_sandstone.dmi'
 	base_icon_state = "rockwall"
 	icon = 'dwarfs/icons/turf/walls_sandstone.dmi'
@@ -52,9 +58,11 @@
 	icon = 'dwarfs/icons/turf/walls_wooden.dmi'
 	base_icon_state = "wooden_wall"
 	icon_state = "wooden_wall-0"
-	baseturfs = /turf/open/floor/wooden
+	floor_type = /turf/open/floor/wooden
 	hardness = 60
 	sheet_type = /obj/item/stack/sheet/planks
+	materials = /datum/material/wood/pine/treated
+	debris_type = /obj/structure/debris/wood/large
 
 /turf/closed/wall/wooden/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
@@ -64,5 +72,7 @@
 	icon = 'dwarfs/icons/turf/walls_sand.dmi'
 	base_icon_state = "sand_wall"
 	icon_state = "sand_wall-0"
-	baseturfs = /turf/open/floor/bigtiles
+	floor_type = /turf/open/floor/bigtiles
 	sheet_type = /obj/item/stack/ore/smeltable/sand
+	materials = /datum/material/sandstone
+	debris_type = /obj/structure/debris/brick/large

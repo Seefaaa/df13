@@ -139,6 +139,17 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	if(thisarea.lighting_effect)
 		W.add_overlay(thisarea.lighting_effect)
 
+	if(flags_cavein & CAVEIN_AIR)
+		for(var/direction in list(NORTH, SOUTH, EAST, WEST))
+			var/turf/neighbor = get_step(src, direction)
+			if(neighbor)
+				QUEUE_CAVEIN(neighbor)
+		var/turf/U = SSmapping.get_turf_above(src)
+		if(U)
+			QUEUE_CAVEIN(U)
+		for(var/atom/movable/A in src)
+			A.collapse()
+
 	QUEUE_SMOOTH_NEIGHBORS(src)
 	QUEUE_SMOOTH(src)
 
@@ -189,6 +200,8 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 			new_baseturfs += fake_turf_type
 	if(!length(baseturfs))
 		baseturfs = list(baseturfs)
+	if(!length(new_baseturfs))
+		new_baseturfs = list(new_baseturfs)
 	baseturfs = baseturfs_string_list(new_baseturfs + baseturfs, src)
 
 // Make a new turf and put it on top

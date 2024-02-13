@@ -7,3 +7,4 @@
 
 #define MATERIAL_STONE "stone"
 #define MATERIAL_WOOD "wood"
+#define MATERIAL_METAL "metal"

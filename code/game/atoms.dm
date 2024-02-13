@@ -15,6 +15,9 @@
 	///If non-null, overrides a/an/some in all cases
 	var/article
 
+	///Flags for cavein behaviour and processing
+	var/flags_cavein = 0
+
 	///First atom flags var
 	var/flags_1 = NONE
 	///Intearaction flags
@@ -136,6 +139,12 @@
 	var/list/materials = null
 	///Whether to apply default material when spawned
 	var/init_materials = TRUE
+
+	///Collapse sound that is sometimes played in /collapse proc
+	var/collapse_sound = null
+
+	///Type of debree that spawns when src is collapsed
+	var/debris_type = null
 
 /**
  * Called when an atom is created in byond (built in engine proc)
@@ -1664,3 +1673,18 @@
 /// Apply materials to this atom's icon
 /atom/proc/build_material_icon(_file=null, state=null)
 	return icon(_file, state)
+
+/**
+ * Collapse proc. This atom falls down a z-level. Return TRUE if collapse successfull, otherwise FALSE
+ */
+/atom/proc/collapse(force=FALSE)
+	flags_cavein &= ~CAVEIN_QUEUED
+	if((flags_cavein & CAVEIN_IGNORE) && !force)
+		return FALSE
+	if(collapse_sound && prob(80))
+		playsound(src, collapse_sound, rand(50, 60), TRUE)
+	if(debris_type)
+		var/obj/debris = new debris_type(get_turf(src))
+		if(materials)
+			debris.apply_material(materials)
+	return TRUE

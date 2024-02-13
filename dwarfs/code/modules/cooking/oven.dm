@@ -8,6 +8,7 @@
 	layer = BELOW_OBJ_LAYER
 	light_range = 2
 	light_color = "#BB661E"
+	materials = /datum/material/stone
 	var/fuel = 0
 	var/fuel_consumption = 0.5
 	var/working = FALSE

@@ -8,6 +8,10 @@
 	var/list/palettes = list("template1")
 	/// What material type this is
 	var/mat
+	/// What default raw resource type does this material have
+	var/resource
+	/// What default refined resource type does this material have
+	var/resource_refined
 	/// What floor is made out of this material
 	var/floor_type
 	/// What wall is made out of this material
@@ -153,19 +157,29 @@
 /datum/material/iron
 	name = "iron"
 	palettes = list("iron")
+	mat = MATERIAL_METAL
+	resource = /obj/item/stack/ore/smeltable/iron
+	resource_refined = /obj/item/ingot
 	//iron is a baseline material, hence no modifiers
 
 /datum/material/pig_iron
 	name = "pig iron"
 	palettes = list("black_iron")
+	mat = MATERIAL_METAL
+	resource_refined = /obj/item/ingot
 
 /datum/material/steel
 	name = "steel"
 	palettes = list("steel")
+	mat = MATERIAL_METAL
+	resource_refined = /obj/item/ingot
 
 /datum/material/copper
 	name = "copper"
 	palettes = list("copper")
+	mat = MATERIAL_METAL
+	resource = /obj/item/stack/ore/smeltable/copper
+	resource_refined = /obj/item/ingot
 	force_mod = 0.8
 	toolspeed_mod = 0.7
 	toolspeed_mod_handle = 1.1
@@ -194,6 +208,9 @@
 /datum/material/gold
 	name = "gold"
 	palettes = list("gold")
+	mat = MATERIAL_METAL
+	resource = /obj/item/stack/ore/smeltable/gold
+	resource_refined = /obj/item/ingot
 	force_mod = 0.8
 	toolspeed_mod = 0.7
 	toolspeed_mod_handle = 1.1
@@ -221,6 +238,8 @@
 
 /datum/material/wood
 	mat = MATERIAL_WOOD
+	resource = /obj/item/log
+	resource_refined = /obj/item/stack/sheet/planks
 	var/treated_type
 	floor_type = /turf/open/floor/wooden
 	wall_type = /turf/closed/wall/wooden
@@ -324,6 +343,8 @@
 	name = "stone"
 	palettes = list("soapstone")
 	mat = MATERIAL_STONE
+	resource = /obj/item/stack/ore/stone
+	resource_refined = /obj/item/stack/sheet/stone
 	wall_type = /turf/closed/wall/stone
 	door_type = /obj/structure/mineral_door/material
 
@@ -331,11 +352,15 @@
 	name = "sandstone"
 	palettes = list("sand")
 	mat = MATERIAL_STONE
+	resource = /obj/item/stack/ore/smeltable/sand
+	resource_refined = /obj/item/stack/ore/smeltable/sand
 	wall_type = /turf/closed/wall/sand
 	door_type = /obj/structure/mineral_door/material
 
 /datum/material/cloth
 	palettes = list("cloth")
+	resource = /obj/item/stack/sheet/cloth
+	resource_refined = /obj/item/stack/sheet/cloth
 
 /datum/material/cloth/silk
 	name = "spider silk"

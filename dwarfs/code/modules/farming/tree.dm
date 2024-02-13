@@ -9,6 +9,7 @@
 	spread_x = 4
 	spread_y = 3
 	growthstages = 7
+	impact_damage = 6
 	var/small_log_type = /obj/item/log
 	var/large_log_type = /obj/item/log/large
 	/// a list of small logs with amount corresponding to the growthstage
@@ -24,10 +25,18 @@
 	/// Time between each chop
 	var/cutting_time = 4 SECONDS
 
+/obj/structure/plant/tree/spawn_debris()
+	chop_tree(get_turf(src))
+	qdel(src)
+
 /obj/structure/plant/tree/examine(mob/user)
 	. = ..()
 	if(chops)
 		. += "<br>It has chop cut[chops > 1 ? "s" : ""] visible."
+
+/obj/structure/plant/tree/growthcycle()
+	. = ..()
+	impact_damage = src::impact_damage * growthstage
 
 /obj/structure/plant/tree/update_overlays()
 	. = ..()

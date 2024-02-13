@@ -46,3 +46,11 @@
 		holder = UP
 	dir |= holder
 	return dir
+
+/proc/get_lowest_visible_multiz(atom/us)
+	var/turf/next = us
+	var/turf/prev
+	while(next && (next.flags_cavein & CAVEIN_AIR))
+		prev = next
+		next = get_step_multiz(next, DOWN)
+	return prev
