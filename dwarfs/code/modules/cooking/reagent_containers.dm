@@ -259,13 +259,9 @@
 	AddComponent(/datum/component/storage/concrete/cooking/pan)
 
 /obj/item/reagent_containers/glass/cup
-	name = "wooden cup"
+	name = "cup"
+	desc = "A trusty companion for a thirst-quenching break."
 	icon = 'dwarfs/icons/items/containers.dmi'
-	icon_state = "wooden_cup"
-	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron)
-
-/obj/item/reagent_containers/glass/cup/build_material_icon(_file, state)
-	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT]))
 
 /obj/item/reagent_containers/glass/cup/update_overlays()
 	. = ..()
@@ -274,9 +270,21 @@
 		M.color = mix_color_from_reagents(reagents.reagent_list)
 		. += M
 
-/obj/item/reagent_containers/glass/cup/iron
-	name = "iron cup"
-	icon_state = "iron_cup"
+/obj/item/reagent_containers/glass/cup/wooden
+	name = "wooden cup"
+	icon_state = "wooden_cup"
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron)
+
+/obj/item/reagent_containers/glass/cup/wooden/build_material_icon(_file, state)
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT]))
+
+/obj/item/reagent_containers/glass/cup/metal
+	name = "metal cup"
+	icon_state = "metal_cup"
+	materials = /datum/material/iron
+
+/obj/item/reagent_containers/glass/cup/metal/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/item/reagent_containers/glass/cake_pan
 	name = "cake pan"

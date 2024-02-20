@@ -151,6 +151,11 @@
 	name = "\[part\] shield"
 	result = /obj/item/partial/shield
 
+/datum/smithing_recipe/metal_cup
+	name = "metal cup"
+	result = /obj/item/reagent_containers/glass/cup/metal
+	max_resulting = 3
+
 // /datum/smithing_recipe/trowel
 // 	name = "trowel"
 // 	result = /obj/item/trowel
