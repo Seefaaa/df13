@@ -256,8 +256,14 @@
 
 /obj/structure/blueprint/large/workbench
 	name = "workbench blueprint"
-	target_structure = /obj/structure/workbench
+	target_structure = /obj/structure/crafter/workbench
 	reqs = list(/obj/item/stack/sheet/planks=10, /obj/item/ingot=2)
+	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
+
+/obj/structure/blueprint/large/carpenters_table
+	name = "carpenter's table"
+	target_structure = /obj/structure/crafter/carpenter_table
+	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/ingot=1)
 	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
 
 /obj/structure/blueprint/stove
@@ -563,4 +569,10 @@
 	name = "blast furnace"
 	target_structure = /obj/structure/blast_furnace
 	reqs = list(PART_INGOT=2, /obj/item/stack/sheet/stone=20)
+	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
+
+/obj/structure/blueprint/tailor_table
+	name = "tailor's table"
+	target_structure = /obj/structure/crafter/tailor_table
+	reqs = list(PART_PLANKS=8, PART_INGOT=1)
 	cat = BLUEPRINT_CAT_CRAFTSMANSHIP

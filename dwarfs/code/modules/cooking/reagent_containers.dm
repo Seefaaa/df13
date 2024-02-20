@@ -262,6 +262,10 @@
 	name = "wooden cup"
 	icon = 'dwarfs/icons/items/containers.dmi'
 	icon_state = "wooden_cup"
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron)
+
+/obj/item/reagent_containers/glass/cup/build_material_icon(_file, state)
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT]))
 
 /obj/item/reagent_containers/glass/cup/update_overlays()
 	. = ..()

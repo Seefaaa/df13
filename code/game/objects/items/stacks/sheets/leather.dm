@@ -125,16 +125,6 @@
 	inhand_icon_state = "sheet-leather"
 	merge_type = /obj/item/stack/sheet/leather
 
-GLOBAL_LIST_INIT(leather_recipes, list (
-	new/datum/stack_recipe("Satchel", /obj/item/storage/satchel, 3, time=15 SECONDS, tools=TOOL_KNIFE),
-	new/datum/stack_recipe("Soil Bag", /obj/item/storage/soil, 5, time=15 SECONDS, tools=TOOL_KNIFE),
-	new/datum/stack_recipe("Grains sack", /obj/item/reagent_containers/glass/sack, 1, time=10 SECONDS, tools=TOOL_KNIFE)
-))
-
-/obj/item/stack/sheet/leather/get_main_recipes()
-	. = ..()
-	. += GLOB.leather_recipes
-
 //Step one - dehairing.
 
 /obj/item/stack/sheet/animalhide/attackby(obj/item/W, mob/user, params)

@@ -185,122 +185,244 @@
 	result = /obj/item/key
 	max_resulting = 3
 
-/datum/workbench_recipe
-	var/name = "workbench_recipe"
+/datum/crafter_recipe
+	/// Displayed name for the recipe
+	var/name = "some recipe"
+	/// Result obj path
 	var/result
+	/// How much of the result is spawned
+	var/result_amount = 1
+	/// Required materials for this recipe
 	var/list/reqs
+	/// How long does it take to make this recipe
+	var/crafting_time = 8 SECONDS
+	/// What skill does affect this recipe crafting time
+	var/affecting_skill
+	/// How much exp towards the affected skill you get for crafting this recipe
+	var/exp_gain = 10
 
-/datum/workbench_recipe/dagger
+/datum/crafter_recipe/workbench_recipe
+
+/datum/crafter_recipe/workbench_recipe/dagger
 	name = "dagger"
 	result = /obj/item/dagger
 	reqs = list(/obj/item/partial/dagger=1, /obj/item/weapon_hilt=1)
 
-/datum/workbench_recipe/zwei
+/datum/crafter_recipe/workbench_recipe/zwei
 	name = "zweihander"
 	result = /obj/item/zwei
 	reqs = list(/obj/item/stack/sheet/leather = 2, /obj/item/partial/zwei=1, /obj/item/weapon_hilt=1)
 
-/datum/workbench_recipe/flail
+/datum/crafter_recipe/workbench_recipe/flail
 	name = "flail"
 	result = /obj/item/flail
 	reqs = list(/obj/item/partial/flail=1, /obj/item/weapon_hilt=1)
 
-/datum/workbench_recipe/sword
+/datum/crafter_recipe/workbench_recipe/sword
 	name = "sword"
 	result = /obj/item/sword
 	reqs = list(/obj/item/stack/sheet/leather = 1, /obj/item/partial/sword=1, /obj/item/weapon_hilt=1)
 
-/datum/workbench_recipe/spear
+/datum/crafter_recipe/workbench_recipe/spear
 	name = "spear"
 	result = /obj/item/spear
 	reqs = list(/obj/item/partial/spear =1, /obj/item/stick=1)
 
-/datum/workbench_recipe/halberd
+/datum/crafter_recipe/workbench_recipe/halberd
 	name = "halberd"
 	result = /obj/item/halberd
 	reqs = list(/obj/item/partial/halberd =1, /obj/item/stick=1, /obj/item/stack/sheet/leather = 1)
 
-/datum/workbench_recipe/crown
+/datum/crafter_recipe/workbench_recipe/crown
 	name = "crown"
 	result = /obj/item/clothing/head/crown
 	reqs = list(/obj/item/stack/sheet/mineral/gem/sapphire = 3, /obj/item/partial/crown_empty = 1)
 
-/datum/workbench_recipe/pickaxe
+/datum/crafter_recipe/workbench_recipe/pickaxe
 	name = "pickaxe"
 	result = /obj/item/pickaxe
 	reqs = list(/obj/item/partial/pickaxe=1, /obj/item/stick=1)
 
-/datum/workbench_recipe/warhammer
+/datum/crafter_recipe/workbench_recipe/warhammer
 	name = "warhammer"
 	result = /obj/item/warhammer
 	reqs = list(/obj/item/partial/warhammer=1, /obj/item/stick=1)
 
-/datum/workbench_recipe/axe
+/datum/crafter_recipe/workbench_recipe/axe
 	name = "axe"
 	result = /obj/item/axe
 	reqs = list(/obj/item/partial/axe=1, /obj/item/stick=1)
 
-/datum/workbench_recipe/axe
+/datum/crafter_recipe/workbench_recipe/battle_axe
 	name = "battle axe"
 	result = /obj/item/battleaxe
 	reqs = list(/obj/item/partial/battleaxe=1, /obj/item/stick=1)
 
-/datum/workbench_recipe/shovel
+/datum/crafter_recipe/workbench_recipe/shovel
 	name = "shovel"
 	result = /obj/item/shovel
 	reqs = list(/obj/item/partial/shovel=1, /obj/item/stick=1)
 
-/datum/workbench_recipe/builder_hammer
+/datum/crafter_recipe/workbench_recipe/builder_hammer
 	name = "builder's hammer"
 	result = /obj/item/builder_hammer
 	reqs = list(/obj/item/partial/builder_hammer=1, /obj/item/stick=1)
 
-/datum/workbench_recipe/smithing_hammer
+/datum/crafter_recipe/workbench_recipe/smithing_hammer
 	name = "smithing hammer"
 	result = /obj/item/smithing_hammer
 	reqs = list(/obj/item/partial/smithing_hammer=1, /obj/item/stick=1)
 
-/datum/workbench_recipe/lantern
+/datum/crafter_recipe/workbench_recipe/lantern
 	name = "lantern"
 	result = /obj/item/flashlight/fueled/lantern
 	reqs = list(/obj/item/partial/lantern_parts=1, /obj/item/flashlight/fueled/candle=1, /obj/item/stack/glass=2)
 
-/datum/workbench_recipe/scepter
+/datum/crafter_recipe/workbench_recipe/scepter
 	name = "scepter"
 	result = /obj/item/scepter
 	reqs = list(/obj/item/partial/scepter_part=1, /obj/item/stick=1)
 
-/datum/workbench_recipe/mop
+/datum/crafter_recipe/workbench_recipe/mop
 	name = "mop"
 	result = /obj/item/mop
 	reqs = list(/obj/item/stick=1, /obj/item/stack/sheet/string=5)
 
-/datum/workbench_recipe/rag
-	name = "rag"
-	result = /obj/item/reagent_containers/glass/rag
-	reqs = list(/obj/item/stack/sheet/string=3)
-
-/datum/workbench_recipe/kitchen_knife
+/datum/crafter_recipe/workbench_recipe/kitchen_knife
 	name = "kitchen knife"
 	result = /obj/item/kitchen/knife
 	reqs = list(/obj/item/partial/kitchen_knife=1, /obj/item/weapon_hilt=1)
 
-/datum/workbench_recipe/hoe
+/datum/crafter_recipe/workbench_recipe/hoe
 	name = "hoe"
 	result = /obj/item/hoe
 	reqs = list(/obj/item/partial/hoe=1, /obj/item/stick=1)
 
-/datum/workbench_recipe/chisel
+/datum/crafter_recipe/workbench_recipe/chisel
 	name = "chisel"
 	result = /obj/item/chisel
 	reqs = list(/obj/item/partial/chisel=1, /obj/item/stick=1)
 
-/datum/workbench_recipe/s_shield
+/datum/crafter_recipe/workbench_recipe/s_shield
 	name = "small shield"
 	result = /obj/item/shield
 	reqs = list(/obj/item/stack/sheet/planks=4, /obj/item/partial/shield=1)
 
-/datum/workbench_recipe/b_shield
+/datum/crafter_recipe/workbench_recipe/b_shield
 	name = "large shield"
 	result = /obj/item/shield/large
 	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/partial/shield=1)
+
+/datum/crafter_recipe/carpenter_recipe
+	affecting_skill = /datum/skill/logging
+
+/datum/crafter_recipe/carpenter_recipe/weapon_hilt
+	name = "weapon hilt"
+	reqs = list(/obj/item/stack/sheet/planks=1)
+	result = /obj/item/weapon_hilt
+
+/datum/crafter_recipe/carpenter_recipe/bucket
+	name = "bucket"
+	reqs = list(/obj/item/stack/sheet/planks=4, /obj/item/ingot=1)
+	result = /obj/item/reagent_containers/glass/bucket
+	result_amount = 2
+
+/datum/crafter_recipe/carpenter_recipe/regular_plate
+	name = "regular plate"
+	reqs = list(/obj/item/stack/sheet/planks=1)
+	result = /obj/item/reagent_containers/glass/plate/regular
+
+/datum/crafter_recipe/carpenter_recipe/flat_plate
+	name = "flat plate"
+	reqs = list(/obj/item/stack/sheet/planks=1)
+	result = /obj/item/reagent_containers/glass/plate/flat
+
+/datum/crafter_recipe/carpenter_recipe/bowl
+	name = "bowl"
+	reqs = list(/obj/item/stack/sheet/planks=2)
+	result = /obj/item/reagent_containers/glass/plate/bowl
+
+/datum/crafter_recipe/carpenter_recipe/stick
+	name = "stick"
+	reqs = list(/obj/item/stack/sheet/planks=1)
+	result = /obj/item/stick
+
+/datum/crafter_recipe/carpenter_recipe/cup
+	name = "wooden cup"
+	reqs = list(/obj/item/stack/sheet/planks=3, /obj/item/ingot=1)
+	result = /obj/item/reagent_containers/glass/cup
+	result_amount = 3
+
+/datum/crafter_recipe/carpenter_recipe/rolling_pin
+	name = "rolling pin"
+	reqs = list(/obj/item/stack/sheet/planks=2)
+	result = /obj/item/kitchen/rollingpin
+
+/datum/crafter_recipe/carpenter_recipe/club
+	name = "club"
+	reqs = list(/obj/item/stack/sheet/planks=5)
+	result = /obj/item/club
+
+/datum/crafter_recipe/tailor_recipe
+
+/datum/crafter_recipe/tailor_recipe/boots
+	name = "boots"
+	reqs = list(/obj/item/stack/sheet/cloth=3)
+	result = /obj/item/clothing/shoes/boots
+
+/datum/crafter_recipe/tailor_recipe/tunic
+	name = "tunic"
+	reqs = list(/obj/item/stack/sheet/cloth=6)
+	result = /obj/item/clothing/under/tunic/random
+
+/datum/crafter_recipe/tailor_recipe/casing
+	name = "stitched casing"
+	reqs = list(/obj/item/stack/sheet/cloth=3)
+	result = /obj/item/food/intestines/stitched_casing
+
+/datum/crafter_recipe/tailor_recipe/satchel
+	name = "satchel"
+	reqs = list(/obj/item/stack/sheet/leather=3)
+	result = /obj/item/storage/satchel
+	affecting_skill = /datum/skill/skinning
+
+/datum/crafter_recipe/tailor_recipe/soil_bag
+	name = "soil bag"
+	reqs = list(/obj/item/stack/sheet/leather=4)
+	result = /obj/item/storage/soil
+	affecting_skill = /datum/skill/skinning
+
+/datum/crafter_recipe/tailor_recipe/grains_sack
+	name = "grains sack"
+	reqs = list(/obj/item/stack/sheet/cloth=3)
+	result = /obj/item/reagent_containers/glass/sack
+	affecting_skill = /datum/skill/skinning
+
+/datum/crafter_recipe/tailor_recipe/leather_helmet
+	name = "leather helmet"
+	reqs = list(/obj/item/stack/sheet/leather=4)
+	result = /obj/item/clothing/head/leather_helmet
+	affecting_skill = /datum/skill/skinning
+
+/datum/crafter_recipe/tailor_recipe/leather_vest
+	name = "leather vest"
+	reqs = list(/obj/item/stack/sheet/leather=6)
+	result = /obj/item/clothing/suit/leather_vest
+	affecting_skill = /datum/skill/skinning
+
+/datum/crafter_recipe/tailor_recipe/leather_boots
+	name = "leather boots"
+	reqs = list(/obj/item/stack/sheet/leather=4)
+	result = /obj/item/clothing/shoes/leather_boots
+	affecting_skill = /datum/skill/skinning
+
+/datum/crafter_recipe/tailor_recipe/leather_gloves
+	name = "leather gloves"
+	reqs = list(/obj/item/stack/sheet/leather=2)
+	result = /obj/item/clothing/gloves/leather
+	affecting_skill = /datum/skill/skinning
+
+/datum/crafter_recipe/tailor_recipe/rag
+	name = "rag"
+	result = /obj/item/reagent_containers/glass/rag
+	reqs = list(/obj/item/stack/sheet/string=3)
