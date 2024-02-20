@@ -103,6 +103,7 @@
 #include "code\__DEFINES\nitrile.dm"
 #include "code\__DEFINES\obj_flags.dm"
 #include "code\__DEFINES\orbit_defines.dm"
+#include "code\__DEFINES\parry.dm"
 #include "code\__DEFINES\pinpointers.dm"
 #include "code\__DEFINES\pipe_construction.dm"
 #include "code\__DEFINES\power.dm"

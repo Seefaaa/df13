@@ -9,7 +9,7 @@
 	if(!visualsOnly)
 		for(var/S in subtypesof(/datum/skill))
 			H.set_experience(S,SKILL_EXP_LEGEND, TRUE)
-		// H.set_experience(/datum/skill/martial,SKILL_EXP_LEGEND, TRUE)
+		// H.set_experience(/datum/skill/combat/martial,SKILL_EXP_LEGEND, TRUE)
 		// H.set_experience(/datum/skill/logging,SKILL_EXP_LEGEND, TRUE)
 		// H.set_experience(/datum/skill/farming,SKILL_EXP_LEGEND, TRUE)
 		// H.set_experience(/datum/skill/butchering,SKILL_EXP_LEGEND, TRUE)

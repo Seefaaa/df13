@@ -10,14 +10,24 @@
 	)
 	var/exp_per_parry = 7
 	var/exp_per_attack = 7
+	var/weapon_parry_modifier = 1
+	var/weapon_parry_level = 1
+	var/hand_parry_modifier = 1
+	var/hand_parry_level = 1
 
-/datum/skill/martial
+/datum/skill/combat/martial
 	name = "Martial Arts"
 	desc = "Wrestling and martial arts - are dwarven last resort, but those tho master it will never get down easily. Increases bare hand combat stats"
 	title = "Martial Artist"
 	modifiers = list(
 			SKILL_MISS_MODIFIER=list(40, 30, 20, 15, 12, 10, 8, 6, 4, 2, 0),
+			SKILL_PARRY_MODIFIER=list(0, 1, 3, 6, 8, 1, 14, 16, 18, 20, 24),
 			SKILL_DAMAGE_MODIFIER=list(-1, 0, 0, 1, 1, 2, 2, 3, 4, 5, 6))
+	exp_per_parry = 24
+	exp_per_attack = 4
+	weapon_parry_modifier = 0.5
+	weapon_parry_level = 7
+	exp_per_parry = 28
 
 /datum/skill/combat/shield
 	name = "Shield Combat"
@@ -36,7 +46,7 @@
 	title = "Knife user"
 	modifiers = list(
 			SKILL_MISS_MODIFIER=list(30, 28, 25, 22, 18, 15, 10, 5, 3, 0, 0),
-			SKILL_PARRY_MODIFIER=list(0, 2, 6, 12, 16, 22, 28, 32, 36, 40, 35),
+			SKILL_PARRY_MODIFIER=list(0, 2, 6, 12, 16, 22, 28, 32, 36, 40, 45),
 			SKILL_DAMAGE_MODIFIER=list(0, 0, 0, 0, 0, 1, 1, 2, 2, 2, 3))
 	exp_per_parry = 7
 	exp_per_attack = 7

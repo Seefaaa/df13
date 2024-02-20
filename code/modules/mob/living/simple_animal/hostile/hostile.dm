@@ -613,7 +613,7 @@
 			var/blocked = FALSE
 			if(ishuman(hit_atom))
 				var/mob/living/carbon/human/H = hit_atom
-				if(H.check_shields(src, 0, "the [name]"))
+				if(H.check_shields(src, src, "the [name]"))
 					blocked = TRUE
 			if(!blocked)
 				L.visible_message(span_danger("[capitalize(src.name)] charges on [L]!") , span_userdanger("[capitalize(src.name)] charges into you!"))

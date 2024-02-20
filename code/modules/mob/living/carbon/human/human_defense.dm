@@ -79,7 +79,7 @@
 
 				return BULLET_ACT_FORCE_PIERCE // complete projectile permutation
 
-		if(check_shields(P, P.damage, "[P.name]"))
+		if(check_shields(null, P, "[P.name]"))
 			P.on_hit(src, 100, def_zone, piercing_hit)
 			return BULLET_ACT_HIT
 
@@ -98,22 +98,44 @@
 			return TRUE
 	return FALSE
 
-/mob/living/carbon/human/proc/check_shields(atom/AM, damage=1, attack_text = null)
+/mob/living/carbon/human/proc/get_parry_cooldown()
+	return dna.species ? dna.species.melee_parry_cooldown : 0.8 SECONDS
+
+/mob/living/carbon/human/proc/check_shields(mob/attacker, atom/AM, attack_text = null, chance_multiplier = 1, used_case = PARRY_CASE_WEAPON)
+	if(world.time < src.next_parry)
+		return FALSE
+	if(src == attacker) // we don't parry ourselves
+		return FALSE
 	var/obj/item/to_parry = get_active_held_item()
 	var/obj/item/offhand = get_inactive_held_item()
 	if(offhand && istype(offhand, /obj/item/shield))
 		to_parry = offhand
-	if(to_parry && to_parry.skill && damage && AM != src)
-		if(world.time < src.next_parry)
-			return FALSE
-		if(prob(get_skill_modifier(to_parry.skill, SKILL_PARRY_MODIFIER)+to_parry.block_chance))
-			src.next_parry = world.time + to_parry.parry_cooldown
-			if(attack_text)
-				visible_message(span_danger("<b>[src]</b> parries [attack_text]!"), span_danger("You parry [attack_text]!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, AM)
-			if(to_parry.parrysound)
-				playsound(src, to_parry.parrysound, 60, TRUE, -1)
-			adjust_experience(to_parry.skill, initial(to_parry.skill.exp_per_parry))
-			return TRUE
+
+	if(to_parry && !to_parry?.skill) // we are blocking with something that isn't a weapon or a fist
+		return FALSE
+
+	var/datum/skill/combat/used_skill = to_parry ? to_parry.skill : /datum/skill/combat/martial
+	var/skill_level = get_skill_level(used_skill)
+	var/parry_chance = get_skill_modifier(used_skill, SKILL_PARRY_MODIFIER) * chance_multiplier + (to_parry ? to_parry.block_chance : 0)
+	var/parry_sound = to_parry ? to_parry.parrysound : 'sound/effects/hit_punch.ogg'
+	var/parry_cooldown = to_parry ? to_parry.parry_cooldown : get_parry_cooldown() // parry_cooldown is grabbed from datum/species
+	var/min_level
+
+	if(isobj(AM) && used_case == PARRY_CASE_WEAPON)
+		parry_chance *= initial(used_skill.weapon_parry_modifier)
+		min_level = initial(used_skill.weapon_parry_level)
+	else if(ismob(AM) && used_case == PARRY_CASE_HAND)
+		parry_chance *= initial(used_skill.hand_parry_modifier)
+		min_level = initial(used_skill.hand_parry_level)
+
+	if(skill_level >= min_level && prob(parry_chance))
+		src.next_parry = world.time + parry_cooldown
+		if(attack_text)
+			visible_message(span_danger("<b>[src]</b> parries [attack_text]!"), span_danger("You parry [attack_text]!"), span_hear("You hear a swoosh!"), COMBAT_MESSAGE_RANGE, AM)
+		if(parry_sound)
+			playsound(src, parry_sound, 60, TRUE, -1)
+		adjust_experience(used_skill, initial(used_skill.exp_per_parry))
+		return TRUE
 	return FALSE
 
 /mob/living/carbon/human/hitby(atom/movable/AM, skipcatch = FALSE, hitpush = TRUE, blocked = FALSE, datum/thrownthing/throwingdatum)
@@ -122,13 +144,11 @@
 		if(spec_return)
 			return spec_return
 	var/obj/item/I
-	var/throwpower = 30
 	if(istype(AM, /obj/item))
 		I = AM
-		throwpower = I.throwforce
 		if(I.thrownby == WEAKREF(src)) //No throwing stuff at yourself to trigger hit reactions
 			return ..()
-	if(check_shields(AM, throwpower, "[AM.name]"))
+	if(check_shields(null, AM, "[AM.name]"))
 		hitpush = FALSE
 		skipcatch = TRUE
 		blocked = TRUE
@@ -209,7 +229,7 @@
 			var/damage = rand(M.dna.species.punchdamagelow, M.dna.species.punchdamagehigh)
 			if(!damage)
 				return
-			if(check_shields(M, damage, "[M.name]"))
+			if(check_shields(M, M, "[M.name]"))
 				return FALSE
 			if(stat != DEAD)
 				apply_damage(damage, BRUTE, affecting, run_armor_check(affecting, PIERCE))
@@ -220,7 +240,7 @@
 	if(!.)
 		return
 	var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
-	if(check_shields(M, damage, "[M.name]"))
+	if(check_shields(M, M, "[M.name]"))
 		return FALSE
 	var/dam_zone = dismembering_strike(M, pick(BODY_ZONE_CHEST, BODY_ZONE_PRECISE_L_HAND, BODY_ZONE_PRECISE_R_HAND, BODY_ZONE_L_LEG, BODY_ZONE_R_LEG))
 	if(!dam_zone) //Dismemberment successful

@@ -1,0 +1,2 @@
+#define PARRY_CASE_WEAPON 1
+#define PARRY_CASE_HAND 2

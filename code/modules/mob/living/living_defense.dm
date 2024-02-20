@@ -139,7 +139,9 @@
 
 		if(user.grab_state) //only the first upgrade is instantaneous
 			var/old_grab_state = user.grab_state
-			var/grab_upgrade_time = instant ? 0 : 30
+			// Base grab time was "30"
+			var/grab_upgrade_time = 30 - (user.get_skill_level(/datum/skill/combat/martial) * 2)
+			grab_upgrade_time = instant ? 0 : grab_upgrade_time
 			visible_message(span_danger("<b>[user]</b> starts to tighten [user.p_their()] grip on <b>[name]</b>!") , \
 				span_userdanger("<b>[user]</b> starts to tighten [user.p_their()] grip on you!") , span_hear("You hear aggressive shuffling!") , null, user)
 			to_chat(user, span_danger("You start to tighten your grip on [name]!"))

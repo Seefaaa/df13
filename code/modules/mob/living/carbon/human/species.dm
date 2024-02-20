@@ -97,6 +97,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	var/punchdamagehigh = 10
 	///Damage at which punches from this race will stun
 	var/punchstunthreshold = 10 //yes it should be to the attacked race but it's not useful that way even if it's logical
+	///Empty hand parry cooldown
+	var/melee_parry_cooldown = 0.8 SECONDS
 	///Base electrocution coefficient.  Basically a multiplier for damage from electrocutions.
 	var/siemens_coeff = 1
 	///What kind of damage overlays (if any) appear on our species when wounded? If this is "", does not add an overlay.
@@ -1247,7 +1249,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 
 /datum/species/proc/grab(mob/living/carbon/human/user, mob/living/carbon/human/target)
-	if(target.check_shields(user))
+	if(target.check_shields(user, user, used_case=PARRY_CASE_HAND))
 		target.visible_message(span_warning("<b>[target]</b> blocks <b>[user]'s</b> grab!") , \
 							span_userdanger("You block <b>[user]'s</b> grab!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
 		to_chat(user, span_warning("Your grab at <b>[target]</b> was blocked!"))
@@ -1262,18 +1264,20 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		to_chat(user, span_warning("You don't want to harm <b>[target]</b>!"))
 		return FALSE
 
-	if(prob(target.get_skill_modifier(/datum/skill/martial, SKILL_MISS_MODIFIER)) && user != target)
-		user.visible_message(span_warning("[user]'s attack misses [target]!") , \
-							span_userdanger("Your attack misses [target]!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
-		to_chat(target, span_warning("[user]'s attack misses you!"))
-		playsound(target.loc, user.dna.species.miss_sound, 25, TRUE, -1)
-		return FALSE
+	if(user!= target)
+		if(prob(user.get_skill_modifier(/datum/skill/combat/martial, SKILL_MISS_MODIFIER)))
+			user.visible_message(span_warning("[user]'s attack misses [target]!") , \
+								span_userdanger("Your attack misses [target]!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
+			to_chat(target, span_warning("[user]'s attack misses you!"))
+			playsound(target.loc, user.dna.species.miss_sound, 25, TRUE, -1)
+			return FALSE
 
-	if(target.check_shields(user) && user != target)
-		target.visible_message(span_warning("[target] blocks [user]'s attack!") , \
-							span_userdanger("You block [user]'s attack!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
-		to_chat(user, span_warning("Your attack at [target] was blocked!"))
-		return FALSE
+		// Hand to hand combat have 2 times bigger chance to bee paired and can be paired with lower level
+		if(target.check_shields(user, user, used_case = PARRY_CASE_HAND))
+			target.visible_message(span_warning("[target] blocks [user]'s attack!") , \
+								span_userdanger("You block [user]'s attack!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
+			to_chat(user, span_warning("Your attack at [target] was blocked!"))
+			return FALSE
 
 	var/atk_verb = user.dna.species.attack_verb
 	var/atk_effect = user.dna.species.attack_effect
@@ -1288,7 +1292,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	user.do_attack_animation(target, atk_effect)
 	target.do_damaged_animation(user)
 
-	var/damage = rand(user.dna.species.punchdamagelow, user.dna.species.punchdamagehigh) + user.get_skill_modifier(/datum/skill/martial, SKILL_DAMAGE_MODIFIER)
+	var/damage = rand(user.dna.species.punchdamagelow, user.dna.species.punchdamagehigh) + user.get_skill_modifier(/datum/skill/combat/martial, SKILL_DAMAGE_MODIFIER)
 
 	var/obj/item/bodypart/affecting = target.get_bodypart(ran_zone(user.zone_selected))
 
@@ -1327,7 +1331,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		log_combat(user, target, "punched")
 
 	if(target.stat != DEAD && target != user)
-		user.adjust_experience(/datum/skill/martial, 4)
+		user.adjust_experience(/datum/skill/combat/martial, 4)
 
 	if((target.stat != DEAD) && damage >= user.dna.species.punchstunthreshold)
 		target.visible_message(span_danger("[user] knocks [target] down!") , \
@@ -1341,7 +1345,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	return
 
 /datum/species/proc/disarm(mob/living/carbon/human/user, mob/living/carbon/human/target)
-	if(target.check_shields(user))
+	if(target.check_shields(user, user, used_case = PARRY_CASE_HAND))
 		target.visible_message(span_warning("[user]'s shove is blocked by [target]!") , \
 							span_userdanger("You block [user]'s shove!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
 		to_chat(user, span_warning("Your shove at [target] was blocked!"))
@@ -1366,13 +1370,13 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 	if(!istype(M)) //sanity check for drones.
 		return
-	if((M != H) && M.a_intent != INTENT_HELP && H.check_shields(M))
-		log_combat(M, H, "attempted to touch")
-		H.visible_message(span_warning("[M] attempts to touch [H]!") , \
-						span_userdanger("[M] attempts to touch you!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, M)
-		to_chat(M, span_warning("You attempt to touch [H]!"))
-		playsound(get_turf(H), 'sound/misc/block_hand.ogg', 100)
-		return
+	// outdated code, commented out because it's a dublicate shields check. Leaving it in case this may be repurposed in the future
+	// if((M != H) && M.a_intent != INTENT_HELP && H.check_shields(M))
+	// 	log_combat(M, H, "attempted to touch")
+	// 	H.visible_message(span_warning("[M] attempts to touch [H]!") , span_userdanger("[M] attempts to touch you!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, M)
+	// 	to_chat(M, span_warning("You attempt to touch [H]!"))
+	// 	playsound(get_turf(H), 'sound/misc/block_hand.ogg', 100)
+	// 	return
 
 	SEND_SIGNAL(M, COMSIG_MOB_ATTACK_HAND, M, H)
 
@@ -1394,12 +1398,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 /datum/species/proc/spec_attacked_by(obj/item/I, mob/living/user, obj/item/bodypart/affecting, intent, mob/living/carbon/human/H)
 	if(user != H)
-		if(H.check_shields(I, I.force, "[I.name]"))
+		if(H.check_shields(user, I, "[I.name]"))
 			return FALSE
-	if(H.check_shields(user))
-		H.visible_message(span_warning("[H] blocks [I]!") , \
-						span_userdanger("You block [I]!"))
-		return FALSE
 
 	var/hit_area
 	if(!affecting) //Something went wrong. Maybe the limb is missing?
