@@ -42,6 +42,9 @@ GLOBAL_VAR(test_log)
 	return initial(a.priority) - initial(b.priority)
 
 /datum/unit_test/New()
+	if(isnull(turf_reservation))
+		turf_reservation = new
+
 	for (var/turf/reserved_turf in turf_reservation.reserved_turfs)
 		reserved_turf.ChangeTurf(test_turf_type)
 
