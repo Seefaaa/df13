@@ -12,7 +12,7 @@
  */
 /world
 	mob = /mob/dead/new_player
-	turf = /turf/open/floor/rock
+	turf = /turf/open/genturf
 	area = /area/fortress
 	view = "15x15"
 	hub = "Exadv1.spacestation13"

@@ -7,7 +7,7 @@
 	var/bottom_left_coords[3]
 	var/top_right_coords[3]
 	var/wipe_reservation_on_release = TRUE
-	var/turf_type = /turf/open
+	var/turf_type = /turf/open/genturf
 
 /datum/turf_reservation/proc/Release()
 	var/v = reserved_turfs.Copy()

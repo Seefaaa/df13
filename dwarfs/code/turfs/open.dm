@@ -3,6 +3,7 @@
 	desc = "If you see this, and you're not a ghost, yell at coders"
 	icon = 'icons/turf/debug.dmi'
 	icon_state = "genturf"
+	flags_cavein = CAVEIN_IGNORE
 
 /turf/open/floor/tiles
 	name = "tiled floor"

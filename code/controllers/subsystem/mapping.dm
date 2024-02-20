@@ -326,6 +326,49 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 		GLOB.areas_by_type[world.area].contents += T
 		CHECK_TICK
 
+/datum/controller/subsystem/mapping/proc/RequestBlockReservation(width, height, z, type = /datum/turf_reservation, turf_type_override)
+	UNTIL((!z || reservation_ready["[z]"]) && !clearing_reserved_turfs)
+	var/datum/turf_reservation/reserve = new type
+	if(turf_type_override)
+		reserve.turf_type = turf_type_override
+	if(!z)
+		for(var/i in levels_by_trait(ZTRAIT_RESERVED))
+			if(reserve.Reserve(width, height, i))
+				return reserve
+		//If we didn't return at this point, theres a good chance we ran out of room on the exisiting reserved z levels, so lets try a new one
+		num_of_res_levels += 1
+		var/datum/space_level/newReserved = add_new_zlevel("Transit/Reserved [num_of_res_levels]", list(ZTRAIT_RESERVED = TRUE))
+		initialize_reserved_level(newReserved.z_value)
+		if(reserve.Reserve(width, height, newReserved.z_value))
+			return reserve
+	else
+		if(!level_trait(z, ZTRAIT_RESERVED))
+			qdel(reserve)
+			return
+		else
+			if(reserve.Reserve(width, height, z))
+				return reserve
+	QDEL_NULL(reserve)
+
+//This is not for wiping reserved levels, use wipe_reservations() for that.
+/datum/controller/subsystem/mapping/proc/initialize_reserved_level(z)
+	UNTIL(!clearing_reserved_turfs)				//regardless, lets add a check just in case.
+	clearing_reserved_turfs = TRUE			//This operation will likely clear any existing reservations, so lets make sure nothing tries to make one while we're doing it.
+	if(!level_trait(z, ZTRAIT_RESERVED))
+		clearing_reserved_turfs = FALSE
+		CRASH("Invalid z level prepared for reservations.")
+	var/turf/A = get_turf(locate(16, 16, z))
+	var/turf/B = get_turf(locate(world.maxx - 16, world.maxy - 16, z))
+	var/block = block(A, B)
+	for(var/t in block)
+		// No need to empty() these, because it's world init and they're
+		// already /turf/open/space/basic.
+		var/turf/T = t
+		T.turf_flags |= UNUSED_RESERVATION_TURF
+	unused_turfs["[z]"] = block
+	reservation_ready["[z]"] = TRUE
+	clearing_reserved_turfs = FALSE
+
 //DO NOT CALL THIS PROC DIRECTLY, CALL wipe_reservations().
 /datum/controller/subsystem/mapping/proc/do_wipe_turf_reservations()
 	PRIVATE_PROC(TRUE)
