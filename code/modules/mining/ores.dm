@@ -100,6 +100,30 @@
 	vein_type = /datum/vein/line
 	materials = /datum/material/copper
 
+/obj/item/stack/ore/smeltable/silver
+	name = "silver ore"
+	icon_state = "silver"
+	inhand_icon_state = "silver_ore"
+	singular_name = "silver ore chunk"
+	mine_experience = 7
+	refined_type = /obj/item/ingot
+	ore_icon = 'dwarfs/icons/turf/ores/silver.dmi'
+	ore_basename = "silver"
+	vein_type = /datum/vein/line
+	materials = /datum/material/silver
+
+/obj/item/stack/ore/smeltable/galena
+	name = "galena ore"
+	icon_state = "galena"
+	inhand_icon_state = "galena_ore"
+	singular_name = "galena ore chunk"
+	mine_experience = 8
+	refined_type = /obj/item/ingot
+	ore_icon = 'dwarfs/icons/turf/ores/galena.dmi'
+	ore_basename = "galena"
+	vein_type = /datum/vein/line
+	materials = /datum/material/lead
+
 /obj/item/stack/ore/gem
 	max_amount = 1
 	var/cut_type
