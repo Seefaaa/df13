@@ -18,8 +18,11 @@
 	var/wall_type
 	/// What door is made out of this material
 	var/door_type
+	/// Force multipliers. Refular force mod represents material "hardness" and how well it does as a blade etc. force_mod_blunt is multiplied on top if the weapon is blunt type to simulate material mass
 	/// Force multiplier
 	var/force_mod = 1
+	/// Force multiplier if weapon is blunt type
+	var/force_mod_blunt = 1
 	/// Tool speed multiplier
 	var/toolspeed_mod = 1
 	var/toolspeed_mod_handle = 1
@@ -55,43 +58,25 @@
  * Applies stat modifiers a given material has to an obj
  *
  * Argumens:
- * - A: The obj we are applying this material to.
+ * - O: The obj we are applying this material to.
  */
-/datum/material/proc/apply_stats(obj/A, part_name=null)
-	if(!part_name)//default
-		if(isitem(A))
-			var/obj/item/I = A
-			I.force *= force_mod
-			I.toolspeed = max(I.toolspeed * toolspeed_mod, TOOLSPEED_MIN_VALUE)
-			I.melee_cd = max(I.melee_cd * melee_cd_mod, MELEE_CD_MIN_VALUE)
-			I.obj_integrity *= integrity_mod
-			I.max_integrity *= integrity_mod
-			if(I.armor_penetration)
-				I.armor_penetration.modify_rating(SHARP, armorpen_sharp_mod)
-				I.armor_penetration.modify_rating(PIERCE, armorpen_pierce_mod)
-				I.armor_penetration.modify_rating(BLUNT, armorpen_blunt_mod)
-				I.armor_penetration.modify_rating(FIRE, armorpen_fire_mod)
-				I.armor_penetration.modify_rating(ACID, armorpen_acid_mod)
-				I.armor_penetration.modify_rating(MAGIC, armorpen_magic_mod)
-		if(A.armor)
-			A.armor.modify_rating(SHARP, armor_sharp_mod)
-			A.armor.modify_rating(PIERCE, armor_pierce_mod)
-			A.armor.modify_rating(BLUNT, armor_blunt_mod)
-			A.armor.modify_rating(FIRE, armor_fire_mod)
-			A.armor.modify_rating(ACID, armor_acid_mod)
-			A.armor.modify_rating(MAGIC, armor_magic_mod)
-		return
-
-	if(isitem(A))
-		var/obj/item/I = A
-		switch(part_name)
-			if(PART_HANDLE)
+/datum/material/proc/apply_stats(obj/O, part_name=null)
+	var/obj/item/I = isitem(O) ? O : null
+	switch(part_name)
+		if(PART_HANDLE)
+			O.obj_integrity *= integrity_mod_handle
+			O.max_integrity *= integrity_mod_handle
+			if(I)
 				I.toolspeed = max(I.toolspeed * toolspeed_mod_handle, TOOLSPEED_MIN_VALUE)
 				I.melee_cd = max(I.melee_cd * melee_cd_mod_handle, MELEE_CD_MIN_VALUE)
 				I.slowdown += slowdown_mod_handle
-				I.obj_integrity *= integrity_mod_handle
-				I.max_integrity *= integrity_mod_handle
-			if(PART_HEAD)
+		if(PART_HEAD)
+			O.force *= force_mod
+			if(O.atck_type == BLUNT)
+				O.force *= force_mod_blunt
+			O.obj_integrity *= integrity_mod
+			O.max_integrity *= integrity_mod
+			if(I)
 				if(I.armor_penetration)
 					I.armor_penetration.modify_rating(SHARP, armorpen_sharp_mod)
 					I.armor_penetration.modify_rating(PIERCE, armorpen_pierce_mod)
@@ -101,10 +86,30 @@
 					I.armor_penetration.modify_rating(MAGIC, armorpen_magic_mod)
 				I.toolspeed = max(I.toolspeed * toolspeed_mod, TOOLSPEED_MIN_VALUE)
 				I.melee_cd = max(I.melee_cd * melee_cd_mod, MELEE_CD_MIN_VALUE)
-				I.force *= force_mod
 				I.slowdown += slowdown_mod
-				I.obj_integrity *= integrity_mod
-				I.max_integrity *= integrity_mod
+		else
+			O.force *= force_mod
+			if(O.atck_type == BLUNT)
+				O.force *= force_mod_blunt
+			O.obj_integrity *= integrity_mod
+			O.max_integrity *= integrity_mod
+			if(O.armor)
+				O.armor.modify_rating(SHARP, armor_sharp_mod)
+				O.armor.modify_rating(PIERCE, armor_pierce_mod)
+				O.armor.modify_rating(BLUNT, armor_blunt_mod)
+				O.armor.modify_rating(FIRE, armor_fire_mod)
+				O.armor.modify_rating(ACID, armor_acid_mod)
+				O.armor.modify_rating(MAGIC, armor_magic_mod)
+			if(I)
+				I.toolspeed = max(I.toolspeed * toolspeed_mod, TOOLSPEED_MIN_VALUE)
+				I.melee_cd = max(I.melee_cd * melee_cd_mod, MELEE_CD_MIN_VALUE)
+				if(I.armor_penetration)
+					I.armor_penetration.modify_rating(SHARP, armorpen_sharp_mod)
+					I.armor_penetration.modify_rating(PIERCE, armorpen_pierce_mod)
+					I.armor_penetration.modify_rating(BLUNT, armorpen_blunt_mod)
+					I.armor_penetration.modify_rating(FIRE, armorpen_fire_mod)
+					I.armor_penetration.modify_rating(ACID, armorpen_acid_mod)
+					I.armor_penetration.modify_rating(MAGIC, armorpen_magic_mod)
 
 /datum/material/proc/apply2icon_default(icon/I, _i=0)
 	for(var/i in 1 to palettes.len)
