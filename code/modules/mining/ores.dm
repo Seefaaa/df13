@@ -44,7 +44,7 @@
 	name = "iron ore"
 	icon_state = "iron"
 	singular_name = "iron ore chunk"
-	mine_experience = 1
+	mine_experience = 10
 	merge_type = /obj/item/stack/ore/smeltable/iron
 	ore_icon = 'dwarfs/icons/turf/ores/iron.dmi'
 	ore_basename = "iron"
@@ -58,7 +58,7 @@
 	icon = 'dwarfs/icons/items/ores_gems.dmi'
 	icon_state = "coal"
 	singular_name = "coal chunk"
-	mine_experience = 1
+	mine_experience = 2
 	merge_type = /obj/item/stack/ore/coal
 	ore_icon = 'dwarfs/icons/turf/ores/coal.dmi'
 	ore_basename = "coal"
@@ -80,7 +80,7 @@
 	name = "gold ore"
 	icon_state = "gold"
 	singular_name = "gold ore chunk"
-	mine_experience = 5
+	mine_experience = 12
 	refined_type = /obj/item/ingot
 	ore_icon = 'dwarfs/icons/turf/ores/gold.dmi'
 	ore_basename = "gold"
@@ -153,7 +153,7 @@
 	icon_state = "adamantine"
 	inhand_icon_state = "adamantine_ore"
 	singular_name = "adamantine ore chunk"
-	mine_experience = 12
+	mine_experience = 20
 	refined_type = /obj/item/ingot
 	ore_icon = 'dwarfs/icons/turf/ores/adamantine.dmi'
 	ore_basename = "adamantine"
