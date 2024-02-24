@@ -124,6 +124,42 @@
 	vein_type = /datum/vein/line
 	materials = /datum/material/lead
 
+/obj/item/stack/ore/smeltable/platinum
+	name = "platinum ore"
+	icon_state = "platinum"
+	inhand_icon_state = "platinum_ore"
+	singular_name = "platinum ore chunk"
+	mine_experience = 12
+	refined_type = /obj/item/ingot
+	ore_icon = 'dwarfs/icons/turf/ores/platinum.dmi'
+	ore_basename = "platinum"
+	vein_type = /datum/vein/line
+	materials = /datum/material/platinum
+
+/obj/item/stack/ore/smeltable/cassiterite
+	name = "cassiterite ore"
+	icon_state = "cassiterite"
+	inhand_icon_state = "cassiterite_ore"
+	singular_name = "cassiterite ore chunk"
+	mine_experience = 8
+	refined_type = /obj/item/ingot
+	ore_icon = 'dwarfs/icons/turf/ores/cassiterite.dmi'
+	ore_basename = "cassiterite"
+	vein_type = /datum/vein/line
+	materials = /datum/material/tin
+
+/obj/item/stack/ore/smeltable/adamantine
+	name = "adamantine ore"
+	icon_state = "adamantine"
+	inhand_icon_state = "adamantine_ore"
+	singular_name = "adamantine ore chunk"
+	mine_experience = 12
+	refined_type = /obj/item/ingot
+	ore_icon = 'dwarfs/icons/turf/ores/adamantine.dmi'
+	ore_basename = "adamantine"
+	vein_type = /datum/vein/line
+	materials = /datum/material/adamantine
+
 /obj/item/stack/ore/gem
 	max_amount = 1
 	var/cut_type

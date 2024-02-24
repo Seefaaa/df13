@@ -191,6 +191,24 @@
 	mat = MATERIAL_METAL
 	resource_refined = /obj/item/ingot
 
+/datum/material/platinum
+	name = "platinum"
+	palettes = list("platinum")
+	mat = MATERIAL_METAL
+	resource_refined = /obj/item/ingot
+
+/datum/material/tin
+	name = "tin"
+	palettes = list("tin")
+	mat = MATERIAL_METAL
+	resource_refined = /obj/item/ingot
+
+/datum/material/adamantine
+	name = "adamantine"
+	palettes = list("adamantine")
+	mat = MATERIAL_METAL
+	resource_refined = /obj/item/ingot
+
 /datum/material/copper
 	name = "copper"
 	palettes = list("copper")
