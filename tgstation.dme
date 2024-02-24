@@ -1191,7 +1191,7 @@
 #include "dwarfs\code\modules\blacksmithing\partial_items.dm"
 #include "dwarfs\code\modules\blacksmithing\sconce.dm"
 #include "dwarfs\code\modules\blacksmithing\smelter.dm"
-#include "dwarfs\code\modules\blacksmithing\smithy_spawner.dm"
+#include "dwarfs\code\modules\blacksmithing\spawners.dm"
 #include "dwarfs\code\modules\blacksmithing\stacks.dm"
 #include "dwarfs\code\modules\blacksmithing\weapons.dm"
 #include "dwarfs\code\modules\blacksmithing\workbench.dm"
