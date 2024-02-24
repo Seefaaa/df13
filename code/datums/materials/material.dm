@@ -207,6 +207,13 @@
 	resource_refined = /obj/item/ingot
 	resource = /obj/item/stack/ore/smeltable/cassiterite
 
+/datum/material/aluminum
+	name = "aluminum"
+	palettes = list("aluminum")
+	mat = MATERIAL_METAL
+	resource_refined = /obj/item/ingot
+	resource = /obj/item/stack/ore/smeltable/aluminum
+
 /datum/material/adamantine
 	name = "adamantine"
 	palettes = list("adamantine")

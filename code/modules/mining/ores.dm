@@ -148,6 +148,18 @@
 	vein_type = /datum/vein/line
 	materials = /datum/material/tin
 
+/obj/item/stack/ore/smeltable/aluminum
+	name = "aluminum ore"
+	icon_state = "aluminum"
+	inhand_icon_state = "aluminum_ore"
+	singular_name = "aluminum ore chunk"
+	mine_experience = 11
+	refined_type = /obj/item/ingot
+	ore_icon = 'dwarfs/icons/turf/ores/aluminum.dmi'
+	ore_basename = "aluminum"
+	vein_type = /datum/vein/line
+	materials = /datum/material/aluminum
+
 /obj/item/stack/ore/smeltable/adamantine
 	name = "adamantine ore"
 	icon_state = "adamantine"
