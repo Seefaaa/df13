@@ -62,6 +62,25 @@
 	parents = list("changelog.html" = 'html/changelog.html')
 
 
+/datum/asset/simple/statbrowser
+	legacy = TRUE
+	assets = list(,
+		"status.png" = "html/statbrowser/status.png",
+		"ic.png" = "html/statbrowser/ic.png",
+		"ooc.png" = "html/statbrowser/ooc.png",
+		"cog.png" = "html/statbrowser/cog.png",
+		"obj.png" = "html/statbrowser/obj.png",
+		"other.png" = "html/statbrowser/other.png",
+		"ghost.png" = "html/statbrowser/ghost.png",
+		"admin.png" = "html/statbrowser/admin.png",
+		"debug.png" = "html/statbrowser/debug.png",
+		"mc.png" = "html/statbrowser/mc.png",
+		"tickets.png" = "html/statbrowser/tickets.png",
+		"mc.png" = "html/statbrowser/mc.png",
+		"magic.png" = "html/statbrowser/magic.png",
+		"other.png" = "html/statbrowser/other.png",
+	)
+
 /datum/asset/simple/jquery
 	legacy = TRUE
 	assets = list(

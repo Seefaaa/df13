@@ -212,6 +212,9 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 	GLOB.clients += src
 	GLOB.directory[ckey] = src
 
+	var/datum/asset/simple/browser_icons = get_asset_datum(/datum/asset/simple/statbrowser)
+	browser_icons.send(src)
+
 	// Instantiate tgui panel
 	tgui_panel = new(src)
 
