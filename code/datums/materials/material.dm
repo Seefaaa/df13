@@ -184,30 +184,35 @@
 	palettes = list("silver")
 	mat = MATERIAL_METAL
 	resource_refined = /obj/item/ingot
+	resource = /obj/item/stack/ore/smeltable/silver
 
 /datum/material/lead
 	name = "lead"
 	palettes = list("lead")
 	mat = MATERIAL_METAL
 	resource_refined = /obj/item/ingot
+	resource = /obj/item/stack/ore/smeltable/galena
 
 /datum/material/platinum
 	name = "platinum"
 	palettes = list("platinum")
 	mat = MATERIAL_METAL
 	resource_refined = /obj/item/ingot
+	resource = /obj/item/stack/ore/smeltable/platinum
 
 /datum/material/tin
 	name = "tin"
 	palettes = list("tin")
 	mat = MATERIAL_METAL
 	resource_refined = /obj/item/ingot
+	resource = /obj/item/stack/ore/smeltable/cassiterite
 
 /datum/material/adamantine
 	name = "adamantine"
 	palettes = list("adamantine")
 	mat = MATERIAL_METAL
 	resource_refined = /obj/item/ingot
+	resource = /obj/item/stack/ore/smeltable/adamantine
 
 /datum/material/copper
 	name = "copper"
