@@ -221,6 +221,12 @@
 	resource_refined = /obj/item/ingot
 	resource = /obj/item/stack/ore/smeltable/adamantine
 
+/datum/material/bronze
+	name = "bronze"
+	palettes = list("bronze")
+	mat = MATERIAL_METAL
+	resource_refined = /obj/item/ingot
+
 /datum/material/copper
 	name = "copper"
 	palettes = list("copper")
