@@ -69,7 +69,7 @@
 ///Gets the player's current level number from the relevant skill
 /mob/proc/get_skill_level(skill)
 	var/datum/skill/S = get_skill(skill)
-	return S?.level ? S.level : 1
+	return S ? S.level : 1
 
 ///Gets the player's current exp from the relevant skill
 /mob/proc/get_skill_exp(skill)
