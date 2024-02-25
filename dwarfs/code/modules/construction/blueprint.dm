@@ -565,9 +565,9 @@
 	reqs = list(/obj/item/partial/magnet_core=1, PART_PLANKS=5)
 	cat = BLUEPRINT_CAT_UTILS
 
-/obj/structure/blueprint/blast_furnace
-	name = "blast furnace"
-	target_structure = /obj/structure/blast_furnace
+/obj/structure/blueprint/alloy_smelter
+	name = "alloy smelter"
+	target_structure = /obj/structure/alloy_smelter
 	reqs = list(PART_INGOT=2, /obj/item/stack/sheet/stone=20)
 	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
 

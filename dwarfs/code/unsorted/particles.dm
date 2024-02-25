@@ -20,5 +20,5 @@
 /particles/smoke/forge
 	position = generator("box", list(-6, 32), list(6, 35))
 
-/particles/smoke/blast_furnace
+/particles/smoke/alloy_smelter
 	position = generator("box", list(-5, 26), list(5, 30))

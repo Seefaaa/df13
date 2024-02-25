@@ -5,6 +5,7 @@ SUBSYSTEM_DEF(materials)
 
 	var/list/palettes = list()
 	var/list/materials = list()
+	var/list/alloy_recipes = list()
 
 /datum/controller/subsystem/materials/Initialize(start_timeofday)
 	var/icon/P = icon('dwarfs/icons/palettes.dmi')
@@ -12,9 +13,13 @@ SUBSYSTEM_DEF(materials)
 	for(var/state in states)
 		palettes[state] = icon('dwarfs/icons/palettes.dmi', state)
 
-	for(var/t in subtypesof(/datum/material))
-		var/datum/material/M = new t
-		materials[t] = M
+	for(var/material_type in subtypesof(/datum/material))
+		var/datum/material/M = new material_type
+		materials[material_type] = M
+
+	for(var/recipe_type in subtypesof(/datum/alloy_recipe))
+		var/datum/alloy_recipe/alloy_recipe = new recipe_type
+		alloy_recipes += alloy_recipe
 
 	return ..()
 
