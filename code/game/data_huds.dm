@@ -115,6 +115,7 @@ Medical HUD! Basic mode needs suit sensors on.
 		holder.icon_state = "hud[RoundHealth(src)]"
 		var/icon/I = icon(icon, icon_state, dir)
 		holder.pixel_y = I.Height() - world.icon_size
+		holder.pixel_x = (I.Width() - world.icon_size) / 2
 	else
 		stack_trace("[src] does not have a HEALTH_HUD but updates it!")
 
@@ -128,6 +129,7 @@ Medical HUD! Basic mode needs suit sensors on.
 	if(holder)
 		var/icon/I = icon(icon, icon_state, dir)
 		holder.pixel_y = I.Height() - world.icon_size
+		holder.pixel_x = (I.Width() - world.icon_size) / 2
 		if(stat == DEAD || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
 			holder.icon_state = "huddead"
 		else

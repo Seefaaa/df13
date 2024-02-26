@@ -1053,9 +1053,13 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 	if(!attack_image)
 		return
 
+	var/icon/I = icon(attacked_atom.icon)
+	var/target_x = (I.Width() - world.icon_size) / 2
+	attack_image.pixel_x += target_x
+
 	flick_overlay(attack_image, GLOB.clients, 10)
 	// And animate the attack!
-	animate(attack_image, alpha = 175, transform = matrix() * 0.75, pixel_x = 0, pixel_y = 0, pixel_z = 0, time = 3)
+	animate(attack_image, alpha = 175, transform = matrix() * 0.75, pixel_x = target_x, pixel_y = 0, pixel_z = 0, time = 3)
 	animate(time = 1)
 	animate(alpha = 0, time = 3, easing = CIRCULAR_EASING|EASE_OUT)
 

@@ -32,15 +32,11 @@
 		return
 	goal = goal_number
 	bar_loc = target
-	if(!ismob(target) && !isturf(target) && isturf(target.loc))
-		bar_loc = get_turf(target)
 	bar = image('icons/hud/progressbar.dmi', bar_loc, "prog_bar_0")
 	bar.plane = ABOVE_HUD_PLANE
 	bar.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
-	// var/icon/I = icon(target.icon) //keeping this here in case something doesn't work after all
-	// var/icon_w = I.Width()
-	// bar.pixel_x = icon_w/2 - 16 + (icon_w/2 - 16 + target.pixel_x)
-	bar.pixel_x = target.pixel_x - target.base_pixel_x
+	var/icon/I = icon(target.icon) //keeping this here in case something doesn't work after all
+	bar.pixel_x = (I.Width() - world.icon_size) / 2
 	user = User
 
 	LAZYADDASSOCLIST(user.progressbars, bar_loc, src)
