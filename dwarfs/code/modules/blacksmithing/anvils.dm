@@ -34,6 +34,26 @@
 		hit(usr)
 	if(href_list["miss"])
 		miss(usr)
+	if(href_list["switch_tab"])
+		var/selected_tab = href_list["switch_tab"]
+		var/i = SSmaterials.smithing_recipes.Find(selected_tab)
+		if(i)
+			select_recipe(usr, i)
+	if(href_list["select_recipe"])
+		var/recipe_type = text2path(href_list["select_recipe"])
+		usr<<browse(null, "window=anvil_select")
+		if(!(recipe_type in SSmaterials.smithing_recipes_type))
+			return
+		var/datum/R = SSmaterials.smithing_recipes_type[recipe_type]
+		if(!R)
+			to_chat(usr, span_warning("You did not decide what to forge yet."))
+			return
+		if(current_ingot.recipe)
+			to_chat(usr, span_warning("Too late to change your mind."))
+			return
+		current_ingot.recipe = R
+		playsound(src, 'dwarfs/sounds/tools/anvil/anvil_hit.ogg', 70, TRUE)
+		to_chat(usr, span_notice("You begin to forge..."))
 
 /obj/structure/anvil/proc/hit(mob/user)
 	if(!current_ingot)
@@ -133,23 +153,7 @@
 					playsound(src, 'dwarfs/sounds/tools/anvil/anvil_hit.ogg', 70, TRUE)
 					to_chat(user, span_notice("You begin to upgrade \the [current_ingot]."))
 			else
-				var/list/metal_allowed_list = list()
-				for(var/datum/smithing_recipe/recipe in allowed_things)
-					if(recipe.whitelisted_materials && !(current_ingot.materials in recipe.whitelisted_materials))
-						continue
-					if(recipe.blacklisted_materials && (current_ingot.materials in recipe.blacklisted_materials))
-						continue
-					metal_allowed_list += recipe
-				var/datum/smithing_recipe/sel_recipe = input("Choose:", "What to forge?", null, null) as null|anything in metal_allowed_list
-				if(!sel_recipe)
-					to_chat(user, span_warning("You did not decide what to forge yet."))
-					return
-				if(current_ingot.recipe)
-					to_chat(user, span_warning("Too late to change your mind."))
-					return
-				current_ingot.recipe = new sel_recipe.type()
-				playsound(src, 'dwarfs/sounds/tools/anvil/anvil_hit.ogg', 70, TRUE)
-				to_chat(user, span_notice("You begin to forge..."))
+				select_recipe(user)
 		else
 			to_chat(user, span_warning("Nothing to forge here."))
 
@@ -179,3 +183,26 @@
 				to_chat(user, span_warning("Nothing to grab with [I]."))
 	else
 		return ..()
+
+/obj/structure/anvil/proc/select_recipe(mob/user, tab=1)
+	var/list/dat = list()
+	var/selected_tab = SSmaterials.smithing_recipes[tab]
+
+	dat += "<div>"
+
+	for(var/category in SSmaterials.smithing_recipes)
+		dat += "<a href='?src=[REF(src)];switch_tab=[category]'>[category]</a>"
+
+	dat += "</div>"
+	dat += "<hr>"
+	for(var/datum/smithing_recipe/recipe in SSmaterials.smithing_recipes[selected_tab])
+		if(recipe.whitelisted_materials && !(current_ingot.materials in recipe.whitelisted_materials))
+			continue
+		if(recipe.blacklisted_materials && (current_ingot.materials in recipe.blacklisted_materials))
+			continue
+		dat += "<a href='?src=[REF(src)];select_recipe=[recipe.type]'>[recipe.name]</a><br>"
+
+	var/datum/browser/popup = new(user, "anvil_select", "<div align='center'>What to make?</div>", 500, 640)
+	popup.set_content(dat.Join())
+	popup.open(FALSE)
+	onclose(user, "anvil_select", src)

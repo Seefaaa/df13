@@ -6,6 +6,8 @@ SUBSYSTEM_DEF(materials)
 	var/list/palettes = list()
 	var/list/materials = list()
 	var/list/alloy_recipes = list()
+	var/list/smithing_recipes = list()
+	var/list/smithing_recipes_type = list()
 
 /datum/controller/subsystem/materials/Initialize(start_timeofday)
 	var/icon/P = icon('dwarfs/icons/palettes.dmi')
@@ -20,6 +22,13 @@ SUBSYSTEM_DEF(materials)
 	for(var/recipe_type in subtypesof(/datum/alloy_recipe))
 		var/datum/alloy_recipe/alloy_recipe = new recipe_type
 		alloy_recipes += alloy_recipe
+
+	for(var/recipe_type in subtypesof(/datum/smithing_recipe))
+		var/datum/smithing_recipe/recipe = new recipe_type
+		if(!(recipe.cat in smithing_recipes))
+			smithing_recipes[recipe.cat] = list()
+		smithing_recipes[recipe.cat] += recipe
+		smithing_recipes_type[recipe.type] = recipe
 
 	return ..()
 

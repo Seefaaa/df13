@@ -11,150 +11,184 @@
 	var/list/whitelisted_materials
 	/// Blacklisted materials for this recipe
 	var/list/blacklisted_materials
+	/// Recipe category
+	var/cat = SMITHING_RECIPE_MISC
 
 /datum/smithing_recipe/steel
 	name = "steel ingot"
 	result = /obj/item/ingot
 	whitelisted_materials = list(/datum/material/pig_iron)
 	result_material = /datum/material/steel
+	cat = SMITHING_RECIPE_MISC
 
 /datum/smithing_recipe/zwei
 	name = "\[part\] zweihander blade"
 	result = /obj/item/partial/zwei
+	cat = SMITHING_RECIPE_WEAPONS
 
 /datum/smithing_recipe/flail
 	name = "\[part\] ball on a chain"
 	result = /obj/item/partial/flail
+	cat = SMITHING_RECIPE_WEAPONS
 
 /datum/smithing_recipe/sword
 	name = "\[part\] sword blade"
 	result = /obj/item/partial/sword
+	cat = SMITHING_RECIPE_WEAPONS
 
 /datum/smithing_recipe/dagger
 	name = "\[part\] dagger"
 	result = /obj/item/partial/dagger
 	max_resulting = 3
+	cat = SMITHING_RECIPE_WEAPONS
 
 /datum/smithing_recipe/battleaxe
 	name = "\[part\] battle axe"
 	result = /obj/item/partial/battleaxe
+	cat = SMITHING_RECIPE_WEAPONS
 
 /datum/smithing_recipe/pickaxe
 	name = "\[part\] pickaxe"
 	result = /obj/item/partial/pickaxe
+	cat = SMITHING_RECIPE_TOOLS
 
 /datum/smithing_recipe/shovel
 	name = "\[part\] shovel"
 	result = /obj/item/partial/shovel
 	max_resulting = 2
+	cat = SMITHING_RECIPE_TOOLS
 
 /datum/smithing_recipe/warhammer
 	name = "\[part\] warhammer"
 	result = /obj/item/partial/warhammer
+	cat = SMITHING_RECIPE_WEAPONS
 
 /datum/smithing_recipe/axe
 	name = "\[part\] axe"
 	result = /obj/item/partial/axe
 	max_resulting = 2
+	cat = SMITHING_RECIPE_TOOLS
 
 /datum/smithing_recipe/builder_hammer
 	name = "\[part\] builder's hammer"
 	result = /obj/item/partial/builder_hammer
 	max_resulting = 2
+	cat = SMITHING_RECIPE_TOOLS
 
 /datum/smithing_recipe/smithing_hammer
 	name = "\[part\] smithing hammer"
 	result = /obj/item/partial/smithing_hammer
+	cat = SMITHING_RECIPE_TOOLS
 
 /datum/smithing_recipe/spear
 	name = "\[part\] spear"
 	result = /obj/item/partial/spear
+	cat = SMITHING_RECIPE_WEAPONS
 
 /datum/smithing_recipe/halberd
 	name = "\[part\] halberd"
 	result = /obj/item/partial/halberd
+	cat = SMITHING_RECIPE_WEAPONS
 
 /datum/smithing_recipe/tongs
 	name = "tongs"
 	result = /obj/item/tongs
 	max_resulting = 2
+	cat = SMITHING_RECIPE_TOOLS
 
 /datum/smithing_recipe/chisel
 	name = "\[part\] chisel"
 	result = /obj/item/partial/chisel
 	max_resulting = 2
+	cat = SMITHING_RECIPE_TOOLS
 
 /datum/smithing_recipe/compass_needle
 	name = "\[part\] compass needle"
 	result = /obj/item/partial/compass_needle
 	whitelisted_materials = list(/datum/material/pig_iron)
+	cat = SMITHING_RECIPE_MISC
 
 /datum/smithing_recipe/magnet_core
 	name = "\[part\] magnet core"
 	result = /obj/item/partial/magnet_core
 	whitelisted_materials = list(/datum/material/pig_iron)
+	cat = SMITHING_RECIPE_MISC
 
 /datum/smithing_recipe/pan
 	name = "frying pan"
 	result = /obj/item/reagent_containers/glass/pan
+	cat = SMITHING_RECIPE_TOOLS
 
 /datum/smithing_recipe/pot
 	name = "cooking pot"
 	result = /obj/item/reagent_containers/glass/cooking_pot
+	cat = SMITHING_RECIPE_TOOLS
 
 /datum/smithing_recipe/baking_sheet
 	name = "baking sheet"
 	result = /obj/item/reagent_containers/glass/baking_sheet
+	cat = SMITHING_RECIPE_TOOLS
 
 /datum/smithing_recipe/cake_pan
 	name = "cake pan"
 	result = /obj/item/reagent_containers/glass/cake_pan
+	cat = SMITHING_RECIPE_TOOLS
 
 /datum/smithing_recipe/light_plate
 	name = "chest plate"
 	result = /obj/item/clothing/suit/light_plate
+	cat = SMITHING_RECIPE_ARMOR
 
 /datum/smithing_recipe/heavy_plate
 	name = "plate armor"
 	result = /obj/item/clothing/suit/heavy_plate
+	cat = SMITHING_RECIPE_ARMOR
 
 /datum/smithing_recipe/chainmail
 	name = "chainmail"
 	result = /obj/item/clothing/under/chainmail
+	cat = SMITHING_RECIPE_ARMOR
 
 /datum/smithing_recipe/heavy_plate_helmet
 	name = "heavy plate helmet"
 	result = /obj/item/clothing/head/heavy_plate
 	max_resulting = 2
+	cat = SMITHING_RECIPE_ARMOR
 
 /datum/smithing_recipe/light_plate_helmet
 	name = "light plate helmet"
 	result = /obj/item/clothing/head/light_plate
 	max_resulting = 2
+	cat = SMITHING_RECIPE_ARMOR
 
 /datum/smithing_recipe/plate_gloves
 	name = "plate gloves"
 	result = /obj/item/clothing/gloves/plate_gloves
 	max_resulting = 3
+	cat = SMITHING_RECIPE_ARMOR
 
 /datum/smithing_recipe/plate_boots
 	name = "plate boots"
 	result = /obj/item/clothing/shoes/plate_boots
 	max_resulting = 3
+	cat = SMITHING_RECIPE_ARMOR
 
 /datum/smithing_recipe/torch_fixture
 	name = "torch fixture"
 	result = /obj/item/sconce
 	max_resulting = 5
+	cat = SMITHING_RECIPE_MISC
 
 /datum/smithing_recipe/shield_parts
 	name = "\[part\] shield"
 	result = /obj/item/partial/shield
+	cat = SMITHING_RECIPE_WEAPONS
 
 /datum/smithing_recipe/metal_cup
 	name = "metal cup"
 	result = /obj/item/reagent_containers/glass/cup/metal
 	max_resulting = 3
+	cat = SMITHING_RECIPE_MISC
 
 // /datum/smithing_recipe/trowel
 // 	name = "trowel"
@@ -164,31 +198,38 @@
 /datum/smithing_recipe/crown
 	name = "empty crown"
 	result = /obj/item/partial/crown_empty
+	cat = SMITHING_RECIPE_ARMOR
 
 /datum/smithing_recipe/scepter
 	name = "scepter part"
 	result = /obj/item/partial/scepter_part
+	cat = SMITHING_RECIPE_MISC
 
 /datum/smithing_recipe/lantern_parts
 	name = "\[part\] lantern parts"
 	result = /obj/item/partial/lantern_parts
+	cat = SMITHING_RECIPE_TOOLS
 
 /datum/smithing_recipe/kitchen_knife
 	name = "\[part\] kitchen knife"
 	result = /obj/item/partial/kitchen_knife
+	cat = SMITHING_RECIPE_TOOLS
 
 /datum/smithing_recipe/hoe
 	name = "\[part\] hoe blade"
 	result = /obj/item/partial/hoe
+	cat = SMITHING_RECIPE_TOOLS
 
 /datum/smithing_recipe/lock_key
-	name = "Lock and key"
+	name = "lock and key"
 	result = /obj/effect/key_lock
+	cat = SMITHING_RECIPE_MISC
 
 /datum/smithing_recipe/keys
-	name = "Keys"
+	name = "keys"
 	result = /obj/item/key
 	max_resulting = 3
+	cat = SMITHING_RECIPE_MISC
 
 /datum/crafter_recipe
 	/// Displayed name for the recipe
