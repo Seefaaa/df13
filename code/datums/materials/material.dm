@@ -298,6 +298,12 @@
 	wall_type = /turf/closed/wall/wooden
 	door_type = /obj/structure/mineral_door/material
 
+// any wood treated with tannin
+/datum/material/wood/treated
+	name = "treated wood"
+	palettes = list("wood_treated")
+	resource = null
+
 /datum/material/wood/towercap
 	name = "towercap wood"
 	palettes = list("towercap", "towercap_inside")
