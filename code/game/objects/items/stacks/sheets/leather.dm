@@ -105,7 +105,7 @@
 
 /obj/item/stack/sheet/dryhide
 	name = "dry hide"
-	desc = "This hide has been cleaned and dried but it still needs to be exposed to tanin."
+	desc = "This hide has been cleaned and dried but it still needs to be exposed to tannin."
 	singular_name = "dry hide piece"
 	icon = 'dwarfs/icons/items/components.dmi'
 	icon_state = "dried_hide"

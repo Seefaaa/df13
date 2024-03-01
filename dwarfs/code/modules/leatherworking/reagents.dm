@@ -1,8 +1,8 @@
-/datum/reagent/tanin
-	name = "tanin"
+/datum/reagent/tannin
+	name = "tannin"
 	color = "#571d06"
 
-/datum/reagent/tanin/expose_obj(obj/exposed_obj, reac_volume)
+/datum/reagent/tannin/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()
 	if(istype(exposed_obj, /obj/item/stack/sheet/dryhide))
 		var/obj/item/stack/sheet/dryhide/D = exposed_obj

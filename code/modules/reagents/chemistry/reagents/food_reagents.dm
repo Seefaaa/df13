@@ -223,8 +223,8 @@
 		var/datum/reagents/h = holder
 		var/vol = volume
 		h.remove_reagent(src.type, vol)
-		h.add_reagent(/datum/reagent/tanin, vol)
-		h.my_atom.visible_message(span_notice("The water in [h.my_atom] turns into tanin!"))
+		h.add_reagent(/datum/reagent/tannin, vol)
+		h.my_atom.visible_message(span_notice("The water in [h.my_atom] turns into tannin!"))
 
 /*
  * Water reaction to a mob
