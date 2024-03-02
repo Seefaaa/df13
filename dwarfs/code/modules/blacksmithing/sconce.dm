@@ -6,7 +6,6 @@
 	icon = 'dwarfs/icons/items/components.dmi'
 	icon_state = "sconce"
 	w_class = WEIGHT_CLASS_SMALL
-	anchored = TRUE
 	var/result_path = /obj/structure/sconce
 	materials = /datum/material/iron
 
@@ -53,6 +52,7 @@
 	icon = 'dwarfs/icons/structures/wall_mount.dmi'
 	icon_state = "sconce_empty"
 	layer = BELOW_MOB_LAYER
+	anchored = TRUE
 	max_integrity = 100
 	var/obj/item/flashlight/fueled/torch/torch
 	materials = /datum/material/iron
