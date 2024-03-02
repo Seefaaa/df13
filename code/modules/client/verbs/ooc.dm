@@ -433,3 +433,9 @@ GLOBAL_VAR_INIT(normal_ooc_colour, "#002eb8")
 	set hidden = TRUE
 
 	init_verbs()
+
+/client/verb/fix_chat()
+	set name = "fix-chat"
+	set hidden = TRUE
+
+	nuke_chat()
