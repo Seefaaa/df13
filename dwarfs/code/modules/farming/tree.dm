@@ -81,6 +81,7 @@
 		for(var/i in 1 to large_log_amount[growthstage])
 			var/obj/L = new large_log_type(my_turf)
 			L.apply_material(materials)
+			L.setDir(pick(SOUTH, EAST))
 
 /obj/structure/plant/tree/attackby(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_AXE)
