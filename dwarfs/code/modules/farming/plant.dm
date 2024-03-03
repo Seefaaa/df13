@@ -6,32 +6,59 @@
 	anchored = TRUE
 	layer = OBJ_LAYER
 	impact_damage = 5
-	var/species = "plant" // used for icons and to whitelist plants in plots
+	/// Used for icons and to whitelist plants in plots
+	var/species = "plant"
+	/// What seeds does the plant have
 	var/seed_type
+	/// Amount of health of the plant
 	var/health = 40
+	/// Max health
 	var/maxhealth = 40
-	var/health_delta = 5 SECONDS // how often plant takes damage when it has to
-	var/lastcycle_health // last time it took damage
-	var/list/produced = list() // path type list of items and their max quantity that can be produced at the last growth stage
-	var/lastcycle_produce // last time it tried to grow something
-	var/produce_delta = 10 SECONDS // amount of time between each try to grow new stuff
-	var/harvestable = FALSE // whether a plant is ready for harvest
-	var/icon_ripe // max growth stage and has harvestables on it
-	var/icon_dead // icon when plant dies
-	var/growthstages = 5 // how many growth stages it has
-	var/growthdelta = 5 SECONDS // how long between two growth stages
-	var/list/growth_modifiers = list() // growth modifiers that affect our plant e.g. fertilizer, soil quality, etc. This is a dictianory list for easy overwrites
+	/// How often plant takes damage when it has to
+	var/health_delta = 5 SECONDS
+	/// Last time it took damage
+	var/lastcycle_health
+	/// Path type list of items and their max quantity that can be produced at the last growth stage
+	var/list/produced = list()
+	/// Last time it tried to grow something
+	var/lastcycle_produce
+	/// Amount of time between each try to grow new stuff
+	var/produce_delta = 10 SECONDS
+	/// Whether a plant is ready for harvest
+	var/harvestable = FALSE
+	/// Icon state for max growth stage and has harvestables on it
+	var/icon_ripe
+	/// Icon state when plant is dead
+	var/icon_dead
+	/// How many growth stages it has
+	var/growthstages = 5
+	/// How long between two growth stages
+	var/growthdelta = 5 SECONDS
+	/// Growth modifiers that affect our plant e.g. fertilizer, soil quality, etc. This is a dictianory list for easy overwrites
+	var/list/growth_modifiers = list()
+	/// Last time the plant did an 'eat' tick
 	var/lastcycle_eat
-	var/eat_delta = 5 SECONDS // how often this plant eats nutrients when planted inside a plot
-	var/growthstage = 0 // current growth stage of the plant
-	var/dead = FALSE // to prevent spam in plantdies()
-	var/lastcycle_growth // last time it advanced in growth
-	var/lifespan = 4 // plant's max age in cycles
-	var/age = 1 // plants age in cycles; cycle's length is growthdelta
-	var/turf/open/floor/tilled/plot // if planted via seeds will have a plot assigned to it
-	var/dummy = FALSE // whether we process this plant at all. Used for decoration dummy plants
+	/// How long between eat ticks
+	var/eat_delta = 5 SECONDS
+	/// Current growth stage of the plant
+	var/growthstage = 0
+	/// To prevent spam in plantdies()
+	var/dead = FALSE
+	/// Last time it advanced in growth
+	var/lastcycle_growth
+	/// Plant's max age in cycles
+	var/lifespan = 4
+	/// Plant's age in cycles; cycle's length is growthdelta
+	var/age = 1
+	/// If planted via seeds will have a plot assigned to it
+	var/turf/open/floor/tilled/plot
+	/// Whether we process this plant at all. Used for decoration dummy plants
+	var/dummy = FALSE
+	/// Random pixel_x spread when spawned
 	var/spread_x = 8
+	/// Random pixel_y spread when spawned
 	var/spread_y = 12
+	/// Whether this plant is a surface plant
 	var/surface = TRUE
 
 /obj/structure/plant/spawn_debris()
@@ -73,12 +100,6 @@
 		plot.name = initial(plot.name)
 
 /obj/structure/plant/process(delta_time)
-	if(dead)
-		return PROCESS_KILL
-
-	if(!produced.len && growthstage == growthstages && lifespan == INFINITY)
-		return PROCESS_KILL
-
 	var/needs_update = 0 // Checks if the icon needs updating so we don't redraw empty trays every time
 	var/temp_growthdelta = growthdelta
 
@@ -120,6 +141,7 @@
 	SEND_SIGNAL(src, COSMIG_PLANT_DIES)
 	if(dead)
 		return
+	STOP_PROCESSING(SSplants, src)
 	visible_message(span_warning("[src] withers away!"))
 	if(plot)
 		return
@@ -147,6 +169,8 @@
 
 /obj/structure/plant/proc/grown()
 	SEND_SIGNAL(src, COSMIG_PLANT_ON_GROWN)
+	if(!produced.len && lifespan == INFINITY)
+		STOP_PROCESSING(SSplants, src)
 
 /obj/structure/plant/proc/growthcycle()
 	var/res = SEND_SIGNAL(src, COSMIG_PLANT_ON_GROW)
@@ -157,8 +181,12 @@
 
 /obj/structure/plant/proc/producecycle()
 	SEND_SIGNAL(src, COSMIG_PLANT_PRODUCE_TICK)
+	if(harvestable)
+		return
 	if(can_grow_harvestable())
 		harvestable = TRUE
+		if(lifespan == INFINITY)
+			STOP_PROCESSING(SSplants, src)
 
 /obj/structure/plant/proc/damagecycle(delta_time)
 	SEND_SIGNAL(src, COSMIG_PLANT_DAMAGE_TICK, )
@@ -191,6 +219,7 @@
 		else
 			to_chat(user, span_warning("You fail to harvest [initial(P.name)] from [src]."))
 			user.adjust_experience(/datum/skill/farming, 5)
+	START_PROCESSING(SSplants, src)
 	update_appearance()
 
 /obj/structure/plant/attack_hand(mob/user)
