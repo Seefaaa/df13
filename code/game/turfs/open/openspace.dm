@@ -134,7 +134,8 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 			return
 		var/obj/item/stack/S = I
 		if(S.use(5))
-			new /obj/structure/lattice(src)
+			var/obj/L = new /obj/structure/lattice(src)
+			L.apply_material(S.materials)
 			to_chat(user, span_notice("You build wooden lattice above [src]."))
 		else
 			to_chat(user, span_warning("Not enough material to build wooden lattice."))

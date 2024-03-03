@@ -46,3 +46,7 @@
 	anchored = 1
 	obj_flags = BLOCK_Z_IN_UP | BLOCK_Z_OUT_DOWN | CAN_BE_HIT
 	flags_cavein = CAVEIN_IGNORE
+	materials = /datum/material/wood/pine/treated
+
+/obj/structure/lattice/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
