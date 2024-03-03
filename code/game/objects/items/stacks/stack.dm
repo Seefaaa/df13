@@ -231,7 +231,7 @@
 				var/turf/T = usr.drop_location()
 				if(!isturf(T))
 					return
-				T.PlaceOnTop(recipe.result_type, flags = CHANGETURF_INHERIT_AIR)
+				T.PlaceOnTop(recipe.result_type)
 				if(materials)
 					T.apply_material(materials)
 			else

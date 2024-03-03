@@ -73,7 +73,6 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	var/old_bp = blueprint_data
 	blueprint_data = null
 
-	var/list/old_baseturfs = baseturfs
 	var/old_type = type
 
 	var/list/post_change_callbacks = list()
@@ -99,9 +98,9 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		callback.InvokeAsync(W)
 
 	if(new_baseturfs)
-		W.baseturfs = baseturfs_string_list(new_baseturfs, W)
-	else
-		W.baseturfs = baseturfs_string_list(old_baseturfs, W) //Just to be safe
+		if(!islist(new_baseturfs))
+			new_baseturfs = list(new_baseturfs)
+		W.baseturfs = new_baseturfs
 
 	W.explosion_id = old_exi
 	W.explosion_level = old_exl
@@ -162,6 +161,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 /turf/proc/ScrapeAway(amount=1, flags)
 	if(!amount)
 		return
+	var/change_type = /turf/open/openspace
 	if(length(baseturfs))
 		var/list/new_baseturfs = baseturfs.Copy()
 		var/turf_type = new_baseturfs[max(1, new_baseturfs.len - amount + 1)]
@@ -175,83 +175,18 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 			new_baseturfs = new_baseturfs[1]
 		return ChangeTurf(turf_type, new_baseturfs, flags)
 
-	if(baseturfs == type)
-		return src
-
-	return ChangeTurf(baseturfs, baseturfs, flags) // The bottom baseturf will never go away
-
-// Take the input as baseturfs and put it underneath the current baseturfs
-// If fake_turf_type is provided and new_baseturfs is not the baseturfs list will be created identical to the turf type's
-// If both or just new_baseturfs is provided they will be inserted below the existing baseturfs
-/turf/proc/PlaceOnBottom(list/new_baseturfs, turf/fake_turf_type)
-	if(fake_turf_type)
-		if(!new_baseturfs)
-			if(!length(baseturfs))
-				baseturfs = list(baseturfs)
-			var/list/old_baseturfs = baseturfs.Copy()
-			assemble_baseturfs(fake_turf_type)
-			if(!length(baseturfs))
-				baseturfs = list(baseturfs)
-			baseturfs = baseturfs_string_list((baseturfs - (baseturfs & GLOB.blacklisted_automated_baseturfs)) + old_baseturfs, src)
-			return
-		else if(!length(new_baseturfs))
-			new_baseturfs = list(new_baseturfs, fake_turf_type)
-		else
-			new_baseturfs += fake_turf_type
-	if(!length(baseturfs))
-		baseturfs = list(baseturfs)
-	if(!length(new_baseturfs))
-		new_baseturfs = list(new_baseturfs)
-	baseturfs = baseturfs_string_list(new_baseturfs + baseturfs, src)
+	return ChangeTurf(change_type, baseturfs, flags) // The bottom baseturf will never go away
 
 // Make a new turf and put it on top
 // The args behave identical to PlaceOnBottom except they go on top
 // Things placed on top of closed turfs will ignore the topmost closed turf
 // Returns the new turf
-/turf/proc/PlaceOnTop(list/new_baseturfs, turf/fake_turf_type, flags)
-	var/area/turf_area = loc
-	if(new_baseturfs && !length(new_baseturfs))
-		new_baseturfs = list(new_baseturfs)
-	flags = turf_area.PlaceOnTopReact(new_baseturfs, fake_turf_type, flags) // A hook so areas can modify the incoming args
-
-	var/turf/newT
+/turf/proc/PlaceOnTop(turf/change_type, flags)
 	if(flags & CHANGETURF_SKIP) // We haven't been initialized
 		if(flags_1 & INITIALIZED_1)
 			stack_trace("CHANGETURF_SKIP was used in a PlaceOnTop call for a turf that's initialized. This is a mistake. [src]([type])")
-		assemble_baseturfs()
-	if(fake_turf_type)
-		if(!new_baseturfs) // If no baseturfs list then we want to create one from the turf type
-			if(!length(baseturfs))
-				baseturfs = list(baseturfs)
-			var/list/old_baseturfs = baseturfs.Copy()
-			if(!istype(src, /turf/closed))
-				old_baseturfs += type
-			newT = ChangeTurf(fake_turf_type, null, flags)
-			newT.assemble_baseturfs(initial(fake_turf_type.baseturfs)) // The baseturfs list is created like roundstart
-			if(!length(newT.baseturfs))
-				newT.baseturfs = list(baseturfs)
-			// The old baseturfs are put underneath, and we sort out the unwanted ones
-			newT.baseturfs = baseturfs_string_list(old_baseturfs + (newT.baseturfs - GLOB.blacklisted_automated_baseturfs), newT)
-			return newT
-		if(!length(baseturfs))
-			baseturfs = list(baseturfs)
-		if(!istype(src, /turf/closed))
-			new_baseturfs = list(type) + new_baseturfs
-		baseturfs = baseturfs_string_list(baseturfs + new_baseturfs, src)
-		return ChangeTurf(fake_turf_type, null, flags)
-	if(!length(baseturfs))
-		baseturfs = list(baseturfs)
-	if(!istype(src, /turf/closed))
-		baseturfs = baseturfs_string_list(baseturfs + type, src)
-	var/turf/change_type
-	if(length(new_baseturfs))
-		change_type = new_baseturfs[new_baseturfs.len]
-		new_baseturfs.len--
-		if(new_baseturfs.len)
-			baseturfs = baseturfs_string_list(baseturfs + new_baseturfs, src)
-	else
-		change_type = new_baseturfs
-	return ChangeTurf(change_type, null, flags)
+	var/list/new_baseturfs = baseturfs + type
+	return ChangeTurf(change_type, new_baseturfs, flags)
 
 // Copy an existing turf and put it on top
 // Returns the new turf

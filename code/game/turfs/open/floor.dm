@@ -60,15 +60,20 @@
 		digdown(user)
 
 /turf/open/floor/proc/digdown(mob/user)
-	var/turf/closed/TD = SSmapping.get_turf_below(src)
+	var/turf/TD = SSmapping.get_turf_below(src)
 	if(TD)
+		if(isclosedturf(TD))
+			var/turf/closed/TC = TD
+			if(TC.floor_type == type)
+				TC.ScrapeAway()
+			else if(baseturfs.len < 2 || !(TC.floor_type in baseturfs))
+				baseturfs.Insert(2, TC.floor_type)
 		var/turf/newturf = ScrapeAway()
-		if(isclosedturf(TD) && TD.floor_type == type)
-			TD.ScrapeAway()
 		if(isopenspace(newturf))
 			user.visible_message(span_notice("[user] digs out a hole in the ground."), span_notice("You dig out a hole in the ground."))
 	else
 		to_chat(user, span_warning("Something very dense underneath!"))
+		//TODO: make something bad happen!(clowns)
 
 /turf/open/floor/ex_act(severity, target)
 	var/shielded = is_shielded()
@@ -154,6 +159,9 @@
 	var/turf/closed/TD = SSmapping.get_turf_below(src)
 	if(isclosedturf(TD) && TD.floor_type)
 		apply_material(TD.materials)
+	var/obj/L = (locate(/obj/structure/lattice) in src)
+	if(L)
+		qdel(L)
 
 /turf/open/floor/attackby(obj/item/I, mob/user, params)
 	if(!I || !user)

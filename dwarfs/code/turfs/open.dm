@@ -26,7 +26,6 @@
 	desc = "Terrible."
 	icon_state = "stone"
 	slowdown = 0.7
-	baseturfs = /turf/open/openspace
 	materials = /datum/material/stone
 	digging_tools = list(TOOL_PICKAXE)
 	debris_type = /obj/structure/debris/rock
@@ -38,35 +37,11 @@
 		var/datum/map_generator/generator = SSmapping.map_generators[z]
 		hardness = generator?.hardness_level ? generator?.hardness_level : src::hardness
 
-/turf/open/floor/rock/ScrapeAway(amount, flags)
-	return ChangeTurf(/turf/open/lava)
-
 /turf/open/floor/rock/crowbar_act(mob/living/user, obj/item/I)
 	return FALSE
 
 /turf/open/floor/rock/attackby(obj/item/I, mob/user, params)
-	if(I.tool_behaviour == TOOL_PICKAXE)
-		var/obj/item/pickaxe/pick = I
-		var/hardness_mod = hardness / pick.hardness
-		// if(hardness_mod >= 2)
-		// 	to_chat(user, span_warning("\The [pick] is too soft to mine [src]."))
-		// 	return
-		var/time = 3 SECONDS * user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) * hardness_mod
-		if(I.use_tool(src, user, time, volume=50))
-			if(QDELETED(src))
-				return
-			if(digged_up)
-				try_digdown(I,user)
-			else
-				for(var/i in 1 to rand(2, 5))
-					var/obj/item/S = new /obj/item/stack/ore/stone(src)
-					S.pixel_x = rand(-8, 8)
-					S.pixel_y = rand(-8, 8)
-				digged_up = TRUE
-				icon_state = "stone_dug"
-				user.visible_message(span_notice("<b>[user]</b> digs up some stones.") , \
-									span_notice("You dig up some stones."))
-	else if(I.tool_behaviour == TOOL_CHISEL)
+	if(I.tool_behaviour == TOOL_CHISEL)
 		if(digged_up)
 			to_chat(user, span_warning("Nice try mongoid."))
 			return
@@ -84,9 +59,9 @@
 /turf/open/floor/rock/try_digdown(obj/item/I, mob/user)
 	var/obj/item/pickaxe/pick = I
 	var/hardness_mod = hardness / pick.hardness
-	if(hardness_mod >= 2)
-		to_chat(user, span_warning("\The [pick] is too soft to mine [src]."))
-		return
+	// if(hardness_mod >= 2)
+	// 	to_chat(user, span_warning("\The [pick] is too soft to mine [src]."))
+	// 	return
 	var/time = 3 SECONDS * user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) * hardness_mod
 	if(I.use_tool(src, user, time, volume=50))
 		if(QDELETED(src))
@@ -106,7 +81,6 @@
 	name = "sand"
 	desc = "You feel warm looking at it."
 	icon_state = "sand"
-	baseturfs = /turf/open/floor/sand
 	slowdown = 0.4
 	digging_tools = list(TOOL_PICKAXE, TOOL_SHOVEL)
 	materials = /datum/material/sandstone

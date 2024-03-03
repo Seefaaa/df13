@@ -333,53 +333,19 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			return FALSE		//We were deleted.
 
 // A proc in case it needs to be recreated or badmins want to change the baseturfs
-/turf/proc/assemble_baseturfs(turf/fake_baseturf_type)
-	var/static/list/created_baseturf_lists = list()
-	var/turf/current_target
-	if(fake_baseturf_type)
-		if(length(fake_baseturf_type)) // We were given a list, just apply it and move on
-			baseturfs = baseturfs_string_list(fake_baseturf_type, src)
-			return
-		current_target = fake_baseturf_type
-	else
-		if(length(baseturfs))
-			return // No replacement baseturf has been given and the current baseturfs value is already a list/assembled
-		if(!baseturfs)
-			current_target = initial(baseturfs) || type // This should never happen but just in case...
-			stack_trace("baseturfs var was null for [type]. Failsafe activated and it has been given a new baseturfs value of [current_target].")
-		else
-			current_target = baseturfs
+/turf/proc/assemble_baseturfs()
+	// we already have valid baseturfs
+	if(islist(baseturfs))
+		return
 
-	// If we've made the output before we don't need to regenerate it
-	if(created_baseturf_lists[current_target])
-		var/list/premade_baseturfs = created_baseturf_lists[current_target]
-		if(length(premade_baseturfs))
-			baseturfs = baseturfs_string_list(premade_baseturfs.Copy(), src)
-		else
-			baseturfs = baseturfs_string_list(premade_baseturfs, src)
-		return baseturfs
+	var/baseturf_to_use = baseturfs
 
-	var/turf/next_target = initial(current_target.baseturfs)
-	//Most things only have 1 baseturf so this loop won't run in most cases
-	if(current_target == next_target)
-		baseturfs = current_target
-		created_baseturf_lists[current_target] = current_target
-		return current_target
-	var/list/new_baseturfs = list(current_target)
-	for(var/i=0;current_target != next_target;i++)
-		if(i > 100)
-			// A baseturfs list over 100 members long is silly
-			// Because of how this is all structured it will only runtime/message once per type
-			stack_trace("A turf <[type]> created a baseturfs list over 100 members long. This is most likely an infinite loop.")
-			message_admins("A turf <[type]> created a baseturfs list over 100 members long. This is most likely an infinite loop.")
-			break
-		new_baseturfs.Insert(1, next_target)
-		current_target = next_target
-		next_target = initial(current_target.baseturfs)
+	if(ispath(baseturfs, /turf/baseturf_bottom))
+		baseturf_to_use = /turf/open/openspace
 
-	baseturfs = baseturfs_string_list(new_baseturfs, src)
-	created_baseturf_lists[new_baseturfs[new_baseturfs.len]] = new_baseturfs.Copy()
-	return new_baseturfs
+	baseturfs = list(baseturf_to_use)
+	if(baseturfs[1] != /turf/open/openspace)
+		baseturfs.Insert(1, /turf/open/openspace)
 
 /turf/proc/levelupdate()
 	for(var/obj/O in src)

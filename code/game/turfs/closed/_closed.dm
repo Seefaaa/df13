@@ -23,18 +23,6 @@
 					if(sconce.torch)
 						sconce.torch.forceMove(sconce.loc)
 					qdel(sconce)
-	if(floor_type)
-		var/turf/TU = SSmapping.get_turf_above(src)
-		if(!TU)
-			return ..()
-
-		if(TU.type != floor_type)
-			if(!length(TU.baseturfs) || length(TU.baseturfs) < 2)
-				return ..()
-			if(TU.baseturfs[2] == floor_type)
-				TU.baseturfs.Cut(2, 3)
-		// else//TU is a turf that got placed when we built the wall
-		// 	TU.ScrapeAway()
 	. = ..()
 
 /turf/closed/AfterChange(flags, oldType)
@@ -43,12 +31,7 @@
 		var/turf/TU = SSmapping.get_turf_above(src)
 		if(!TU)
 			return
-		if(!isopenspace(TU))
-			if(!islist(TU.baseturfs))
-				TU.baseturfs = list(TU.baseturfs)
-			//we assume first element in baseturfs is always openspace or lava
-			TU.baseturfs.Insert(2, floor_type)
-		else
+		if(isopenspace(TU))
 			TU.PlaceOnTop(floor_type)
 
 /turf/closed/indestructible
