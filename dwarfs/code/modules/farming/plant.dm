@@ -203,6 +203,11 @@
 	if(QDELETED(src) || !harvestable)
 		return
 	harvestable = FALSE
+	// spawn seeds separately, we don't want those in produced list
+	if(seed_type)
+		for(var/i in 1 to rand(1+min_mod, 1+max_mod))
+			new seed_type(get_turf(user))
+	// spawn all produced items
 	for(var/_P in produced)
 		var/obj/item/growable/P = _P
 		var/harvested = rand(0+min_mod, produced[P]+max_mod)
@@ -211,9 +216,6 @@
 		if(harvested)
 			for(var/i in 1 to harvested)
 				new P(get_turf(user))
-			if(seed_type)
-				for(var/i in 1 to rand(1,2))
-					new seed_type(get_turf(user))
 			to_chat(user, span_notice("You harvest [initial(P.name)] from [src]."))
 			user.adjust_experience(/datum/skill/farming, harvested*8)
 		else

@@ -63,7 +63,7 @@
 		user.adjust_experience(/datum/skill/logging, 3.6)
 		if(chops >= required_chops[growthstage])
 			to_chat(user, span_notice("You chop down [src]."))
-			chop_tree(get_turf(src))
+			chop_tree(get_turf(src), TRUE)
 			qdel(src)
 		else
 			to_chat(user, span_notice("You cut a fine notch into [src]."))
@@ -72,7 +72,10 @@
 	else
 		stop_sound_channel_nearby(src, channel)
 
-/obj/structure/plant/tree/proc/chop_tree(turf/my_turf)
+/obj/structure/plant/tree/proc/chop_tree(turf/my_turf, spawn_seeds=FALSE)
+	if(spawn_seeds && seed_type)
+		for(var/i in 1 to rand(1, 2))
+			new seed_type(my_turf)
 	if(small_log_type)
 		for(var/i in 1 to small_log_amount[growthstage])
 			var/obj/L = new small_log_type(my_turf)
@@ -94,7 +97,6 @@
 	desc = "A mushroom-like subterranean tree. Bears tower cap logs once chopped down."
 	species = "towercap"
 	icon_ripe = "towercap-7"
-	produced = list(/obj/item/growable/seeds/tree/towercap=2)
 	seed_type = /obj/item/growable/seeds/tree/towercap
 	health = 100
 	growthdelta = 80 SECONDS
