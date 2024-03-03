@@ -11,6 +11,9 @@
 	icon_state = initial(plant.species)
 	name = "[initial(plant.name)] seeds"
 
+/obj/item/growable/seeds/get_fuel()
+	return 5
+
 /obj/item/growable/seeds/plump_helmet
 	plant = /obj/structure/plant/garden/crop/plump_helmet
 
