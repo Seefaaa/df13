@@ -326,8 +326,21 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 		set_macros()
 
 	// send statbrowser assets before we show it
-	var/datum/asset/simple/browser_icons = get_asset_datum(/datum/asset/simple/statbrowser)
-	browser_icons.send(src)
+	// very hacky but sending via asset transport doesn't work on first join
+	src << browse_rsc('html/statbrowser/status.png', "statbrowser-status.png")
+	src << browse_rsc('html/statbrowser/ic.png', "statbrowser-ic.png")
+	src << browse_rsc('html/statbrowser/ooc.png', "statbrowser-ooc.png")
+	src << browse_rsc('html/statbrowser/cog.png', "statbrowser-cog.png")
+	src << browse_rsc('html/statbrowser/obj.png', "statbrowser-obj.png")
+	src << browse_rsc('html/statbrowser/other.png', "statbrowser-other.png")
+	src << browse_rsc('html/statbrowser/ghost.png', "statbrowser-ghost.png")
+	src << browse_rsc('html/statbrowser/admin.png', "statbrowser-admin.png")
+	src << browse_rsc('html/statbrowser/debug.png', "statbrowser-debug.png")
+	src << browse_rsc('html/statbrowser/mc.png', "statbrowser-mc.png")
+	src << browse_rsc('html/statbrowser/tickets.png', "statbrowser-tickets.png")
+	src << browse_rsc('html/statbrowser/mc.png', "statbrowser-mc.png")
+	src << browse_rsc('html/statbrowser/magic.png', "statbrowser-magic.png")
+	src << browse_rsc('html/statbrowser/other.png', "statbrowser-other.png")
 
 	// Initialize tgui panel
 	src << browse(file('html/statbrowser.html'), "window=statbrowser")
