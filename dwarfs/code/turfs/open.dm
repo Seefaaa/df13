@@ -87,10 +87,20 @@
 	debris_type = /obj/structure/debris/rock
 	var/digged_up = FALSE
 
+/turf/open/floor/sand/Initialize(mapload)
+	. = ..()
+	if(z > 0 && z <= SSmapping.map_generators.len)
+		var/datum/map_generator/generator = SSmapping.map_generators[z]
+		hardness = generator?.hardness_level ? generator?.hardness_level : src::hardness
+
 /turf/open/floor/sand/try_digdown(obj/item/I, mob/user)
 	to_chat(user, span_notice("You start digging [src]..."))
-	var/dig_time = I.tool_behaviour == TOOL_SHOVEL ? 5 SECONDS : 10 SECONDS
-	if(I.use_tool(src, user, dig_time, volume=50))
+	var/hardness_mod = 1
+	var/skill_mod = user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
+	var/obj/item/pickaxe/pick = I
+	hardness_mod = hardness / pick.hardness
+	var/dig_time = I.tool_behaviour == TOOL_SHOVEL ? 3 SECONDS : 10 SECONDS
+	if(I.use_tool(src, user, dig_time * hardness_mod * skill_mod, volume=50))
 		if(QDELETED(src))
 			return
 		if(digged_up)

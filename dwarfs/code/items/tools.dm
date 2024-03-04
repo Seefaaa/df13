@@ -55,10 +55,16 @@
 	attack_verb_simple = list("smash", "hit", "attack")
 	atck_type = SHARP
 	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
+	var/hardness = 1
 
 /obj/item/shovel/Initialize()
 	. = ..()
 	AddComponent(/datum/component/butchering, 150) //it's sharp, so it works, but barely.
+
+/obj/item/shovel/apply_material_stats()
+	var/datum/material/M = get_material(materials[PART_HEAD])
+	hardness = M.hardness
+	. = ..()
 
 /obj/item/shovel/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] begins digging their own grave! It looks like [user.p_theyre()] trying to commit suicide!"))
