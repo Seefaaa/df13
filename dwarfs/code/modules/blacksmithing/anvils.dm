@@ -188,12 +188,12 @@
 	var/list/dat = list()
 	var/selected_tab = SSmaterials.smithing_recipes[tab]
 
-	dat += "<div>"
+	dat += "<div><center>"
 
 	for(var/category in SSmaterials.smithing_recipes)
-		dat += "<a href='?src=[REF(src)];switch_tab=[category]'>[category]</a>"
+		dat += "<a [category == selected_tab ? "class='linkOn'" : ""] href='?src=[REF(src)];switch_tab=[category]'>[category]</a>"
 
-	dat += "</div>"
+	dat += "</center></div>"
 	dat += "<hr>"
 	for(var/datum/smithing_recipe/recipe in SSmaterials.smithing_recipes[selected_tab])
 		if(recipe.whitelisted_materials && !(current_ingot.materials in recipe.whitelisted_materials))
@@ -202,7 +202,7 @@
 			continue
 		dat += "<a href='?src=[REF(src)];select_recipe=[recipe.type]'>[recipe.name]</a><br>"
 
-	var/datum/browser/popup = new(user, "anvil_select", "<div align='center'>What to make?</div>", 500, 640)
+	var/datum/browser/popup = new(user, "anvil_select", "<div align='center'>What to make?</div>", 300, 450)
 	popup.set_content(dat.Join())
 	popup.open(FALSE)
 	onclose(user, "anvil_select", src)
