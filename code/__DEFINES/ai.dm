@@ -10,7 +10,10 @@
 #define IS_DEAD_OR_INCAP(source) (HAS_TRAIT(source, TRAIT_INCAPACITATED) || HAS_TRAIT(source, TRAIT_HANDS_BLOCKED) || source.stat)
 
 ///For JPS pathing, the maximum length of a path we'll try to generate. Should be modularized depending on what we're doing later on
-#define AI_MAX_PATH_LENGTH 30 // 30 is possibly overkill since by default we lose interest after 14 tiles of distance, but this gives wiggle room for weaving around obstacles
+#define AI_MAX_PATH_LENGTH 200
+// made it 200 cause goblin raids need to pathfind form map edge to map center
+// hopefully it won't lag too much
+// 30 is possibly overkill since by default we lose interest after 14 tiles of distance, but this gives wiggle room for weaving around obstacles
 
 ///Cooldown on planning if planning failed last time
 

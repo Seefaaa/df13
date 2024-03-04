@@ -1,6 +1,7 @@
 /datum/ai_controller/goblin
 	planning_subtrees = list(/datum/ai_planning_subtree/goblin_tree)
 	max_target_distance = 150
+	ai_movement = /datum/ai_movement/jps
 	blackboard = list(
 		BB_GOBLIN_ATTACK_TARGET = null,
 		BB_GOBLIN_DESTINATION_REACHED = FALSE,
