@@ -35,7 +35,7 @@
 	/// Slowdown modifier (additive). Remember that negative values speed up
 	var/slowdown_mod = 0
 	var/slowdown_mod_handle = 0
-	/// Hardness
+	/// Mining speed and efficiecy
 	var/hardness = 1
 
 	// Armor multipliers
@@ -159,13 +159,15 @@
 		I = M.apply2icon_default(I, i-1)
 	return I
 
+// iron is a baseline material, good in every way
 /datum/material/iron
 	name = "iron"
 	palettes = list("iron")
 	mat = MATERIAL_METAL
 	resource = /obj/item/stack/ore/smeltable/iron
 	resource_refined = /obj/item/ingot
-	//iron is a baseline material, hence no modifiers
+
+	hardness = 4
 
 /datum/material/pig_iron
 	name = "pig iron"
@@ -173,11 +175,45 @@
 	mat = MATERIAL_METAL
 	resource_refined = /obj/item/ingot
 
+	force_mod = 0.7
+	force_mod_blunt = 0.9
+	toolspeed_mod = 1.15
+	toolspeed_mod_handle = 1.1
+	integrity_mod = 1.1
+	integrity_mod_handle = 0.9
+	melee_cd_mod = 1.2
+	melee_cd_mod_handle = 1.1
+	hardness = 3
+
+	armor_sharp_mod = 0.6
+	armor_pierce_mod = 0.4
+	armor_blunt_mod = 0.5
+	armorpen_sharp_mod = 0.75
+	armorpen_pierce_mod = 0.75
+	armorpen_blunt_mod = 0.75
+
 /datum/material/steel
 	name = "steel"
 	palettes = list("steel")
 	mat = MATERIAL_METAL
 	resource_refined = /obj/item/ingot
+
+	force_mod = 1.35
+	force_mod_blunt = 1.5
+	toolspeed_mod = 0.8
+	toolspeed_mod_handle = 0.9
+	integrity_mod = 1.4
+	integrity_mod_handle = 1.15
+	melee_cd_mod = 1.2
+	melee_cd_mod_handle = 1.1
+	hardness = 5
+
+	armor_sharp_mod = 1.2
+	armor_pierce_mod = 1.2
+	armor_blunt_mod = 1.2
+	armorpen_sharp_mod = 1.3
+	armorpen_pierce_mod = 1.5
+	armorpen_blunt_mod = 1.3
 
 /datum/material/silver
 	name = "silver"
@@ -186,12 +222,39 @@
 	resource_refined = /obj/item/ingot
 	resource = /obj/item/stack/ore/smeltable/silver
 
+	force_mod = 0.65
+	force_mod_blunt = 1.2
+	toolspeed_mod = 1.15
+	melee_cd_mod = 0.8
+	melee_cd_mod_handle = 1
+	slowdown_mod = 0.1
+	hardness = 2
+
+	armor_sharp_mod = 0.9
+	armor_pierce_mod = 0.9
+	armor_blunt_mod = 0.9
+
 /datum/material/lead
 	name = "lead"
 	palettes = list("lead")
 	mat = MATERIAL_METAL
 	resource_refined = /obj/item/ingot
 	resource = /obj/item/stack/ore/smeltable/galena
+
+	force_mod = 0.7
+	force_mod_blunt = 1.1
+	toolspeed_mod = 1.2
+	toolspeed_mod_handle = 1
+	integrity_mod = 1.6
+	integrity_mod_handle = 1.3
+	melee_cd_mod = 1.4
+	melee_cd_mod_handle = 1.25
+	slowdown_mod = 0.2
+	hardness = 2
+
+	armorpen_sharp_mod = 0.75
+	armorpen_pierce_mod = 0.75
+	armorpen_blunt_mod = 1.1
 
 /datum/material/platinum
 	name = "platinum"
@@ -200,12 +263,44 @@
 	resource_refined = /obj/item/ingot
 	resource = /obj/item/stack/ore/smeltable/platinum
 
+	force_mod = 0.9
+	force_mod_blunt = 1.75
+	toolspeed_mod = 1.35
+	toolspeed_mod_handle = 1.2
+	integrity_mod = 1.75
+	integrity_mod_handle = 1.45
+	melee_cd_mod = 1.65
+	melee_cd_mod_handle = 1.25
+	slowdown_mod = 0.4
+	slowdown_mod_handle = 0.2
+	hardness = 3
+
+	armor_sharp_mod = 1.55
+	armor_pierce_mod = 1.1
+	armor_blunt_mod = 1.55
+	armorpen_blunt_mod = 1.5
+
 /datum/material/tin
 	name = "tin"
 	palettes = list("tin")
 	mat = MATERIAL_METAL
 	resource_refined = /obj/item/ingot
 	resource = /obj/item/stack/ore/smeltable/cassiterite
+
+	force_mod = 0.75
+	force_mod_blunt = 0.9
+	integrity_mod = 0.8
+	integrity_mod_handle = 0.8
+	melee_cd_mod = 0.9
+	melee_cd_mod_handle = 0.9
+	hardness = 1
+
+	armor_sharp_mod = 0.6
+	armor_pierce_mod = 0.5
+	armor_blunt_mod = 0.4
+	armorpen_sharp_mod = 0.75
+	armorpen_pierce_mod = 0.75
+	armorpen_blunt_mod = 0.75
 
 /datum/material/aluminum
 	name = "aluminum"
@@ -214,6 +309,28 @@
 	resource_refined = /obj/item/ingot
 	resource = /obj/item/stack/ore/smeltable/aluminum
 
+	force_mod = 0.65
+	force_mod_blunt = 0.45
+	toolspeed_mod = 0.65
+	toolspeed_mod_handle = 0.85
+	integrity_mod = 0.65
+	integrity_mod_handle = 0.65
+	melee_cd_mod = 0.5
+	melee_cd_mod_handle = 0.9
+	slowdown_mod = -0.2
+	hardness = 2
+
+	armor_sharp_mod = 0.5
+	armor_pierce_mod = 0.5
+	armor_blunt_mod = 0.5
+	armor_fire_mod = 0.75
+	armor_acid_mod = 0.5
+	armor_magic_mod = 0.5
+	armor_wound_mod = 0
+	armorpen_sharp_mod = 0.5
+	armorpen_pierce_mod = 0.5
+	armorpen_blunt_mod = 0.5
+
 /datum/material/adamantine
 	name = "adamantine"
 	palettes = list("adamantine")
@@ -221,11 +338,48 @@
 	resource_refined = /obj/item/ingot
 	resource = /obj/item/stack/ore/smeltable/adamantine
 
+	force_mod = 1.8
+	force_mod_blunt = 0.5
+	toolspeed_mod = 0.35
+	toolspeed_mod_handle = 0.9
+	integrity_mod = 2
+	integrity_mod_handle = 2
+	melee_cd_mod = 0.6
+	melee_cd_mod_handle = 0.85
+	slowdown_mod = -0.5
+	slowdown_mod_handle = -0.3
+	hardness = 6
+
+	armor_sharp_mod = 2
+	armor_pierce_mod = 2
+	armor_blunt_mod = 1.25
+	armor_fire_mod = 2
+	armor_acid_mod = 2
+	armor_magic_mod = 2
+	armor_wound_mod = 2
+	armorpen_sharp_mod = 1.5
+	armorpen_pierce_mod = 1.5
+	armorpen_blunt_mod = 1
+	armorpen_magic_mod = 1.5
+
 /datum/material/bronze
 	name = "bronze"
 	palettes = list("bronze")
 	mat = MATERIAL_METAL
 	resource_refined = /obj/item/ingot
+
+	force_mod = 0.9
+	force_mod_blunt = 0.95
+	toolspeed_mod = 0.9
+	melee_cd_mod = 0.9
+	hardness = 3
+
+	armor_sharp_mod = 0.9
+	armor_pierce_mod = 0.9
+	armor_blunt_mod = 0.9
+	armorpen_sharp_mod = 0.95
+	armorpen_pierce_mod = 0.95
+	armorpen_blunt_mod = 0.95
 
 /datum/material/copper
 	name = "copper"
@@ -233,30 +387,22 @@
 	mat = MATERIAL_METAL
 	resource = /obj/item/stack/ore/smeltable/copper
 	resource_refined = /obj/item/ingot
-	force_mod = 0.8
-	toolspeed_mod = 0.7
+
+	force_mod = 0.85
+	force_mod_blunt = 1
+	toolspeed_mod = 0.9
 	toolspeed_mod_handle = 1.1
 	integrity_mod = 0.7
 	integrity_mod_handle = 0.9
-	melee_cd_mod = 1
-	melee_cd_mod_handle = 1
-	slowdown_mod = 0
-	slowdown_mod_handle = 0
-	hardness = 0.7
+	hardness = 1
 
 	armor_sharp_mod = 0.6
 	armor_pierce_mod = 0.4
 	armor_blunt_mod = 0.5
-	armor_fire_mod = 1
-	armor_acid_mod = 1
-	armor_magic_mod = 1
-	armor_wound_mod = 1
 	armorpen_sharp_mod = 0.5
 	armorpen_pierce_mod = 0.5
-	armorpen_blunt_mod = 1.2
-	armorpen_fire_mod = 1
-	armorpen_acid_mod = 1
-	armorpen_magic_mod = 1
+	armorpen_blunt_mod = 1.1
+	armorpen_acid_mod = 0.8
 
 /datum/material/gold
 	name = "gold"
@@ -264,8 +410,10 @@
 	mat = MATERIAL_METAL
 	resource = /obj/item/stack/ore/smeltable/gold
 	resource_refined = /obj/item/ingot
-	force_mod = 0.8
-	toolspeed_mod = 0.7
+
+	force_mod = 0.55
+	force_mod_blunt = 1.6
+	toolspeed_mod = 1.1
 	toolspeed_mod_handle = 1.1
 	integrity_mod = 0.7
 	integrity_mod_handle = 0.9
@@ -273,21 +421,15 @@
 	melee_cd_mod_handle = 1.1
 	slowdown_mod = 0.3
 	slowdown_mod_handle = 0.1
-	hardness = 0.9
+	hardness = 1
 
 	armor_sharp_mod = 0.6
 	armor_pierce_mod = 0.4
-	armor_blunt_mod = 0.5
-	armor_fire_mod = 1
-	armor_acid_mod = 1
-	armor_magic_mod = 1
-	armor_wound_mod = 1
+	armor_blunt_mod = 0.3
 	armorpen_sharp_mod = 0.5
 	armorpen_pierce_mod = 0.5
 	armorpen_blunt_mod = 1.2
-	armorpen_fire_mod = 1
-	armorpen_acid_mod = 1
-	armorpen_magic_mod = 1
+	armorpen_acid_mod = 1.35
 
 /datum/material/wood
 	mat = MATERIAL_WOOD
@@ -304,11 +446,35 @@
 	palettes = list("wood_treated")
 	resource = null
 
+	force_mod = 0.55
+	force_mod_blunt = 0.8
+	toolspeed_mod = 0.5
+	toolspeed_mod_handle = 0.9
+	integrity_mod = 0.75
+	melee_cd_mod = 0.8
+	melee_cd_mod_handle = 0.8
+	slowdown_mod = -0.3
+	slowdown_mod_handle = -0.1
+
+	armor_sharp_mod = 0.15
+	armor_pierce_mod = 0.3
+	armor_blunt_mod = 0.05
+	armor_fire_mod = 0.25
+	armor_acid_mod = 0
+	armorpen_sharp_mod = 0.55
+	armorpen_pierce_mod = 0.4
+	armorpen_blunt_mod = 0.3
+	armorpen_fire_mod = 0
+	armorpen_acid_mod = 0
+	armorpen_magic_mod = 0
+
 /datum/material/wood/towercap
 	name = "towercap wood"
 	palettes = list("towercap", "towercap_inside")
 	treated_type = /datum/material/wood/towercap/treated
-	force_mod = 0.6
+
+	force_mod = 0.5
+	force_mod_blunt = 0.7
 	toolspeed_mod = 0.5
 	toolspeed_mod_handle = 1.1
 	integrity_mod = 0.6
@@ -317,21 +483,17 @@
 	melee_cd_mod_handle = 0.9
 	slowdown_mod = -0.3
 	slowdown_mod_handle = -0.1
-	hardness = 0.6
 
-	armor_sharp_mod = 0.4
+	armor_sharp_mod = 0.3
 	armor_pierce_mod = 0.3
 	armor_blunt_mod = 0.3
 	armor_fire_mod = 0
 	armor_acid_mod = 0
-	armor_magic_mod = 1
-	armor_wound_mod = 1
 	armorpen_sharp_mod = 0.5
 	armorpen_pierce_mod = 0.4
 	armorpen_blunt_mod = 0.3
 	armorpen_fire_mod = 0
 	armorpen_acid_mod = 0
-	armorpen_magic_mod = 1
 
 /datum/material/wood/towercap/treated
 	palettes = list("towercap_inside")
@@ -340,29 +502,28 @@
 	name = "apple wood"
 	palettes = list("apple", "apple_inside")
 	treated_type = /datum/material/wood/apple/treated
-	force_mod = 0.65
+
+	force_mod = 0.5
+	force_mod_blunt = 0.75
 	toolspeed_mod = 0.5
-	toolspeed_mod_handle = 1
+	toolspeed_mod_handle = 1.1
 	integrity_mod = 0.6
 	integrity_mod_handle = 0.8
 	melee_cd_mod = 0.8
 	melee_cd_mod_handle = 0.9
-	slowdown_mod = -0.2
+	slowdown_mod = -0.3
 	slowdown_mod_handle = -0.1
 
-	armor_sharp_mod = 0.4
+	armor_sharp_mod = 0.3
 	armor_pierce_mod = 0.3
 	armor_blunt_mod = 0.3
 	armor_fire_mod = 0
 	armor_acid_mod = 0
-	armor_magic_mod = 1
-	armor_wound_mod = 1
 	armorpen_sharp_mod = 0.5
 	armorpen_pierce_mod = 0.4
 	armorpen_blunt_mod = 0.3
 	armorpen_fire_mod = 0
 	armorpen_acid_mod = 0
-	armorpen_magic_mod = 1
 
 /datum/material/wood/apple/treated
 	palettes = list("apple_inside")
@@ -371,29 +532,28 @@
 	name = "pine wood"
 	palettes = list("pine", "pine_inside")
 	treated_type = /datum/material/wood/pine/treated
-	force_mod = 0.65
+
+	force_mod = 0.5
+	force_mod_blunt = 0.75
 	toolspeed_mod = 0.5
-	toolspeed_mod_handle = 1
+	toolspeed_mod_handle = 1.1
 	integrity_mod = 0.6
 	integrity_mod_handle = 0.8
 	melee_cd_mod = 0.8
 	melee_cd_mod_handle = 0.9
-	slowdown_mod = -0.2
+	slowdown_mod = -0.3
 	slowdown_mod_handle = -0.1
 
-	armor_sharp_mod = 0.4
+	armor_sharp_mod = 0.3
 	armor_pierce_mod = 0.3
 	armor_blunt_mod = 0.3
 	armor_fire_mod = 0
 	armor_acid_mod = 0
-	armor_magic_mod = 1
-	armor_wound_mod = 1
 	armorpen_sharp_mod = 0.5
 	armorpen_pierce_mod = 0.4
 	armorpen_blunt_mod = 0.3
 	armorpen_fire_mod = 0
 	armorpen_acid_mod = 0
-	armorpen_magic_mod = 1
 
 /datum/material/wood/pine/treated
 	palettes = list("pine_inside")
