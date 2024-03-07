@@ -99,7 +99,7 @@
 		LAZYCLEARLIST(contents)
 		update_appearance()
 		user<<browse(null, "window=Anvil")
-	playsound(src, 'dwarfs/sounds/tools/anvil/anvil_hit.ogg', 70, TRUE)
+	playsound(src, 'dwarfs/sounds/tools/anvil/anvil_miss.ogg', 70, TRUE)
 	user.visible_message(span_warning("<b>[user]</b> hits \the anvil with \a hammer incorrectly.") , \
 						span_warning("You hit \the anvil with \a hammer incorrectly."))
 	return
