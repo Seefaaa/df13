@@ -6,8 +6,7 @@
 	part_name = PART_HANDLE
 
 /obj/item/weapon_hilt/build_material_icon(_file, state)
-	return apply_palettes(..(), list(materials))
-
+	return apply_palettes(..(), materials)
 
 /obj/item/weapon_hilt/get_fuel()
 	return 3
@@ -22,7 +21,7 @@
 	part_name = PART_HANDLE
 
 /obj/item/stick/build_material_icon(_file, state)
-	return apply_palettes(..(), list(materials))
+	return apply_palettes(..(), materials)
 
 /obj/item/stick/get_fuel()
 	return 5
