@@ -42,9 +42,9 @@ SUBSYSTEM_DEF(mapping)
 	var/list/map_generators = list(
 		null,//lobby
 		/datum/map_generator/caves/bottom,
+		/datum/map_generator/caves/middle_bottom,
 		/datum/map_generator/caves/middle,
-		/datum/map_generator/caves/middle,
-		/datum/map_generator/caves/middle,
+		/datum/map_generator/caves/middle_upper,
 		/datum/map_generator/caves/upper,
 		/datum/map_generator/surface,//surface
 	)

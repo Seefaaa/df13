@@ -2,7 +2,6 @@ GLOBAL_VAR_INIT(temperature_seed, 0)
 GLOBAL_VAR(surface_z)
 
 /datum/map_generator/caves
-	var/name = "Caves"
 	keys = list("ore", "plants", "mobs", "forest", "troll_rock")
 	var/list/ores = list(
 		/obj/item/stack/ore/smeltable/gold = 20,
@@ -82,37 +81,60 @@ GLOBAL_VAR(surface_z)
 	for(var/list/data in post_queue["troll_rock"])
 		var/turf/closed/mineral/stone/T = locate(data[1], data[2], data[3])
 		T.has_troll = TRUE
+
 /datum/map_generator/caves/upper
-	name = "Upper Caves"
 	hardness_level = 1
 	ores = list(
-		/obj/item/stack/ore/smeltable/iron = 30,
+		/obj/item/stack/ore/smeltable/cassiterite = 30,
 		/obj/item/stack/ore/coal=40,
-		/obj/item/stack/ore/smeltable/copper=30)
+		/obj/item/stack/ore/smeltable/copper=30,
+		/obj/item/stack/ore/smeltable/aluminum=5)
 
-/datum/map_generator/caves/middle
-	name = "Middle Caves"
+/datum/map_generator/caves/middle_upper
 	hardness_level = 2
 	ores = list(
-		/obj/item/stack/ore/smeltable/gold = 40,
+		/obj/item/stack/ore/smeltable/cassiterite = 30,
+		/obj/item/stack/ore/coal=20,
+		/obj/item/stack/ore/smeltable/copper=30,
+		/obj/item/stack/ore/smeltable/aluminum=20,
+		/obj/item/stack/ore/smeltable/galena=10)
+
+/datum/map_generator/caves/middle
+	hardness_level = 3
+	ores = list(
+		/obj/item/stack/ore/smeltable/aluminum=30,
+		/obj/item/stack/ore/coal=10,
+		/obj/item/stack/ore/smeltable/galena=20,
+		/obj/item/stack/ore/smeltable/copper=20,
+		/obj/item/stack/ore/smeltable/silver=10,
+		/obj/item/stack/ore/smeltable/gold=5,
+		/obj/item/stack/ore/smeltable/iron=5)
+
+/datum/map_generator/caves/middle_bottom
+	hardness_level = 4
+	ores = list(
+		/obj/item/stack/ore/smeltable/gold = 30,
+		/obj/item/stack/ore/smeltable/silver=30,
 		/obj/item/stack/ore/smeltable/iron = 40,
+		/obj/item/stack/ore/smeltable/galena=5,
 		/obj/item/stack/ore/gem/diamond=5,
 		/obj/item/stack/ore/gem/ruby=5,
 		/obj/item/stack/ore/gem/sapphire=5,
-		/obj/item/stack/ore/coal=20,
-		/obj/item/stack/ore/smeltable/copper=20)
+		/obj/item/stack/ore/coal=20,)
 
 /datum/map_generator/caves/bottom
-	name = "Bottom Caves"
-	hardness_level = 3
+	hardness_level = 5
 	ores = list(
+		/obj/item/stack/ore/smeltable/iron=5,
+		/obj/item/stack/ore/smeltable/silver=5,
 		/obj/item/stack/ore/smeltable/gold = 20,
-		/obj/item/stack/ore/gem/diamond=20,
-		/obj/item/stack/ore/gem/ruby=20,
-		/obj/item/stack/ore/gem/sapphire=20)
+		/obj/item/stack/ore/smeltable/platinum = 30,
+		/obj/item/stack/ore/smeltable/adamantine = 5,
+		/obj/item/stack/ore/gem/diamond=10,
+		/obj/item/stack/ore/gem/ruby=10,
+		/obj/item/stack/ore/gem/sapphire=10)
 
 /datum/map_generator/surface
-	var/name = "Surface"
 	keys = list("plants", "mobs", "forest")
 
 /datum/map_generator/surface/generate_turfs()
