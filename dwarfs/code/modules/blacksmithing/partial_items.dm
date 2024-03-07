@@ -2,6 +2,7 @@
 	desc = "Looks like a part of something bigger."
 	icon = 'dwarfs/icons/items/components.dmi'
 	force = 1
+	init_materials = FALSE
 
 /obj/item/partial/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials))

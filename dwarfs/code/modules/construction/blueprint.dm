@@ -61,9 +61,11 @@
 				QUEUE_SMOOTH_BORDERS(T)
 				QUEUE_SMOOTH_BORDERS_NEIGHBORS(T)
 			else
-				var/atom/A = new target_structure(spawn_turf)
-				A.dir = dir
-				A.apply_material(_materials)
+				var/obj/O = new target_structure(spawn_turf)
+				O.dir = dir
+				O.apply_material(_materials)
+				on_built(O)
+				O.update_stats()
 			contents.Cut()
 			qdel(src)
 	else
@@ -240,6 +242,10 @@
 		var/list/resource = list("name"=req_name,"amount"=amt,"icon"=icon_path)
 		qdel(O)
 		. += list(resource)
+
+/// Additional stuff happens here when structure has just been built
+/obj/structure/blueprint/proc/on_built(obj/structure/res)
+	return
 
 /obj/structure/blueprint/large //2x1 size
 	name = "large blueprint"
@@ -564,6 +570,12 @@
 	target_structure = /obj/structure/beacon
 	reqs = list(/obj/item/partial/magnet_core=1, PART_PLANKS=5)
 	cat = BLUEPRINT_CAT_UTILS
+
+/obj/structure/blueprint/beacon/on_built(obj/structure/res)
+	var/obj/item/core = (locate(/obj/item/partial/magnet_core) in contents)
+	if(!core)
+		return
+	res.grade = core.grade
 
 /obj/structure/blueprint/alloy_smelter
 	name = "alloy smelter"

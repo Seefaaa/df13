@@ -52,6 +52,22 @@
 	else
 		to_chat(user, span_warning("\The [src] is not calibrated to any beacon!"))
 
+/obj/item/compass/apply_grade(_grade)
+	. = ..()
+	switch(grade)
+		if(1)
+			tracking_range = 30
+		if(2)
+			tracking_range = 50
+		if(3)
+			tracking_range = 80
+		if(4)
+			tracking_range = 100
+		if(5)
+			tracking_range = 120
+		if(6)
+			tracking_range = 150
+
 /atom/movable/screen/alert/compass
 	name = "Compass"
 	desc = "Shows the way to a calibrated beacon"

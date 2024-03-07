@@ -8,7 +8,7 @@
 
 /obj/reset_stats()
 	. = ..()
-	obj_integrity = initial(obj_integrity)
+	obj_integrity = initial(max_integrity)
 	max_integrity = initial(max_integrity)
 
 /obj/item/reset_stats()
@@ -19,9 +19,11 @@
 /obj/proc/apply_grade(_grade=null)
 	if(_grade)
 		src.grade = _grade
-	obj_flags |= USES_GRADES
-	var/grd_name = grade_name(grade)
-	name = "[grd_name][initial(name)][grd_name]"
+	// don't visually show that we use grades even if we actually use them. Maybe later on I will make it make more sense
+	if(!(obj_flags & IGNORES_GRADES))
+		obj_flags |= USES_GRADES
+		var/grd_name = grade_name(grade)
+		name = "[grd_name][initial(name)][grd_name]"
 	apply_grade_extra(_grade)
 
 /obj/proc/apply_grade_extra(_grade=null)
