@@ -44,7 +44,7 @@
 	icon = 'dwarfs/icons/structures/construction.dmi'
 	icon_state = "lattice"
 	anchored = 1
-	obj_flags = BLOCK_Z_IN_UP | BLOCK_Z_OUT_DOWN | CAN_BE_HIT
+	obj_flags = parent_type::obj_flags | BLOCK_Z_IN_UP | BLOCK_Z_OUT_DOWN
 	flags_cavein = CAVEIN_IGNORE
 	materials = /datum/material/wood/pine/treated
 
