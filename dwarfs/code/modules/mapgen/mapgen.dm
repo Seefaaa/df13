@@ -12,15 +12,7 @@ GLOBAL_VAR(surface_z)
 		/obj/item/stack/ore/coal=40,
 		/obj/item/stack/ore/smeltable/copper=30)
 
-	var/troll_chance = list(
-		1,//lobby
-		2,//bottom level
-		1,
-		0.5,
-		0.3,
-		0.1,//upper level
-		0,//surface
-	)
+	var/troll_chance = 0
 
 /datum/map_generator/caves/generate_turfs()
 	if(CONFIG_GET(flag/disable_generation))
@@ -57,8 +49,7 @@ GLOBAL_VAR(surface_z)
 						turf_type = /turf/closed/mineral/sand
 					else
 						turf_type = /turf/closed/mineral/stone
-						var/chance = troll_chance[T.z]
-						prob_queue(chance, "troll_rock", list(x, y, T.z))
+						prob_queue(troll_chance, "troll_rock", list(x, y, T.z))
 			T.ChangeTurf(turf_type)
 
 /datum/map_generator/caves/generate_rest()
@@ -84,6 +75,7 @@ GLOBAL_VAR(surface_z)
 
 /datum/map_generator/caves/upper
 	hardness_level = 1
+	troll_chance = 0.1
 	ores = list(
 		/obj/item/stack/ore/smeltable/cassiterite = 30,
 		/obj/item/stack/ore/coal=40,
@@ -92,6 +84,7 @@ GLOBAL_VAR(surface_z)
 
 /datum/map_generator/caves/middle_upper
 	hardness_level = 2
+	troll_chance = 0.3
 	ores = list(
 		/obj/item/stack/ore/smeltable/cassiterite = 30,
 		/obj/item/stack/ore/coal=20,
@@ -101,6 +94,7 @@ GLOBAL_VAR(surface_z)
 
 /datum/map_generator/caves/middle
 	hardness_level = 3
+	troll_chance = 0.5
 	ores = list(
 		/obj/item/stack/ore/smeltable/aluminum=30,
 		/obj/item/stack/ore/coal=10,
@@ -112,6 +106,7 @@ GLOBAL_VAR(surface_z)
 
 /datum/map_generator/caves/middle_bottom
 	hardness_level = 4
+	troll_chance = 1
 	ores = list(
 		/obj/item/stack/ore/smeltable/gold = 30,
 		/obj/item/stack/ore/smeltable/silver=30,
@@ -124,6 +119,7 @@ GLOBAL_VAR(surface_z)
 
 /datum/map_generator/caves/bottom
 	hardness_level = 5
+	troll_chance = 1.5
 	ores = list(
 		/obj/item/stack/ore/smeltable/iron=5,
 		/obj/item/stack/ore/smeltable/silver=5,
