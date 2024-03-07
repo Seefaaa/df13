@@ -1,4 +1,4 @@
-/obj/proc/update_stats(_grade=null, use_grade=TRUE)
+/obj/proc/update_stats(_grade=null)
 	reset_stats()
 	apply_grade(_grade)
 	apply_material_stats()
@@ -36,7 +36,7 @@
 /*******************************************************************************************************************/
 
 
-/obj/item/zwei/apply_grade(grade)
+/obj/item/zwei/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -76,7 +76,7 @@
             toolspeed = 1
             armor_penetration.setRating(sharp=15,pierce=8, blunt=8, fire=0, magic=0)
 
-/obj/item/flail/apply_grade(grade)
+/obj/item/flail/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -116,7 +116,7 @@
             toolspeed = 1
             armor_penetration.setRating(sharp=4, pierce=6, blunt=10,fire=0, magic=0)
 
-/obj/item/dagger/apply_grade(grade)
+/obj/item/dagger/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -156,7 +156,7 @@
             toolspeed = 1
             armor_penetration.setRating(sharp=10,pierce=13,blunt=3, fire=0, magic=0)
 
-/obj/item/sword/apply_grade(grade)
+/obj/item/sword/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -196,7 +196,7 @@
             toolspeed = 1
             armor_penetration.setRating(sharp=14,pierce=8, blunt=5, fire=0, magic=0)
 
-/obj/item/spear/apply_grade(grade)
+/obj/item/spear/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -236,7 +236,7 @@
             toolspeed = 1
             armor_penetration.setRating(sharp=8, pierce=14,blunt=7, fire=0, magic=0)
 
-/obj/item/warhammer/apply_grade(grade)
+/obj/item/warhammer/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -276,7 +276,7 @@
             toolspeed = 1
             armor_penetration.setRating(sharp=4, pierce=6, blunt=13,fire=0, magic=0)
 
-/obj/item/halberd/apply_grade(grade)
+/obj/item/halberd/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -316,7 +316,7 @@
             toolspeed = 1
             armor_penetration.setRating(sharp=18,pierce=18,blunt=0, fire=0, magic=0)
 
-/obj/item/battleaxe/apply_grade(grade)
+/obj/item/battleaxe/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -356,7 +356,7 @@
             toolspeed = 1
             armor_penetration.setRating(sharp=4, pierce=6, blunt=13,fire=0, magic=0)
 
-/obj/item/scepter/apply_grade(grade)
+/obj/item/scepter/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -396,7 +396,7 @@
             toolspeed = 1
             armor_penetration.setRating(sharp=0, pierce=0, blunt=6, fire=0, magic=0)
 
-/obj/item/pickaxe/apply_grade(grade)
+/obj/item/pickaxe/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -436,7 +436,7 @@
             toolspeed = 0.6
             armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
 
-/obj/item/axe/apply_grade(grade)
+/obj/item/axe/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -476,7 +476,7 @@
             toolspeed = 0.6
             armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
 
-/obj/item/hoe/apply_grade(grade)
+/obj/item/hoe/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -516,7 +516,7 @@
             toolspeed = 0.6
             armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
 
-/obj/item/shovel/apply_grade(grade)
+/obj/item/shovel/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -556,7 +556,7 @@
             toolspeed = 0.6
             armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
 
-/obj/item/chisel/apply_grade(grade)
+/obj/item/chisel/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -596,7 +596,7 @@
             toolspeed = 0.6
             armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
 
-/obj/item/builder_hammer/apply_grade(grade)
+/obj/item/builder_hammer/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -636,7 +636,7 @@
             toolspeed = 0.6
             armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
 
-/obj/item/smithing_hammer/apply_grade(grade)
+/obj/item/smithing_hammer/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -676,7 +676,7 @@
             toolspeed = 0.6
             armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
 
-/obj/item/tongs/apply_grade(grade)
+/obj/item/tongs/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -716,7 +716,7 @@
             toolspeed = 0.6
             armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
 
-/obj/item/trowel/apply_grade(grade)
+/obj/item/trowel/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -756,7 +756,7 @@
             toolspeed = 0.6
             armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
 
-/obj/item/kitchen/knife/apply_grade(grade)
+/obj/item/kitchen/knife/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -799,7 +799,7 @@
 
 /*******************************************************************************************************************/
 
-/obj/item/clothing/suit/light_plate/apply_grade(grade)
+/obj/item/clothing/suit/light_plate/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -815,7 +815,7 @@
         if(6)
             armor.setRating(sharp=23,pierce=15,blunt=14,fire=9, wound=40)
 
-/obj/item/clothing/suit/heavy_plate/apply_grade(grade)
+/obj/item/clothing/suit/heavy_plate/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -831,7 +831,7 @@
         if(6)
             armor.setRating(sharp=30,pierce=17,blunt=18,fire=11,wound=50)
 
-/obj/item/clothing/under/chainmail/apply_grade(grade)
+/obj/item/clothing/under/chainmail/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -847,7 +847,7 @@
         if(6)
             armor.setRating(sharp=20,pierce=14,blunt=15,fire=10,wound=35)
 
-/obj/item/clothing/head/heavy_plate/apply_grade(grade)
+/obj/item/clothing/head/heavy_plate/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -863,7 +863,7 @@
         if(6)
             armor.setRating(sharp=23,pierce=16,blunt=15,fire=10,wound=40)
 
-/obj/item/clothing/gloves/plate_gloves/apply_grade(grade)
+/obj/item/clothing/gloves/plate_gloves/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -879,7 +879,7 @@
         if(6)
             armor.setRating(sharp=23,pierce=16,blunt=15,fire=10,wound=40)
 
-/obj/item/clothing/shoes/plate_boots/apply_grade(grade)
+/obj/item/clothing/shoes/plate_boots/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -895,7 +895,7 @@
         if(6)
             armor.setRating(sharp=23,pierce=16,blunt=15,fire=10,wound=40)
 
-/obj/item/clothing/head/crown/apply_grade(grade)
+/obj/item/clothing/head/crown/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -911,7 +911,7 @@
         if(6)
             armor.setRating(sharp=10,pierce=0, blunt=0, fire=0, wound=0)
 
-/obj/item/clothing/shoes/boots/apply_grade(grade)
+/obj/item/clothing/shoes/boots/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -927,7 +927,7 @@
         if(6)
             armor.setRating(sharp=0, pierce=0, blunt=0, fire=0, wound=0)
 
-/obj/item/clothing/under/tunic/apply_grade(grade)
+/obj/item/clothing/under/tunic/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -943,7 +943,7 @@
         if(6)
             armor.setRating(sharp=0, pierce=0, blunt=0, fire=0, wound=0)
 
-/obj/item/clothing/head/light_helmet/apply_grade(grade)
+/obj/item/clothing/head/light_helmet/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -959,7 +959,7 @@
         if(6)
             armor.setRating(sharp=18,pierce=14,blunt=12,fire=9, wound=35)
 
-/obj/item/clothing/head/leather_helmet/apply_grade(grade)
+/obj/item/clothing/head/leather_helmet/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -975,7 +975,7 @@
         if(6)
             armor.setRating(sharp=18,pierce=14,blunt=12,fire=9, wound=35)
 
-/obj/item/clothing/suit/leather_vest/apply_grade(grade)
+/obj/item/clothing/suit/leather_vest/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -991,7 +991,7 @@
         if(6)
             armor.setRating(sharp=20,pierce=15,blunt=14,fire=9, wound=35)
 
-/obj/item/clothing/gloves/leather/apply_grade(grade)
+/obj/item/clothing/gloves/leather/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)
@@ -1007,7 +1007,7 @@
         if(6)
             armor.setRating(sharp=16,pierce=15,blunt=15,fire=11,wound=30)
 
-/obj/item/clothing/shoes/leather_boots/apply_grade(grade)
+/obj/item/clothing/shoes/leather_boots/apply_grade(_grade)
     ..()
     switch(grade)
         if(1)

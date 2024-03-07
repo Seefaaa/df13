@@ -23,7 +23,7 @@
 	var/datum/material/M = get_material(materials)
 	name = "[M.name] ingot"
 
-/obj/item/ingot/update_stats(_grade, use_grade)
+/obj/item/ingot/update_stats(_grade)
 	. = ..()
 	name = "[get_material_name(materials)] ingot"
 

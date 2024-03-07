@@ -91,10 +91,14 @@
 		var/obj/O
 		for(var/obj/I in contents)
 			_materials[I.part_name] = I.materials
+		// if we have only one component, we just use that material, no need for a part list
+		if(selected_recipe.reqs.len == 1)
+			var/obj/I = (locate(/obj) in contents)
+			_materials = I.materials
 		for(var/i in 1 to selected_recipe.result_amount)
 			O = new selected_recipe.result(loc)
-			O.update_stats(get_highest_grade())
 			O.apply_material(_materials)
+			O.update_stats(get_highest_grade())
 		if(selected_recipe.affecting_skill)
 			user.adjust_experience(selected_recipe.affecting_skill, selected_recipe.exp_gain)
 		to_chat(user, span_notice("You assemble \a [O]."))
