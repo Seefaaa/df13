@@ -796,6 +796,85 @@
             toolspeed = 0.6
             armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
 
+/obj/item/shield/apply_grade(_grade)
+	..()
+	switch(grade)
+		if(1)
+			force = 1
+			throwforce = 4
+			block_chance = 15
+			toolspeed = 1
+			armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
+		if(2)
+			force = 2
+			throwforce = 5
+			block_chance = 20
+			toolspeed = 1
+			armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
+		if(3)
+			force = 3
+			throwforce = 6
+			block_chance = 25
+			toolspeed = 1
+			armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
+		if(4)
+			force = 3
+			throwforce = 7
+			block_chance = 30
+			toolspeed = 1
+			armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
+		if(5)
+			force = 4
+			throwforce = 8
+			block_chance = 35
+			toolspeed = 1
+			armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
+		if(6)
+			force = 5
+			throwforce = 10
+			block_chance = 40
+			toolspeed = 1
+			armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
+
+/obj/item/shield/large/apply_grade(_grade)
+	..()
+	switch(grade)
+		if(1)
+			force = 1
+			throwforce = 4
+			block_chance = 25
+			toolspeed = 1
+			armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
+		if(2)
+			force = 2
+			throwforce = 5
+			block_chance = 30
+			toolspeed = 1
+			armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
+		if(3)
+			force = 3
+			throwforce = 6
+			block_chance = 35
+			toolspeed = 1
+			armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
+		if(4)
+			force = 3
+			throwforce = 7
+			block_chance = 40
+			toolspeed = 1
+			armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
+		if(5)
+			force = 4
+			throwforce = 8
+			block_chance = 45
+			toolspeed = 1
+			armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
+		if(6)
+			force = 5
+			throwforce = 10
+			block_chance = 50
+			toolspeed = 1
+			armor_penetration.setRating(sharp=0, pierce=0, blunt=0, fire=0, magic=0)
 
 /*******************************************************************************************************************/
 
