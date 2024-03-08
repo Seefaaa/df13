@@ -72,8 +72,6 @@
 
 /datum/config_entry/flag/log_manifest	// log crew manifest to seperate file
 
-/datum/config_entry/flag/log_exrp // :^)
-
 /datum/config_entry/flag/log_timers_on_bucket_reset // logs all timers in buckets on automatic bucket reset (Useful for timer debugging)
 
 /datum/config_entry/flag/allow_admin_ooccolor // Allows admins with relevant permissions to have their own ooc colour
