@@ -14,7 +14,7 @@
 	new /obj/item/ingot(down)
 	return INITIALIZE_HINT_QDEL
 
-/obj/effect/spawner/material_showcase/Initialize(mapload)
+/obj/effect/spawner/metal_showcase/Initialize(mapload)
 	. = ..()
 	var/turf/T = get_turf(src)
 	var/list/armor = list(
@@ -40,6 +40,7 @@
 			if(M.resource)
 				new M.resource(D)
 			T = get_step(T, EAST)
+	return INITIALIZE_HINT_QDEL
 
 /obj/effect/spawner/alloy_smelter/Initialize(mapload)
 	. = ..()
@@ -52,6 +53,7 @@
 	var/obj/tin = new/obj/item/ingot(D)
 	tin.apply_material(/datum/material/tin)
 	new/obj/item/stack/ore/coal(D, 50)
+	return INITIALIZE_HINT_QDEL
 
 /obj/effect/spawner/crafters/Initialize(mapload)
 	. = ..()
@@ -63,3 +65,30 @@
 	new/obj/item/stack/sheet/planks(D, 20)
 	var/obj/P = new/obj/item/partial/pickaxe(D)
 	P.apply_material(/datum/material/steel)
+	return INITIALIZE_HINT_QDEL
+
+/obj/effect/spawner/wood_showcase/Initialize(mapload)
+	. = ..()
+	var/turf/T = get_turf(src)
+	for(var/material_type in subtypesof(/datum/material/wood))
+		var/datum/material/wood/M = get_material(material_type)
+		if(M.resource && M.palettes.len == 1)
+			continue
+		var/turf/R = get_step(T, EAST)
+		var/turf/W = get_step(T, SOUTH)
+		var/obj/S
+		if(M.palettes.len == 2)
+			S = new/obj/item/log(T)
+			S.apply_material(material_type)
+			S = new/obj/item/log/large(R)
+			S.apply_material(material_type)
+		for(var/wtype in subtypesof(/obj/structure/crafter))
+			S = new wtype(W)
+			S.apply_material(list(PART_INGOT=/datum/material/iron, PART_PLANKS=M.treated_type ? M.treated_type : material_type))
+			W = get_step(W, SOUTH)
+		S = new/obj/structure/closet/crate/wooden(W)
+		S.apply_material(list(PART_INGOT=/datum/material/iron, PART_PLANKS=M.treated_type ? M.treated_type : material_type))
+		S = new/obj/item/stack/sheet/planks(get_step(W, EAST))
+		S.apply_material(M.treated_type ? M.treated_type : material_type)
+		T = locate(T.x+2, T.y, T.z)
+	return INITIALIZE_HINT_QDEL
