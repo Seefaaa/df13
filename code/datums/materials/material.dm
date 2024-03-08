@@ -476,7 +476,7 @@
 	force_mod = 0.5
 	force_mod_blunt = 0.7
 	toolspeed_mod = 0.5
-	toolspeed_mod_handle = 1.1
+	toolspeed_mod_handle = 1
 	integrity_mod = 0.6
 	integrity_mod_handle = 0.8
 	melee_cd_mod = 0.8
@@ -506,7 +506,7 @@
 	force_mod = 0.5
 	force_mod_blunt = 0.75
 	toolspeed_mod = 0.5
-	toolspeed_mod_handle = 1.1
+	toolspeed_mod_handle = 1
 	integrity_mod = 0.6
 	integrity_mod_handle = 0.8
 	melee_cd_mod = 0.8
@@ -536,7 +536,7 @@
 	force_mod = 0.5
 	force_mod_blunt = 0.75
 	toolspeed_mod = 0.5
-	toolspeed_mod_handle = 1.1
+	toolspeed_mod_handle = 1
 	integrity_mod = 0.6
 	integrity_mod_handle = 0.8
 	melee_cd_mod = 0.8
