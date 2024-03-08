@@ -212,7 +212,7 @@
 				var/posttransformoutfit = usr.client.robust_dress_shop()
 				if (!posttransformoutfit)
 					return
-				var/mob/living/carbon/human/newmob = M.change_mob_type( /mob/living/carbon/human/species/human , null, null, delmob, TRUE )
+				var/mob/living/carbon/human/newmob = M.change_mob_type( /mob/living/carbon/human/species/dwarf , null, null, delmob )
 				if(posttransformoutfit && istype(newmob))
 					newmob.equipOutfit(posttransformoutfit)
 			if("goblin")
@@ -226,7 +226,7 @@
 				var/posttransformoutfit = usr.client.robust_dress_shop()
 				if (!posttransformoutfit)
 					return
-				var/mob/living/carbon/human/newmob = M.change_mob_type( /mob/living/carbon/human , null, null, delmob )
+				var/mob/living/carbon/human/newmob = M.change_mob_type( /mob/living/carbon/human/species/human , null, null, delmob )
 				if(posttransformoutfit && istype(newmob))
 					newmob.equipOutfit(posttransformoutfit)
 			if("cat")
