@@ -128,6 +128,9 @@
 		parry_chance *= initial(used_skill.hand_parry_modifier)
 		min_level = initial(used_skill.hand_parry_level)
 
+	// max out at 99% so we at least have a small chance at getting a hit in
+	parry_chance = min(parry_chance, 99)
+
 	if(skill_level >= min_level && prob(parry_chance))
 		src.next_parry = world.time + parry_cooldown
 		if(attack_text)
