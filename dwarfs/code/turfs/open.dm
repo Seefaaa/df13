@@ -112,6 +112,22 @@
 			user.visible_message(span_notice("<b>[user]</b> digs up some stones.") , \
 				span_notice("You dig up some stones."))
 
+/turf/open/floor/sand/attackby(obj/item/I, mob/user, params)
+	if(istype(I, /obj/item/stack/ore/smeltable/sand) && digged_up)
+		var/obj/item/stack/O = I
+		if(O.amount < 5)
+			to_chat(user, span_warning("You don't have enough [O]!"))
+			return FALSE
+		to_chat(user, span_notice("You start patching a hole in [src]..."))
+		if(do_after(user, 1 SECONDS, src))
+			O.use(5)
+			digged_up = FALSE
+			icon_state = "sand"
+			user.visible_message(span_notice("<b>[user]</b> patches the hole in [src].") , \
+				span_notice("You patch a hole in [src]."))
+	else
+		return ..()
+
 /turf/open/floor/dirt
 	name = "dirt"
 	desc = "Found near bodies of water. Can be farmed on."
@@ -131,8 +147,13 @@
 			new/obj/item/stack/dirt(src, rand(2,5))
 			user.visible_message(span_notice("<b>[user]</b> digs up some dirt.") , \
 				span_notice("You dig up some dirt."))
-			digged_up = TRUE
-			icon_state = "soil_dug"
+			if(istype(src, /turf/open/floor/dirt/grass))
+				var/turf/open/floor/dirt/T = ChangeTurf(/turf/open/floor/dirt)
+				T.digged_up = TRUE
+				T.icon_state = "soil_dug"
+			else
+				digged_up = TRUE
+				icon_state = "soil_dug"
 
 /turf/open/floor/dirt/attackby(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_HOE)
@@ -150,9 +171,20 @@
 			user.adjust_experience(/datum/skill/farming, 7)
 		else
 			stop_sound_channel_nearby(src, channel)
+	else if(istype(I, /obj/item/stack/dirt) && digged_up)
+		var/obj/item/stack/O = I
+		if(O.amount < 5)
+			to_chat(user, span_warning("You don't have enough [O]!"))
+			return FALSE
+		to_chat(user, span_notice("You start patching a hole in [src]..."))
+		if(do_after(user, 2 SECONDS, src))
+			O.use(5)
+			digged_up = FALSE
+			icon_state = "soil"
+			user.visible_message(span_notice("<b>[user]</b> patches the hole in [src].") , \
+				span_notice("You patch a hole in [src]."))
 	else
-	 . = ..()
-
+		return ..()
 /turf/open/floor/tilled
 	name = "tilled dirt"
 	desc = "Ready for plants."
@@ -160,7 +192,6 @@
 	slowdown = 1
 	digging_tools = list(TOOL_SHOVEL)
 	debris_type = /obj/structure/debris/dirt
-	var/digged_up = FALSE
 	var/waterlevel = 0
 	var/watermax = 100
 	var/waterrate = 1
@@ -169,7 +200,6 @@
 	var/fertrate = 1
 	///The currently planted plant
 	var/obj/structure/plant/myplant = null
-
 
 /turf/open/floor/tilled/examine(mob/user)
 	. = ..()
@@ -208,9 +238,6 @@
 
 /turf/open/floor/tilled/attackby(obj/item/O, mob/user, params)
 	if(istype(O, /obj/item/growable/seeds))
-		if(digged_up)
-			to_chat(user, span_warning("There is no dirt to plant in!"))
-			return
 		if(!myplant)
 			if(istype(O, /obj/item/growable/seeds/tree))
 				to_chat(user, span_warning("Cannot plant this here!"))
@@ -256,7 +283,7 @@
 		return ..()
 
 /turf/open/floor/tilled/try_digdown(obj/item/I, mob/user)
-	if(I.tool_behaviour == TOOL_SHOVEL && user.a_intent != INTENT_HARM && !digged_up)
+	if(I.tool_behaviour == TOOL_SHOVEL && user.a_intent != INTENT_HARM)
 		user.visible_message(span_notice("[user] starts digging out [src]'s plants...") ,
 			span_notice("You start digging out [src]'s plants..."))
 		if(I.use_tool(src, user, 50, volume=50) || !myplant)
@@ -266,17 +293,15 @@
 				name = initial(name)
 				desc = initial(desc)
 			update_appearance()
-	else if(I.tool_behaviour == TOOL_SHOVEL && (user.a_intent == INTENT_HARM || digged_up))
+	else if(I.tool_behaviour == TOOL_SHOVEL && (user.a_intent == INTENT_HARM))
 		to_chat(user, span_notice("You start digging [src]..."))
 		if(I.use_tool(src, user, 5 SECONDS, volume=50))
-			if(digged_up)
-				digdown(user)
-			else
-				new/obj/item/stack/dirt(src, rand(2,5))
-				user.visible_message(span_notice("<b>[user]</b> digs up some dirt.") , \
-					span_notice("You dig up some dirt."))
-				digged_up = TRUE
-				icon_state = "soil_dug"
+			new/obj/item/stack/dirt(src, rand(2,5))
+			user.visible_message(span_notice("<b>[user]</b> digs up some dirt.") , \
+				span_notice("You dig up some dirt."))
+			var/turf/open/floor/dirt/T = ChangeTurf(/turf/open/floor/dirt)
+			T.digged_up = TRUE
+			T.icon_state = "soil_dug"
 
 /turf/open/floor/tilled/attack_hand(mob/user)
 	. = ..()
