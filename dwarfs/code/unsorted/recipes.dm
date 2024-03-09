@@ -319,6 +319,11 @@
 	result = /obj/item/smithing_hammer
 	reqs = list(/obj/item/partial/smithing_hammer=1, /obj/item/stick=1)
 
+/datum/crafter_recipe/workbench_recipe/compass
+	name = "compass"
+	result = /obj/item/compass
+	reqs = list(/obj/item/partial/compass_frame=1, /obj/item/partial/compass_needle=1)
+
 /datum/crafter_recipe/workbench_recipe/frying_pan
 	name = "frying pan"
 	result = /obj/item/reagent_containers/glass/pan

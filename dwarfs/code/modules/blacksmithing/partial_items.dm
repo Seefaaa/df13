@@ -102,10 +102,12 @@
 /obj/item/partial/compass_frame
 	name = "compass frame"
 	icon_state = "compass_frame"
+	part_name = PART_PLANKS
 
 /obj/item/partial/compass_needle
 	name = "compass needle"
 	icon_state = "compass_needle"
+	part_name = PART_HEAD
 
 /obj/item/partial/magnet_core
 	name = "magnet core"

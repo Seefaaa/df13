@@ -3,7 +3,7 @@
 	desc = "A handy item for locating the fortress. Requires calibration to a magnet."
 	icon = 'dwarfs/icons/items/equipment.dmi'
 	icon_state = "compass"
-	materials = /datum/material/wood/pine/treated
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated)
 	/// Our target structure that src will point at
 	var/obj/structure/beacon/core
 	/// Whether the alert is shown
@@ -14,7 +14,7 @@
 	var/tracking_range = 300
 
 /obj/item/compass/build_material_icon(_file, state)
-	return apply_palettes(..(), materials)
+	return apply_palettes(..(), materials[PART_PLANKS])
 
 /obj/item/compass/proc/assign_core(mob/user, obj/structure/new_core)
 	var/had_core = core ? TRUE : FALSE
