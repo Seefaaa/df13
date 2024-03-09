@@ -9,13 +9,13 @@
 /datum/vein/proc/generate(ore_type=null, ore_check=TRUE)
 	if(!ore_type)
 		CRASH("Tried to generate a vein withour ore type.")
-	SSblackbox.record_feedback("tally", "veins_generated", 1, ore_type)
-	SSblackbox.record_feedback("tally", "veins_generated", 1, "total")
 	if(ore_check)
 		var/list/nearby = circlerangeturfs(my_turf, 25)
 		for(var/turf/closed/mineral/M in nearby)
 			if(M.mineralType)
 				return FALSE
+	SSblackbox.record_feedback("tally", "veins_generated", 1, ore_type)
+	SSblackbox.record_feedback("tally", "veins_generated", 1, "total")
 	return TRUE
 
 /datum/vein/cluster
