@@ -8,7 +8,7 @@
 	usesound = 'dwarfs/sounds/tools/hammer/hammer_hit.ogg'
 	tool_behaviour = TOOL_BUILDER_HAMMER
 	atck_type = BLUNT
-	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
+	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/copper)
 	//What do we want to build -> selected in gui
 	var/obj/structure/blueprint/selected_blueprint
 

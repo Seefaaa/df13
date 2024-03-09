@@ -22,7 +22,7 @@
 	wound_bonus = -5
 	bare_wound_bonus = 10
 	tool_behaviour = TOOL_KNIFE
-	materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/iron)
+	materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
 
 /obj/item/kitchen/knife/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
