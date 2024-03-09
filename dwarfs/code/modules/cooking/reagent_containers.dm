@@ -226,10 +226,10 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	icon_state = "skillet"
 	volume = 30
-	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/iron)
+	materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/reagent_containers/glass/pan/build_material_icon(_file, state)
-	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_HEAD]))
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/reagent_containers/glass/pan/update_overlays()
 	. = ..()

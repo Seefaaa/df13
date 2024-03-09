@@ -97,6 +97,7 @@
 /obj/item/partial/chisel
 	name = "chisel head"
 	icon_state = "chisel_head"
+	part_name = PART_HEAD
 
 /obj/item/partial/compass_frame
 	name = "compass frame"
@@ -113,3 +114,9 @@
 /obj/item/partial/shield
 	name = "shield parts"
 	icon_state = "shield_parts"
+	part_name = PART_HEAD
+
+/obj/item/partial/frying_pan
+	name = "frying pan head"
+	icon_state = "pan_part"
+	part_name = PART_HEAD

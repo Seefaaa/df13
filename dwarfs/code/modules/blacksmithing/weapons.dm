@@ -256,10 +256,10 @@
 	w_class = WEIGHT_CLASS_BULKY
 	parrysound = 'dwarfs/sounds/weapons/shield/shield_parry.ogg'
 	skill = /datum/skill/combat/shield
-	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron)
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/shield/build_material_icon(_file, state)
-	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT]))
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_HEAD]))
 
 /obj/item/shield/large
 	name = "large shield"

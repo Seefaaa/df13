@@ -114,11 +114,6 @@
 	whitelisted_materials = list(/datum/material/pig_iron)
 	cat = SMITHING_RECIPE_MISC
 
-/datum/smithing_recipe/pan
-	name = "frying pan"
-	result = /obj/item/reagent_containers/glass/pan
-	cat = SMITHING_RECIPE_TOOLS
-
 /datum/smithing_recipe/pot
 	name = "cooking pot"
 	result = /obj/item/reagent_containers/glass/cooking_pot
@@ -132,6 +127,11 @@
 /datum/smithing_recipe/cake_pan
 	name = "cake pan"
 	result = /obj/item/reagent_containers/glass/cake_pan
+	cat = SMITHING_RECIPE_TOOLS
+
+/datum/smithing_recipe/frying_pan
+	name = "\[part\] frying pan"
+	result = /obj/item/partial/frying_pan
 	cat = SMITHING_RECIPE_TOOLS
 
 /datum/smithing_recipe/light_plate
@@ -318,6 +318,11 @@
 	name = "smithing hammer"
 	result = /obj/item/smithing_hammer
 	reqs = list(/obj/item/partial/smithing_hammer=1, /obj/item/stick=1)
+
+/datum/crafter_recipe/workbench_recipe/frying_pan
+	name = "frying pan"
+	result = /obj/item/reagent_containers/glass/pan
+	reqs = list(/obj/item/partial/frying_pan=1, /obj/item/stick=1)
 
 /datum/crafter_recipe/workbench_recipe/lantern
 	name = "lantern"
