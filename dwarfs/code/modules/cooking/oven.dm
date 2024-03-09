@@ -18,7 +18,7 @@
 
 /obj/structure/oven/Initialize()
 	. = ..()
-	particle_source = new/obj(src)
+	particle_source = new/obj(null)
 	particle_source.icon = src::icon
 	particle_source.icon_state = "oven_empty_upper"
 	particle_source.vis_flags |= VIS_INHERIT_ID
