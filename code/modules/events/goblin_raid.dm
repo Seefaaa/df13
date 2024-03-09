@@ -28,12 +28,18 @@
 	var/x
 	var/y
 	var/z = GLOB.surface_z
-	if(prob(50))//spawn on top/bottom
-		x = rand(10, world.maxx-10)
-		y = pick(10, world.maxy-10)
-	else//spawn on left/right side
-		y = rand(10, world.maxx-10)
-		x = pick(10, world.maxy-10)
+	for(var/i in 1 to 15)
+		if(prob(50))//spawn on top/bottom
+			x = rand(10, world.maxx-10)
+			y = pick(10, world.maxy-10)
+		else//spawn on left/right side
+			y = rand(10, world.maxx-10)
+			x = pick(10, world.maxy-10)
+		var/turf/T = locate(x, y, z)
+		if(isclosedturf(T))
+			continue
+		if((locate(/obj/structure/plant/tree) in range(5, T)))
+			continue
 	var/list/goblins = list()
 	while(spawns > 1)
 		var/client/C = pick_n_take(candidates)
