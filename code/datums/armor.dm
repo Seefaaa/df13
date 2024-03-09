@@ -39,6 +39,7 @@
 	src.acid = isnull(acid) ? src.acid : acid
 	src.magic = isnull(magic) ? src.magic : magic
 	src.wound = isnull(wound) ? src.wound : wound
+	tag = ARMORID
 
 /datum/armor/proc/getRating(rating)
 	return vars[rating]
@@ -60,5 +61,6 @@
 
 /datum/armor/proc/modify_rating(rating, mod, max_rating=90)
 	vars[rating] = min(vars[rating] * mod, max_rating)
+	tag = ARMORID
 
 #undef ARMORID
