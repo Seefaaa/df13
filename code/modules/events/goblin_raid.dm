@@ -23,6 +23,14 @@
 		live_dwarves++
 	spawns = 2 + round(live_dwarves / 8)
 
+/datum/round_event/ghost_role/goblin_raid/proc/select_spawn(x, y, z)
+	var/turf/T = locate(x, y, z)
+	while(T.is_blocked_turf() || isclosedturf(T))
+		T = get_step(T, pick(GLOB.cardinals))
+		if(!T)
+			T = locate(x, y, z)
+	return T
+
 /datum/round_event/ghost_role/goblin_raid/spawn_role()
 	var/list/candidates = get_candidates("Goblin", null, FALSE)
 	var/x
@@ -40,10 +48,11 @@
 			continue
 		if((locate(/obj/structure/plant/tree) in range(5, T)))
 			continue
+		break
 	var/list/goblins = list()
 	while(spawns > 1)
 		var/client/C = pick_n_take(candidates)
-		var/mob/living/carbon/human/species/goblin/warrior = new(locate(x+rand(-5,5), y+rand(-5,5), z))
+		var/mob/living/carbon/human/species/goblin/warrior = new(select_spawn(x+rand(-5,5), y+rand(-5,5), z))
 		warrior.equipOutfit(/datum/outfit/goblin)
 		warrior.a_intent = INTENT_HARM
 		if(C)
@@ -55,7 +64,7 @@
 		to_chat(warrior, span_announce("You are a goblin raider. Your tribe spotted a nearby fortress and sent out your group to deal with it."))
 		spawns--
 	var/client/C = pick_n_take(candidates)
-	var/mob/living/carbon/human/species/goblin/leader = new(locate(x+rand(-5,5), y+rand(-5,5), z))
+	var/mob/living/carbon/human/species/goblin/leader = new(select_spawn(x+rand(-5,5), y+rand(-5,5), z))
 	leader.equipOutfit(/datum/outfit/goblin_leader)
 	if(C)
 		leader.key = C.key
