@@ -17,10 +17,10 @@
 	var/mutable_appearance/armrest
 
 /obj/structure/chair/Initialize()
+	. = ..()
 	armrest = GetArmrest()
 	armrest.layer = ABOVE_MOB_LAYER
 	armrest.plane = ABOVE_GAME_PLANE
-	return ..()
 
 /obj/structure/chair/Destroy()
 	. = ..()
