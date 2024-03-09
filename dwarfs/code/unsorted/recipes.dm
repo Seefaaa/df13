@@ -396,7 +396,7 @@
 /datum/crafter_recipe/carpenter_recipe/cup
 	name = "wooden cup"
 	reqs = list(/obj/item/stack/sheet/planks=3, /obj/item/ingot=1)
-	result = /obj/item/reagent_containers/glass/cup
+	result = /obj/item/reagent_containers/glass/cup/wooden
 	result_amount = 3
 
 /datum/crafter_recipe/carpenter_recipe/rolling_pin
