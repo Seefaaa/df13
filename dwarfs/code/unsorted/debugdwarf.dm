@@ -9,25 +9,19 @@
 	if(!visualsOnly)
 		for(var/S in subtypesof(/datum/skill))
 			H.set_experience(S,SKILL_EXP_LEGEND, TRUE)
-		// H.set_experience(/datum/skill/combat/martial,SKILL_EXP_LEGEND, TRUE)
-		// H.set_experience(/datum/skill/logging,SKILL_EXP_LEGEND, TRUE)
-		// H.set_experience(/datum/skill/farming,SKILL_EXP_LEGEND, TRUE)
-		// H.set_experience(/datum/skill/butchering,SKILL_EXP_LEGEND, TRUE)
-		// H.set_experience(/datum/skill/cooking,SKILL_EXP_LEGEND, TRUE)
-		// H.set_experience(/datum/skill/combat,SKILL_EXP_LEGEND, TRUE)
-		// H.set_experience(/datum/skill/skinning,SKILL_EXP_LEGEND, TRUE)
-		// H.set_experience(/datum/skill/smithing,SKILL_EXP_LEGEND, TRUE)
-		// H.set_experience(/datum/skill/masonry,SKILL_EXP_LEGEND, TRUE)
-		// H.set_experience(/datum/skill/construction,SKILL_EXP_LEGEND, TRUE)
 
 /obj/item/storage/satchel/debug
 	name = "Satchel of holding"
 
 /obj/item/pickaxe/high_grade
 	grade = 6
+	init_grade = TRUE
+	materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/adamantine)
 
 /obj/item/axe/high_grade
 	grade = 6
+	init_grade = TRUE
+	materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/adamantine)
 
 /obj/item/storage/satchel/debug/ComponentInitialize()
 	. = ..()
