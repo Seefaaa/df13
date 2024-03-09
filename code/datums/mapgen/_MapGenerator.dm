@@ -30,14 +30,18 @@
 
 /// Main proc for starting generation
 /datum/map_generator/proc/run_generation()
+	set background = 1
 	generate_turfs()
+	sleep(5)
 	generate_rest()
 
 ///This proc will be ran by areas on Initialize
 /datum/map_generator/proc/generate_turfs()
+	set background = 1
 	return
 
 /datum/map_generator/proc/generate_rest()
+	set background = 1
 	return
 
 /datum/map_generator/proc/generate_turf_flora(turf/T)
