@@ -182,6 +182,8 @@
 /obj/item/reagent_containers/glass/bucket/equipped(mob/user, slot)
 	..()
 	if (slot == ITEM_SLOT_HEAD)
+		if(!reagents)
+			return
 		if(reagents.total_volume)
 			to_chat(user, span_userdanger("[capitalize(src.name)]'s contents spill all over you!"))
 			reagents.expose(user, TOUCH)
@@ -193,7 +195,7 @@
 	reagents.flags = initial(reagent_flags)
 
 /obj/item/reagent_containers/glass/bucket/equip_to_best_slot(mob/M)
-	if(reagents.total_volume) //If there is water in a bucket, don't quick equip it to the head
+	if(reagents && reagents.total_volume) //If there is water in a bucket, don't quick equip it to the head
 		var/index = slot_equipment_priority.Find(ITEM_SLOT_HEAD)
 		slot_equipment_priority.Remove(ITEM_SLOT_HEAD)
 		. = ..()
@@ -203,7 +205,7 @@
 
 /obj/item/reagent_containers/glass/bucket/update_overlays()
 	. = ..()
-	if(reagents.total_volume)
+	if(reagents && reagents.total_volume)
 		var/mutable_appearance/M = mutable_appearance(icon, "bucket_overlay")
 		M.color = mix_color_from_reagents(reagents.reagent_list)
 		.+=M
