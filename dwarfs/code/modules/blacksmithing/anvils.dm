@@ -7,7 +7,6 @@
 	anchored = TRUE
 	materials = /datum/material/iron
 	var/obj/item/ingot/current_ingot = null
-	var/list/allowed_things = list()
 
 /obj/structure/anvil/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
@@ -105,12 +104,6 @@
 	user.visible_message(span_warning("<b>[user]</b> hits \the anvil with \a hammer incorrectly.") , \
 						span_warning("You hit \the anvil with \a hammer incorrectly."))
 	return
-
-/obj/structure/anvil/Initialize()
-	. = ..()
-	for(var/item in subtypesof(/datum/smithing_recipe))
-		var/datum/smithing_recipe/SR = new item()
-		allowed_things += SR
 
 /obj/structure/anvil/proc/load_slider(var/obj/item/smithing_hammer/hammer, var/mob/living/carbon/human/H)
 	var/html = file2text('dwarfs/code/modules/blacksmithing/minigames/slider.html')
