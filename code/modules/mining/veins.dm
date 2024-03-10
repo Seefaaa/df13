@@ -10,7 +10,7 @@
 	if(!ore_type)
 		CRASH("Tried to generate a vein withour ore type.")
 	if(ore_check)
-		var/list/nearby = circlerangeturfs(my_turf, 25)
+		var/list/nearby = circlerangeturfs(my_turf, 15)
 		for(var/turf/closed/mineral/M in nearby)
 			if(M.mineralType)
 				return FALSE
