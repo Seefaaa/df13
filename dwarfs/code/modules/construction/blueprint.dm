@@ -25,6 +25,9 @@
 		display_structure = target_structure
 	name += " blueprint"
 
+/obj/structure/blueprint/spawn_debris()
+	return
+
 /obj/structure/blueprint/examine(mob/user)
 	. = ..()
 	. += "<br>Required materials:"

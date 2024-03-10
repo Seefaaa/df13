@@ -76,7 +76,7 @@
 	var/image/debris_icon = mats2debris(mats)
 	debris.add_overlay(debris_icon)
 	debris.materials = materials
-	qdel(src)
 
 /obj/structure/obj_destruction(damage_flag)
 	spawn_debris()
+	qdel(src)
