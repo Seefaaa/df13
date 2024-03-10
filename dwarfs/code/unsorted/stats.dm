@@ -1,5 +1,7 @@
 /obj/proc/update_stats(_grade=null)
 	reset_stats()
+	if(!SSatoms.initialized)
+		return
 	apply_grade(_grade)
 	apply_material_stats()
 
