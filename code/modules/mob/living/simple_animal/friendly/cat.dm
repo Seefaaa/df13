@@ -13,7 +13,7 @@ GLOBAL_LIST_EMPTY(cats)
 	icon_dead = "cat_dead"
 	speak = list("Meow!", "Esp!", "Purr!", "HSSSSS")
 	speak_emote = list("purrs", "meows")
-	emote_hear = list("meows.", "mews.")
+	emote_hear = list("meows.")
 	emote_see = list("shakes its head.", "shivers.")
 	speak_chance = 1
 	turns_per_move = 5
