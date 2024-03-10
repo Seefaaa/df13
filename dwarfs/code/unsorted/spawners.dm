@@ -92,3 +92,20 @@
 		S.apply_material(M.treated_type ? M.treated_type : material_type)
 		T = locate(T.x+2, T.y, T.z)
 	return INITIALIZE_HINT_QDEL
+
+/obj/effect/spawner/kitchen/Initialize(mapload)
+	. = ..()
+	var/turf/T = get_turf(src)
+	var/turf/S = get_step(T, NORTH)
+	var/list/stations = list(/obj/structure/oven,/obj/structure/stove,/obj/structure/brewery/spawner)
+	var/list/tools = list(/obj/item/kitchen/knife, /obj/item/kitchen/rollingpin, /obj/item/reagent_containers/glass/baking_sheet,/obj/item/reagent_containers/glass/pan,/obj/item/reagent_containers/glass/cake_pan,/obj/item/reagent_containers/glass/plate/bowl,/obj/item/reagent_containers/glass/plate/flat,/obj/item/reagent_containers/glass/plate/regular)
+	for(var/stype in stations)
+		new stype(S)
+		S = get_step(S, EAST)
+	for(var/ttype in tools)
+		new ttype(T)
+	T = get_step(T, SOUTH)
+	for(var/gtype in subtypesof(/obj/item/growable)-typesof(/obj/item/growable/seeds))
+		for(var/i in 1 to 5)
+			new gtype(T)
+	return INITIALIZE_HINT_QDEL
