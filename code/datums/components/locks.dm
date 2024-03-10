@@ -82,6 +82,7 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 	worn_icon_state = "key"
 	slot_flags = ITEM_SLOT_BELT | ITEM_SLOT_POCKETS
 	materials = /datum/material/iron
+	w_class = WEIGHT_CLASS_SMALL
 	var/prefix = ""
 	var/datum/key/key_form
 
