@@ -72,6 +72,10 @@
 		if(I.contents.len)
 			if(istype(I.contents[I.contents.len], /obj/item/ingot))
 				if(do_after(user, 10, src))
+					// sometimes dwarves drop ingot while do_after is active
+					// this kinda should be handled by do_after extra checks callback. TODO: make this
+					if(!I.contents.len)
+						return
 					var/obj/item/ingot/N = I.contents[I.contents.len]
 					N.heattemp = 350
 					I.update_appearance()
