@@ -44,6 +44,8 @@
 		usr<<browse(null, "window=anvil_select")
 		if(!(recipe_type in SSmaterials.smithing_recipes_type))
 			return
+		if(!current_ingot)
+			return
 		var/datum/R = SSmaterials.smithing_recipes_type[recipe_type]
 		if(!R)
 			to_chat(usr, span_warning("You did not decide what to forge yet."))
