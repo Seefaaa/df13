@@ -79,6 +79,8 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	icon_state = "key"
+	worn_icon_state = "key"
+	slot_flags = ITEM_SLOT_BELT | ITEM_SLOT_POCKETS
 	materials = /datum/material/iron
 	var/prefix = ""
 	var/datum/key/key_form
@@ -113,6 +115,8 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 	desc = "Holds multiple keys."
 	icon = 'dwarfs/icons/items/misc_items.dmi'
 	icon_state = "keyring"
+	worn_icon_state = "keyring"
+	slot_flags = ITEM_SLOT_BELT | ITEM_SLOT_POCKETS
 	materials = /datum/material/iron
 	var/list/obj/item/key/keys = list()
 	var/limit = 3
