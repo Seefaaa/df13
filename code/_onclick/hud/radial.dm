@@ -57,7 +57,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	icon_state = "radial_center"
 
 /atom/movable/screen/radial/center/Click(location, control, params)
-	if(usr.client == parent.current_user)
+	if(usr && parent && usr.client == parent.current_user)
 		parent.finished = TRUE
 
 /datum/radial_menu
