@@ -31,14 +31,3 @@ SUBSYSTEM_DEF(materials)
 		smithing_recipes_type[recipe.type] = recipe
 
 	return ..()
-
-/proc/get_material(type)
-	if(islist(type))
-		return
-	return SSmaterials.materials[type]
-
-/proc/get_material_name(type)
-	var/datum/material/M = get_material(type)
-	if(!M)
-		return "unknown material"
-	return M.name

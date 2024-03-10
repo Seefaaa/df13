@@ -63,3 +63,14 @@
 	if(MATERIAL_WOOD in mats)
 		debris.overlays += apply_palettes(icon('dwarfs/icons/structures/debris.dmi', "wood"), mats[MATERIAL_WOOD])
 	return debris
+
+/proc/get_material(type)
+	if(islist(type))
+		return
+	return SSmaterials.materials[type]
+
+/proc/get_material_name(type)
+	var/datum/material/M = get_material(type)
+	if(!M)
+		return "unknown material"
+	return M.name
