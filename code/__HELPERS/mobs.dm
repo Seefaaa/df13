@@ -222,10 +222,13 @@ GLOBAL_LIST_EMPTY(species_list)
 	if(!user)
 		return FALSE
 	var/atom/target_loc = null
+	var/target_type = null
 	if(target && !istype(target))
 		stack_trace("Invalid target in do_after. Usr: [user], Delay: [delay]")
 	if(target && !isturf(target))
 		target_loc = target.loc
+	if(target)
+		target_type = target.type
 
 	if(!interaction_key && target)
 		interaction_key = target //Use the direct ref to the target
@@ -262,6 +265,7 @@ GLOBAL_LIST_EMPTY(species_list)
 			|| (!(timed_action_flags & IGNORE_USER_LOC_CHANGE) && user.loc != user_loc) \
 			|| (!(timed_action_flags & IGNORE_HELD_ITEM) && user.get_active_held_item() != holding) \
 			|| (!(timed_action_flags & IGNORE_INCAPACITATED) && HAS_TRAIT(user, TRAIT_INCAPACITATED)) \
+			|| (!QDELETED(target) && (target_type != target.type)) \
 			|| (extra_checks && !extra_checks.Invoke()) \
 		)
 			. = FALSE
