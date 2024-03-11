@@ -173,6 +173,9 @@
 	var/datum/material/M = get_material(materials)
 	return M.apply2icon_default(I)
 
+/obj/item/tongs/tool_use_check(mob/living/user, amount)
+	return contents.len
+
 /obj/item/tongs/update_icon_state()
 	. = ..()
 	if(contents.len)

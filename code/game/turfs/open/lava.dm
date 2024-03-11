@@ -181,7 +181,7 @@
 	if(istype(I, /obj/item/tongs))
 		if(I.contents.len)
 			if(istype(I.contents[I.contents.len], /obj/item/ingot))
-				if(do_after(user, 10, src))
+				if(I.use_tool(src, user, 2 SECONDS))
 					var/obj/item/ingot/N = I.contents[I.contents.len]
 					N.heattemp = 350
 					I.update_appearance()
