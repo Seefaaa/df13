@@ -1,8 +1,6 @@
 /datum/outfit/dwarf/debug
 	name = "Dwarf debug"
 	back = /obj/item/storage/satchel/debug/filled
-	apply_grade = TRUE
-
 
 /datum/outfit/dwarf/debug/post_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()

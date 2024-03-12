@@ -1259,6 +1259,7 @@
 #include "dwarfs\code\unsorted\dwarf.dm"
 #include "dwarfs\code\unsorted\goblin.dm"
 #include "dwarfs\code\unsorted\migrantsense.dm"
+#include "dwarfs\code\unsorted\outfits.dm"
 #include "dwarfs\code\unsorted\particles.dm"
 #include "dwarfs\code\unsorted\recipes.dm"
 #include "dwarfs\code\unsorted\rituals.dm"
