@@ -481,7 +481,7 @@ generate/load female uniform sprites matching all previously decided variables
 	if(!standing)
 		//Handle items that are made out of materials
 		if(materials)
-			standing = mutable_appearance(build_material_icon(file2use, t_state), layer=-layer2use)
+			standing = mutable_appearance(get_material_icon(file2use, t_state), layer=-layer2use)
 		else
 			standing = mutable_appearance(file2use, t_state, -layer2use)
 

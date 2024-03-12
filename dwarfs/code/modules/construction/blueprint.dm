@@ -80,7 +80,7 @@
 		target = new display_structure(locate(world.maxx, world.maxy, world.maxz))
 	else
 		target = new display_structure
-	var/mutable_appearance/M = mutable_appearance(target.build_material_icon(initial(display_structure.icon), initial(display_structure.icon_state)))
+	var/mutable_appearance/M = mutable_appearance(target.get_material_icon(initial(display_structure.icon), initial(display_structure.icon_state)))
 	if(!isturf(target))
 		qdel(target)
 	M.color = "#5e8bdf"
@@ -236,7 +236,7 @@
 		if(req in req_materials)
 			M = get_material(req_materials[req])
 		if(O.materials && !M)
-			I = O.build_material_icon(O.icon, O.icon_state)
+			I = O.get_material_icon(O.icon, O.icon_state)
 		else if(M)
 			req_name = "[M.name] [req_name]"
 			O.apply_material(M.type)

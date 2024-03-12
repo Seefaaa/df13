@@ -39,7 +39,7 @@
 		var/list/resources = S.build_ui_resources(user)
 		blueprint["name"] = initial(original.name)
 		blueprint["desc"] = initial(original.desc)
-		blueprint["icon"] = icon2path(original.build_material_icon(initial(original.icon), initial(original.icon_state)), user)
+		blueprint["icon"] = icon2path(original.get_material_icon(initial(original.icon), initial(original.icon_state)), user)
 		blueprint["path"] = S.type
 		blueprint["reqs"] = resources
 		cats[category]+=list(blueprint)

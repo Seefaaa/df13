@@ -162,11 +162,11 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 /obj/item/keyring/update_overlays()
 	. = ..()
 	if(LAZYLEN(keys) >= 3)
-		. += mutable_appearance(keys[3].build_material_icon(keys[3].icon,"keyring-3"))
+		. += mutable_appearance(keys[3].get_material_icon(keys[3].icon,"keyring-3"))
 	if(LAZYLEN(keys) >= 2)
-		. += mutable_appearance(keys[2].build_material_icon(keys[2].icon,"keyring-2"))
+		. += mutable_appearance(keys[2].get_material_icon(keys[2].icon,"keyring-2"))
 	if(LAZYLEN(keys) >= 1)
-		. += mutable_appearance(keys[1].build_material_icon(keys[1].icon,"keyring-1"))
+		. += mutable_appearance(keys[1].get_material_icon(keys[1].icon,"keyring-1"))
 
 
 /obj/effect/key_lock/Initialize()

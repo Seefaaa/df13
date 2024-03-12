@@ -1660,7 +1660,7 @@
 /atom/proc/apply_material(list/_materials=null)
 	if(_materials)
 		materials = _materials
-		icon = build_material_icon(initial(icon))
+		icon = get_material_icon(initial(icon))
 
 /// Apply material stats to this atom
 /atom/proc/apply_material_stats()
@@ -1673,6 +1673,13 @@
 	else
 		var/datum/material/M = get_material(materials)
 		M.apply_stats(src)
+
+/atom/proc/get_material_icon(_file=null, state=null)
+	if(SSmaterials.material_icons[MATERIAL_ICON_KEY])
+		return SSmaterials.material_icons[MATERIAL_ICON_KEY]
+	var/icon/I = build_material_icon(_file, state)
+	SSmaterials.material_icons[MATERIAL_ICON_KEY] = I
+	return I
 
 /// Apply materials to this atom's icon
 /atom/proc/build_material_icon(_file=null, state=null)

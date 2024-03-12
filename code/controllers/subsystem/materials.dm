@@ -8,6 +8,7 @@ SUBSYSTEM_DEF(materials)
 	var/list/alloy_recipes = list()
 	var/list/smithing_recipes = list()
 	var/list/smithing_recipes_type = list()
+	var/list/material_icons = list()
 
 /datum/controller/subsystem/materials/Initialize(start_timeofday)
 	var/icon/P = icon('dwarfs/icons/palettes.dmi')

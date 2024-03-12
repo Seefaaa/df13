@@ -21,7 +21,7 @@
 		var/recipe_name = initial(recipe.result.name)
 		var/obj/result = new recipe.result
 		if(recipe.req_lvl <= skill_level)
-			var/image_path = icon2path(result.build_material_icon(result.icon, result.icon_state), user)
+			var/image_path = icon2path(result.get_material_icon(result.icon, result.icon_state), user)
 			text += "<br><font color=green><img class='dish-image' src=[image_path]><b>[recipe_name]:</b></font>"
 			for(var/item in recipe.req_items)
 				var/obj/item/I = item

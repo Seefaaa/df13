@@ -8,3 +8,5 @@
 #define MATERIAL_STONE "stone"
 #define MATERIAL_WOOD "wood"
 #define MATERIAL_METAL "metal"
+
+#define MATERIAL_ICON_KEY "[type]-[list2params(materials)]-[_file]-[state]"
