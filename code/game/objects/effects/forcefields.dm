@@ -5,7 +5,6 @@
 	anchored = TRUE
 	opacity = FALSE
 	density = TRUE
-	can_atmos_pass = ATMOS_PASS_DENSITY
 	var/timeleft = 300 //Set to 0 for permanent forcefields (ugh)
 
 /obj/effect/forcefield/Initialize(mapload)
@@ -13,15 +12,11 @@
 	if(timeleft)
 		QDEL_IN(src, timeleft)
 
-/obj/effect/forcefield/singularity_pull()
-	return
-
 /obj/effect/forcefield/cult
 	desc = "An unholy shield that blocks all attacks."
 	name = "glowing wall"
-	icon = 'icons/effects/cult/effects.dmi'
+	icon = 'icons/effects/cult_effects.dmi'
 	icon_state = "cultshield"
-	can_atmos_pass = ATMOS_PASS_NO
 	timeleft = 200
 
 /// A form of the cult forcefield that lasts permanently.

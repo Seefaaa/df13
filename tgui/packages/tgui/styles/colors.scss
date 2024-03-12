@@ -22,13 +22,12 @@ $purple: #a333c8 !default;
 $pink: #e03997 !default;
 $brown: #a5673f !default;
 $grey: #767676 !default;
-$light-grey: #aaa !default;
 
-$primary: #4972a1 !default;
+$primary: #f4f4f4 !default;
 $good: #5baa27 !default;
 $average: #f08f11 !default;
 $bad: #db2828 !default;
-$label: #7e90a7 !default;
+$label: #a4a4a4 !default;
 
 // Background and foreground color lightness ratios
 $bg-lightness: -15% !default;
@@ -59,7 +58,6 @@ $_gen_map: (
   'pink': $pink,
   'brown': $brown,
   'grey': $grey,
-  'light-grey': $light-grey,
   'good': $good,
   'average': $average,
   'bad': $bad,

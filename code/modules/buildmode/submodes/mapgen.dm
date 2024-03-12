@@ -6,7 +6,7 @@
 
 /datum/buildmode_mode/mapgen/show_help(client/c)
 	to_chat(c, span_notice("***********************************************************"))
-	to_chat(c, span_notice("Left Mouse Button on turf/obj/mob      = Select corner"))
+	to_chat(c, span_notice("Left Mouse Button on turf/obj/mob = Select corner"))
 	to_chat(c, span_notice("Right Mouse Button on buildmode button = Select generator"))
 	to_chat(c, span_notice("***********************************************************"))
 
@@ -31,9 +31,9 @@
 	..()
 
 /datum/buildmode_mode/mapgen/handle_selected_area(client/c, params)
-	var/list/modifiers = params2list(params)
-
-	if(LAZYACCESS(modifiers, LEFT_CLICK))
+	var/list/pa = params2list(params)
+	var/left_click = pa.Find("left")
+	if(left_click)
 		var/datum/map_generator/G = new generator_path
 		if(istype(G, /datum/map_generator/repair/reload_station_map))
 			if(GLOB.reloading_map)

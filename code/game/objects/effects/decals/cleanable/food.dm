@@ -27,20 +27,10 @@
 	icon_state = "smashed_pie"
 
 /obj/effect/decal/cleanable/food/salt
-	name = "salt pile"
-	desc = "A sizable pile of table salt. Someone must be upset."
+	name = "salt"
+	desc = "A pile of salt."
 	icon_state = "salt_pile"
 	var/safepasses = 3 //how many times can this salt pile be passed before dissipating
-
-/obj/effect/decal/cleanable/food/salt/CanAllowThrough(atom/movable/mover, border_dir)
-	. = ..()
-	if(is_species(mover, /datum/species/snail))
-		return FALSE
-
-/obj/effect/decal/cleanable/food/salt/Bumped(atom/movable/AM)
-	. = ..()
-	if(is_species(AM, /datum/species/snail))
-		to_chat(AM, span_danger("Your path is obstructed by [span_phobia("salt")]."))
 
 /obj/effect/decal/cleanable/food/salt/on_entered(datum/source, atom/movable/AM)
 	. = ..()
@@ -48,7 +38,7 @@
 		return
 	if(iscarbon(AM))
 		var/mob/living/carbon/C = AM
-		if(C.m_intent == MOVE_INTENT_WALK)
+		if(C.m_intent == (MOVE_INTENT_WALK || MOVE_INTENT_CRAWL))
 			return
 	safepasses--
 	if(safepasses <= 0 && !QDELETED(src))

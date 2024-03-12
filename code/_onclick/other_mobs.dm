@@ -6,6 +6,7 @@
 
 	if (secondary_result == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN || secondary_result == SECONDARY_ATTACK_CONTINUE_CHAIN)
 		return TRUE
+
 	else if (secondary_result != SECONDARY_ATTACK_CALL_NORMAL)
 		CRASH("attack_hand_secondary did not return a SECONDARY_ATTACK_* define.")
 
@@ -23,10 +24,10 @@
 	if(!has_active_hand()) //can't attack without a hand.
 		var/obj/item/bodypart/check_arm = get_active_hand()
 		if(check_arm?.bodypart_disabled)
-			to_chat(src, span_warning("Your [check_arm.name] is in no condition to be used."))
+			to_chat(src, span_warning("My [check_arm.name] is too damaged!"))
 			return
 
-		to_chat(src, span_notice("You look at your arm and sigh."))
+		to_chat(src, span_notice("You look at your arm with a sigh."))
 		return
 
 	// Special glove functions:
@@ -74,17 +75,10 @@
 	if(!user.can_interact_with(src))
 		return FALSE
 	if((interaction_flags_atom & INTERACT_ATOM_REQUIRES_DEXTERITY) && !ISADVANCEDTOOLUSER(user))
-		to_chat(user, span_warning("You don't have the dexterity to do this!"))
+		to_chat(user, span_warning("Not enough dexterity to do this!"))
 		return FALSE
-	if(!(interaction_flags_atom & INTERACT_ATOM_IGNORE_INCAPACITATED))
-		var/ignore_flags = NONE
-		if(interaction_flags_atom & INTERACT_ATOM_IGNORE_RESTRAINED)
-			ignore_flags |= IGNORE_RESTRAINTS
-		if(!(interaction_flags_atom & INTERACT_ATOM_CHECK_GRAB))
-			ignore_flags |= IGNORE_GRAB
-
-		if(user.incapacitated(ignore_flags))
-			return FALSE
+	if(!(interaction_flags_atom & INTERACT_ATOM_IGNORE_INCAPACITATED) && user.incapacitated((interaction_flags_atom & INTERACT_ATOM_IGNORE_RESTRAINED), !(interaction_flags_atom & INTERACT_ATOM_CHECK_GRAB)))
+		return FALSE
 	return TRUE
 
 /atom/ui_status(mob/user)
@@ -144,63 +138,9 @@
 
 ///Attacked by monkey
 /atom/proc/attack_paw(mob/user, list/modifiers)
-	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_PAW, user, modifiers) & COMPONENT_CANCEL_ATTACK_CHAIN)
+	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_PAW, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		return TRUE
 	return FALSE
-
-
-/*
-	Aliens
-	Defaults to same as monkey in most places
-*/
-/mob/living/carbon/alien/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
-	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
-		return
-	attack_target.attack_alien(src, modifiers)
-
-/atom/proc/attack_alien(mob/living/carbon/alien/user, list/modifiers)
-	attack_paw(user, modifiers)
-	return
-
-
-// Babby aliens
-/mob/living/carbon/alien/larva/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
-	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
-		return
-	attack_target.attack_larva(src)
-
-/atom/proc/attack_larva(mob/user)
-	return
-
-
-/*
-	Slimes
-	Nothing happening here
-*/
-/mob/living/simple_animal/slime/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
-	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
-		return
-	if(isturf(attack_target))
-		return ..()
-	attack_target.attack_slime(src)
-
-/atom/proc/attack_slime(mob/user)
-	return
-
-
-/*
-	Drones
-*/
-/mob/living/simple_animal/drone/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
-	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
-		return
-	attack_target.attack_drone(src, modifiers)
-
-/// Defaults to attack_hand or attack_hand_secondary. Override it when you don't want drones to do same stuff as humans.
-/atom/proc/attack_drone(mob/living/simple_animal/drone/user, list/modifiers)
-	if(!user.right_click_attack_chain(src, modifiers))
-		attack_hand(user, modifiers)
-
 
 /*
 	Brain
@@ -209,15 +149,6 @@
 /mob/living/brain/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)//Stops runtimes due to attack_animal being the default
 	return
 
-
-/*
-	pAI
-*/
-
-/mob/living/silicon/pai/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)//Stops runtimes due to attack_animal being the default
-	return
-
-
 /*
 	Simple animals
 */
@@ -225,7 +156,7 @@
 /mob/living/simple_animal/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
 	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
 		return
-	if(dextrous && (isitem(attack_target) || !combat_mode))
+	if(dextrous && (isitem(attack_target)/* || !combat_mode9*/))
 		attack_target.attack_hand(src, modifiers)
 		update_inv_hands()
 	else
@@ -240,7 +171,7 @@
 	if(LIVING_UNARMED_ATTACK_BLOCKED(attack_target))
 		return
 	GiveTarget(attack_target)
-	if(dextrous && (isitem(attack_target) || !combat_mode))
+	if(dextrous && (isitem(attack_target)/* || !combat_mode*/))
 		..()
 	else
 		AttackingTarget(attack_target)

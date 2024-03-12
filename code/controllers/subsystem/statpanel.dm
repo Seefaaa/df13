@@ -1,5 +1,5 @@
 SUBSYSTEM_DEF(statpanels)
-	name = "Stat Panels"
+	name = "Stat-panel"
 	wait = 4
 	init_order = INIT_ORDER_STATPANELS
 	priority = FIRE_PRIORITY_STATPANEL
@@ -21,45 +21,27 @@ SUBSYSTEM_DEF(statpanels)
 /datum/controller/subsystem/statpanels/fire(resumed = FALSE)
 	if (!resumed)
 		num_fires++
-		var/datum/map_config/cached = SSmapping.next_map_config
 		var/list/global_data = list(
-			"Map: [SSmapping.config?.map_name || "Loading..."]",
-			cached ? "Next Map: [cached.map_name]" : null,
-			"Round ID: [GLOB.round_id ? GLOB.round_id : "NULL"]",
-			"Server Time: [time2text(world.timeofday, "YYYY-MM-DD hh:mm:ss")]",
-			"Round Time: [ROUND_TIME]",
-			"Station Time: [station_time_timestamp()]",
-			"Time Dilation: [round(SStime_track.time_dilation_current,1)]% AVG:([round(SStime_track.time_dilation_avg_fast,1)]%, [round(SStime_track.time_dilation_avg,1)]%, [round(SStime_track.time_dilation_avg_slow,1)]%)"
+			"TD: [round(SStime_track.time_dilation_current,1)]% AVG:([round(SStime_track.time_dilation_avg_fast,1)]%, [round(SStime_track.time_dilation_avg,1)]%, [round(SStime_track.time_dilation_avg_slow,1)]%)",
+			"Story: [GLOB.round_id ? GLOB.round_id : "NULL"]"
 		)
-
-		if(SSshuttle.emergency)
-			var/ETA = SSshuttle.emergency.getModeStr()
-			if(ETA)
-				global_data += "[ETA] [SSshuttle.emergency.getTimerStr()]"
 		encoded_global_data = url_encode(json_encode(global_data))
 		src.currentrun = GLOB.clients.Copy()
 		mc_data_encoded = null
-
 	var/list/currentrun = src.currentrun
 	while(length(currentrun))
 		var/client/target = currentrun[length(currentrun)]
 		currentrun.len--
-
 		if(!target.statbrowser_ready)
 			continue
-
 		if(target.stat_tab == "Status" && num_fires % status_wait == 0)
 			set_status_tab(target)
-
 		if(!target.holder)
 			target << output("", "statbrowser:remove_admin_tabs")
 		else
-			target << output("[!!(target.prefs.toggles & SPLIT_ADMIN_TABS)]", "statbrowser:update_split_admin_tabs")
-
 			if(!("MC" in target.panel_tabs) || !("Tickets" in target.panel_tabs))
 				target << output("[url_encode(target.holder.href_token)]", "statbrowser:add_admin_tabs")
-
-			if(target.stat_tab == "MC" && ((num_fires % mc_wait == 0) || target?.prefs.read_preference(/datum/preference/toggle/fast_mc_refresh)))
+			if(target.stat_tab == "MC" && ((num_fires % mc_wait == 0)))
 				set_MC_tab(target)
 
 			if(target.stat_tab == "Tickets" && num_fires % default_wait == 0)
@@ -73,18 +55,12 @@ SUBSYSTEM_DEF(statpanels)
 
 		if(target.mob)
 			var/mob/target_mob = target.mob
-			if((target.stat_tab in target.spell_tabs) || !length(target.spell_tabs) && (length(target_mob.mob_spell_list) || length(target_mob.mind?.spell_list)))
-				if(num_fires % default_wait == 0)
-					set_spells_tab(target, target_mob)
-
 			if(target_mob?.listed_turf && num_fires % default_wait == 0)
 				if(!target_mob.TurfAdjacent(target_mob.listed_turf))
 					target << output("", "statbrowser:remove_listedturf")
 					target_mob.listed_turf = null
-
 				else if(target.stat_tab == target_mob?.listed_turf.name || !(target_mob?.listed_turf.name in target.panel_tabs))
 					set_turf_examine_tab(target, target_mob)
-
 		if(MC_TICK_CHECK)
 			return
 
@@ -106,34 +82,6 @@ SUBSYSTEM_DEF(statpanels)
 /datum/controller/subsystem/statpanels/proc/set_tickets_tab(client/target)
 	var/list/ahelp_tickets = GLOB.ahelp_tickets.stat_entry()
 	target << output("[url_encode(json_encode(ahelp_tickets))];", "statbrowser:update_tickets")
-	var/datum/interview_manager/m = GLOB.interviews
-
-	// get open interview count
-	var/dc = 0
-	for (var/ckey in m.open_interviews)
-		var/datum/interview/current_interview = m.open_interviews[ckey]
-		if (current_interview && !current_interview.owner)
-			dc++
-	var/stat_string = "([m.open_interviews.len - dc] online / [dc] disconnected)"
-
-	// Prepare each queued interview
-	var/list/queued = list()
-	for (var/datum/interview/queued_interview in m.interview_queue)
-		queued += list(list(
-			"ref" = REF(queued_interview),
-			"status" = "\[[queued_interview.pos_in_queue]\]: [queued_interview.owner_ckey][!queued_interview.owner ? " (DC)": ""] \[INT-[queued_interview.id]\]"
-		))
-
-	var/list/data = list(
-		"status" = list(
-			"Active:" = "[m.open_interviews.len] [stat_string]",
-			"Queued:" = "[m.interview_queue.len]",
-			"Closed:" = "[m.closed_interviews.len]"),
-		"interviews" = queued
-	)
-
-	// Push update
-	target << output("[url_encode(json_encode(data))];", "statbrowser:update_interviews")
 
 /datum/controller/subsystem/statpanels/proc/set_SDQL2_tab(client/target)
 	var/list/sdql2A = list()
@@ -144,19 +92,6 @@ SUBSYSTEM_DEF(statpanels)
 
 	sdql2A += sdql2B
 	target << output(url_encode(json_encode(sdql2A)), "statbrowser:update_sdql2")
-
-/datum/controller/subsystem/statpanels/proc/set_spells_tab(client/target, mob/target_mob)
-	var/list/proc_holders = target_mob.get_proc_holders()
-	target.spell_tabs.Cut()
-
-	for(var/proc_holder_list as anything in proc_holders)
-		target.spell_tabs |= proc_holder_list[1]
-
-	var/proc_holders_encoded = ""
-	if(length(proc_holders))
-		proc_holders_encoded = url_encode(json_encode(proc_holders))
-
-	target << output("[url_encode(json_encode(target.spell_tabs))];[proc_holders_encoded]", "statbrowser:update_spells")
 
 /datum/controller/subsystem/statpanels/proc/set_turf_examine_tab(client/target, mob/target_mob)
 	var/list/overrides = list()
@@ -210,7 +145,6 @@ SUBSYSTEM_DEF(statpanels)
 	)
 	for(var/datum/controller/subsystem/sub_system as anything in Master.subsystems)
 		mc_data[++mc_data.len] = list("\[[sub_system.state_letter()]][sub_system.name]", sub_system.stat_entry(), "\ref[sub_system]")
-	mc_data[++mc_data.len] = list("Camera Net", "Cameras: [GLOB.cameranet.cameras.len] | Chunks: [GLOB.cameranet.chunks.len]", "\ref[GLOB.cameranet]")
 	mc_data_encoded = url_encode(json_encode(mc_data))
 
 ///immediately update the active statpanel tab of the target client
@@ -223,9 +157,6 @@ SUBSYSTEM_DEF(statpanels)
 		return TRUE
 
 	var/mob/target_mob = target.mob
-	if((target.stat_tab in target.spell_tabs) || !length(target.spell_tabs) && (length(target_mob.mob_spell_list) || length(target_mob.mind?.spell_list)))
-		set_spells_tab(target, target_mob)
-		return TRUE
 
 	if(target_mob?.listed_turf)
 		if(!target_mob.TurfAdjacent(target_mob.listed_turf))
@@ -254,7 +185,6 @@ SUBSYSTEM_DEF(statpanels)
 		set_SDQL2_tab(target)
 
 /atom/proc/remove_from_cache()
-	SIGNAL_HANDLER
 	SSstatpanels.cached_images -= REF(src)
 
 /// verbs that send information from the browser UI
@@ -288,10 +218,4 @@ SUBSYSTEM_DEF(statpanels)
 	set hidden = TRUE
 
 	statbrowser_ready = TRUE
-	init_verbs()
-
-/client/verb/update_verbs()
-	set name = "Update Verbs"
-	set hidden = TRUE
-
 	init_verbs()

@@ -4,14 +4,13 @@
 	verb_say = "intones"
 	icon = 'icons/obj/structures.dmi'
 	icon_state = "speaking_tile"
-	layer = FLY_LAYER
-	plane = ABOVE_GAME_PLANE
+	layer = 5
 	resistance_flags = INDESTRUCTIBLE
 	var/speaking = FALSE
 	var/times_spoken_to = 0
 	var/list/shenanigans = list()
 
-/obj/structure/speaking_tile/Initialize(mapload)
+/obj/structure/speaking_tile/Initialize()
 	. = ..()
 	var/json_file = file("data/npc_saves/Poly.json")
 	if(!fexists(json_file))
@@ -71,20 +70,12 @@
 			SpeakPeace(list("Congratulations.", "By my very loose calculations you've now wasted a decent chunk of the round doing this.", "But you've seen this meme to its conclusion, and that's an experience in itself, right?"))
 		if(251)
 			SpeakPeace(list("Anyway, here.", "I can't give you anything that would impact the progression of the round.","But you've earned this at least."))
-			var/obj/item/reagent_containers/food/drinks/trophy/silver_cup/the_ride = new(get_turf(user))
-			the_ride.name = "Overextending The Joke: Second Place"
-			the_ride.desc = "There's a point where this needed to stop, and we've clearly passed it."
 		if(252)
 			SpeakPeace(list("You know what this means right?", "Of course it's not over!", "The question becomes now is it more impressive to solider on to an unknown finish, or to have to common sense to stop here?"))
 		if(666)
 			SpeakPeace(list("The darkness in your heart won't be filled by simple platitudes.","You won't stop now, you're in this to the end.", "Will you reach the finish line before the round ends?"))
 		if(1000)
 			SpeakPeace(list("The ends exists somewhere beyond meaningful milestones.", "There will be no more messages until then.", "You disgust me."))
-		if(5643)
-			user.client.give_award(/datum/award/achievement/misc/time_waste, user)
-			var/obj/item/reagent_containers/food/drinks/trophy/gold_cup/never_ends = new(get_turf(user))
-			never_ends.name = "Overextending The Joke: First Place"
-			never_ends.desc = "And so we are left alone with our regrets."
 		else
 			y += 2
 	speaking = FALSE
@@ -93,27 +84,15 @@
 /obj/structure/speaking_tile/attackby(obj/item/W, mob/user, params)
 	return interact(user)
 
-/obj/structure/speaking_tile/attack_paw(mob/user, list/modifiers)
+/obj/structure/speaking_tile/attack_paw(mob/user)
 	return interact(user)
 
-/obj/structure/speaking_tile/attack_hulk(mob/user)
-	return
-
-/obj/structure/speaking_tile/attack_larva(mob/user)
-	return interact(user)
-
-/obj/structure/speaking_tile/attack_ai(mob/user)
-	return interact(user)
-
-/obj/structure/speaking_tile/attack_slime(mob/user)
-	return interact(user)
-
-/obj/structure/speaking_tile/attack_animal(mob/user, list/modifiers)
+/obj/structure/speaking_tile/attack_animal(mob/user)
 	return interact(user)
 
 /obj/structure/speaking_tile/proc/SpeakPeace(list/statements)
 	for(var/i in 1 to statements.len)
-		say(span_deadsay("[statements[i]]"), sanitize=FALSE)
+		say(span_deadsay("[statements[i]]"))
 		if(i != statements.len)
 			sleep(30)
 
@@ -123,11 +102,10 @@
 	icon = 'icons/obj/economy.dmi'
 	icon_state = "rupee"
 	w_class = WEIGHT_CLASS_SMALL
-	custom_materials = list(/datum/material/glass = 500)
 
-/obj/item/rupee/Initialize(mapload)
+/obj/item/rupee/Initialize()
 	. = ..()
-	var/newcolor = pick(10;COLOR_GREEN, 5;COLOR_BLUE, 3;COLOR_RED, 1;COLOR_PURPLE)
+	var/newcolor = color2hex(pick(10;"green", 5;"blue", 3;"red", 1;"purple"))
 	add_atom_colour(newcolor, FIXED_COLOUR_PRIORITY)
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = .proc/on_entered,

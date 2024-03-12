@@ -4,11 +4,12 @@
 	desc = "you eat this"
 	resistance_flags = FLAMMABLE
 	w_class = WEIGHT_CLASS_SMALL
-	icon = 'icons/obj/food/food.dmi'
+	icon = 'dwarfs/icons/items/food.dmi'
 	icon_state = null
 	lefthand_file = 'icons/mob/inhands/misc/food_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/food_righthand.dmi'
 	obj_flags = UNIQUE_RENAME
+	material_flags = MATERIAL_NO_EFFECTS
 	grind_results = list()
 	///List of reagents this food gets on creation
 	var/list/food_reagents
@@ -26,26 +27,14 @@
 	var/list/eatverbs
 	///How much reagents per bite
 	var/bite_consumption
-	///What you get if you microwave the food. Use baking for raw things, use microwaving for already cooked things
-	var/microwaved_type
 	///Type of atom thats spawned after eating this item
 	var/trash_type
-	///How much junkiness this food has? God I should remove junkiness soon
-	var/junkiness
-	///Will this food turn into badrecipe on a grill? Don't use this for everything; preferably mostly for food that is made on a grill to begin with so it burns after some time
-	var/burns_on_grill = FALSE
-	///Will this food turn into badrecipe in an oven? Don't use this for everything; preferably mostly for food that is made in an oven to begin with so it burns after some time
-	var/burns_in_oven = FALSE
 	///Price of this food if sold in a venue
 	var/venue_value
 	///Food that's immune to decomposition.
 	var/preserved_food = FALSE
-	///Does our food normally attract ants?
-	var/ant_attracting = TRUE
-	///What our food decomposes into.
-	var/decomp_type = /obj/item/food/badrecipe/moldy
-	///Food that needs to be picked up in order to decompose.
-	var/decomp_req_handle = FALSE
+	///Mood gain when eaten
+	var/mood_gain
 
 /obj/item/food/Initialize(mapload)
 	. = ..()
@@ -55,14 +44,10 @@
 		tastes = string_assoc_list(tastes)
 	if(eatverbs)
 		eatverbs = string_list(eatverbs)
-	if(venue_value)
-		AddElement(/datum/element/venue_price, venue_value)
 	MakeEdible()
 	MakeProcessable()
 	MakeLeaveTrash()
-	MakeGrillable()
 	MakeDecompose(mapload)
-	MakeBakeable()
 
 ///This proc adds the edible component, overwrite this if you for some reason want to change some specific args like callbacks.
 /obj/item/food/proc/MakeEdible()
@@ -75,26 +60,12 @@
 				tastes = tastes,\
 				eatverbs = eatverbs,\
 				bite_consumption = bite_consumption,\
-				microwaved_type = microwaved_type,\
-				junkiness = junkiness)
+				on_consume = CALLBACK(src, .proc/on_consume))
 
 
 ///This proc handles processable elements, overwrite this if you want to add behavior such as slicing, forking, spooning, whatever, to turn the item into something else
 /obj/item/food/proc/MakeProcessable()
 	return
-
-///This proc handles grillable components, overwrite if you want different grill results etc.
-/obj/item/food/proc/MakeGrillable()
-	if(burns_on_grill)
-		AddComponent(/datum/component/grillable, /obj/item/food/badrecipe, rand(20 SECONDS, 30 SECONDS), FALSE)
-	return
-
-///This proc handles bakeable components, overwrite if you want different bake results etc.
-/obj/item/food/proc/MakeBakeable()
-	if(burns_in_oven)
-		AddComponent(/datum/component/bakeable, /obj/item/food/badrecipe, rand(25 SECONDS, 40 SECONDS), FALSE)
-	return
-
 
 ///This proc handles trash components, overwrite this if you want the object to spawn trash
 /obj/item/food/proc/MakeLeaveTrash()
@@ -103,7 +74,28 @@
 	return
 
 ///This proc makes things decompose. Set preserved_food to TRUE to make it never decompose.
-///Set decomp_req_handle to TRUE to only make it decompose when someone picks it up.
 /obj/item/food/proc/MakeDecompose(mapload)
 	if(!preserved_food)
-		AddComponent(/datum/component/decomposition, mapload, decomp_req_handle, decomp_flags = foodtypes, decomp_result = decomp_type, ant_attracting = ant_attracting)
+		AddComponent(/datum/component/decomposition, mapload, decomp_flags = foodtypes)
+
+/obj/item/food/proc/on_consume(mob/living/eater, mob/living/feeder)
+	var/datum/component/mood/M = eater.GetComponent(/datum/component/mood)
+	if(!M)
+		return
+	M.add_event(null, "foog", /datum/mood_event/ate_food)
+
+/obj/item/food/badrecipe
+	name = "burned recipe"
+	desc = "Not yummy."
+	icon_state = "food_ruined"
+
+/obj/item/food/cookie
+	name = "cookie"
+	desc = "COOKIE!!!"
+	icon_state = "cookie"
+	bite_consumption = 1
+	food_reagents = list(/datum/reagent/consumable/nutriment = 2)
+	tastes = list("cookie" = 1)
+	foodtypes = GRAIN | SUGAR
+	food_flags = FOOD_FINGER_FOOD
+	w_class = WEIGHT_CLASS_SMALL

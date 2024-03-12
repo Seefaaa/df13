@@ -95,4 +95,3 @@ const ThermometerIcon = props => {
     </Box>
   );
 };
-

@@ -35,8 +35,8 @@ const keyState: Record<string, boolean> = {};
 const keyListeners: ((key: KeyEvent) => void)[] = [];
 
 /**
- * Converts a browser keycode to BYOND keycode.
- */
+  * Converts a browser keycode to BYOND keycode.
+  */
 const keyCodeToByond = (keyCode: number) => {
   if (keyCode === 16) return 'Shift';
   if (keyCode === 17) return 'Ctrl';
@@ -66,9 +66,9 @@ const keyCodeToByond = (keyCode: number) => {
 };
 
 /**
- * Keyboard passthrough logic. This allows you to keep doing things
- * in game while the browser window is focused.
- */
+  * Keyboard passthrough logic. This allows you to keep doing things
+  * in game while the browser window is focused.
+  */
 const handlePassthrough = (key: KeyEvent) => {
   const keyString = String(key);
   // In addition to F5, support reloading with Ctrl+R and Ctrl+F5
@@ -82,8 +82,8 @@ const handlePassthrough = (key: KeyEvent) => {
   }
   // NOTE: Alt modifier is pretty bad and sticky in IE11.
   if (key.event.defaultPrevented
-      || key.isModifierKey()
-      || hotKeysAcquired.includes(key.code)) {
+       || key.isModifierKey()
+       || hotKeysAcquired.includes(key.code)) {
     return;
   }
   const byondKeyCode = keyCodeToByond(key.code);
@@ -121,8 +121,8 @@ export const acquireHotKey = (keyCode: number) => {
 };
 
 /**
- * Makes the hotkey available to BYOND again.
- */
+  * Makes the hotkey available to BYOND again.
+  */
 export const releaseHotKey = (keyCode: number) => {
   const index = hotKeysAcquired.indexOf(keyCode);
   if (index >= 0) {

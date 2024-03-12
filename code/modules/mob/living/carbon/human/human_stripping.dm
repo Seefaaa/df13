@@ -108,14 +108,6 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	key = STRIPPABLE_ITEM_SUIT_STORAGE
 	item_slot = ITEM_SLOT_SUITSTORE
 
-/datum/strippable_item/mob_item_slot/suit_storage/get_alternate_action(atom/source, mob/user)
-	return get_strippable_alternate_action_internals(get_item(source), source)
-
-/datum/strippable_item/mob_item_slot/suit_storage/alternate_action(atom/source, mob/user)
-	if (!..())
-		return
-	strippable_alternate_action_internals(get_item(source), source, user)
-
 /datum/strippable_item/mob_item_slot/id
 	key = STRIPPABLE_ITEM_ID
 	item_slot = ITEM_SLOT_ID
@@ -123,14 +115,6 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 /datum/strippable_item/mob_item_slot/belt
 	key = STRIPPABLE_ITEM_BELT
 	item_slot = ITEM_SLOT_BELT
-
-/datum/strippable_item/mob_item_slot/belt/get_alternate_action(atom/source, mob/user)
-	return get_strippable_alternate_action_internals(get_item(source), source)
-
-/datum/strippable_item/mob_item_slot/belt/alternate_action(atom/source, mob/user)
-	if (!..())
-		return
-	strippable_alternate_action_internals(get_item(source), source, user)
 
 /datum/strippable_item/mob_item_slot/pocket
 	/// Which pocket we're referencing. Used for visible text.
@@ -157,8 +141,8 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	to_chat(user, span_notice("You try to empty [source]'s [pocket_side] pocket."))
 
 	var/log_message = "[key_name(source)] is being pickpocketed of [item] by [key_name(user)] ([pocket_side])"
-	user.log_message(log_message, LOG_ATTACK, color="red")
-	source.log_message(log_message, LOG_VICTIM, color="red", log_globally=FALSE)
+	source.log_message(log_message, LOG_ATTACK, color="red")
+	user.log_message(log_message, LOG_ATTACK, color="red", log_globally=FALSE)
 	item.add_fingerprint(src)
 
 	var/result = start_unequip_mob(item, source, user, POCKET_STRIP_DELAY)
@@ -180,61 +164,6 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	key = STRIPPABLE_ITEM_RPOCKET
 	item_slot = ITEM_SLOT_RPOCKET
 	pocket_side = "right"
-
-/proc/get_strippable_alternate_action_internals(obj/item/item, atom/source)
-	if (!iscarbon(source))
-		return
-
-	var/mob/living/carbon/carbon_source = source
-
-	var/obj/item/clothing/mask = carbon_source.wear_mask
-	if (!istype(mask))
-		return
-
-	if ((mask.clothing_flags & MASKINTERNALS) && istype(item, /obj/item/tank))
-		return isnull(carbon_source.internal) ? "enable_internals" : "disable_internals"
-
-/proc/strippable_alternate_action_internals(obj/item/item, atom/source, mob/user)
-	var/obj/item/tank/tank = item
-	if (!istype(tank))
-		return
-
-	var/mob/living/carbon/carbon_source = source
-	if (!istype(carbon_source))
-		return
-
-	var/obj/item/clothing/mask = carbon_source.wear_mask
-	if (!istype(mask) || !(mask.clothing_flags & MASKINTERNALS))
-		return
-
-	carbon_source.visible_message(
-		span_danger("[user] tries to [isnull(carbon_source.internal) ? "open": "close"] the valve on [source]'s [item.name]."),
-		span_userdanger("[user] tries to [isnull(carbon_source.internal) ? "open": "close"] the valve on your [item.name]."),
-		ignored_mobs = user,
-	)
-
-	to_chat(user, span_notice("You try to [isnull(carbon_source.internal) ? "open": "close"] the valve on [source]'s [item.name]..."))
-
-	if(!do_mob(user, carbon_source, INTERNALS_TOGGLE_DELAY))
-		return
-
-	if(carbon_source.internal)
-		carbon_source.internal = null
-
-		// This isn't meant to be FALSE, it correlates to the icon's name.
-		carbon_source.update_internals_hud_icon(0)
-	else if (!QDELETED(item))
-		if((carbon_source.wear_mask?.clothing_flags & MASKINTERNALS) || carbon_source.getorganslot(ORGAN_SLOT_BREATHING_TUBE))
-			carbon_source.internal = item
-			carbon_source.update_internals_hud_icon(1)
-
-	carbon_source.visible_message(
-		span_danger("[user] [isnull(carbon_source.internal) ? "closes": "opens"] the valve on [source]'s [item.name]."),
-		span_userdanger("[user] [isnull(carbon_source.internal) ? "closes": "opens"] the valve on your [item.name]."),
-		ignored_mobs = user,
-	)
-
-	to_chat(user, span_notice("You [isnull(carbon_source.internal) ? "close" : "open"] the valve on [source]'s [item.name]."))
 
 #undef INTERNALS_TOGGLE_DELAY
 #undef POCKET_EQUIP_DELAY

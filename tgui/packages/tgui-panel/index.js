@@ -22,6 +22,7 @@ import { setupPanelFocusHacks } from './panelFocus';
 import { pingMiddleware, pingReducer } from './ping';
 import { settingsMiddleware, settingsReducer } from './settings';
 import { telemetryMiddleware } from './telemetry';
+import { Window } from 'tgui/layouts';
 
 perf.mark('inception', window.performance?.timing?.navigationStart);
 perf.mark('init');
@@ -94,11 +95,8 @@ const setupApp = () => {
     'size': '0x0',
   });
 
-  // Resize the panel to match the non-browser output
-  Byond.winget('output').then(output => {
-    Byond.winset('browseroutput', {
-      'size': output.size,
-    });
+  Byond.winset('browseroutput', {
+    'size': '0x'+(window.innerHeight-28),
   });
 
   // Enable hot module reloading

@@ -4,7 +4,7 @@
 	robust_searching = 1
 	stat_attack = HARD_CRIT
 	status_flags = 0
-	combat_mode = TRUE
+	a_intent = INTENT_HARM
 	sentience_type = SENTIENCE_BOSS
 	gender = NEUTER
 	var/list/boss_abilities = list() //list of /datum/action/boss
@@ -12,7 +12,7 @@
 	var/point_regen_delay = 1
 
 
-/mob/living/simple_animal/hostile/boss/Initialize(mapload)
+/mob/living/simple_animal/hostile/boss/Initialize()
 	. = ..()
 
 	atb = new()
@@ -52,7 +52,7 @@
 	var/needs_target = TRUE //Does the boss need to have a target? (Only matters for the AI)
 	var/say_when_triggered = "" //What does the boss Say() when the ability triggers?
 
-/datum/action/boss/Trigger(trigger_flags)
+/datum/action/boss/Trigger()
 	. = ..()
 	if(!.)
 		return
@@ -73,7 +73,7 @@
 
 //Example:
 /*
-/datum/action/boss/selfgib/Trigger(trigger_flags)
+/datum/action/boss/selfgib/Trigger()
 	if(..())
 		boss.gib()
 */

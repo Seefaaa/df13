@@ -9,9 +9,9 @@ from mapmerge2.dmm import *
 desc = """
 Update dmm files given update file/string.
 Replacement syntax example:
-    /turf/open/floor/iron/warningline : /obj/effect/turf_decal {dir = @OLD ;tag = @SKIP;icon_state = @SKIP}
-    /turf/open/floor/iron/warningline : /obj/effect/turf_decal {@OLD} , /obj/thing {icon_state = @OLD:name; name = "meme"}
-    /turf/open/floor/iron/warningline{dir=2} : /obj/thing
+    /turf/open/floor/plasteel/warningline : /obj/effect/turf_decal {dir = @OLD ;tag = @SKIP;icon_state = @SKIP}
+    /turf/open/floor/plasteel/warningline : /obj/effect/turf_decal {@OLD} , /obj/thing {icon_state = @OLD:name; name = "meme"}
+    /turf/open/floor/plasteel/warningline{dir=2} : /obj/thing
 New paths properties:
     @OLD - if used as property name copies all modified properties from original path to this one
     property = @SKIP - will not copy this property through when global @OLD is used.
@@ -27,7 +27,7 @@ default_map_directory = "../../_maps"
 replacement_re = re.compile(r'\s*(?P<path>[^{]*)\s*(\{(?P<props>.*)\})?')
 
 #urgent todo: replace with actual parser, this is slow as janitor in crit
-split_re = re.compile(r'((?:[A-Za-z0-9_\-$]+)\s*=\s*(?:"(?:.+?)"|[^";][^;]*)|@OLD);?')
+split_re = re.compile(r'((?:[A-Za-z0-9_\-$]+)\s*=\s*(?:"(?:.+?)"|[^";]*)|@OLD)')
 
 
 def props_to_string(props):

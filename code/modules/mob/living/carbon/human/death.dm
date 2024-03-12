@@ -3,13 +3,13 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 	new /obj/effect/temp_visual/gib_animation(loc, dna.species.gib_anim)
 
 /mob/living/carbon/human/dust_animation()
-	new /obj/effect/temp_visual/dust_animation(loc, dna.species.dust_anim)
+	new /obj/effect/temp_visual/dust_animation(loc, dna?.species?.dust_anim)
 
 /mob/living/carbon/human/spawn_gibs(with_bodyparts)
 	if(with_bodyparts)
-		new /obj/effect/gibspawner/human(drop_location(), src, get_static_viruses())
+		new /obj/effect/gibspawner/human(drop_location(), src)
 	else
-		new /obj/effect/gibspawner/human/bodypartless(drop_location(), src, get_static_viruses())
+		new /obj/effect/gibspawner/human/bodypartless(drop_location(), src)
 
 /mob/living/carbon/human/spawn_dust(just_ash = FALSE)
 	if(just_ash)
@@ -25,28 +25,22 @@ GLOBAL_LIST_EMPTY(dead_players_during_shift)
 	if(H)
 		H.beat = BEAT_NONE
 
+	to_chat(src, span_warning("You have died. Barring complete bodyloss, you can in most cases be revived by other players. If you do not wish to be brought back, use the \"Do Not Resuscitate\" verb in the ghost tab."))
+
 	. = ..()
 
 	dizziness = 0
 	jitteriness = 0
-	if(client && !suiciding && !(client in GLOB.dead_players_during_shift))
-		GLOB.dead_players_during_shift += client
-		GLOB.deaths_during_shift++
 
 	if(!QDELETED(dna)) //The gibbed param is bit redundant here since dna won't exist at this point if they got deleted.
 		dna.species.spec_death(gibbed, src)
 
 	if(SSticker.HasRoundStarted())
 		SSblackbox.ReportDeath(src)
-		log_message("has died (BRUTE: [src.getBruteLoss()], BURN: [src.getFireLoss()], TOX: [src.getToxLoss()], OXY: [src.getOxyLoss()], CLONE: [src.getCloneLoss()])", LOG_ATTACK)
+		log_message("has died (BRUTE: [src.getBruteLoss()], BURN: [src.getFireLoss()], TOX: [src.getToxLoss()], OXY: [src.getOxyLoss()])", LOG_ATTACK)
 
-	to_chat(src, span_warning("You have died. Barring complete bodyloss, you can in most cases be revived by other players. If you do not wish to be brought back, use the \"Do Not Resuscitate\" verb in the ghost tab."))
-
-/mob/living/carbon/human/proc/makeSkeleton()
-	ADD_TRAIT(src, TRAIT_DISFIGURED, TRAIT_GENERIC)
-	set_species(/datum/species/skeleton)
-	return TRUE
-
+/client/proc/show_tgui_notice(header, msg)
+	tgui_alert_async(src, header, msg, list("Understood"))
 
 /mob/living/carbon/proc/Drain()
 	become_husk(CHANGELING_DRAIN)

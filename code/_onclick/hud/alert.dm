@@ -105,7 +105,6 @@
 	/// Boolean. If TRUE, the Click() proc will attempt to Click() on the master first if there is a master.
 	var/click_master = TRUE
 
-
 /atom/movable/screen/alert/MouseEntered(location,control,params)
 	. = ..()
 	if(!QDELETED(src))
@@ -147,15 +146,15 @@
 	desc = "There's too much carbon dioxide in the air, and you're breathing it in! Find some good air before you pass out!"
 	icon_state = "too_much_co2"
 
-/atom/movable/screen/alert/not_enough_plas
+/atom/movable/screen/alert/not_enough_tox
 	name = "Choking (No Plasma)"
 	desc = "You're not getting enough plasma. Find some good air before you pass out!"
-	icon_state = "not_enough_plas"
+	icon_state = "not_enough_tox"
 
-/atom/movable/screen/alert/too_much_plas
+/atom/movable/screen/alert/too_much_tox
 	name = "Choking (Plasma)"
 	desc = "There's highly flammable, toxic plasma in the air and you're breathing it in. Find some fresh air. The box in your backpack has an oxygen tank and gas mask in it."
-	icon_state = "too_much_plas"
+	icon_state = "too_much_tox"
 
 /atom/movable/screen/alert/not_enough_n2o
 	name = "Choking (No N2O)"
@@ -164,7 +163,7 @@
 
 /atom/movable/screen/alert/too_much_n2o
 	name = "Choking (N2O)"
-	desc = "There's sleeping gas in the air and you're breathing it in. Find some fresh air. The box in your backpack has an oxygen tank and gas mask in it."
+	desc = "There's semi-toxic sleeping gas in the air and you're breathing it in. Find some fresh air. The box in your backpack has an oxygen tank and gas mask in it."
 	icon_state = "too_much_n2o"
 
 //End gas alerts
@@ -199,6 +198,21 @@
 	name = "DISGUSTED"
 	desc = "ABSOLUTELY DISGUSTIN'"
 	icon_state = "gross3"
+
+/atom/movable/screen/alert/overhydrated
+	name = "Overhydrated"
+	desc = "Too much water!"
+	icon_state = "overhydrated"
+
+/atom/movable/screen/alert/thirsty
+	name = "Thirsty"
+	desc = "You feel like drinking something."
+	icon_state = "thirsty"
+
+/atom/movable/screen/alert/dehydrated
+	name = "Dehydrated"
+	desc = "You're severely dehydrated."
+	icon_state = "dehydrated"
 
 /atom/movable/screen/alert/hot
 	name = "Too Hot"
@@ -244,10 +258,10 @@ or something covering your eyes."
 	var/command
 
 /atom/movable/screen/alert/mind_control/Click()
-	. = ..()
-	if(!.)
+	var/mob/living/L = usr
+	if(L != owner)
 		return
-	to_chat(owner, span_mind_control("[command]"))
+	to_chat(L, span_mind_control("[command]"))
 
 /atom/movable/screen/alert/drunk
 	name = "Drunk"
@@ -261,18 +275,9 @@ If you're feeling frisky, examine yourself and click the underlined item to pull
 	icon_state = "embeddedobject"
 
 /atom/movable/screen/alert/embeddedobject/Click()
-	. = ..()
-	if(!.)
-		return
-
-	var/mob/living/carbon/carbon_owner = owner
-
-	return carbon_owner.help_shake_act(carbon_owner)
-
-/atom/movable/screen/alert/negative
-	name = "Negative Gravity"
-	desc = "You're getting pulled upwards. While you won't have to worry about falling down anymore, you may accidentally fall upwards!"
-	icon_state = "negative"
+	if(isliving(usr) && usr == owner)
+		var/mob/living/carbon/M = usr
+		return M.help_shake_act(M)
 
 /atom/movable/screen/alert/weightless
 	name = "Weightless"
@@ -298,15 +303,12 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	icon_state = "fire"
 
 /atom/movable/screen/alert/fire/Click()
-	. = ..()
-	if(!.)
+	var/mob/living/L = usr
+	if(!istype(L) || !L.can_resist() || L != owner)
 		return
-
-	var/mob/living/living_owner = owner
-
-	living_owner.changeNext_move(CLICK_CD_RESIST)
-	if(living_owner.mobility_flags & MOBILITY_MOVE)
-		return living_owner.resist_fire()
+	L.changeNext_move(CLICK_CD_RESIST)
+	if(L.mobility_flags & MOBILITY_MOVE)
+		return L.resist_fire() //I just want to start a flame in your hearrrrrrtttttt.
 
 /atom/movable/screen/alert/give // information set when the give alert is made
 	icon_state = "default"
@@ -324,8 +326,8 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
  * * receiving - The item being given by the offerer
  */
 /atom/movable/screen/alert/give/proc/setup(mob/living/carbon/taker, mob/living/carbon/offerer, obj/item/receiving)
-	name = "[offerer] is offering [receiving]"
-	desc = "[offerer] is offering [receiving]. Click this alert to take it."
+	name = "[offerer] is offering me [receiving]"
+	desc = "[offerer] is offering me [receiving]. Click this alert to take it."
 	icon_state = "template"
 	cut_overlays()
 	add_overlay(receiving)
@@ -354,7 +356,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 
 	if(!offerer.CanReach(taker))
 		to_chat(owner, span_warning("You moved out of range of [offerer]!"))
-		owner.clear_alert("[offerer]")
+		owner?.clear_alert("[offerer]")
 
 /atom/movable/screen/alert/give/highfive/setup(mob/living/carbon/taker, mob/living/carbon/offerer, obj/item/receiving)
 	. = ..()
@@ -424,12 +426,13 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	icon_state = "succumb"
 
 /atom/movable/screen/alert/succumb/Click()
-	. = ..()
-	if(!.)
+	if (isobserver(usr))
 		return
 
 	var/mob/living/living_owner = owner
-	var/last_whisper = tgui_input_text(usr, "Do you have any last words?", "Final Words")
+	var/last_whisper = input("Do you have any last words?", "Final Words") as null | text
+	if(!owner)
+		return
 	if (isnull(last_whisper) || !CAN_SUCCUMB(living_owner))
 		return
 
@@ -440,10 +443,10 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 
 //ALIENS
 
-/atom/movable/screen/alert/alien_plas
+/atom/movable/screen/alert/alien_tox
 	name = "Plasma"
 	desc = "There's flammable plasma in the air. If it lights up, you'll be toast."
-	icon_state = "alien_plas"
+	icon_state = "alien_tox"
 	alerttooltipstyle = "alien"
 
 /atom/movable/screen/alert/alien_fire
@@ -466,115 +469,6 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	desc = "You have no factory, and are slowly dying!"
 	icon_state = "blobbernaut_nofactory"
 	alerttooltipstyle = "blob"
-
-// BLOODCULT
-
-/atom/movable/screen/alert/bloodsense
-	name = "Blood Sense"
-	desc = "Allows you to sense blood that is manipulated by dark magicks."
-	icon_state = "cult_sense"
-	alerttooltipstyle = "cult"
-	var/static/image/narnar
-	var/angle = 0
-	var/mob/living/simple_animal/hostile/construct/Cviewer = null
-
-/atom/movable/screen/alert/bloodsense/Initialize(mapload)
-	. = ..()
-	narnar = new('icons/hud/screen_alert.dmi', "mini_nar")
-	START_PROCESSING(SSprocessing, src)
-
-/atom/movable/screen/alert/bloodsense/Destroy()
-	Cviewer = null
-	STOP_PROCESSING(SSprocessing, src)
-	return ..()
-
-/atom/movable/screen/alert/bloodsense/process()
-	var/atom/blood_target
-
-	if(!owner.mind)
-		return
-
-	var/datum/antagonist/cult/antag = owner.mind.has_antag_datum(/datum/antagonist/cult,TRUE)
-	if(!antag)
-		return
-	var/datum/objective/sacrifice/sac_objective = locate() in antag.cult_team.objectives
-
-	if(antag.cult_team.blood_target)
-		if(!get_turf(antag.cult_team.blood_target))
-			antag.cult_team.blood_target = null
-		else
-			blood_target = antag.cult_team.blood_target
-	if(Cviewer?.seeking && Cviewer.master)
-		blood_target = Cviewer.master
-		desc = "Your blood sense is leading you to [Cviewer.master]"
-	if(!blood_target)
-		if(sac_objective && !sac_objective.check_completion())
-			if(icon_state == "runed_sense0")
-				return
-			animate(src, transform = null, time = 1, loop = 0)
-			angle = 0
-			cut_overlays()
-			icon_state = "runed_sense0"
-			desc = "Nar'Sie demands that [sac_objective.target] be sacrificed before the summoning ritual can begin."
-			add_overlay(sac_objective.sac_image)
-		else
-			var/datum/objective/eldergod/summon_objective = locate() in antag.cult_team.objectives
-			if(!summon_objective)
-				return
-			desc = "The sacrifice is complete, summon Nar'Sie! The summoning can only take place in [english_list(summon_objective.summon_spots)]!"
-			if(icon_state == "runed_sense1")
-				return
-			animate(src, transform = null, time = 1, loop = 0)
-			angle = 0
-			cut_overlays()
-			icon_state = "runed_sense1"
-			add_overlay(narnar)
-		return
-	var/turf/P = get_turf(blood_target)
-	var/turf/Q = get_turf(owner)
-	if(!P || !Q || (P.z != Q.z)) //The target is on a different Z level, we cannot sense that far.
-		icon_state = "runed_sense2"
-		desc = "You can no longer sense your target's presence."
-		return
-	if(isliving(blood_target))
-		var/mob/living/real_target = blood_target
-		desc = "You are currently tracking [real_target.real_name] in [get_area_name(blood_target)]."
-	else
-		desc = "You are currently tracking [blood_target] in [get_area_name(blood_target)]."
-	var/target_angle = get_angle(Q, P)
-	var/target_dist = get_dist(P, Q)
-	cut_overlays()
-	switch(target_dist)
-		if(0 to 1)
-			icon_state = "runed_sense2"
-		if(2 to 8)
-			icon_state = "arrow8"
-		if(9 to 15)
-			icon_state = "arrow7"
-		if(16 to 22)
-			icon_state = "arrow6"
-		if(23 to 29)
-			icon_state = "arrow5"
-		if(30 to 36)
-			icon_state = "arrow4"
-		if(37 to 43)
-			icon_state = "arrow3"
-		if(44 to 50)
-			icon_state = "arrow2"
-		if(51 to 57)
-			icon_state = "arrow1"
-		if(58 to 64)
-			icon_state = "arrow0"
-		if(65 to 400)
-			icon_state = "arrow"
-	var/difference = target_angle - angle
-	angle = target_angle
-	if(!difference)
-		return
-	var/matrix/final = matrix(transform)
-	final.Turn(difference)
-	animate(src, transform = final, time = 5, loop = 0)
-
 
 //GUARDIANS
 
@@ -601,94 +495,30 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 /atom/movable/screen/alert/nocell
 	name = "Missing Power Cell"
 	desc = "Unit has no power cell. No modules available until a power cell is reinstalled. Robotics may provide assistance."
-	icon_state = "no_cell"
+	icon_state = "nocell"
 
 /atom/movable/screen/alert/emptycell
 	name = "Out of Power"
 	desc = "Unit's power cell has no charge remaining. No modules available until power cell is recharged. \
-		Recharging stations are available in robotics, the dormitory bathrooms, and the AI satellite."
-	icon_state = "empty_cell"
+Recharging stations are available in robotics, the dormitory bathrooms, and the AI satellite."
+	icon_state = "emptycell"
 
 /atom/movable/screen/alert/lowcell
 	name = "Low Charge"
 	desc = "Unit's power cell is running low. Recharging stations are available in robotics, the dormitory bathrooms, and the AI satellite."
-	icon_state = "low_cell"
+	icon_state = "lowcell"
 
 //Ethereal
 
-/atom/movable/screen/alert/lowcell/ethereal
+/atom/movable/screen/alert/etherealcharge
 	name = "Low Blood Charge"
-	desc = "Your charge is running low, find a source of energy! Use a recharging station, eat some Ethereal-friendly food, or syphon some power from lights, a power cell, or an APC (done by right clicking on combat mode)."
-
-/atom/movable/screen/alert/emptycell/ethereal
-	name = "No Blood Charge"
-	desc = "You are out of juice, find a source of energy! Use a recharging station, eat some Ethereal-friendly food, or syphon some power from lights, a power cell, or an APC (done by right clicking on combat mode)."
+	desc = "Your blood's electric charge is running low, find a source of charge for your blood. Use a recharging station found in robotics or the dormitory bathrooms, or eat some Ethereal-friendly food."
+	icon_state = "etherealcharge"
 
 /atom/movable/screen/alert/ethereal_overcharge
 	name = "Blood Overcharge"
-	desc = "Your charge is running dangerously high, find an outlet for your energy! Right click an APC while not in combat mode."
-	icon_state = "cell_overcharge"
-
-//MODsuit unique
-/atom/movable/screen/alert/nocore
-	name = "Missing Core"
-	desc = "Unit has no core. No modules available until a core is reinstalled. Robotics may provide assistance."
-	icon_state = "no_cell"
-
-/atom/movable/screen/alert/emptycell/plasma
-	name = "Out of Power"
-	desc = "Unit's plasma core has no charge remaining. No modules available until plasma core is recharged. \
-		Unit can be refilled through plasma ore."
-
-/atom/movable/screen/alert/lowcell/plasma
-	name = "Low Charge"
-	desc = "Unit's plasma core is running low. Unit can be refilled through plasma ore."
-
-//Need to cover all use cases - emag, illegal upgrade module, malf AI hack, traitor cyborg
-/atom/movable/screen/alert/hacked
-	name = "Hacked"
-	desc = "Hazardous non-standard equipment detected. Please ensure any usage of this equipment is in line with unit's laws, if any."
-	icon_state = "hacked"
-
-/atom/movable/screen/alert/locked
-	name = "Locked Down"
-	desc = "Unit has been remotely locked down. Usage of a Robotics Control Console like the one in the Research Director's \
-office by your AI master or any qualified human may resolve this matter. Robotics may provide further assistance if necessary."
-	icon_state = "locked"
-
-/atom/movable/screen/alert/newlaw
-	name = "Law Update"
-	desc = "Laws have potentially been uploaded to or removed from this unit. Please be aware of any changes \
-so as to remain in compliance with the most up-to-date laws."
-	icon_state = "newlaw"
-	timeout = 300
-
-/atom/movable/screen/alert/hackingapc
-	name = "Hacking APC"
-	desc = "An Area Power Controller is being hacked. When the process is \
-		complete, you will have exclusive control of it, and you will gain \
-		additional processing time to unlock more malfunction abilities."
-	icon_state = "hackingapc"
-	timeout = 600
-	var/atom/target = null
-
-/atom/movable/screen/alert/hackingapc/Click()
-	. = ..()
-	if(!.)
-		return
-
-	var/mob/living/silicon/ai/ai_owner = owner
-	var/turf/target_turf = get_turf(target)
-	if(target_turf)
-		ai_owner.eyeobj.setLoc(target_turf)
-
-//MECHS
-
-/atom/movable/screen/alert/low_mech_integrity
-	name = "Mech Damaged"
-	desc = "Mech integrity is low."
-	icon_state = "low_mech_integrity"
-
+	desc = "Your blood's electric charge is becoming dangerously high, find an outlet for your energy. Use Grab Intent on an APC to channel your energy into it."
+	icon_state = "ethereal_overcharge"
 
 //GHOSTS
 //TODO: expand this system to replace the pollCandidates/CheckAntagonist/"choose quickly"/etc Yes/No messages
@@ -699,11 +529,10 @@ so as to remain in compliance with the most up-to-date laws."
 	timeout = 300
 
 /atom/movable/screen/alert/notify_cloning/Click()
-	. = ..()
-	if(!.)
+	if(!usr || !usr.client || usr != owner)
 		return
-	var/mob/dead/observer/dead_owner = owner
-	dead_owner.reenter_corpse()
+	var/mob/dead/observer/G = usr
+	G.reenter_corpse()
 
 /atom/movable/screen/alert/notify_action
 	name = "Body created"
@@ -750,31 +579,20 @@ so as to remain in compliance with the most up-to-date laws."
 	click_master = FALSE
 
 /atom/movable/screen/alert/restrained/Click()
-	. = ..()
-	if(!.)
+	var/mob/living/L = usr
+	if(!istype(L) || !L.can_resist() || L != owner)
 		return
-
-	var/mob/living/living_owner = owner
-
-	if(!living_owner.can_resist())
-		return
-
-	living_owner.changeNext_move(CLICK_CD_RESIST)
-	if((living_owner.mobility_flags & MOBILITY_MOVE) && (living_owner.last_special <= world.time))
-		return living_owner.resist_restraints()
+	L.changeNext_move(CLICK_CD_RESIST)
+	if((L.mobility_flags & MOBILITY_MOVE) && (L.last_special <= world.time))
+		return L.resist_restraints()
 
 /atom/movable/screen/alert/buckled/Click()
-	. = ..()
-	if(!.)
+	var/mob/living/L = usr
+	if(!istype(L) || !L.can_resist() || L != owner)
 		return
-
-	var/mob/living/living_owner = owner
-
-	if(!living_owner.can_resist())
-		return
-	living_owner.changeNext_move(CLICK_CD_RESIST)
-	if(living_owner.last_special <= world.time)
-		return living_owner.resist_buckle()
+	L.changeNext_move(CLICK_CD_RESIST)
+	if(L.last_special <= world.time)
+		return L.resist_buckle()
 
 /atom/movable/screen/alert/shoes/untied
 	name = "Untied Shoes"
@@ -785,19 +603,12 @@ so as to remain in compliance with the most up-to-date laws."
 	name = "Knotted Shoes"
 	desc = "Someone tied your shoelaces together! Click the alert or your shoes to undo the knot."
 	icon_state = "shoealert"
-
 /atom/movable/screen/alert/shoes/Click()
-	. = ..()
-	if(!.)
+	var/mob/living/carbon/C = usr
+	if(!istype(C) || !C.can_resist() || C != owner || !C.shoes)
 		return
-
-	var/mob/living/carbon/carbon_owner = owner
-
-	if(!carbon_owner.can_resist() || !carbon_owner.shoes)
-		return
-
-	carbon_owner.changeNext_move(CLICK_CD_RESIST)
-	carbon_owner.shoes.handle_tying(carbon_owner)
+	C.changeNext_move(CLICK_CD_RESIST)
+	C.shoes.handle_tying(C)
 
 // PRIVATE = only edit, use, or override these if you're editing the system as a whole
 

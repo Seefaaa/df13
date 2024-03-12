@@ -21,7 +21,7 @@
 
 /// -- Hydroponics tray defines. --
 /// Macro for updating the tray name.
-#define TRAY_NAME_UPDATE name = myseed ? "[initial(name)] ([myseed.plantname])" : initial(name)
+#define TRAY_NAME_UPDATE name = myplant ? "[initial(name)] ([initial(myplant.name)])" : initial(name)
 ///  Base amount of nutrients a tray can old.
 #define STATIC_NUTRIENT_CAPACITY 10
 /// Maximum amount of toxins a tray can reach.
@@ -32,8 +32,12 @@
 #define MAX_TRAY_WEEDS 10
 /// Minumum plant health required for gene shears.
 #define GENE_SHEAR_MIN_HEALTH 15
-/// Minumum plant endurance required to lock a mutation with a somatoray.
-#define FLORA_GUN_MIN_ENDURANCE 20
+
+/// -- Plant analyzer scanning modes. --
+/// Stats mode - displays a plant's growth statistics (potency, yield, traits, etc.).
+#define PLANT_SCANMODE_STATS		0
+/// Chemical mode - displays a plant's reagents (either reagent genes or chemical contents).
+#define PLANT_SCANMODE_CHEMICALS 	1
 
 /// -- Flags for genes --
 /// Plant genes that can be removed via gene shears.
@@ -42,6 +46,8 @@
 #define PLANT_GENE_MUTATABLE (1<<1)
 /// Plant genes that can be graftable. Used in formatting text, as they need to be set to be graftable anyways.
 #define PLANT_GENE_GRAFTABLE (1<<2)
+// this flag is used to tell the DNA modifier if a plant gene cannot be extracted.
+#define PLANT_GENE_EXTRACTABLE	(1<<3)
 
 /// -- Flags for seeds. --
 /// Allows a plant to wild mutate (mutate on haravest) at a certain instability.
@@ -70,13 +76,3 @@
 #define GLOWSHROOM_SPREAD_BASE_DIMINISH_FACTOR 10
 #define GLOWSHROOM_SPREAD_DIMINISH_FACTOR_PER_GLOWSHROOM 0.2
 #define GLOWSHROOM_BASE_INTEGRITY 60
-
-// obj/machinery/hydroponics/var/plant_status defines
-
-#define HYDROTRAY_NO_PLANT "missing"
-#define HYDROTRAY_PLANT_DEAD "dead"
-#define HYDROTRAY_PLANT_GROWING "growing"
-#define HYDROTRAY_PLANT_HARVESTABLE "harvestable"
-
-/// A list of possible egg laying descriptions
-#define EGG_LAYING_MESSAGES list("lays an egg.","squats down and croons.","begins making a huge racket.","begins clucking raucously.")

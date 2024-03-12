@@ -1,17 +1,16 @@
 // Tool types, if you add new ones please add them to /obj/item/debug/omnitool in code/game/objects/items/debug_items.dm
 #define TOOL_CROWBAR "crowbar"
-#define TOOL_MULTITOOL "multitool"
 #define TOOL_SCREWDRIVER "screwdriver"
-#define TOOL_WIRECUTTER "wirecutter"
 #define TOOL_WRENCH "wrench"
-#define TOOL_WELDER "welder"
 #define TOOL_ANALYZER "analyzer"
 #define TOOL_MINING "mining"
 #define TOOL_SHOVEL "shovel"
+#define TOOL_AXE "axe"
+#define TOOL_HOE "hoe"
+#define TOOL_BUILDER_HAMMER "builder_hammer"
 #define TOOL_RETRACTOR "retractor"
 #define TOOL_HEMOSTAT "hemostat"
 #define TOOL_CAUTERY "cautery"
-#define TOOL_DRILL "drill"
 #define TOOL_SCALPEL "scalpel"
 #define TOOL_SAW "saw"
 #define TOOL_BONESET "bonesetter"
@@ -34,3 +33,7 @@
 
 /// When [TOOL_ACT_TOOLTYPE_SUCCESS] or [TOOL_ACT_SIGNAL_BLOCKING] are set
 #define TOOL_ACT_MELEE_CHAIN_BLOCKING (TOOL_ACT_TOOLTYPE_SUCCESS | TOOL_ACT_SIGNAL_BLOCKING)
+
+
+//redfoks
+#define TOOL_MECHCOMP "mechcomp"

@@ -119,8 +119,6 @@ SUBSYSTEM_DEF(tgui)
 	for(var/datum/tgui/ui in user.tgui_open_uis)
 		if(ui.window && ui.window.id == window_id)
 			ui.close(can_be_suspended = FALSE)
-	// Unset machine just to be sure.
-	user.unset_machine()
 	// Close window directly just to be sure.
 	user << browse(null, "window=[window_id]")
 
@@ -176,6 +174,18 @@ SUBSYSTEM_DEF(tgui)
 		if(ui.user == user)
 			return ui
 	return null
+
+/**
+ * public
+ *
+ * Gets all open UIs on a src object
+ */
+/datum/controller/subsystem/tgui/proc/get_all_open_uis(datum/src_object)
+	var/key = "[REF(src_object)]"
+	// No UIs opened for this src_object
+	if(isnull(open_uis_by_src[key]) || !istype(open_uis_by_src[key], /list))
+		return list()
+	return open_uis_by_src[key]
 
 /**
  * public

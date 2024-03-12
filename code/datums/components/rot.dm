@@ -36,7 +36,7 @@
 	scaling_delay = scaling
 	strength = severity
 
-	RegisterSignal(parent, list(COMSIG_ATOM_HULK_ATTACK, COMSIG_ATOM_ATTACK_ANIMAL, COMSIG_ATOM_ATTACK_HAND), .proc/rot_react_touch)
+	RegisterSignal(parent, list(COMSIG_ATOM_ATTACK_ANIMAL, COMSIG_ATOM_ATTACK_HAND), .proc/rot_react_touch)
 	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, .proc/rot_hit_react)
 	if(ismovable(parent))
 		AddComponent(/datum/component/connect_loc_behalf, parent, loc_connections)
@@ -87,16 +87,15 @@
 
 /datum/component/rot/proc/check_reagent(datum/reagents/source, datum/reagent/modified)
 	SIGNAL_HANDLER
-	if(modified && !istype(modified, /datum/reagent/toxin/formaldehyde) && !istype(modified, /datum/reagent/cryostylane))
+	if(modified)
 		return
-	if(source.has_reagent(/datum/reagent/toxin/formaldehyde, 15) || source.has_reagent(/datum/reagent/cryostylane))
-		rest(REAGENT_BLOCKER)
-		return
+	// if(FALSE) // replaced with false cause the reagents that block it were removed
+	// 	rest(REAGENT_BLOCKER)
+	// 	return
 	start_up(REAGENT_BLOCKER)
 
 /datum/component/rot/proc/check_for_temperature(datum/source, old_temp, new_temp)
-	SIGNAL_HANDLER
-	if(new_temp <= T0C-10)
+	if(new_temp <= 273.15-10)
 		rest(TEMPERATURE_BLOCKER)
 		return
 	start_up(TEMPERATURE_BLOCKER)
@@ -127,12 +126,6 @@
 	if(!isliving(react_to))
 		return
 
-	// Don't infect if you're chilled (I'd like to link this with the signals, but I can't come up with a good way to pull it off)
-	var/atom/atom_parent = parent
-	var/datum/gas_mixture/our_mix = atom_parent.return_air()
-	if(our_mix?.temperature <= T0C-10)
-		return
-
 	if(!active)
 		return
 
@@ -145,11 +138,6 @@
 
 	if(!prob(strength * 1 * time_scaling))
 		return
-
-	//We're running just under the "worst disease", since we don't want these to be too strong
-	var/datum/disease/advance/random/rand_disease = new(rand(4 * strength * time_scaling), rand(strength * 5 * time_scaling))
-	rand_disease.name = "Unknown"
-	react_to.ContactContractDisease(rand_disease, target_zone)
 
 #undef REAGENT_BLOCKER
 #undef TEMPERATURE_BLOCKER

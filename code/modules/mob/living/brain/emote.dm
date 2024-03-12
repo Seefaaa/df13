@@ -5,7 +5,7 @@
 /datum/emote/brain/can_run_emote(mob/user, status_check = TRUE, intentional)
 	. = ..()
 	var/mob/living/brain/B = user
-	if(!istype(B) || (!(B.container && istype(B.container, /obj/item/mmi))))
+	if(!istype(B))
 		return FALSE
 
 /datum/emote/brain/alarm
@@ -15,7 +15,7 @@
 
 /datum/emote/brain/alert
 	key = "alert"
-	message = "lets out a distressed noise."
+	message = "lets out a distressed sound."
 	emote_type = EMOTE_AUDIBLE
 
 /datum/emote/brain/flash

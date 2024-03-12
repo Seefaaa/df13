@@ -1,7 +1,7 @@
-GLOBAL_LIST_EMPTY(admin_ranks) //list of all admin_rank datums
+GLOBAL_LIST_EMPTY(admin_ranks)								//list of all admin_rank datums
 GLOBAL_PROTECT(admin_ranks)
 
-GLOBAL_LIST_EMPTY(protected_ranks) //admin ranks loaded from txt
+GLOBAL_LIST_EMPTY(protected_ranks)								//admin ranks loaded from txt
 GLOBAL_PROTECT(protected_ranks)
 
 /datum/admin_rank
@@ -87,6 +87,10 @@ GLOBAL_PROTECT(protected_ranks)
 				flag = R_AUTOADMIN
 			if("DBRANKS")
 				flag = R_DBRANKS
+			if("SECURED")
+				flag = R_SECURED
+			if("SDQL")
+				flag = R_SDQL
 			if("@")
 				if(previous_rank)
 					switch(group_count)
@@ -101,10 +105,10 @@ GLOBAL_PROTECT(protected_ranks)
 		switch(group_count)
 			if(1)
 				rights |= flag
-				include_rights |= flag
+				include_rights	|= flag
 			if(2)
 				rights &= ~flag
-				exclude_rights |= flag
+				exclude_rights	|= flag
 			if(3)
 				can_edit_rights |= flag
 

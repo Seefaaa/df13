@@ -1,5 +1,5 @@
 SUBSYSTEM_DEF(overlays)
-	name = "Overlay"
+	name = "Overlays"
 	flags = SS_TICKER
 	wait = 1
 	priority = FIRE_PRIORITY_OVERLAYS

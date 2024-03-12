@@ -5,27 +5,31 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="Cache-Control" content="max-age=15; must-revalidate" />
-<link id="goonStyle" rel="stylesheet" type="text/css" href="browserOutput_white.css" media="all" />
+<link id="goonStyle" rel="stylesheet" type="text/css" href="browserOutput.css" media="all" />
 <style>
 	body {
 		font-family: Verdana, Geneva, Tahoma, sans-serif;
-		font-size: 12px !important;
+		font-size: 13px !important;
 		margin: 0 !important;
 		padding: 0 !important;
 		overflow-x: hidden;
-		overflow-y: scroll;
+		background: #ffffff;
+		color: #000;
+
+		scrollbar-face-color: #242424;
+		scrollbar-arrow-color: #242424;
+		scrollbar-track-color: #030200;
+		scrollbar-3dlight-color: #080808;
+		scrollbar-darkshadow-Color: #080808;
+	}
+
+	::-webkit-scrollbar {
+		width: 4px;
 	}
 
 	body.dark {
-		background-color: #131313;
-		color: #b2c4dd;
-		scrollbar-base-color: #1c1c1c;
-		scrollbar-face-color: #3b3b3b;
-		scrollbar-3dlight-color: #252525;
-		scrollbar-highlight-color: #252525;
-		scrollbar-track-color: #1c1c1c;
-		scrollbar-arrow-color: #929292;
-		scrollbar-shadow-color: #3b3b3b;
+		background-color: #030200;
+		color: #aaaaaa;
 	}
 
 	#menu {
@@ -35,12 +39,12 @@
 		z-index: 100;
 	}
 
-	.dark #menu {
-		background-color: #202020;
+	.dark #menu, .dark #menu {
+		background-color: #050505;
 	}
 
 	#statcontent {
-		padding: 7px 7px 7px 7px;
+		padding: 2px 2px 2px 2px;
 	}
 
 	a {
@@ -49,7 +53,7 @@
 	}
 
 	.dark a {
-		color: #b2c4dd;
+		color: #d6d6d6;
 	}
 
 	a:hover, .dark a:hover {
@@ -86,29 +90,30 @@
 		align-items: flex-start;
 		overflow-x: hidden;
 		white-space: pre-wrap;
-		padding: 0 4px;
+		padding: 0 2px;
 	}
 
 	.button {
 		background-color: #dfdfdf;
-		border: 1px solid #cecece;
-		border-bottom-width: 2px;
+		border-color: #090906;
+		border-width: 1px;
+		border-style: solid;
 		color: rgba(0, 0, 0, 0.7);
-		padding: 6px 4px 4px;
+		padding: 0;
 		text-align: center;
 		text-decoration: none;
-		font-size: 12px;
-		margin: 0;
+		font-size: 13px;
+		margin: 0 1px;
 		cursor: pointer;
-		transition-duration: 100ms;
+		transition-duration: 0.25s;
 		order: 3;
-		min-width: 40px;
+		min-width: 0px;
 	}
 
 	.dark button {
-		background-color: #222222;
-		border-color: #343434;
-		color: rgba(255, 255, 255, 0.5);
+		background-color: #000000;
+		border-color: #090906;
+		color: #dddd88;
 	}
 
 	.button:hover {
@@ -117,25 +122,27 @@
 	}
 
 	.dark button:hover {
-		background-color:  #2e2e2e;
+		background-color:  #d6d6d6;
+		color: #080808;
 	}
 
 	.button:active, .button.active {
 		background-color: #ffffff;
 		color: black;
-		border-top-color: #cecece;
-		border-left-color: #cecece;
-		border-right-color: #cecece;
-		border-bottom-color: #ffffff;
+		font-weight: bold;
+		border-top: 1px solid #cecece;
+		border-left: 1px solid #cecece;
+		border-right: 1px solid #cecece;
+		border-bottom: 1px solid #ffffff;
 	}
 
 	.dark .button:active, .dark .button.active {
-		background-color: #444444;
-		color: white;
-		border-top-color: #343434;
-		border-left-color: #343434;
-		border-right-color: #343434;
-		border-bottom-color: #ffffff;
+		background-color: #080808;
+		color: #d6d6d6;
+		border-top: 1px solid #090906;
+		border-left: 1px solid #090906;
+		border-right: 1px solid #090906;
+		border-bottom: 1px solid #090906;
 	}
 
 	.grid-container {
@@ -146,34 +153,19 @@
 	.grid-item {
 		position: relative;
 		display: inline-block;
-		width: 100%;
-		box-sizing: border-box;
-		overflow: visible;
-		padding: 3px 2px;
+		width: 140px;
+		white-space: pre-wrap;
+		padding: 3px 3px;
+		margin: 1px;
 		text-decoration: none;
+		overflow: visible;
+		border: 1px solid rgba(0, 0, 0, 0.5);
+		border-radius: 3px;
 	}
 
-	@media only screen and (min-width: 300px) {
+	@media only screen and (min-width: 620px) {
 		.grid-item {
-			width: 50%;
-		}
-	}
-
-	@media only screen and (min-width: 430px) {
-		.grid-item {
-			width: 33%;
-		}
-	}
-
-	@media only screen and (min-width: 560px) {
-		.grid-item {
-			width: 25%;
-		}
-	}
-
-	@media only screen and (min-width: 770px) {
-		.grid-item {
-			width: 20%;
+			width: 195px;
 		}
 	}
 
@@ -182,14 +174,17 @@
 	}
 
 	.grid-item:hover .grid-item-text {
+		background: #000;
 		width: auto;
-		text-decoration: underline;
+	}
+
+	.dark .grid-item:hover .grid-item-text {
+		background: #9a9a29;
 	}
 
 	.grid-item-text {
 		display: inline-block;
 		width: 100%;
-		background-color: #ffffff;
 		margin: 0 -6px;
 		padding: 0 6px;
 		white-space: nowrap;
@@ -198,8 +193,21 @@
 		pointer-events: none;
 	}
 
-	.dark .grid-item-text {
-		background-color: #131313;
+	.grid-item:hover {
+		background: #000;
+		color: #fff;
+		text-decoration: none;
+	}
+
+	.dark .grid-item {
+		background: #030200;
+		border: 1px solid #090906;
+	}
+
+	.dark .grid-item:hover {
+		background: #9a9a29;
+		color: #080808;
+		text-decoration: none;
 	}
 
 	.link {
@@ -210,12 +218,11 @@
 		color: black;
 		text-decoration: none;
 		cursor: pointer;
-		font-size: 13px;
 		margin: 2px 2px;
 	}
 
 	.dark .link {
-		color: #abc6ec;
+		color: #d6d6d6;
 	}
 
 	.link:hover {
@@ -320,7 +327,6 @@ var menu = document.getElementById('menu');
 var under_menu = document.getElementById('under_menu');
 var statcontentdiv = document.getElementById('statcontent');
 var storedimages = [];
-var split_admin_tabs = false;
 
 var connected = false;
 var commandQueue = [];
@@ -361,28 +367,9 @@ function connected_to_server() {
 	commandQueue = [];
 }
 
-function update_split_admin_tabs(status) {
-	status = (status == true);
-
-	if (split_admin_tabs !== status) {
-		if (split_admin_tabs === true) {
-			removeStatusTab("Events");
-			removeStatusTab("Fun");
-			removeStatusTab("Game");
-		}
-		update_verbs();
-	}
-	split_admin_tabs = status;
-}
-
 function createStatusTab(name) {
-	if (name.indexOf(".") != -1) {
-		var splitName = name.split(".");
-		if (split_admin_tabs && splitName[0] === "Admin")
-			name = splitName[1];
-		else
-			name = splitName[0];
-	}
+	if (name.indexOf(".") != -1)
+		name = name.split(".")[0];
 	if(document.getElementById(name) || name.trim() == "")
 		return;
 	if(!verb_tabs.includes(name) && !permanent_tabs.includes(name))
@@ -395,6 +382,7 @@ function createStatusTab(name) {
 	B.id = name;
 	B[textContentKey] = name;
 	B.className = "button";
+	B.innerHTML = "<img src=\"" + get_icon_for_tab_by_name(name) + "\">";
 	//ORDERING ALPHABETICALLY
 	B.style.order = name.charCodeAt(0);
 	if(name == "Status" || name == "MC")
@@ -403,6 +391,39 @@ function createStatusTab(name) {
 	menu.appendChild(B);
 	SendTabToByond(name);
 	under_menu.style.height = menu.clientHeight + 'px';
+}
+
+function get_icon_for_tab_by_name(name) {
+	switch(name) {
+		case 'Status':
+			return 'https://cdn.discordapp.com/attachments/891936642380759050/922266065113858118/test.png';
+		case 'IC':
+			return 'https://cdn.discordapp.com/attachments/891936642380759050/922276501490110494/ic.png';
+		case 'OOC':
+			return 'https://cdn.discordapp.com/attachments/891936642380759050/922276501666275428/ooc.png';
+		case 'Settings':
+			return 'https://media.discordapp.net/attachments/891936642380759050/922270099711352892/cog.png';
+		case 'Obj':
+			return 'https://media.discordapp.net/attachments/891936642380759050/922271046613225492/obj.png';
+		case 'Special':
+			return 'https://cdn.discordapp.com/attachments/891936642380759050/922302559752945664/other.png';
+		case 'Ghost':
+			return 'https://cdn.discordapp.com/attachments/891936642380759050/922273417649070081/ghost.png';
+		case 'Admin':
+			return 'https://cdn.discordapp.com/attachments/891936642380759050/922275501916164186/pidor.png';
+		case 'Debug':
+			return 'https://cdn.discordapp.com/attachments/891936642380759050/922279552418476052/debug.png';
+		case 'Server':
+			return 'https://cdn.discordapp.com/attachments/891936642380759050/922304005646995466/MC.png';
+		case 'Tickets':
+			return 'https://cdn.discordapp.com/attachments/891936642380759050/922303360445579264/tickets.png';
+		case 'MC':
+			return 'https://cdn.discordapp.com/attachments/891936642380759050/922304005646995466/MC.png';
+		case 'Magic':
+			return 'https://cdn.discordapp.com/attachments/586216606234050566/974410018185166848/magic.png';
+		default:
+			return 'https://cdn.discordapp.com/attachments/891936642380759050/922302559752945664/other.png';
+	}
 }
 
 function removeStatusTab(name) {
@@ -473,14 +494,7 @@ function check_verbs() {
 }
 
 function verbs_cat_check(cat) {
-	var tabCat = cat;
-	if (cat.indexOf(".") != -1) {
-		var splitName = cat.split(".");
-		if (split_admin_tabs && splitName[0] === "Admin")
-			tabCat = splitName[1];
-		else
-			tabCat = splitName[0];
-	}
+	var tabCat = cat.indexOf(".") != -1 ? cat.split(".")[0] : cat;
 	var verbs_in_cat = 0;
 	var verbcat = "";
 	if(!verb_tabs.includes(tabCat)){
@@ -489,14 +503,7 @@ function verbs_cat_check(cat) {
 	}
 	for(var v = 0; v < verbs.length; v++){
 		var part = verbs[v];
-		verbcat = part[0];
-		if (verbcat.indexOf(".") != -1) {
-			var splitName = verbcat.split(".");
-			if (split_admin_tabs && splitName[0] === "Admin")
-				verbcat = splitName[1];
-			else
-				verbcat = splitName[0];
-		}
+		verbcat = part[0].indexOf(".") != -1 ? part[0].split(".")[0] : part[0];
 		if(verbcat != tabCat || verbcat.trim() == ""){
 			continue;
 		}
@@ -537,14 +544,7 @@ function add_verb_list(v) {
 		var part = to_add[i];
 		if(!part[0])
 			continue;
-		var category = part[0];
-		if (category.indexOf(".") != -1) {
-			var splitName = category.split(".");
-			if (split_admin_tabs && splitName[0] === "Admin")
-				category = splitName[1];
-			else
-				category = splitName[0];
-		}
+		var category = part[0].indexOf(".") == -1 ? part[0] : part[0].split(".")[0];
 		if(findVerbindex(part[1], verbs))
 			continue;
 		if(verb_tabs.includes(category)){
@@ -638,7 +638,7 @@ function update_mc(global_mc_data, coords_entry) {
 }
 
 function remove_mc() {
-	removeStatusTab("MC");
+	removePermanentTab("MC");
 	if(current_tab == "MC")
 		tab_change("Status");
 }
@@ -716,6 +716,7 @@ function tab_change(tab) {
 		draw_debug();
 	} else if(tab == "Tickets") {
 		draw_tickets();
+	} else if(tab == "Guests") {
 		draw_interviews();
 	} else if(tab == "SDQL2") {
 		draw_sdql2();
@@ -751,14 +752,6 @@ function draw_debug() {
 	var table1 = document.createElement("table");
 	for(var i=0; i < verb_tabs.length ; i++) {
 		var part = verb_tabs[i];
-		// Hide subgroups except admin subgroups if they are split
-		if (verb_tabs[i].lastIndexOf(".") != -1) {
-			var splitName = verb_tabs[i].split(".");
-			if (split_admin_tabs && splitName[0] === "Admin")
-				part = splitName[1];
-			else
-				continue;
-		}
 		var tr = document.createElement("tr");
 		var td1 = document.createElement("td");
 		td1[textContentKey] = part;
@@ -858,7 +851,11 @@ function update_tickets(T){
 }
 function update_interviews(I){
 	interviewManager = JSON.parse(I);
-	if(current_tab == "Tickets")
+	if(!verb_tabs.includes("Guests")) {
+		verb_tabs.push("Guests");
+		addPermanentTab("Guests");
+	}
+	if(current_tab == "Guests")
 		draw_interviews();
 }
 function update_sdql2(S) {
@@ -894,6 +891,9 @@ function remove_tickets() {
 function remove_interviews() {
 	if(tickets) {
 		tickets = [];
+		removePermanentTab("Guests");
+		if(current_tab == "Guests")
+			tab_change("Status");
 	}
 	checkStatusTab();
 }
@@ -911,6 +911,7 @@ function add_admin_tabs(ht) {
 	href_token = ht;
 	addPermanentTab("MC");
 	addPermanentTab("Tickets");
+	// addPermanentTab("Guests");
 }
 function create_listedturf(TN) {
 	remove_listedturf(); // remove the last one if we had one
@@ -1061,10 +1062,8 @@ function draw_tickets() {
 }
 
 function draw_interviews() {
+	statcontentdiv[textContentKey] = "";
 	var body = document.createElement("div");
-	var header = document.createElement("h3");
-	header[textContentKey] = "Interviews";
-	body.appendChild(header);
 	var manDiv = document.createElement("div");
 	manDiv.className = "interview_panel_controls"
 	var manLink = document.createElement("a");
@@ -1148,20 +1147,10 @@ function draw_verbs(cat){
 	var additions = {}; // additional sub-categories to be rendered
 	table.className = "grid-container";
 	sortVerbs();
-	if (split_admin_tabs && cat.lastIndexOf(".") != -1) {
-		var splitName = cat.split(".");
-		if (splitName[0] === "Admin")
-			cat = splitName[1];
-	}
 	verbs.reverse(); // sort verbs backwards before we draw
 	for (var i = 0; i < verbs.length; ++i) {
 		var part = verbs[i];
 		var name = part[0];
-		if (split_admin_tabs && name.lastIndexOf(".") != -1) {
-			var splitName = name.split(".");
-			if (splitName[0] === "Admin")
-				name = splitName[1];
-		}
 		var command = part[1];
 
 		if (command && name.lastIndexOf(cat, 0) != -1 && (name.length == cat.length || name.charAt(cat.length) == ".")) {
@@ -1215,7 +1204,7 @@ function set_style_sheet(sheet) {
 		var currentSheet = document.getElementById("goonStyle");
 		currentSheet.parentElement.removeChild(currentSheet);
 	}
-	var head = document.getElementsByTagName('head')[0];
+	var head  = document.getElementsByTagName('head')[0];
 	var sheetElement = document.createElement("link");
 	sheetElement.id = "goonStyle";
 	sheetElement.rel = "stylesheet";

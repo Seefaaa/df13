@@ -59,9 +59,9 @@ const loggingMiddleware = store => next => action => {
 };
 
 /**
- * Creates a function, which can be assigned to window.__augmentStack__
- * to augment reported stack traces with useful data for debugging.
- */
+  * Creates a function, which can be assigned to window.__augmentStack__
+  * to augment reported stack traces with useful data for debugging.
+  */
 const createStackAugmentor = store => (stack, error) => {
   if (!error) {
     error = new Error(stack.split('\n')[0]);
@@ -84,8 +84,8 @@ const createStackAugmentor = store => (stack, error) => {
 };
 
 /**
- * Store provider for Inferno apps.
- */
+  * Store provider for Inferno apps.
+  */
 export class StoreProvider extends Component {
   getChildContext() {
     const { store } = this.props;

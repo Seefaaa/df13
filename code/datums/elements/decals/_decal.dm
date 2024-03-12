@@ -82,7 +82,7 @@
 
 	RegisterSignal(target,COMSIG_ATOM_UPDATE_OVERLAYS,.proc/apply_overlay, TRUE)
 	if(target.flags_1 & INITIALIZED_1)
-		target.update_appearance(UPDATE_OVERLAYS) //could use some queuing here now maybe.
+		target.update_icon() //could use some queuing here now maybe.
 	else
 		RegisterSignal(target,COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZE,.proc/late_update_icon, TRUE)
 	if(isitem(target))
@@ -96,7 +96,6 @@
 	if(_description)
 		RegisterSignal(target, COMSIG_PARENT_EXAMINE, .proc/examine,TRUE)
 
-	RegisterSignal(target, COMSIG_TURF_ON_SHUTTLE_MOVE, .proc/shuttle_move_react,TRUE)
 
 /**
  * ## generate_appearance
@@ -117,9 +116,9 @@
 	return TRUE
 
 /datum/element/decal/Detach(atom/source)
-	UnregisterSignal(source, list(COMSIG_ATOM_DIR_CHANGE, COMSIG_COMPONENT_CLEAN_ACT, COMSIG_PARENT_EXAMINE, COMSIG_ATOM_UPDATE_OVERLAYS, COMSIG_TURF_ON_SHUTTLE_MOVE, COMSIG_ATOM_SMOOTHED_ICON))
+	UnregisterSignal(source, list(COMSIG_ATOM_DIR_CHANGE, COMSIG_COMPONENT_CLEAN_ACT, COMSIG_PARENT_EXAMINE, COMSIG_ATOM_UPDATE_OVERLAYS, COMSIG_ATOM_SMOOTHED_ICON))
 	SSdcs.UnregisterSignal(source, COMSIG_ATOM_DIR_CHANGE)
-	source.update_appearance(UPDATE_OVERLAYS)
+	source.update_icon()
 	if(isitem(source))
 		INVOKE_ASYNC(source, /obj/item/.proc/update_slot_icon)
 	SEND_SIGNAL(source, COMSIG_TURF_DECAL_DETACHED, description, cleanable, directional, pic)
@@ -129,7 +128,7 @@
 	SIGNAL_HANDLER
 
 	if(source && istype(source))
-		source.update_appearance(UPDATE_OVERLAYS)
+		source.update_icon()
 		UnregisterSignal(source, COMSIG_ATOM_AFTER_SUCCESSFUL_INITIALIZE)
 
 
@@ -149,15 +148,7 @@
 /datum/element/decal/proc/examine(datum/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 
-	examine_list += description
-
-/datum/element/decal/proc/shuttle_move_react(datum/source, turf/new_turf)
-	SIGNAL_HANDLER
-
-	if(new_turf == source)
-		return
-	Detach(source)
-	new_turf.AddElement(type, pic.icon, base_icon_state, directional, pic.plane, pic.layer, pic.alpha, pic.color, smoothing, cleanable, description)
+	examine_list += "\n" + description
 
 /**
  * Reacts to the source atom smoothing.

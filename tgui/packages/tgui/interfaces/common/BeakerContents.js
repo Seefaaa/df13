@@ -6,7 +6,7 @@ export const BeakerContents = props => {
     <Box>
       {!beakerLoaded && (
         <Box color="label">
-          No beaker loaded.
+          No beaker.
         </Box>
       ) || beakerContents.length === 0 && (
         <Box color="label">
@@ -17,8 +17,8 @@ export const BeakerContents = props => {
         <Box key={chemical.name} color="label">
           <AnimatedNumber
             initial={0}
-            value={chemical.volume} /> 
-          {" units of "+chemical.name}
+            value={chemical.volume} />
+          {" units "+chemical.name}
         </Box>
       ))}
     </Box>

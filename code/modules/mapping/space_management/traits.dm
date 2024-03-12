@@ -51,7 +51,7 @@
 
 /// Attempt to get the turf below the provided one according to Z traits
 /datum/controller/subsystem/mapping/proc/get_turf_below(turf/T)
-	if (!T)
+	if (!T || !istype(T))
 		return
 	var/offset = level_trait(T.z, ZTRAIT_DOWN)
 	if (!offset)
@@ -60,7 +60,7 @@
 
 /// Attempt to get the turf above the provided one according to Z traits
 /datum/controller/subsystem/mapping/proc/get_turf_above(turf/T)
-	if (!T)
+	if (!T || !istype(T))
 		return
 	var/offset = level_trait(T.z, ZTRAIT_UP)
 	if (!offset)
@@ -69,5 +69,5 @@
 
 /// Prefer not to use this one too often
 /datum/controller/subsystem/mapping/proc/get_station_center()
-	var/station_z = levels_by_trait(ZTRAIT_STATION)[1]
+	var/station_z = levels_by_trait(ZTRAIT_FORTRESS)[1]
 	return locate(round(world.maxx * 0.5, 1), round(world.maxy * 0.5, 1), station_z)

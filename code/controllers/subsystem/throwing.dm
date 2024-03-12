@@ -41,51 +41,28 @@ SUBSYSTEM_DEF(throwing)
 	currentrun = null
 
 /datum/thrownthing
-	///Defines the atom that has been thrown (Objects and Mobs, mostly.)
 	var/atom/movable/thrownthing
-	///Weakref to the original intended target of the throw, to prevent hardDels
 	var/datum/weakref/initial_target
-	///The turf that the target was on, if it's not a turf itself.
 	var/turf/target_turf
-	///If the target happens to be a carbon and that carbon has a body zone aimed at, this is carried on here.
 	var/target_zone
-	///The initial direction of the thrower of the thrownthing for building the trajectory of the throw.
 	var/init_dir
-	///The maximum number of turfs that the thrownthing will travel to reach it's target.
 	var/maxrange
-	///The speed of the projectile thrownthing being thrown.
 	var/speed
-	///If a mob is the one who has thrown the object, then it's moved here.
 	var/mob/thrower
-	///A variable that helps in describing objects thrown at an angle, if it should be moved diagonally first or last.
 	var/diagonals_first
-	///Set to TRUE if the throw is exclusively diagonal (45 Degree angle throws for example)
-	var/pure_diagonal
-	///Tracks how far a thrownthing has traveled mid-throw for the purposes of maxrange
 	var/dist_travelled = 0
-	///The start_time obtained via world.time for the purposes of tiles moved/tick.
 	var/start_time
-	///Distance to travel in the X axis/direction.
 	var/dist_x
-	///Distance to travel in the y axis/direction.
 	var/dist_y
-	///The Horizontal direction we're traveling (EAST or WEST)
 	var/dx
-	///The VERTICAL direction we're traveling (NORTH or SOUTH)
 	var/dy
-	///The movement force provided to a given object in transit. More info on these in move_force.dm
 	var/force = MOVE_FORCE_DEFAULT
-	///If the throw is gentle, then the thrownthing is harmless on impact.
 	var/gentle = FALSE
-	///How many tiles that need to be moved in order to travel to the target.
+	var/pure_diagonal
 	var/diagonal_error
-	///If a thrown thing has a callback, it can be invoked here within thrownthing.
 	var/datum/callback/callback
-	///Mainly exists for things that would freeze a thrown object in place, like a timestop'd tile. Or a Tractor Beam.
 	var/paused = FALSE
-	///How long an object has been paused for, to be added to the travel time.
 	var/delayed_time = 0
-	///The last world.time value stored when the thrownthing was moving.
 	var/last_move = 0
 
 
@@ -155,7 +132,7 @@ SUBSYSTEM_DEF(throwing)
 	//calculate how many tiles to move, making up for any missed ticks.
 	var/tilestomove = CEILING(min(((((world.time+world.tick_lag) - start_time + delayed_time) * speed) - (dist_travelled ? dist_travelled : -1)), speed*MAX_TICKS_TO_MAKE_UP) * (world.tick_lag * SSthrowing.wait), 1)
 	while (tilestomove-- > 0)
-		if ((dist_travelled >= maxrange || AM.loc == target_turf) && AM.has_gravity(AM.loc))
+		if ((dist_travelled >= maxrange || AM.loc == target_turf))
 			finalize()
 			return
 
@@ -206,9 +183,6 @@ SUBSYSTEM_DEF(throwing)
 			thrownthing.throw_impact(get_turf(thrownthing), src)  // we haven't hit something yet and we still must, let's hit the ground.
 			if(QDELETED(thrownthing)) //throw_impact can delete things, such as glasses smashing
 				return //deletion should already be handled by on_thrownthing_qdel()
-			thrownthing.newtonian_move(init_dir)
-	else
-		thrownthing.newtonian_move(init_dir)
 
 	if(target)
 		thrownthing.throw_impact(target, src)

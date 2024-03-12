@@ -7,10 +7,10 @@
 	var/question = "Travel back?"
 	var/list/zlevels
 
-/obj/structure/signpost/Initialize(mapload)
+/obj/structure/signpost/Initialize()
 	. = ..()
 	set_light(2)
-	zlevels = SSmapping.levels_by_trait(ZTRAIT_STATION)
+	zlevels = SSmapping.levels_by_trait(ZTRAIT_FORTRESS)
 
 /obj/structure/signpost/interact(mob/user)
 	. = ..()
@@ -33,23 +33,10 @@
 /obj/structure/signpost/attackby(obj/item/W, mob/user, params)
 	return interact(user)
 
-/obj/structure/signpost/attack_paw(mob/user, list/modifiers)
+/obj/structure/signpost/attack_paw(mob/user)
 	return interact(user)
 
-/obj/structure/signpost/attack_hulk(mob/user)
-	return
-
-/obj/structure/signpost/attack_larva(mob/user)
-	return interact(user)
-
-/obj/structure/signpost/attack_robot(mob/user)
-	if (Adjacent(user))
-		return interact(user)
-
-/obj/structure/signpost/attack_slime(mob/user)
-	return interact(user)
-
-/obj/structure/signpost/attack_animal(mob/user, list/modifiers)
+/obj/structure/signpost/attack_animal(mob/user)
 	return interact(user)
 
 /obj/structure/signpost/salvation
@@ -63,11 +50,11 @@
 		exit the area."
 	question = "Leave? You might never come back."
 
-/obj/structure/signpost/exit/Initialize(mapload)
+/obj/structure/signpost/exit/Initialize()
 	. = ..()
 	zlevels = list()
 	for(var/i in 1 to world.maxz)
 		zlevels += i
-	zlevels -= SSmapping.levels_by_trait(ZTRAIT_CENTCOM) // no easy victory, even with meme signposts
+	zlevels -= SSmapping.levels_by_trait(ZTRAIT_MARX) // no easy victory, even with meme signposts
 	// also, could you think of the horror if they ended up in a holodeck
 	// template or something

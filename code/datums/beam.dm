@@ -59,10 +59,9 @@
  * direction: in what direction mover moved from.
  */
 /datum/beam/proc/redrawing(atom/movable/mover, atom/oldloc, direction)
-	SIGNAL_HANDLER
 	if(origin && target && get_dist(origin,target)<max_distance && origin.z == target.z)
 		QDEL_LIST(elements)
-		INVOKE_ASYNC(src, .proc/Draw)
+		Draw()
 	else
 		qdel(src)
 
@@ -142,11 +141,6 @@
 /obj/effect/ebeam/Destroy()
 	owner = null
 	return ..()
-
-/obj/effect/ebeam/singularity_pull()
-	return
-/obj/effect/ebeam/singularity_act()
-	return
 
 /**
  * This is what you use to start a beam. Example: origin.Beam(target, args). **Store the return of this proc if you don't set maxdist or time, you need it to delete the beam.**

@@ -1,4 +1,3 @@
-
 #define SPEECH_CONTROLLER_QUEUE_SAY_VERB "say_verb"
 
 #define SPEECH_CONTROLLER_QUEUE_WHISPER_VERB "whisper_verb"

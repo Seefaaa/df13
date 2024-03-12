@@ -6,6 +6,10 @@
 	var/linkage = SELFLOOPING
 	var/xi
 	var/yi   //imaginary placements on the grid
+	//Z-levels orbital body
+	var/datum/orbital_object/z_linked/orbital_body
+	//Is something generating on this level?
+	var/generating = FALSE
 
 /datum/space_level/New(new_z, new_name, list/new_traits = list())
 	z_value = new_z

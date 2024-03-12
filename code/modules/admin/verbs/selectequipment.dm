@@ -23,6 +23,7 @@
 	var/mob/target_mob
 
 	var/dummy_key
+	var/mob/living/carbon/human/dummy/dummy
 
 	//static list to share all the outfit typepaths between all instances of this datum.
 	var/static/list/cached_outfits
@@ -56,13 +57,18 @@
 		return UI_CLOSE
 	return ..()
 
-/datum/select_equipment/ui_close(mob/user)
+/datum/select_equipment/ui_close(mob/user, datum/tgui/tgui)
 	clear_human_dummy(dummy_key)
 	qdel(src)
 
 /datum/select_equipment/proc/init_dummy()
 	dummy_key = "selectequipmentUI_[target_mob]"
-	generate_dummy_lookalike(dummy_key, target_mob)
+	dummy = generate_or_wait_for_human_dummy(dummy_key)
+	var/mob/living/carbon/carbon_target = target_mob
+	if(istype(carbon_target))
+		carbon_target.dna.transfer_identity(dummy)
+		dummy.updateappearance()
+
 	unset_busy_human_dummy(dummy_key)
 	return
 
@@ -90,7 +96,7 @@
 		return list("category" = category, "ref" = identifier, "name" = name, "priority" = priority)
 	return list("category" = category, "path" = identifier, "name" = name, "priority" = priority)
 
-/datum/select_equipment/proc/make_outfit_entries(category="General", list/outfit_list)
+/datum/select_equipment/proc/make_outfit_entries(category="Main", list/outfit_list)
 	var/list/entries = list()
 	for(var/path as anything in outfit_list)
 		var/datum/outfit/outfit = path
@@ -106,19 +112,13 @@
 
 /datum/select_equipment/ui_data(mob/user)
 	var/list/data = list()
-	if(!dummy_key)
+	if(!dummy)
 		init_dummy()
 
-	var/icon/dummysprite = get_flat_human_icon(null,
-		dummy_key = dummy_key,
-		outfit_override = selected_outfit)
+	var/datum/preferences/prefs = target_mob?.client?.prefs
+	var/icon/dummysprite = get_flat_human_icon(prefs=prefs, dummy_key = dummy_key, outfit_override = selected_outfit)
 	data["icon64"] = icon2base64(dummysprite)
 	data["name"] = target_mob
-
-	var/datum/preferences/prefs = user?.client?.prefs
-	data["favorites"] = list()
-	if(prefs)
-		data["favorites"] = prefs.favorite_outfits
 
 	var/list/custom
 	custom += make_custom_outfit_entries(GLOB.custom_outfits)
@@ -131,10 +131,7 @@
 	var/list/data = list()
 	if(!cached_outfits)
 		cached_outfits = list()
-		cached_outfits += list(outfit_entry("General", /datum/outfit, "Naked", priority=TRUE))
-		cached_outfits += make_outfit_entries("General", subtypesof(/datum/outfit) - typesof(/datum/outfit/job) - typesof(/datum/outfit/plasmaman))
-		cached_outfits += make_outfit_entries("Jobs", typesof(/datum/outfit/job))
-		cached_outfits += make_outfit_entries("Plasmamen Outfits", typesof(/datum/outfit/plasmaman))
+		cached_outfits += list(outfit_entry("Main", /datum/outfit, "Naked", priority=TRUE))
 
 	data["outfits"] = cached_outfits
 	return data
@@ -183,17 +180,6 @@
 		if("customoutfit")
 			user.outfit_manager()
 
-		if("togglefavorite")
-			var/datum/outfit/outfit_path = resolve_outfit(params["path"])
-			if(!ispath(outfit_path)) //we do *not* want custom outfits (i.e objects) here, they're not even persistent
-				return
-
-			if(user.prefs.favorite_outfits.Find(outfit_path)) //already there, remove it
-				user.prefs.favorite_outfits -= outfit_path
-			else //not there, add it
-				user.prefs.favorite_outfits += outfit_path
-			user.prefs.save_preferences()
-
 /client/proc/admin_apply_outfit(mob/target, dresscode)
 	if(!ishuman(target) && !isobserver(target))
 		tgui_alert(usr,"Invalid mob")
@@ -215,10 +201,6 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Select Equipment") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	for(var/obj/item/item in human_target.get_equipped_items(delete_pocket))
 		qdel(item)
-
-	var/obj/item/organ/brain/human_brain = human_target.getorganslot(BRAIN)
-	human_brain.destroy_all_skillchips() // get rid of skillchips to prevent runtimes
-
 	if(dresscode != "Naked")
 		human_target.equipOutfit(dresscode)
 

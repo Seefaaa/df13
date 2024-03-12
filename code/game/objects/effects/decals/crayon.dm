@@ -2,7 +2,7 @@ GLOBAL_LIST(gang_tags)
 
 /obj/effect/decal/cleanable/crayon
 	name = "rune"
-	desc = "Graffiti. Damn kids."
+	desc = "Graffiti."
 	icon = 'icons/effects/crayondecal.dmi'
 	icon_state = "rune1"
 	gender = NEUTER
@@ -16,7 +16,6 @@ GLOBAL_LIST(gang_tags)
 	. = ..()
 	if(e_name)
 		name = e_name
-	desc = "A [name] vandalizing the station."
 	if(alt_icon)
 		icon = alt_icon
 	if(type)
@@ -46,4 +45,4 @@ GLOBAL_LIST(gang_tags)
 
 /obj/effect/decal/cleanable/crayon/gang/Destroy()
 	LAZYREMOVE(GLOB.gang_tags, src)
-	return ..()
+	..()

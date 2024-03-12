@@ -65,8 +65,7 @@ export const SelectEquipment = (props, context) => {
   return (
     <Window
       width={650}
-      height={415}
-      theme="admin">
+      height={415}>
       <Window.Content>
         <Stack fill>
           <Stack.Item>
@@ -165,7 +164,7 @@ const OutfitDisplay = (props, context) => {
           icon="plus"
           fluid
           onClick={() => act('customoutfit')}>
-          Create a custom outfit...
+          Customizing outfit...
         </Button>
       )}
     </Section>
@@ -192,7 +191,7 @@ const CurrentlySelectedDisplay = (props, context) => {
       )}
       <Stack.Item grow={1} basis={0}>
         <Box color="label">
-          Currently selected:
+          Selected:
         </Box>
         <Box
           title={entry?.path}
@@ -212,7 +211,7 @@ const CurrentlySelectedDisplay = (props, context) => {
           onClick={() => act('applyoutfit', {
             path: current_outfit,
           })}>
-          Confirm
+          Apply!
         </Button>
       </Stack.Item>
     </Stack>

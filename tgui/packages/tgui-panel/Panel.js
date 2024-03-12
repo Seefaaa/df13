@@ -10,7 +10,6 @@ import { NowPlayingWidget, useAudio } from './audio';
 import { ChatPanel, ChatTabs } from './chat';
 import { useGame } from './game';
 import { Notifications } from './Notifications';
-import { PingIndicator } from './ping';
 import { SettingsPanel, useSettings } from './settings';
 
 export const Panel = (props, context) => {
@@ -42,14 +41,11 @@ export const Panel = (props, context) => {
                 <ChatTabs />
               </Stack.Item>
               <Stack.Item>
-                <PingIndicator />
-              </Stack.Item>
-              <Stack.Item>
                 <Button
                   color="grey"
                   selected={audio.visible}
                   icon="music"
-                  tooltip="Music player"
+                  tooltip="Player"
                   tooltipPosition="bottom-start"
                   onClick={() => audio.toggle()} />
               </Stack.Item>
@@ -93,14 +89,12 @@ export const Panel = (props, context) => {
                       Reconnect
                     </Button>
                   )}>
-                  You are either AFK, experiencing lag or the connection
-                  has closed.
+                  Server rebooting.
                 </Notifications.Item>
               )}
               {game.roundRestartedAt && (
                 <Notifications.Item>
-                  The connection has been closed because the server is
-                  restarting. Please wait while you automatically reconnect.
+                  Server is lagging. Please, be patient.
                 </Notifications.Item>
               )}
             </Notifications>

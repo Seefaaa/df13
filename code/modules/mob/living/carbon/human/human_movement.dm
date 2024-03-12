@@ -26,15 +26,7 @@
 				return FALSE
 	return ..()
 
-/mob/living/carbon/human/mob_negates_gravity()
-	return dna.species.negates_gravity(src) || ..()
-
 /mob/living/carbon/human/Move(NewLoc, direct)
 	. = ..()
-	if(shoes && body_position == STANDING_UP && loc == NewLoc && has_gravity(loc))
+	if(shoes && body_position == STANDING_UP && loc == NewLoc)
 		SEND_SIGNAL(shoes, COMSIG_SHOES_STEP_ACTION)
-
-/mob/living/carbon/human/Process_Spacemove(movement_dir = 0)
-	if(movement_type & FLYING || HAS_TRAIT(src, TRAIT_FREE_FLOAT_MOVEMENT))
-		return TRUE
-	return ..()

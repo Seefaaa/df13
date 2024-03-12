@@ -37,7 +37,6 @@
 	SEND_SIGNAL(victim_mind.current, COMSIG_CARBON_GAIN_ADDICTION, victim_mind)
 	log_game("[key_name(victim_mind.current)] has become addicted to [name].")
 
-
 ///Called when you lose addiction poitns somehow. Takes a mind as argument and sees if you lost the addiction
 /datum/addiction/proc/on_lose_addiction_points(datum/mind/victim_mind)
 	var/current_addiction_point_amount = victim_mind.addiction_points[type]

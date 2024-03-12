@@ -1,13 +1,21 @@
-//max channel is 1024. Only go lower from here, because byond tends to pick the first available channel to play sounds on
+//max channel is 1024. Only go lower from here, because byond tends to pick the first availiable channel to play sounds on
 #define CHANNEL_LOBBYMUSIC 1024
 #define CHANNEL_ADMIN 1023
 #define CHANNEL_VOX 1022
 #define CHANNEL_JUKEBOX 1021
-#define CHANNEL_HEARTBEAT 1020 //sound channel for heartbeats
-#define CHANNEL_AMBIENCE 1019
-#define CHANNEL_BUZZ 1018
-#define CHANNEL_TRAITOR 1017
-#define CHANNEL_MBOX 1016
+#define CHANNEL_JUSTICAR_ARK 1020
+#define CHANNEL_HEARTBEAT 1019 //sound channel for heartbeats
+#define CHANNEL_AMBIENCE 1018
+#define CHANNEL_AMBIGEN 1017
+#define CHANNEL_BUZZ 1016
+#define CHANNEL_BICYCLE 1015
+#define CHANNEL_CUSTOM_JUKEBOX 1014
+#define CHANNEL_TTS_ANNOUNCER 1013
+#define CHANNEL_RUINATION_OST 1011
+#define CHANNEL_TTS_AVAILABLE 1010
+#define CHANNEL_BOOMBOX_AVAILABLE 800
+#define CHANNEL_WIND_AVAILABLE 780
+#define CHANNEL_HIGHEST_AVAILABLE 770
 
 ///Default range of a sound.
 #define SOUND_RANGE 17
@@ -24,11 +32,108 @@
 //THIS SHOULD ALWAYS BE THE LOWEST ONE!
 //KEEP IT UPDATED
 
-#define CHANNEL_HIGHEST_AVAILABLE 1015
-
 #define MAX_INSTRUMENT_CHANNELS (128 * 6)
 
 #define SOUND_MINIMUM_PRESSURE 10
+
+
+//Ambience types
+
+#define GENERIC list('sound/ambience/white/ambi2.ogg',\
+					'sound/ambience/white/ambi3.ogg',\
+					'sound/ambience/white/ambi4.ogg',\
+					'sound/ambience/white/ambi5.ogg',\
+					'sound/ambience/white/ambi6.ogg',\
+					'sound/ambience/white/ambi7.ogg',\
+					'sound/ambience/white/ambi8.ogg',\
+					'sound/ambience/white/ambi9.ogg',\
+					'sound/ambience/white/ambi10.ogg',\
+					'sound/ambience/white/ambi12.ogg',\
+					'sound/ambience/white/ambi13.ogg')
+
+#define HOLY list('sound/ambience/white/ambichurch1.ogg')
+
+#define HIGHSEC list('sound/ambience/white/ambidanger1.ogg',\
+					'sound/ambience/white/ambidanger2.ogg',\
+					'sound/ambience/white/ambidanger3.ogg')
+
+#define RUINS list('sound/ambience/white/ambidanger1.ogg',\
+				'sound/ambience/white/ambidanger2.ogg',\
+				'sound/ambience/white/ambi1.ogg',\
+				'sound/ambience/white/ambi11.ogg',\
+				'sound/ambience/white/ambi3.ogg')
+
+#define ENGINEERING list('sound/ambience/white/ambieng1.ogg',\
+						'sound/ambience/white/ambidanger2.ogg')
+
+#define MINING list('sound/ambience/white/ambidanger1.ogg',\
+					'sound/ambience/white/ambidanger2.ogg',\
+					'sound/ambience/white/ambi12.ogg')
+
+#define MEDICAL list('sound/ambience/white/ambimed1.ogg',\
+					'sound/ambience/white/ambimed2.ogg')
+
+#define SPOOKY list('sound/ambience/white/ambimo1.ogg')
+
+#define SPACE list('sound/ambience/white/ambispace1.ogg',\
+				'sound/ambience/white/ambispace2.ogg',\
+				'sound/ambience/white/ambispace3.ogg',\
+				'sound/ambience/white/ambispace4.ogg') // Source - https://vk.com/wall-180293907_321
+
+#define MAINTENANCE list('sound/ambience/white/ambimaint1.ogg',\
+						'sound/ambience/white/ambimaint2.ogg')
+
+#define AWAY_MISSION list('sound/ambience/white/ambidanger2.ogg',\
+						'sound/ambience/white/ambidanger3.ogg',\
+						'sound/ambience/white/ambi12.ogg')
+
+#define REEBE list('sound/ambience/ambireebe1.ogg',\
+				'sound/ambience/ambireebe2.ogg',\
+				'sound/ambience/ambireebe3.ogg')
+
+#define CREEPY_SOUNDS list('sound/effects/ghost.ogg',\
+						'sound/effects/ghost2.ogg',\
+						'sound/effects/heart_beat.ogg',\
+						'sound/effects/screech.ogg',\
+						'sound/hallucinations/behind_you1.ogg',\
+						'sound/hallucinations/behind_you2.ogg',\
+						'sound/hallucinations/far_noise.ogg',\
+						'sound/hallucinations/growl1.ogg',\
+						'sound/hallucinations/growl2.ogg',\
+						'sound/hallucinations/growl3.ogg',\
+						'sound/hallucinations/im_here1.ogg',\
+						'sound/hallucinations/im_here2.ogg',\
+						'sound/hallucinations/i_see_you1.ogg',\
+						'sound/hallucinations/i_see_you2.ogg',\
+						'sound/hallucinations/look_up1.ogg',\
+						'sound/hallucinations/look_up2.ogg',\
+						'sound/hallucinations/over_here1.ogg',\
+						'sound/hallucinations/over_here2.ogg',\
+						'sound/hallucinations/over_here3.ogg',\
+						'sound/hallucinations/turn_around1.ogg',\
+						'sound/hallucinations/turn_around2.ogg',\
+						'sound/hallucinations/veryfar_noise.ogg',\
+						'sound/hallucinations/wail.ogg')
+
+#define GENERIC_AMBIGEN list('sound/ambience/ambigen1.ogg',\
+						'sound/ambience/ambigen3.ogg',\
+						'sound/ambience/ambigen4.ogg',\
+						'sound/ambience/ambigen5.ogg',\
+						'sound/ambience/ambigen6.ogg',\
+						'sound/ambience/ambigen7.ogg',\
+						'sound/ambience/ambigen8.ogg',\
+						'sound/ambience/ambigen9.ogg',\
+						'sound/ambience/ambigen10.ogg',\
+						'sound/ambience/ambigen11.ogg',\
+						'sound/ambience/ambigen12.ogg',\
+						'sound/ambience/ambigen14.ogg',\
+						'sound/ambience/ambigen15.ogg')
+
+#define TURBOLIFT list('white/jhnazar/sound/effects/lift/elevatormusic.ogg',\
+						'white/jhnazar/sound/effects/turbolift/elevatormusic1.ogg',\
+						'white/jhnazar/sound/effects/turbolift/elevatormusic2.ogg')
+
+#define FAR_EXPLOSION_SOUNDS list('sound/effects/explosionfar.ogg')
 
 #define INTERACTION_SOUND_RANGE_MODIFIER -3
 #define EQUIP_SOUND_VOLUME 30
@@ -49,6 +154,8 @@
 #define AMBIENCE_AWAY "away"
 #define AMBIENCE_REEBE "reebe" //unused
 #define AMBIENCE_CREEPY "creepy" //not to be confused with spooky
+#define AMBIENCE_TURBOLIFT "turbolift"
+#define AMBIENCE_NONE "none"
 
 //default byond sound environments
 #define SOUND_ENVIRONMENT_NONE -1
@@ -108,11 +215,11 @@
 #define ANNOUNCER_OUTBREAK7 "announcer_outbreak7"
 #define ANNOUNCER_POWEROFF "announcer_poweroff"
 #define ANNOUNCER_POWERON "announcer_poweron"
-#define ANNOUNCER_RADIATION "announcer_radiation"
 #define ANNOUNCER_SHUTTLECALLED "announcer_shuttlecalled"
 #define ANNOUNCER_SHUTTLEDOCK "announcer_shuttledock"
 #define ANNOUNCER_SHUTTLERECALLED "announcer_shuttlerecalled"
 #define ANNOUNCER_SPANOMALIES "announcer_spanomalies"
+#define ANNOUNCER_WAR "announcer_war"
 
 /// Global list of all of our announcer keys.
 GLOBAL_LIST_INIT(announcer_keys, list(
@@ -127,9 +234,9 @@ GLOBAL_LIST_INIT(announcer_keys, list(
 	ANNOUNCER_OUTBREAK7,
 	ANNOUNCER_POWEROFF,
 	ANNOUNCER_POWERON,
-	ANNOUNCER_RADIATION,
 	ANNOUNCER_SHUTTLECALLED,
 	ANNOUNCER_SHUTTLEDOCK,
 	ANNOUNCER_SHUTTLERECALLED,
 	ANNOUNCER_SPANOMALIES,
+	ANNOUNCER_WAR,
 ))

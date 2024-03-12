@@ -27,12 +27,12 @@ export const Achievements = (props, context) => {
             </Tabs.Tab>
           ))}
           <Tabs.Tab
-            selected={selectedCategory === 'High Scores'}
-            onClick={() => setSelectedCategory('High Scores')}>
+            selected={selectedCategory === 'HighScores'}
+            onClick={() => setSelectedCategory('HighScores')}>
             High Scores
           </Tabs.Tab>
         </Tabs>
-        {selectedCategory === 'High Scores' && (
+        {selectedCategory === 'HighScores' && (
           <HighScoreTable />
         ) || (
           <AchievementTable achievements={achievements} />
@@ -74,7 +74,7 @@ const Achievement = props => {
         {desc}
         {score && (
           <Box color={value > 0 ? 'good' : 'bad'}>
-            {value > 0 ? `Earned ${value} times` : 'Locked'}
+            {value > 0 ? `Achieved ${value} once` : 'Locked'}
           </Box>
         ) || (
           <Box color={value ? 'good' : 'bad'}>
@@ -130,7 +130,7 @@ const HighScoreTable = (props, context) => {
               Key
             </Table.Cell>
             <Table.Cell textAlign="center">
-              Score
+              Count
             </Table.Cell>
           </Table.Row>
           {scores.map((score, i) => (

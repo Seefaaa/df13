@@ -1,5 +1,5 @@
 SUBSYSTEM_DEF(time_track)
-	name = "Time Tracking"
+	name = "Time Tracker"
 	wait = 100
 	init_order = INIT_ORDER_TIMETRACK
 	runlevels = RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT
@@ -59,26 +59,9 @@ SUBSYSTEM_DEF(time_track)
 			"tidi_avg",
 			"tidi_slowavg",
 			"maptick",
-			"num_timers",
-			"air_turf_cost",
-			"air_eg_cost",
-			"air_highpressure_cost",
-			"air_hotspots_cost",
-			"air_superconductivity_cost",
-			"air_pipenets_cost",
-			"air_rebuilds_cost",
-			"air_turf_count",
-			"air_eg_count",
-			"air_hotspot_count",
-			"air_network_count",
-			"air_delta_count",
-			"air_superconductive_count",
-			"all_queries",
-			"queries_active",
-			"queries_standby"
+			"num_timers"
 		) + sendmaps_headers
 	)
-
 
 /datum/controller/subsystem/time_track/fire()
 
@@ -128,24 +111,6 @@ SUBSYSTEM_DEF(time_track)
 			time_dilation_avg,
 			time_dilation_avg_slow,
 			MAPTICK_LAST_INTERNAL_TICK_USAGE,
-			length(SStimer.timer_id_dict),
-			SSair.cost_turfs,
-			SSair.cost_groups,
-			SSair.cost_highpressure,
-			SSair.cost_hotspots,
-			SSair.cost_superconductivity,
-			SSair.cost_pipenets,
-			SSair.cost_rebuilds,
-			length(SSair.active_turfs),
-			length(SSair.excited_groups),
-			length(SSair.hotspots),
-			length(SSair.networks),
-			length(SSair.high_pressure_delta),
-			length(SSair.active_super_conductivity),
-			SSdbcore.all_queries_num,
-			SSdbcore.queries_active_num,
-			SSdbcore.queries_standby_num
+			length(SStimer.timer_id_dict)
 		) + send_maps_values
 	)
-
-	SSdbcore.reset_tracking()

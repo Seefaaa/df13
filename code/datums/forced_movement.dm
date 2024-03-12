@@ -1,5 +1,4 @@
 //Just new and forget
-//Depricated, use movement loops instead. Exists to support things that want to move more then 10 times a second
 /datum/forced_movement
 	var/atom/movable/victim
 	var/atom/target
@@ -23,19 +22,18 @@
 		_victim.force_moving = src
 		START_PROCESSING(SSfastprocess, src)
 	else
-		qdel(src) //if you want to overwrite the current forced movement, call qdel(victim.force_moving) before creating this
+		qdel(src)	//if you want to overwrite the current forced movement, call qdel(victim.force_moving) before creating this
 
 /datum/forced_movement/Destroy()
 	if(victim.force_moving == src)
 		victim.force_moving = null
 		if(moved_at_all)
-			victim.forceMove(victim.loc) //get the side effects of moving here that require us to currently not be force_moving aka reslipping on ice
+			victim.forceMove(victim.loc)	//get the side effects of moving here that require us to currently not be force_moving aka reslipping on ice
 		STOP_PROCESSING(SSfastprocess, src)
 	victim = null
 	target = null
 	return ..()
 
-//Todo: convert
 /datum/forced_movement/process()
 	if(QDELETED(victim) || !victim.loc || QDELETED(target) || !target.loc)
 		qdel(src)
@@ -56,22 +54,22 @@
 	if(QDELETED(src)) //Our previous step caused deletion of this datum
 		return
 
-	var/atom/movable/vic = victim //sanic
+	var/atom/movable/vic = victim	//sanic
 	var/atom/tar = target
 
 	if(!recursive)
 		. = step_towards(vic, tar)
 
 	//shit way for getting around corners
-	if(!.) //If stepping towards the target failed
-		if(tar.x > vic.x) //If we're going x, step x
+	if(!.)
+		if(tar.x > vic.x)
 			if(step(vic, EAST))
 				. = TRUE
 		else if(tar.x < vic.x)
 			if(step(vic, WEST))
 				. = TRUE
 
-		if(!.) //If the x step failed, go y
+		if(!.)
 			if(tar.y > vic.y)
 				if(step(vic, NORTH))
 					. = TRUE
@@ -79,7 +77,7 @@
 				if(step(vic, SOUTH))
 					. = TRUE
 
-			if(!.) //If both failed, try again for some reason
+			if(!.)
 				if(recursive)
 					return FALSE
 				else

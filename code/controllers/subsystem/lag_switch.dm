@@ -10,7 +10,7 @@ SUBSYSTEM_DEF(lag_switch)
 	/// List of bools corresponding to code/__DEFINES/lag_switch.dm
 	var/static/list/measures[MEASURES_AMOUNT]
 	/// List of measures that toggle automatically
-	var/list/auto_measures = list(DISABLE_GHOST_ZOOM_TRAY, DISABLE_RUNECHAT, DISABLE_USR_ICON2HTML, DISABLE_PARALLAX, DISABLE_FOOTSTEPS)
+	var/list/auto_measures = list(DISABLE_GHOST_ZOOM_TRAY, DISABLE_RUNECHAT, DISABLE_USR_ICON2HTML, DISABLE_FOOTSTEPS)
 	/// Timer ID for the automatic veto period
 	var/veto_timer_id
 	/// Cooldown between say verb uses when slowmode is enabled
@@ -28,8 +28,6 @@ SUBSYSTEM_DEF(lag_switch)
 
 /datum/controller/subsystem/lag_switch/proc/client_connected(datum/source, client/connected)
 	SIGNAL_HANDLER
-	if(TGS_CLIENT_COUNT < trigger_pop)
-		return
 
 	auto_switch = FALSE
 	UnregisterSignal(SSdcs, COMSIG_GLOB_CLIENT_CONNECT)
@@ -111,14 +109,6 @@ SUBSYSTEM_DEF(lag_switch)
 				to_chat(world, span_boldannounce("Slowmode for IC/dead chat has been disabled by an admin."))
 		if(DISABLE_NON_OBSJOBS)
 			world.update_status()
-		if(DISABLE_PARALLAX)
-			if (state)
-				to_chat(world, span_boldannounce("Parallax has been disabled for performance concerns."))
-			else
-				to_chat(world, span_boldannounce("Parallax has been re-enabled."))
-
-			for (var/mob/mob as anything in GLOB.mob_list)
-				mob.hud_used?.update_parallax_pref()
 		if (DISABLE_FOOTSTEPS)
 			if (state)
 				to_chat(world, span_boldannounce("Footstep sounds have been disabled for performance concerns."))

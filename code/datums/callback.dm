@@ -111,8 +111,8 @@
 			var/mob/M = W.resolve()
 			if(M)
 				if (length(args))
-					return world.push_usr(arglist(list(M, src) + args))
-				return world.push_usr(M, src)
+					return world.PushUsr(arglist(list(M, src) + args))
+				return world.PushUsr(M, src)
 
 	if (!object)
 		return
@@ -146,8 +146,8 @@
 			var/mob/M = W.resolve()
 			if(M)
 				if (length(args))
-					return world.push_usr(arglist(list(M, src) + args))
-				return world.push_usr(M, src)
+					return world.PushUsr(arglist(list(M, src) + args))
+				return world.PushUsr(M, src)
 
 	if (!object)
 		return
@@ -220,3 +220,6 @@
 	while(CS.pendingcount)
 		sleep(resolution*world.tick_lag)
 	return CS.finished
+
+/proc/___callbacknew(typepath, arguments)
+	new typepath(arglist(arguments))

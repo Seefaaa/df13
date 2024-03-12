@@ -85,22 +85,10 @@
 	return min(arglist(args))
 
 /proc/_new(type, arguments)
-	var/datum/result
-
-	if(!length(arguments))
-		result = new type()
-	else
-		result = new type(arglist(arguments))
-
-	if(istype(result))
-		result.datum_flags |= DF_VAR_EDITED
-	return result
+	return new type (arglist(arguments))
 
 /proc/_num2text(N, SigFig = 6)
 	return num2text(N, SigFig)
-
-/proc/_text2num(T)
-	return text2num(T)
 
 /proc/_ohearers(Dist, Center = usr)
 	return ohearers(Dist, Center)
@@ -189,9 +177,6 @@
 
 /proc/_list_set(list/L, key, value)
 	L[key] = value
-
-/proc/_list_get(list/L, key)
-	return L[key]
 
 /proc/_list_numerical_add(L, key, num)
 	L[key] += num

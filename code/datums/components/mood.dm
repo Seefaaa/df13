@@ -24,7 +24,7 @@
 	RegisterSignal(parent, COMSIG_LIVING_REVIVE, .proc/on_revive)
 	RegisterSignal(parent, COMSIG_MOB_HUD_CREATED, .proc/modify_hud)
 	RegisterSignal(parent, COMSIG_JOB_RECEIVED, .proc/register_job_signals)
-	RegisterSignal(parent, COMSIG_HERETIC_MASK_ACT, .proc/direct_sanity_drain)
+	RegisterSignal(parent, COMSIG_VOID_MASK_ACT, .proc/direct_sanity_drain)
 	RegisterSignal(parent, COMSIG_ON_CARBON_SLIP, .proc/on_slip)
 
 	var/mob/living/owner = parent
@@ -36,20 +36,20 @@
 
 /datum/component/mood/Destroy()
 	STOP_PROCESSING(SSmood, src)
-	var/atom/movable/movable_parent = parent
-	movable_parent.lose_area_sensitivity(MOOD_COMPONENT_TRAIT)
+	REMOVE_TRAIT(parent, TRAIT_AREA_SENSITIVE, MOOD_COMPONENT_TRAIT)
+	QDEL_LIST_ASSOC_VAL(mood_events)
 	unmodify_hud()
 	return ..()
 
 /datum/component/mood/proc/register_job_signals(datum/source, job)
 	SIGNAL_HANDLER
 
-	if(job in list(JOB_RESEARCH_DIRECTOR, JOB_SCIENTIST, JOB_ROBOTICIST, JOB_GENETICIST))
+	if(job in list("Research Director", "Scientist", "Roboticist"))
 		RegisterSignal(parent, COMSIG_ADD_MOOD_EVENT_RND, .proc/add_event) //Mood events that are only for RnD members
 
 /datum/component/mood/proc/print_mood(mob/user)
-	var/msg = "[span_info("*---------*\n<EM>My current mental status:</EM>")]\n"
-	msg += span_notice("My current sanity: ") //Long term
+	var/msg = "<span class='info'>My name is <EM>[user.name]</EM>.</span>\n"
+	msg += "<hr><span class='notice'>My current sanity:</span>\n" //Long term
 	switch(sanity)
 		if(SANITY_GREAT to INFINITY)
 			msg += "[span_nicegreen("My mind feels like a temple!")]\n"
@@ -85,14 +85,14 @@
 		if(9)
 			msg += "[span_nicegreen("I love life!")]\n"
 
-	msg += "[span_notice("Moodlets:")]\n"//All moodlets
+	msg += "<hr><span class='notice'>Moodlets:</span>\n"//All moodlets
 	if(mood_events.len)
 		for(var/i in mood_events)
 			var/datum/mood_event/event = mood_events[i]
 			msg += event.description
 	else
-		msg += "[span_nicegreen("I don't have much of a reaction to anything right now.")]\n"
-	to_chat(user, msg)
+		msg += "<span class='nicegreen'>I don't have much of a reaction to anything right now.</span>\n"
+	to_chat(user, "<div class='examine_block'>[msg]</div>")
 
 ///Called after moodevent/s have been added/removed.
 /datum/component/mood/proc/update_mood()
@@ -198,6 +198,7 @@
 		if(9)
 			setSanity(sanity+0.6*delta_time, SANITY_NEUTRAL, SANITY_MAXIMUM)
 	HandleNutrition()
+	HandleHydration()
 
 	// 0.416% is 15 successes / 3600 seconds. Calculated with 2 minute
 	// mood runtime, so 50% average uptime across the hour.
@@ -222,27 +223,36 @@
 		return
 	sanity = amount
 	var/mob/living/master = parent
-	SEND_SIGNAL(master, COMSIG_CARBON_SANITY_UPDATE, amount)
 	switch(sanity)
 		if(SANITY_INSANE to SANITY_CRAZY)
 			setInsanityEffect(MAJOR_INSANITY_PEN)
 			master.add_movespeed_modifier(/datum/movespeed_modifier/sanity/insane)
-			master.add_actionspeed_modifier(/datum/actionspeed_modifier/low_sanity)
+			master.add_actionspeed_modifier(/datum/actionspeed_modifier/very_low_sanity)
+			master.overlay_fullscreen("depression", /atom/movable/screen/fullscreen/depression, 3)
+			if(prob(7))
+				master.playsound_local(null, pick(CREEPY_SOUNDS), 100, 1)
+			master.sound_environment_override = SOUND_ENVIRONMENT_PSYCHOTIC
 			sanity_level = 6
 		if(SANITY_CRAZY to SANITY_UNSTABLE)
 			setInsanityEffect(MINOR_INSANITY_PEN)
 			master.add_movespeed_modifier(/datum/movespeed_modifier/sanity/crazy)
 			master.add_actionspeed_modifier(/datum/actionspeed_modifier/low_sanity)
+			master.overlay_fullscreen("depression", /atom/movable/screen/fullscreen/depression, 2)
+			if(prob(3))
+				master.playsound_local(null, pick(CREEPY_SOUNDS), 60, 1)
+			master.sound_environment_override = SOUND_ENVIRONMENT_NONE
 			sanity_level = 5
 		if(SANITY_UNSTABLE to SANITY_DISTURBED)
 			setInsanityEffect(0)
 			master.add_movespeed_modifier(/datum/movespeed_modifier/sanity/disturbed)
 			master.add_actionspeed_modifier(/datum/actionspeed_modifier/low_sanity)
+			master.overlay_fullscreen("depression", /atom/movable/screen/fullscreen/depression, 1)
 			sanity_level = 4
 		if(SANITY_DISTURBED to SANITY_NEUTRAL)
 			setInsanityEffect(0)
 			master.remove_movespeed_modifier(MOVESPEED_ID_SANITY)
 			master.remove_actionspeed_modifier(ACTIONSPEED_ID_SANITY)
+			master.clear_fullscreen("depression")
 			sanity_level = 3
 		if(SANITY_NEUTRAL+1 to SANITY_GREAT+1) //shitty hack but +1 to prevent it from responding to super small differences
 			setInsanityEffect(0)
@@ -267,8 +277,6 @@
 	SIGNAL_HANDLER
 
 	var/datum/mood_event/the_event
-	if(!ispath(type, /datum/mood_event))
-		return
 	if(!istext(category))
 		category = REF(category)
 	if(mood_events[category])
@@ -277,10 +285,12 @@
 			clear_event(null, category)
 		else
 			if(the_event.timeout)
-				addtimer(CALLBACK(src, .proc/clear_event, null, category), the_event.timeout, TIMER_UNIQUE|TIMER_OVERRIDE)
+				the_event.timer = addtimer(CALLBACK(src, .proc/clear_event, null, category), the_event.timeout, TIMER_STOPPABLE|TIMER_UNIQUE|TIMER_OVERRIDE)
 			return //Don't have to update the event.
 	var/list/params = args.Copy(4)
 	params.Insert(1, parent)
+	if(!type)
+		stack_trace("Mood event trying to create null type.")
 	the_event = new type(arglist(params))
 
 	mood_events[category] = the_event
@@ -354,7 +364,7 @@
 				add_event(null, "nutrition", /datum/mood_event/wellfed) // round and full
 		if(NUTRITION_LEVEL_WELL_FED to NUTRITION_LEVEL_FULL)
 			add_event(null, "nutrition", /datum/mood_event/wellfed)
-		if( NUTRITION_LEVEL_FED to NUTRITION_LEVEL_WELL_FED)
+		if(NUTRITION_LEVEL_FED to NUTRITION_LEVEL_WELL_FED)
 			add_event(null, "nutrition", /datum/mood_event/fed)
 		if(NUTRITION_LEVEL_HUNGRY to NUTRITION_LEVEL_FED)
 			clear_event(null, "nutrition")
@@ -362,6 +372,22 @@
 			add_event(null, "nutrition", /datum/mood_event/hungry)
 		if(0 to NUTRITION_LEVEL_STARVING)
 			add_event(null, "nutrition", /datum/mood_event/starving)
+
+/datum/component/mood/proc/HandleHydration()
+	var/mob/living/L = parent
+	if(HAS_TRAIT(L, TRAIT_NOHUNGER))
+		return FALSE
+	switch(L.hydration)
+		if(HYDRATION_LEVEL_OVERHYDRATED to INFINITY)
+			add_event(null, "thirst", /datum/mood_event/overhydrated)
+		if(HYDRATION_LEVEL_NORMAL to HYDRATION_LEVEL_OVERHYDRATED)
+			add_event(null, "thirst", /datum/mood_event/hydrated)
+		if(HYDRATION_LEVEL_THIRSTY to HYDRATION_LEVEL_NORMAL)
+			clear_event(null, "thirst")
+		if(HYDRATION_LEVEL_DEHYDRATED to HYDRATION_LEVEL_THIRSTY)
+			add_event(null, "thirst", /datum/mood_event/thirsty)
+		if(-INFINITY to HYDRATION_LEVEL_DEHYDRATED)
+			add_event(null, "thirst", /datum/mood_event/dehydrated)
 
 /datum/component/mood/proc/check_area_mood(datum/source, area/A)
 	SIGNAL_HANDLER
@@ -373,9 +399,6 @@
 		clear_event(null, "area")
 
 /datum/component/mood/proc/update_beauty(area/A)
-	if(A.outdoors) //if we're outside, we don't care.
-		clear_event(null, "area_beauty")
-		return FALSE
 	if(HAS_TRAIT(parent, TRAIT_SNOB))
 		switch(A.beauty)
 			if(-INFINITY to BEAUTY_LEVEL_HORRID)
@@ -431,3 +454,4 @@
 
 #undef MINOR_INSANITY_PEN
 #undef MAJOR_INSANITY_PEN
+

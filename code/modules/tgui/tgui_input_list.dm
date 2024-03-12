@@ -10,7 +10,7 @@
  * * default - If an option is already preselected on the UI. Current values, etc.
  * * timeout - The timeout of the input box, after which the menu will close and qdel itself. Set to zero for no timeout.
  */
-/proc/tgui_input_list(mob/user, message, title = "Select", list/items, default, timeout = 0)
+/proc/tgui_input_list(mob/user, message, title, list/items, default, timeout = 0)
 	if (!user)
 		user = usr
 	if(!length(items))
@@ -21,9 +21,6 @@
 			user = client.mob
 		else
 			return
-	/// Client does NOT have tgui_input on: Returns regular input
-	if(!user.client.prefs.read_preference(/datum/preference/toggle/tgui_input))
-		return input(user, message, title) as null|anything in items
 	var/datum/tgui_list_input/input = new(user, message, title, items, default, timeout)
 	input.ui_interact(user)
 	input.wait()
@@ -55,9 +52,6 @@
 			user = client.mob
 		else
 			return
-	/// Client does NOT have tgui_input on: Returns regular input
-	if(!user.client.prefs.read_preference(/datum/preference/toggle/tgui_input))
-		return input(user, message, title) as null|anything in items
 	var/datum/tgui_list_input/async/input = new(user, message, title, items, default, callback, timeout)
 	input.ui_interact(user)
 
@@ -74,7 +68,7 @@
 	var/message
 	/// The list of items (responses) provided on the TGUI window
 	var/list/items
-	/// Buttons (strings specifically) mapped to the actual value (e.g. a mob or a verb)
+	/// items (strings specifically) mapped to the actual value (e.g. a mob or a verb)
 	var/list/items_map
 	/// The button that the user has pressed, null if no selection has been made
 	var/choice
@@ -97,19 +91,14 @@
 
 	// Gets rid of illegal characters
 	var/static/regex/whitelistedWords = regex(@{"([^\u0020-\u8000]+)"})
-
 	for(var/i in items)
 		if(!i)
 			continue
-
 		var/string_key = whitelistedWords.Replace("[i]", "")
-
 		//avoids duplicated keys E.g: when areas have the same name
 		string_key = avoid_assoc_duplicate_keys(string_key, repeat_items)
-
 		src.items += string_key
 		src.items_map[string_key] = i
-
 	if (timeout)
 		src.timeout = timeout
 		start_time = world.time
@@ -132,9 +121,10 @@
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "ListInputModal")
+		ui.set_autoupdate(FALSE)
 		ui.open()
 
-/datum/tgui_list_input/ui_close(mob/user)
+/datum/tgui_list_input/ui_close(mob/user, datum/tgui/tgui)
 	. = ..()
 	closed = TRUE
 
@@ -142,13 +132,12 @@
 	return GLOB.always_state
 
 /datum/tgui_list_input/ui_static_data(mob/user)
-	. = list()
-	.["init_value"] = default || items[1]
-	.["items"] = items
-	.["large_buttons"] = user.client.prefs.read_preference(/datum/preference/toggle/tgui_input_large)
-	.["message"] = message
-	.["swapped_buttons"] = user.client.prefs.read_preference(/datum/preference/toggle/tgui_input_swapped)
-	.["title"] = title
+	. = list(
+		"init_value" = default || items[1],
+		"title" = title,
+		"message" = message,
+		"items" = items
+	)
 
 /datum/tgui_list_input/ui_data(mob/user)
 	. = list()
@@ -160,20 +149,16 @@
 	if (.)
 		return
 	switch(action)
-		if("submit")
-			if (!(params["entry"] in items))
+		if("choose")
+			if (!(params["choice"] in items))
 				return
-			set_choice(items_map[params["entry"]])
-			closed = TRUE
+			choice = items_map[params["choice"]]
 			SStgui.close_uis(src)
 			return TRUE
 		if("cancel")
-			closed = TRUE
 			SStgui.close_uis(src)
+			closed = TRUE
 			return TRUE
-
-/datum/tgui_list_input/proc/set_choice(choice)
-	src.choice = choice
 
 /**
  * # async tgui_list_input
@@ -185,17 +170,23 @@
 	var/datum/callback/callback
 
 /datum/tgui_list_input/async/New(mob/user, message, title, list/items, default, callback, timeout)
-	..(user, message, title, items, default, timeout)
+	..(user, title, message, items, default, timeout)
 	src.callback = callback
 
 /datum/tgui_list_input/async/Destroy(force, ...)
 	QDEL_NULL(callback)
 	. = ..()
 
-/datum/tgui_list_input/async/set_choice(choice)
+/datum/tgui_list_input/async/ui_close(mob/user, datum/tgui/tgui)
 	. = ..()
-	if(!isnull(src.choice))
-		callback?.InvokeAsync(src.choice)
+	qdel(src)
+
+/datum/tgui_list_input/async/ui_act(action, list/params)
+	. = ..()
+	if (!. || choice == null)
+		return
+	callback.InvokeAsync(choice)
+	qdel(src)
 
 /datum/tgui_list_input/async/wait()
 	return

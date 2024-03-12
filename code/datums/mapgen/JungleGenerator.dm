@@ -40,6 +40,8 @@
 	var/heat_seed = rand(0, 50000)
 
 	for(var/t in turfs) //Go through all the turfs and generate them
+		if(!istype(t, /turf/open/genturf))
+			continue
 		var/turf/gen_turf = t
 		var/drift_x = (gen_turf.x + rand(-BIOME_RANDOM_SQUARE_DRIFT, BIOME_RANDOM_SQUARE_DRIFT)) / perlin_zoom
 		var/drift_y = (gen_turf.y + rand(-BIOME_RANDOM_SQUARE_DRIFT, BIOME_RANDOM_SQUARE_DRIFT)) / perlin_zoom
@@ -74,25 +76,7 @@
 					humidity_level = BIOME_HIGH_HUMIDITY
 			selected_biome = possible_biomes[heat_level][humidity_level]
 		else //Over 0.85; It's a mountain
-			selected_biome = /datum/biome/mountain
+			selected_biome = /datum/biome/plains
 		selected_biome = SSmapping.biomes[selected_biome] //Get the instance of this biome from SSmapping
 		selected_biome.generate_turf(gen_turf)
 		CHECK_TICK
-
-/turf/open/genturf
-	name = "ungenerated turf"
-	desc = "If you see this, and you're not a ghost, yell at coders"
-	icon = 'icons/turf/debug.dmi'
-	icon_state = "genturf"
-
-/turf/open/genturf/alternative //currently used for edge cases in which you want a certain type of map generation intermingled with other genturfs
-	name = "alternative ungenerated turf"
-	desc = "If you see this, and you're not a ghost, yell at coders pretty loudly"
-	icon_state = "genturf_alternative"
-
-/area/mine/planetgeneration
-	name = "planet generation area"
-	static_lighting = FALSE
-	base_lighting_alpha = 255
-
-	map_generator = /datum/map_generator/jungle_generator

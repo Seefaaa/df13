@@ -42,12 +42,6 @@
 	if (over != user)
 		return
 
-	// Cyborgs buckle people by dragging them onto them, unless in combat mode.
-	if (iscyborg(user))
-		var/mob/living/silicon/robot/cyborg_user = user
-		if (!cyborg_user.combat_mode)
-			return
-
 	if (!isnull(should_strip_proc_path) && !call(source, should_strip_proc_path)(user))
 		return
 
@@ -102,18 +96,20 @@
 				ignored_mobs = user,
 			)
 
-		if(ishuman(source))
-			var/mob/living/carbon/human/victim_human = source
-			if(victim_human.key && !victim_human.client) // AKA braindead
-				if(victim_human.stat <= SOFT_CRIT && LAZYLEN(victim_human.afk_thefts) <= AFK_THEFT_MAX_MESSAGES)
-					var/list/new_entry = list(list(user.name, "tried equipping you with [equipping]", world.time))
-					LAZYADD(victim_human.afk_thefts, new_entry)
-
 	to_chat(user, span_notice("You try to put [equipping] on [source]..."))
+	/*
+	if(ishuman(source))
+		var/mob/living/carbon/human/victim_human = source
+		if(victim_human.key && !victim_human.client) // AKA braindead
+			if(victim_human.stat <= SOFT_CRIT && LAZYLEN(victim_human.afk_thefts) <= AFK_THEFT_MAX_MESSAGES)
+				var/list/new_entry = list(list(user.name, "tried equipping you with [equipping]", world.time))
+				LAZYADD(victim_human.afk_thefts, new_entry)
+	*/
+
 
 	var/log = "[key_name(source)] is having [equipping] put on them by [key_name(user)]"
-	user.log_message(log, LOG_ATTACK, color="red")
-	source.log_message(log, LOG_VICTIM, color="red", log_globally=FALSE)
+	source.log_message(log, LOG_ATTACK, color="red")
+	user.log_message(log, LOG_ATTACK, color="red", log_globally=FALSE)
 
 	return TRUE
 
@@ -148,9 +144,6 @@
 	if (isnull(item))
 		return FALSE
 
-	if (HAS_TRAIT(item, TRAIT_NO_STRIP))
-		return FALSE
-
 	source.visible_message(
 		span_warning("[user] tries to remove [source]'s [item.name]."),
 		span_userdanger("[user] tries to remove your [item.name]."),
@@ -159,15 +152,17 @@
 
 	to_chat(user, span_danger("You try to remove [source]'s [item]..."))
 	user.log_message("[key_name(source)] is being stripped of [item] by [key_name(user)]", LOG_ATTACK, color="red")
-	source.log_message("[key_name(source)] is being stripped of [item] by [key_name(user)]", LOG_VICTIM, color="red", log_globally=FALSE)
+	source.log_message("[key_name(source)] is being stripped of [item] by [key_name(user)]", LOG_ATTACK, color="red", log_globally=FALSE)
 	item.add_fingerprint(src)
 
+	/*
 	if(ishuman(source))
 		var/mob/living/carbon/human/victim_human = source
 		if(victim_human.key && !victim_human.client) // AKA braindead
 			if(victim_human.stat <= SOFT_CRIT && LAZYLEN(victim_human.afk_thefts) <= AFK_THEFT_MAX_MESSAGES)
 				var/list/new_entry = list(list(user.name, "tried unequipping your [item.name]", world.time))
 				LAZYADD(victim_human.afk_thefts, new_entry)
+	*/
 
 	return TRUE
 
@@ -304,8 +299,8 @@
 	if (!item.doStrip(user, source))
 		return FALSE
 
-	user.log_message("[key_name(source)] has been stripped of [item] by [key_name(user)]", LOG_ATTACK, color="red")
-	source.log_message("[key_name(source)] has been stripped of [item] by [key_name(user)]", LOG_VICTIM, color="red", log_globally=FALSE)
+	source.log_message("[key_name(source)] has been stripped of [item] by [key_name(user)]", LOG_ATTACK, color="red")
+	user.log_message("[key_name(source)] has been stripped of [item] by [key_name(user)]", LOG_ATTACK, color="red", log_globally=FALSE)
 
 	// Updates speed in case stripped speed affecting item
 	source.update_equipment_speed_mods()
@@ -366,7 +361,7 @@
 			continue
 
 		var/obj/item/item = item_data.get_item(owner)
-		if (isnull(item) || (HAS_TRAIT(item, TRAIT_NO_STRIP)))
+		if (isnull(item))
 			items[strippable_key] = result
 			continue
 
@@ -499,7 +494,7 @@
 	return min(
 		ui_status_only_living(user, owner),
 		ui_status_user_has_free_hands(user, owner),
-		ui_status_user_is_adjacent(user, owner, allow_tk = FALSE),
+		ui_status_user_is_adjacent(user, owner),
 		HAS_TRAIT(user, TRAIT_CAN_STRIP) ? UI_INTERACTIVE : UI_UPDATE,
 		max(
 			ui_status_user_is_conscious_and_lying_down(user),

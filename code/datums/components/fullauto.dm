@@ -117,7 +117,7 @@
 	if(get_dist(source.mob, _target) < 2) //Adjacent clicking.
 		return
 
-	if(isnull(location) || istype(_target, /atom/movable/screen)) //Clicking on a screen object.
+	if(isnull(location)) //Clicking on a screen object.
 		if(_target.plane != CLICKCATCHER_PLANE) //The clickcatcher is a special case. We want the click to trigger then, under it.
 			return //If we click and drag on our worn backpack, for example, we want it to open instead.
 		_target = parse_caught_click_modifiers(modifiers, get_turf(source.eye), source)
@@ -232,10 +232,7 @@
 		stop_autofiring() //Elvis has left the building.
 		return FALSE
 	shooter.face_atom(target)
-	var/next_delay = autofire_shot_delay
-	if(HAS_TRAIT(shooter, TRAIT_DOUBLE_TAP))
-		next_delay = round(next_delay * 0.5)
-	COOLDOWN_START(src, next_shot_cd, next_delay)
+	COOLDOWN_START(src, next_shot_cd, autofire_shot_delay)
 	if(SEND_SIGNAL(parent, COMSIG_AUTOFIRE_SHOT, target, shooter, mouse_parameters) & COMPONENT_AUTOFIRE_SHOT_SUCCESS)
 		return TRUE
 	stop_autofiring()
@@ -244,7 +241,7 @@
 // Gun procs.
 
 /obj/item/gun/proc/on_autofire_start(mob/living/shooter)
-	if(semicd || shooter.incapacitated() || !can_trigger_gun(shooter))
+	if(semicd || shooter.stat)
 		return FALSE
 	if(!can_shoot())
 		shoot_with_empty_chamber(shooter)
@@ -264,7 +261,7 @@
 
 /obj/item/gun/proc/do_autofire(datum/source, atom/target, mob/living/shooter, params)
 	SIGNAL_HANDLER
-	if(semicd || shooter.incapacitated())
+	if(semicd || shooter.stat)
 		return NONE
 	if(!can_shoot())
 		shoot_with_empty_chamber(shooter)
@@ -277,7 +274,7 @@
 	var/obj/item/gun/akimbo_gun = shooter.get_inactive_held_item()
 	var/bonus_spread = 0
 	if(istype(akimbo_gun) && weapon_weight < WEAPON_MEDIUM)
-		if(akimbo_gun.weapon_weight < WEAPON_MEDIUM && akimbo_gun.can_trigger_gun(shooter))
+		if(akimbo_gun.weapon_weight < WEAPON_MEDIUM)
 			bonus_spread = dual_wield_spread
 			addtimer(CALLBACK(akimbo_gun, /obj/item/gun.proc/process_fire, target, shooter, TRUE, params, null, bonus_spread), 1)
 	process_fire(target, shooter, TRUE, params, null, bonus_spread)

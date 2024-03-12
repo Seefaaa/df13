@@ -68,8 +68,6 @@
 /obj/item/clothing/under/drfreeze : /obj/item/clothing/under/costume/drfreeze
 /obj/item/clothing/under/lobster : /obj/item/clothing/under/costume/lobster
 /obj/item/clothing/under/skeleton : /obj/item/clothing/under/costume/skeleton
-/obj/item/clothing/under/mech_suit : /obj/item/clothing/under/costume/mech_suit
-/obj/item/clothing/under/mech_suit/white : /obj/item/clothing/under/costume/mech_suit/white
 /obj/item/clothing/under/mech_suit/blue : /obj/item/clothing/under/costume/mech_suit/blue
 /obj/item/clothing/under/gondola : /obj/item/clothing/under/costume/gondola
 
@@ -105,8 +103,8 @@
 /obj/item/clothing/under/lawyer : /obj/item/clothing/under/rank/civilian/lawyer
 /obj/item/clothing/under/lawyer/black : /obj/item/clothing/under/rank/civilian/lawyer/black
 /obj/item/clothing/under/lawyer/black/skirt : /obj/item/clothing/under/rank/civilian/lawyer/black/skirt
-/obj/item/clothing/under/lawyer/female : /obj/item/clothing/under/rank/civilian/lawyer/beige
-/obj/item/clothing/under/lawyer/female/skirt : /obj/item/clothing/under/rank/civilian/lawyer/beige/skirt
+/obj/item/clothing/under/lawyer/female : /obj/item/clothing/under/rank/civilian/lawyer/female
+/obj/item/clothing/under/lawyer/female/skirt : /obj/item/clothing/under/rank/civilian/lawyer/female/skirt
 /obj/item/clothing/under/lawyer/red : /obj/item/clothing/under/rank/civilian/lawyer/red
 /obj/item/clothing/under/lawyer/red/skirt : /obj/item/clothing/under/rank/civilian/lawyer/red/skirt
 /obj/item/clothing/under/lawyer/blue : /obj/item/clothing/under/rank/civilian/lawyer/blue

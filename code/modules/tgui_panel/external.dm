@@ -9,16 +9,16 @@
  * tgui panel / chat troubleshooting verb
  */
 /client/verb/fix_tgui_panel()
-	set name = "Fix chat"
-	set category = "OOC"
+	set name = " ❗ FIX CHAT"
+	set category = "Special"
 	var/action
 	log_tgui(src, "Started fixing.", context = "verb/fix_tgui_panel")
 
 	nuke_chat()
 
-	// Failed to fix, using tgalert as fallback
-	action = tgalert(src, "Did that work?", "", "Yes", "No, switch to old ui")
-	if (action == "No, switch to old ui")
+	// Failed to fix
+	action = tgalert(usr, "Fixed?", "", "Yes", "No, give me retro chat")
+	if (action == "No, give me retro chat")
 		winset(src, "output", "on-show=&is-disabled=0&is-visible=1")
 		winset(src, "browseroutput", "is-disabled=1;is-visible=0")
 		log_tgui(src, "Failed to fix.", context = "verb/fix_tgui_panel")

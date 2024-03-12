@@ -39,7 +39,7 @@ const loadChatFromStorage = async store => {
     storage.get('chat-messages'),
   ]);
   // Discard incompatible versions
-  if (state && state.version <= 4) {
+  if (state && state.version <= 5) {
     store.dispatch(loadChat());
     return;
   }
@@ -117,9 +117,7 @@ export const chatMiddleware = store => {
       const settings = selectSettings(store.getState());
       chatRenderer.setHighlight(
         settings.highlightText,
-        settings.highlightColor,
-        settings.matchWord,
-        settings.matchCase);
+        settings.highlightColor);
       return;
     }
     if (type === 'roundrestart') {

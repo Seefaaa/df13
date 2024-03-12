@@ -2,11 +2,11 @@
 	SIGNAL_HANDLER
 
 	var/message = speech_args[SPEECH_MESSAGE]
-	var/static/regex/tongueless_lower = new("\[gdntke]+", "g")
-	var/static/regex/tongueless_upper = new("\[GDNTKE]+", "g")
-	if(message[1] != "*")
-		message = tongueless_lower.Replace(message, pick("aa","oo","'"))
-		message = tongueless_upper.Replace(message, pick("AA","OO","'"))
+	var/static/regex/tongueless_lower    = new("\[gdntke]+", "g")
+	var/static/regex/tongueless_upper    = new("\[GDNTKE]+", "g")
+	if(message?[1] != "*")
+		message = tongueless_lower.Replace_char(message, pick("aa","oo","'"))
+		message = tongueless_upper.Replace_char(message, pick("AA","OO","'"))
 		speech_args[SPEECH_MESSAGE] = message
 
 /mob/living/carbon/can_speak_vocal(message)

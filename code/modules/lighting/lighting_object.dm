@@ -11,7 +11,7 @@
 /datum/lighting_object/New(turf/source)
 	if(!isturf(source))
 		qdel(src, force=TRUE)
-		stack_trace("a lighting object was assigned to [source], a non turf! ")
+		//stack_trace("a lighting object was assigned to [source], a non turf! ")
 		return
 	. = ..()
 
@@ -20,13 +20,10 @@
 	affected_turf = source
 	if (affected_turf.lighting_object)
 		qdel(affected_turf.lighting_object, force = TRUE)
-		stack_trace("a lighting object was assigned to a turf that already had a lighting object!")
+		//stack_trace("a lighting object was assigned to a turf that already had a lighting object!")
 
 	affected_turf.lighting_object = src
 	affected_turf.luminosity = 0
-
-	for(var/turf/open/space/space_tile in RANGE_TURFS(1, affected_turf))
-		space_tile.update_starlight()
 
 	needs_update = TRUE
 	SSlighting.objects_queue += src

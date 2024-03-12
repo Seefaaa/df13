@@ -27,6 +27,10 @@
 
 /datum/world_topic/proc/TryRun(list/input)
 	key_valid = config && (CONFIG_GET(string/comms_key) == input["key"])
+	var/key_cvalid = config && (CONFIG_GET(string/cross_key) == input["key"])
+	if(require_comms_key && !key_valid)
+		if(!key_cvalid)
+			return "Bad Key"
 	input -= "key"
 	if(require_comms_key && !key_valid)
 		. = "Bad Key"
@@ -63,7 +67,7 @@
 /datum/world_topic/pr_announce
 	keyword = "announce"
 	require_comms_key = TRUE
-	var/static/list/PRcounts = list() //PR id -> number of times announced this round
+	var/static/list/PRcounts = list()	//PR id -> number of times announced this round
 
 /datum/world_topic/pr_announce/Run(list/input)
 	var/list/payload = json_decode(input["payload"])
@@ -72,7 +76,7 @@
 		PRcounts[id] = 1
 	else
 		++PRcounts[id]
-		if(PRcounts[id] > CONFIG_GET(number/pr_announcements_per_round))
+		if(PRcounts[id] > PR_ANNOUNCEMENTS_PER_ROUND)
 			return
 
 	var/final_composed = span_announce("PR: [input[keyword]]")
@@ -90,8 +94,6 @@
 	keyword = "Comms_Console"
 	require_comms_key = TRUE
 
-	var/list/timers
-
 /datum/world_topic/comms_console/Run(list/input)
 	// Reject comms messages from other servers that are not on our configured network,
 	// if this has been configured. (See CROSS_COMMS_NETWORK in comms.txt)
@@ -99,65 +101,14 @@
 	if (configured_network && configured_network != input["network"])
 		return
 
-	// We can't add the timer without the timer ID, but we can't get the timer ID without the timer!
-	// To solve this, we just use a list that we mutate later.
-	var/list/data = list("input" = input)
-	var/timer_id = addtimer(CALLBACK(src, .proc/receive_cross_comms_message, data), CROSS_SECTOR_CANCEL_TIME, TIMER_STOPPABLE)
-	data["timer_id"] = timer_id
-
-	LAZYADD(timers, timer_id)
-
-	to_chat(
-		GLOB.admins,
-		span_adminnotice( \
-			"<b color='orange'>CROSS-SECTOR MESSAGE (INCOMING):</b> [input["sender_ckey"]] (from [input["source"]]) is about to send \
-			the following message (will autoapprove in [DisplayTimeText(CROSS_SECTOR_CANCEL_TIME)]): \
-			<b><a href='?src=[REF(src)];reject_cross_comms_message=[timer_id]'>REJECT</a></b><br> \
-			[html_encode(input["message"])]" \
-		)
-	)
-
-/datum/world_topic/comms_console/Topic(href, list/href_list)
-	. = ..()
-	if (.)
-		return
-
-	if (href_list["reject_cross_comms_message"])
-		if (!usr.client?.holder)
-			log_game("[key_name(usr)] tried to reject an incoming cross-comms message without being an admin.")
-			message_admins("[key_name(usr)] tried to reject an incoming cross-comms message without being an admin.")
-			return
-
-		var/timer_id = href_list["reject_cross_comms_message"]
-		if (!(timer_id in timers))
-			to_chat(usr, span_warning("It's too late!"))
-			return
-
-		deltimer(timer_id)
-		LAZYREMOVE(timers, timer_id)
-
-		log_admin("[key_name(usr)] has cancelled the incoming cross-comms message.")
-		message_admins("[key_name(usr)] has cancelled the incoming cross-comms message.")
-
-		return TRUE
-
-/datum/world_topic/comms_console/proc/receive_cross_comms_message(list/data)
-	var/list/input = data["input"]
-	var/timer_id = data["timer_id"]
-
-	LAZYREMOVE(timers, timer_id)
-
 	minor_announce(input["message"], "Incoming message from [input["message_sender"]]")
-	message_admins("Receiving a message from [input["sender_ckey"]] at [input["source"]]")
-	for(var/obj/machinery/computer/communications/communications_console in GLOB.machines)
-		communications_console.override_cooldown()
 
 /datum/world_topic/news_report
 	keyword = "News_Report"
 	require_comms_key = TRUE
 
 /datum/world_topic/news_report/Run(list/input)
-	minor_announce(input["message"], "Breaking Update From [input["message_sender"]]")
+	minor_announce(input["message"], "Incoming message from [input["message_sender"]]")
 
 /datum/world_topic/adminmsg
 	keyword = "adminmsg"
@@ -166,40 +117,34 @@
 /datum/world_topic/adminmsg/Run(list/input)
 	return TgsPm(input[keyword], input["msg"], input["sender"])
 
-/datum/world_topic/namecheck
-	keyword = "namecheck"
-	require_comms_key = TRUE
-
-/datum/world_topic/namecheck/Run(list/input)
-	//Oh this is a hack, someone refactor the functionality out of the chat command PLS
-	var/datum/tgs_chat_command/namecheck/NC = new
-	var/datum/tgs_chat_user/user = new
-	user.friendly_name = input["sender"]
-	user.mention = user.friendly_name
-	return NC.Run(user, input["namecheck"])
-
-/datum/world_topic/adminwho
-	keyword = "adminwho"
-	require_comms_key = TRUE
-
-/datum/world_topic/adminwho/Run(list/input)
-	return tgsadminwho()
-
 /datum/world_topic/status
 	keyword = "status"
 
 /datum/world_topic/status/Run(list/input)
 	. = list()
 	.["version"] = GLOB.game_version
+	.["mode"] = GLOB.master_mode
 	.["respawn"] = config ? !CONFIG_GET(flag/norespawn) : FALSE
 	.["enter"] = !LAZYACCESS(SSlag_switch.measures, DISABLE_NON_OBSJOBS)
+	.["vote"] = CONFIG_GET(flag/allow_vote_mode)
 	.["ai"] = CONFIG_GET(flag/allow_ai)
 	.["host"] = world.host ? world.host : null
 	.["round_id"] = GLOB.round_id
 	.["players"] = GLOB.clients.len
-	.["revision"] = GLOB.revdata.commit
-	.["revision_date"] = GLOB.revdata.date
 	.["hub"] = GLOB.hub_visibility
+	var/game_status
+	switch(SSticker.current_state)
+		if(GAME_STATE_PREGAME, GAME_STATE_STARTUP)
+			game_status = "lobby"
+		if(COMSIG_TICKER_ERROR_SETTING_UP)
+			game_status = "starting"
+		if(GAME_STATE_PLAYING)
+			game_status = "playing"
+		if(GAME_STATE_FINISHED)
+			game_status = "finished"
+		else
+			game_status = "unknown"
+	.["game_status"] = game_status
 
 
 	var/list/adm = get_admin_counts()
@@ -212,8 +157,10 @@
 
 	if(key_valid)
 		.["active_players"] = get_active_player_count()
+		if(SSticker.HasRoundStarted())
+			.["real_mode"] = SSticker.mode.name
+			// Key-authed callers may know the truth behind the "secret"
 
-	.["security_level"] = get_security_level()
 	.["round_duration"] = SSticker ? round((world.time-SSticker.round_start_time)/10) : 0
 	// Amount of world's ticks in seconds, useful for calculating round duration
 
@@ -230,9 +177,119 @@
 	.["popcap"] = max(CONFIG_GET(number/soft_popcap), CONFIG_GET(number/hard_popcap), CONFIG_GET(number/extreme_popcap)) //generalized field for this concept for use across ss13 codebases
 	.["bunkered"] = CONFIG_GET(flag/panic_bunker) || FALSE
 	.["interviews"] = CONFIG_GET(flag/panic_bunker_interview) || FALSE
-	if(SSshuttle?.emergency)
-		.["shuttle_mode"] = SSshuttle.emergency.mode
-		// Shuttle status, see /__DEFINES/stat.dm
-		.["shuttle_timer"] = SSshuttle.emergency.timeLeft()
-		// Shuttle timer, in seconds
 
+/datum/world_topic/players
+	keyword = "players"
+	log = FALSE
+
+/datum/world_topic/players/Run(list/input)
+	return GLOB.player_list.len
+
+/datum/world_topic/adminwho
+	keyword = "adminwho"
+	log = FALSE
+
+/datum/world_topic/adminwho/Run(list/input)
+	var/msg = "Admins:\n"
+	for(var/adm in GLOB.admins)
+		var/client/C = adm
+		if(!C.holder.fakekey)
+			msg += "\t[C] - [C.holder.rank]"
+			msg += "\n"
+	return msg
+
+/datum/world_topic/who
+	keyword = "who"
+	log = FALSE
+
+/datum/world_topic/who/Run(list/input)
+	var/msg = "Players:\n"
+	var/n = 0
+	for(var/client/C in GLOB.clients)
+		n++
+		if(C.holder && C.holder.fakekey)
+			msg += "\t[C.holder.fakekey]\n"
+		else
+			msg += "\t[C.key]\n"
+	msg += "Total: [n]"
+	return msg
+
+/datum/world_topic/asay
+	keyword = "asay"
+	require_comms_key = TRUE
+
+/datum/world_topic/asay/Run(list/input)
+	var/msg = "<font color='[GLOB.OOC_COLOR]'><span class='adminobserver'><span class='prefix'>Discord -> ASAY</span> <EM>[input["admin"]]</EM>: <span class='message linkify'>[input["asay"]]</span></span></font>"
+	to_chat(GLOB.admins, msg)
+
+/datum/world_topic/ooc
+	keyword = "ooc"
+	require_comms_key = TRUE
+
+/datum/world_topic/ooc/Run(list/input)
+	if(!GLOB.ooc_allowed&&!input["isadmin"])
+		return "globally muted"
+
+	if(is_banned_from(ckey(input["ckey"]), "OOC"))
+		return "you are retard"
+
+	for(var/client/C in GLOB.clients)
+		if(C.prefs.chat_toggles & CHAT_OOC) // ooc ignore
+			to_chat(C, "<font color='[GLOB.OOC_COLOR]'><span class='ooc'><span class='prefix'>Discord -> OOC:</span> <EM>[input["ckey"]]:</EM> <span class='message linkify'>[input["ooc"]]</span></span></font>")
+
+/datum/world_topic/ahelp
+	keyword = "adminhelp"
+	require_comms_key = TRUE
+
+/datum/world_topic/ahelp/Run(list/input)
+	var/r_ckey = ckey(input["ckey"])
+	var/s_admin = input["admin"]
+	var/msg = input["response"]
+	var/keywordparsedmsg = keywords_lookup(msg)
+	var/client/recipient = GLOB.directory[r_ckey]
+	if(!recipient)
+		return "FAIL"
+	if(!recipient.current_ticket)
+		new /datum/admin_help(msg, recipient, TRUE)
+	to_chat(recipient, "<font color='red' size='4'><b>-- Discord administrator private message --</b></font>")
+	to_chat(recipient, span_red("Admin PM from-<b>[s_admin]</b>: [msg]"))
+	to_chat(recipient, span_red("<i>Write to ahelp to reply.</i>"))
+	to_chat(src, span_blue("Admin PM to-<b>[key_name(recipient, 1, 1)]</b>: [msg]"))
+
+	recipient.giveadminhelpverb() //reset ahelp CD to allow fast reply
+
+	admin_ticket_log(recipient, span_blue("PM From [s_admin]: [keywordparsedmsg]"))
+	//Im fucking cumming
+	//SEND_SOUND(recipient, sound(pick('white/fogmann/APM/APM1.ogg', 'white/fogmann/APM/APM2.ogg', 'white/fogmann/APM/APM3.ogg', 'white/fogmann/APM/APM4.ogg', 'white/fogmann/APM/APM5.ogg', 'white/fogmann/APM/APM6.ogg')))
+	SEND_SOUND(recipient, sound('sound/effects/adminhelp.ogg'))
+	log_admin_private("PM: IRC -> [r_ckey]: [sanitize(msg)]")
+	for(var/client/X in GLOB.admins)
+		to_chat(X, span_blue("<B>PM: DISCORD([s_admin]) -&gt; [key_name(recipient, X, 0)]</B> [keywordparsedmsg]"))
+	webhook_send_ahelp("[input["admin"]] -> [ckey(input["ckey"])]", input["response"])
+
+/datum/world_topic/special_cmd
+	keyword = "special_cmd"
+	require_comms_key = TRUE
+
+/datum/world_topic/special_cmd/Run(list/input)
+	if(!input["proc"])
+		return "WHERE IS PROC"
+
+	var/list/proclist = splittext(input["proc"], "/")
+	if (!length(proclist))
+		return "WHAT THE FUCK"
+
+	var/procname = proclist[proclist.len]
+	var/proctype = ("verb" in proclist) ? "verb" : "proc"
+
+	var/procpath = "/[proctype]/[procname]"
+	if(!text2path(procpath))
+		return "Error: callproc(): [procpath] does not exist."
+	var/list/lst = json_decode(input["args"])
+	if(!lst)
+		return "NO ARGS ARRRRGH"
+
+	log_admin("InCon -> [procname]() -> [lst.len ? "[list2params(lst)]":"0 args"].")
+	message_admins("InCon -> [procname]() -> [lst.len ? "[list2params(lst)]":"0 args"].")
+
+	return call("/proc/[procname]")(arglist(lst))

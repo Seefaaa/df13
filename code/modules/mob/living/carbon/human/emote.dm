@@ -7,6 +7,24 @@
 	message = "cries."
 	emote_type = EMOTE_AUDIBLE
 
+/datum/emote/living/carbon/human/cry/get_sound(mob/living/user)
+	if(!ishuman(user))
+		return
+	var/mob/living/carbon/human/H = user
+	if(H.mind?.miming)
+		return
+	if(ishuman(H))
+		if(user.gender == FEMALE)
+			return pick('sound/emotes/female_crying01.ogg',\
+						'sound/emotes/female_crying02.ogg',\
+						'sound/emotes/female_crying03.ogg',\
+						'sound/emotes/female_crying04.ogg')
+		else
+			return pick('sound/emotes/male_crying01.ogg',\
+						'sound/emotes/male_crying02.ogg',\
+						'sound/emotes/male_crying03.ogg',\
+						'sound/emotes/male_crying04.ogg')
+
 /datum/emote/living/carbon/human/dap
 	key = "dap"
 	key_third_person = "daps"
@@ -34,9 +52,10 @@
 /datum/emote/living/carbon/human/hug
 	key = "hug"
 	key_third_person = "hugs"
-	message = "hugs themself."
+	message = "hugs themselves."
 	message_param = "hugs %t."
 	hands_use_check = TRUE
+	emote_type = EMOTE_AUDIBLE
 
 /datum/emote/living/carbon/human/mumble
 	key = "mumble"
@@ -48,18 +67,31 @@
 	key = "scream"
 	key_third_person = "screams"
 	message = "screams!"
-	message_mime = "acts out a scream!"
 	emote_type = EMOTE_AUDIBLE
-	only_forced_audio = TRUE
+	only_forced_audio = FALSE
 	vary = TRUE
 
 /datum/emote/living/carbon/human/scream/get_sound(mob/living/user)
 	if(!ishuman(user))
 		return
-	var/mob/living/carbon/human/human = user
-	if(human.mind?.miming)
+	var/mob/living/carbon/human/H = user
+	if(H.mind?.miming)
 		return
-	return human.dna.species.get_scream_sound(human)
+	if(ishuman(H))
+		if(user.gender == FEMALE)
+			return pick('sound/emotes/scream_female_1.ogg',\
+						'sound/emotes/scream_female_2.ogg',\
+						'sound/emotes/scream_female_3.ogg',\
+						'sound/emotes/scream_female_4.ogg')
+		else
+			return pick('sound/emotes/scream_male_1.ogg',\
+						'sound/emotes/scream_male_2.ogg',\
+						'sound/voice/human/malescream_1.ogg',\
+						'sound/voice/human/malescream_2.ogg',\
+						'sound/voice/human/malescream_3.ogg',\
+						'sound/voice/human/malescream_4.ogg',\
+						'sound/voice/human/malescream_5.ogg',\
+						'sound/voice/human/malescream_6.ogg')
 
 /datum/emote/living/carbon/human/scream/screech //If a human tries to screech it'll just scream.
 	key = "screech"
@@ -68,19 +100,44 @@
 	emote_type = EMOTE_AUDIBLE
 	vary = FALSE
 
-/datum/emote/living/carbon/human/scream/screech/should_play_sound(mob/user, intentional)
-	if(ismonkey(user))
-		return TRUE
-	return ..()
+/datum/emote/living/carbon/human/agony
+	key = "agony"
+	key_third_person = "agonizes"
+	message = "screams in agony!"
+	emote_type = EMOTE_AUDIBLE
+	only_forced_audio = TRUE
+	vary = TRUE
+
+/datum/emote/living/carbon/human/agony/get_sound(mob/living/user)
+	if(!ishuman(user))
+		return
+	var/mob/living/carbon/human/H = user
+	if(H.mind?.miming)
+		return
+	if(user.gender == FEMALE)
+		return pick('sound/emotes/agony_female_1.ogg',\
+					'sound/emotes/agony_female_2.ogg',\
+					'sound/emotes/agony_female_3.ogg')
+	else
+		return pick('sound/emotes/agony_male_1.ogg',\
+					'sound/emotes/agony_male_2.ogg',\
+					'sound/emotes/agony_male_3.ogg',\
+					'sound/emotes/agony_male_4.ogg',\
+					'sound/emotes/agony_male_5.ogg',\
+					'sound/emotes/agony_male_6.ogg',\
+					'sound/emotes/agony_male_7.ogg',\
+					'sound/emotes/agony_male_8.ogg',\
+					'sound/emotes/agony_male_9.ogg')
+
 
 /datum/emote/living/carbon/human/pale
 	key = "pale"
-	message = "goes pale for a second."
+	message = "pales for a second."
 
 /datum/emote/living/carbon/human/raise
 	key = "raise"
 	key_third_person = "raises"
-	message = "raises a hand."
+	message = "raises their hands."
 	hands_use_check = TRUE
 
 /datum/emote/living/carbon/human/salute
@@ -135,11 +192,10 @@
 	. = ..()
 	if(.)
 		var/mob/living/carbon/human/H = user
-		var/obj/item/organ/external/wings/functional/wings = H.getorganslot(ORGAN_SLOT_EXTERNAL_WINGS)
-		if(wings && findtext(select_message_type(user,intentional), "open"))
-			wings.open_wings()
+		if(findtext(select_message_type(user,intentional), "open"))
+			H.OpenWings()
 		else
-			wings.close_wings()
+			H.CloseWings()
 
 /datum/emote/living/carbon/human/wing/select_message_type(mob/user, intentional)
 	. = ..()
@@ -156,43 +212,38 @@
 	if(H.dna && H.dna.species && (H.dna.features["wings"] != "None"))
 		return TRUE
 
-///Snowflake emotes only for le epic chimp
-/datum/emote/living/carbon/human/monkey
+/mob/living/carbon/human/proc/OpenWings()
+	if(!dna || !dna.species)
+		return
+	if(dna.species.mutant_bodyparts["wings"])
+		dna.species.mutant_bodyparts["wingsopen"] = dna.species.mutant_bodyparts["wings"]
+		dna.species.mutant_bodyparts -= "wings"
+	update_body()
 
-/datum/emote/living/carbon/human/monkey/can_run_emote(mob/user, status_check = TRUE, intentional)
-	if(ismonkey(user))
-		return ..()
-	return FALSE
+/mob/living/carbon/human/proc/CloseWings()
+	if(!dna || !dna.species)
+		return
+	if(dna.species.mutant_bodyparts["wingsopen"])
+		dna.species.mutant_bodyparts["wings"] = dna.species.mutant_bodyparts["wingsopen"]
+		dna.species.mutant_bodyparts -= "wingsopen"
+	update_body()
+	if(isturf(loc))
+		var/turf/T = loc
+		T.Entered(src)
 
-/datum/emote/living/carbon/human/monkey/gnarl
-	key = "gnarl"
-	key_third_person = "gnarls"
-	message = "gnarls and shows its teeth..."
+//Ayy lmao
 
-/datum/emote/living/carbon/human/monkey/roll
-	key = "roll"
-	key_third_person = "rolls"
-	message = "rolls."
+/datum/emote/living/carbon/human/dab
+	key = "dab"
+	key_third_person = "dabs"
+	message = "dabs!"
 	hands_use_check = TRUE
 
-/datum/emote/living/carbon/human/monkey/scratch
-	key = "scratch"
-	key_third_person = "scratches"
-	message = "scratches."
-	hands_use_check = TRUE
-
-/datum/emote/living/carbon/human/monkey/screech/roar
-	key = "roar"
-	key_third_person = "roars"
-	message = "roars."
-	emote_type = EMOTE_AUDIBLE
-
-/datum/emote/living/carbon/human/monkey/tail
-	key = "tail"
-	message = "waves their tail."
-
-/datum/emote/living/carbon/human/monkeysign
-	key = "sign"
-	key_third_person = "signs"
-	message_param = "signs the number %t."
-	hands_use_check = TRUE
+/datum/emote/living/carbon/human/dab/run_emote(mob/living/carbon/user, params)
+	. = ..()
+	if(. && ishuman(user))
+		var/mob/living/carbon/human/H = user
+		var/light_dab_angle = rand(35,55)
+		var/light_dab_speed = rand(3,7)
+		H.DabAnimation(angle = light_dab_angle , speed = light_dab_speed)
+		H.adjustOrganLoss(ORGAN_SLOT_BRAIN, 5)

@@ -28,16 +28,7 @@
 /atom/movable/emissive_blocker/ex_act(severity)
 	return FALSE
 
-/atom/movable/emissive_blocker/singularity_act()
-	return
-
-/atom/movable/emissive_blocker/singularity_pull()
-	return
-
-/atom/movable/emissive_blocker/blob_act()
-	return
-
-/atom/movable/emissive_blocker/on_changed_z_level(turf/old_turf, turf/new_turf)
+/atom/movable/emissive_blocker/onTransitZ()
 	return
 
 //Prevents people from moving these after creation, because they shouldn't be.

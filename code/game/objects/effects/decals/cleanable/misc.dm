@@ -13,7 +13,7 @@
 	mergeable_decal = FALSE
 	beauty = -50
 
-/obj/effect/decal/cleanable/ash/Initialize(mapload)
+/obj/effect/decal/cleanable/ash/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/ash, 30)
 	pixel_x = base_pixel_x + rand(-5, 5)
@@ -28,7 +28,7 @@
 	icon_state = "big_ash"
 	beauty = -100
 
-/obj/effect/decal/cleanable/ash/large/Initialize(mapload)
+/obj/effect/decal/cleanable/ash/large/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/ash, 30) //double the amount of ash.
 
@@ -39,7 +39,7 @@
 	icon_state = "tiny"
 	beauty = -100
 
-/obj/effect/decal/cleanable/glass/Initialize(mapload)
+/obj/effect/decal/cleanable/glass/Initialize()
 	. = ..()
 	setDir(pick(GLOB.cardinals))
 
@@ -61,14 +61,15 @@
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	beauty = -75
 
-/obj/effect/decal/cleanable/dirt/Initialize(mapload)
+/obj/effect/decal/cleanable/dirt/Initialize()
 	. = ..()
 	var/turf/T = get_turf(src)
 	if(T.tiled_dirt)
 		smoothing_flags = SMOOTH_BITMASK
 		QUEUE_SMOOTH(src)
-	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
 		QUEUE_SMOOTH_NEIGHBORS(src)
+	else
+		icon_state = "dirt"
 
 /obj/effect/decal/cleanable/dirt/Destroy()
 	if(smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
@@ -79,33 +80,11 @@
 	name = "dust"
 	desc = "A thin layer of dust coating the floor."
 
-/obj/effect/decal/cleanable/greenglow
-	name = "glowing goo"
-	desc = "Jeez. I hope that's not for lunch."
-	icon_state = "greenglow"
-	light_power = 3
-	light_range = 2
-	light_color = LIGHT_COLOR_GREEN
-	beauty = -300
-
-/obj/effect/decal/cleanable/greenglow/ex_act()
-	return FALSE
-
-/obj/effect/decal/cleanable/greenglow/filled/Initialize(mapload)
-	. = ..()
-	reagents.add_reagent(pick(/datum/reagent/uranium, /datum/reagent/uranium/radium), 5)
-
-/obj/effect/decal/cleanable/greenglow/ecto
-	name = "ectoplasmic puddle"
-	desc = "You know who to call."
-	light_power = 2
-
 /obj/effect/decal/cleanable/cobweb
 	name = "cobweb"
 	desc = "Somebody should remove that."
 	gender = NEUTER
 	layer = WALL_OBJ_LAYER
-	plane = GAME_PLANE_UPPER
 	icon_state = "cobweb1"
 	resistance_flags = FLAMMABLE
 	beauty = -100
@@ -138,34 +117,13 @@
 	random_icon_states = list("vomit_1", "vomit_2", "vomit_3", "vomit_4")
 	beauty = -150
 
-/obj/effect/decal/cleanable/vomit/attack_hand(mob/user, list/modifiers)
-	. = ..()
-	if(.)
-		return
-	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
-		if(isflyperson(H))
-			playsound(get_turf(src), 'sound/items/drink.ogg', 50, TRUE) //slurp
-			H.visible_message(span_alert("[H] extends a small proboscis into the vomit pool, sucking it with a slurping sound."))
-			if(reagents)
-				for(var/datum/reagent/R in reagents.reagent_list)
-					if (istype(R, /datum/reagent/consumable))
-						var/datum/reagent/consumable/nutri_check = R
-						if(nutri_check.nutriment_factor >0)
-							H.adjust_nutrition(nutri_check.nutriment_factor * nutri_check.volume)
-							reagents.remove_reagent(nutri_check.type,nutri_check.volume)
-			reagents.trans_to(H, reagents.total_volume, transfered_by = user)
-			qdel(src)
-
 /obj/effect/decal/cleanable/vomit/old
 	name = "crusty dried vomit"
 	desc = "You try not to look at the chunks, and fail."
 
-/obj/effect/decal/cleanable/vomit/old/Initialize(mapload, list/datum/disease/diseases)
+/obj/effect/decal/cleanable/vomit/old/Initialize(mapload)
 	. = ..()
 	icon_state += "-old"
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 10)
-
 
 /obj/effect/decal/cleanable/chem_pile
 	name = "chemical pile"
@@ -182,12 +140,13 @@
 	mergeable_decal = FALSE
 
 /obj/effect/decal/cleanable/shreds/ex_act(severity, target)
-	if(severity >= EXPLODE_DEVASTATE) //so shreds created during an explosion aren't deleted by the explosion.
+	if(severity == 1) //so shreds created during an explosion aren't deleted by the explosion.
 		qdel(src)
 
 /obj/effect/decal/cleanable/shreds/Initialize(mapload, oldname)
-	pixel_x = rand(-10, 10)
-	pixel_y = rand(-10, 10)
+	if(loc)
+		pixel_x = rand(-10, 10)
+		pixel_y = rand(-10, 10)
 	if(!isnull(oldname))
 		desc = "The sad remains of what used to be [oldname]"
 	. = ..()
@@ -241,52 +200,33 @@
 	color = "#c6f4ff"
 
 /obj/effect/decal/cleanable/wrapping
-	name = "wrapping shreds"
+	name = "paper shreds"
 	desc = "Torn pieces of cardboard and paper, left over from a package."
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "paper_shreds"
 
 /obj/effect/decal/cleanable/garbage
-	name = "decomposing garbage"
+	name = "garbage"
 	desc = "A split open garbage bag, its stinking content seems to be partially liquified. Yuck!"
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "garbage"
-	plane = GAME_PLANE
-	layer = FLOOR_CLEAN_LAYER //To display the decal over wires.
+	layer = OBJ_LAYER //To display the decal over wires.
 	beauty = -150
 	clean_type = CLEAN_TYPE_HARD_DECAL
 
-/obj/effect/decal/cleanable/garbage/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_SLUDGE, CELL_VIRUS_TABLE_GENERIC, rand(2,4), 15)
-
 /obj/effect/decal/cleanable/ants
-	name = "space ants"
-	desc = "A small colony of space ants. They're normally used to the vacuum of space, so they can't climb too well."
+	name = "ants"
+	desc = "A small colony of ants."
 	icon = 'icons/obj/objects.dmi'
-	icon_state = "ants"
+	icon_state = "spaceants"
 	beauty = -150
-	plane = GAME_PLANE
-	layer = LOW_OBJ_LAYER
-	var/ant_bite_damage = 0.1
-	var/ant_volume
 
 /obj/effect/decal/cleanable/ants/Initialize(mapload)
 	. = ..()
-	ant_volume = rand(3, 5)
-	reagents.add_reagent(/datum/reagent/ants, ant_volume)
-	update_ant_damage()
-
-/obj/effect/decal/cleanable/ants/proc/update_ant_damage(spilled_ants)
-	ant_volume += spilled_ants
-	ant_bite_damage = min(10, round((ant_volume * 0.1),0.1)) // 100u ants = 10 max_damage
-	AddComponent(/datum/component/caltrop, min_damage = 0.1, max_damage = ant_bite_damage, flags = (CALTROP_NOCRAWL | CALTROP_NOSTUN | CALTROP_BYPASS_SHOES), soundfile = 'sound/weapons/bite.ogg')
-	switch(ant_bite_damage)
-		if(0 to 1)
-			icon_state = initial(icon_state)
-		if(1.1 to 4)
-			icon_state = "[initial(icon_state)]_2"
-		if(4.1 to 7)
-			icon_state = "[initial(icon_state)]_3"
-		if(7.1 to 10)
-			icon_state = "[initial(icon_state)]_4"
+	var/scale = (rand(6, 8) / 10) + (rand(2, 5) / 50)
+	transform = matrix(transform, scale, scale, MATRIX_SCALE)
+	setDir(pick(GLOB.cardinals))
+	reagents.add_reagent(/datum/reagent/ants, rand(2, 5))
+	pixel_x = rand(-5, 5)
+	pixel_y = rand(-5, 5)
+	AddComponent(/datum/component/caltrop, min_damage = 0.2, max_damage = 0.1, flags = (CALTROP_NOCRAWL | CALTROP_NOSTUN | CALTROP_BYPASS_SHOES), soundfile = 'sound/weapons/bite.ogg')

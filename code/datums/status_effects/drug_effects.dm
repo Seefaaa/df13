@@ -20,22 +20,10 @@
 	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = /atom/movable/screen/alert/status_effect/high_blood_pressure
 
-/datum/status_effect/high_blood_pressure/on_apply()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/human_owner = owner
-		human_owner.physiology.bleed_mod *= 1.25
-
-/datum/status_effect/high_blood_pressure/on_remove()
-	if(ishuman(owner))
-		var/mob/living/carbon/human/human_owner = owner
-		human_owner.physiology.bleed_mod /= 1.25
-
 /atom/movable/screen/alert/status_effect/high_blood_pressure
 	name = "High blood pressure"
-	desc = "Your blood pressure is real high right now ... You'd probably bleed like a stuck pig."
+	desc = "This stuff is driving my blood pressure up the wall...I'll probably bleed like crazy."
 	icon_state = "highbloodpressure"
-
-
 
 /datum/status_effect/seizure
 	id = "seizure"
@@ -50,7 +38,7 @@
 	duration = amplitude
 	owner.Jitter(50)
 	owner.Paralyze(duration)
-	owner.visible_message(span_warning("[owner] drops to the ground as [owner.p_they()] start seizing up."), \
+	owner.visible_message(span_warning("[owner] drops to the ground as [owner.p_they()] start seizing up.") , \
 	span_warning("[pick("You can't collect your thoughts...", "You suddenly feel extremely dizzy...", "You cant think straight...","You can't move your face properly anymore...")]"))
 	return TRUE
 
@@ -72,7 +60,7 @@
 	var/mob/living/carbon/human/human_owner = owner
 	original_eye_color = human_owner.eye_color
 	human_owner.add_movespeed_modifier(/datum/movespeed_modifier/reagent/cannabis) //slows you down
-	human_owner.eye_color = BLOODCULT_EYE //makes cult eyes less obvious
+	human_owner.eye_color = COLOR_RED //makes cult eyes less obvious
 	human_owner.update_body() //updates eye color
 	ADD_TRAIT(human_owner, TRAIT_BLOODSHOT_EYES, type) //dilates blood vessels in eyes
 	ADD_TRAIT(human_owner, TRAIT_CLUMSY, type) //impairs motor coordination

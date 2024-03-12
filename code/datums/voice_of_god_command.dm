@@ -30,7 +30,7 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
  * The first matching command (from a list of static datums) the listeners must obey,
  * and the return value of this proc the cooldown variable of the command dictates. (only relevant for things with cooldowns i guess)
  */
-/proc/voice_of_god(message, mob/living/user, list/span_list, base_multiplier = 1, include_speaker = FALSE, forced = null)
+/proc/voice_of_god(message, mob/living/user, list/span_list, base_multiplier = 1, include_speaker = FALSE, message_admins = TRUE)
 	var/log_message = uppertext(message)
 	var/is_cultie = IS_CULTIST(user)
 	if(LAZYLEN(span_list) && is_cultie)
@@ -74,13 +74,6 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	if(is_cultie)
 		power_multiplier *= 2
 
-	//Now get the proper job titles and check for matches.
-	var/job_message = get_full_job_name(message)
-	for(var/mob/living/candidate in candidates)
-		var/their_role = candidate.mind?.assigned_role.title
-		if(their_role && findtext(job_message, their_role))
-			specific_listeners |= candidate //focus on those with the specified job. "|=" instead "+=" so "Mrs. Capri the Captain" doesn't get affected twice.
-
 	if(specific_listeners.len)
 		listeners = specific_listeners
 		power_multiplier *= (1 + (1/specific_listeners.len)) //2x on a single guy, 1.5x on two and so on
@@ -90,9 +83,9 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 			. = command.execute(listeners, user, power_multiplier, message) || command.cooldown
 			break
 
-	if(!forced)
+	if(message_admins)
 		message_admins("[ADMIN_LOOKUPFLW(user)] has said '[log_message]' with a Voice of God, affecting [english_list(listeners)], with a power multiplier of [power_multiplier].")
-	log_game("[key_name(user)] has said '[log_message]' with a Voice of God[forced ? " forced by [forced]" : ""], affecting [english_list(listeners)], with a power multiplier of [power_multiplier].")
+	log_game("[key_name(user)] has said '[log_message]' with a Voice of God, affecting [english_list(listeners)], with a power multiplier of [power_multiplier].")
 	SSblackbox.record_feedback("tally", "voice_of_god", 1, log_message)
 
 /// Voice of god command datums that are used in [/proc/voice_of_god()]
@@ -276,16 +269,6 @@ GLOBAL_LIST_INIT(voice_of_god_commands, init_voice_of_god_commands())
 	var/iteration = 1
 	for(var/mob/living/target as anything in listeners)
 		addtimer(CALLBACK(target, /atom/movable/proc/say, "Who's there?"), 0.5 SECONDS * iteration)
-		iteration++
-
-/// This command forces silicon listeners to state all their laws.
-/datum/voice_of_god_command/state_laws
-	trigger = "state\\s*(your)?\\s*laws"
-
-/datum/voice_of_god_command/state_laws/execute(list/listeners, mob/living/user, power_multiplier = 1, message)
-	var/iteration = 0
-	for(var/mob/living/silicon/target in listeners)
-		addtimer(CALLBACK(target, /mob/living/silicon/proc/statelaws, TRUE), (3 SECONDS * iteration) + 0.5 SECONDS)
 		iteration++
 
 /// This command forces the listeners to take step in a direction chosen by the user, otherwise a random cardinal one.

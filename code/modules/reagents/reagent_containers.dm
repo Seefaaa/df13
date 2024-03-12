@@ -6,45 +6,25 @@
 	w_class = WEIGHT_CLASS_TINY
 	var/amount_per_transfer_from_this = 5
 	var/list/possible_transfer_amounts = list(5,10,15,20,25,30)
-	/// Where we are in the possible transfer amount list.
-	var/amount_list_position = 1
 	var/volume = 30
 	var/reagent_flags
 	var/list/list_reagents = null
-	var/spawned_disease = null
-	var/disease_amount = 20
 	var/spillable = FALSE
 	var/list/fill_icon_thresholds = null
 	var/fill_icon_state = null // Optional custom name for reagent fill icon_state prefix
+	var/allowed_reagents // Optional: whitelisted reagents for this container
 
 /obj/item/reagent_containers/Initialize(mapload, vol)
 	. = ..()
 	if(isnum(vol) && vol > 0)
 		volume = vol
-	create_reagents(volume, reagent_flags)
-	if(spawned_disease)
-		var/datum/disease/F = new spawned_disease()
-		var/list/data = list("viruses"= list(F))
-		reagents.add_reagent(/datum/reagent/blood, disease_amount, data)
-
+	create_reagents(volume, reagent_flags, allowed_reagents)
 	add_initial_reagents()
 
-/obj/item/reagent_containers/examine()
-	. = ..()
-	if(possible_transfer_amounts.len > 1)
-		. += span_notice("Left-click or right-click in-hand to increase or decrease its transfer amount.")
-	else if(possible_transfer_amounts.len)
-		. += span_notice("Left-click or right-click in-hand to view its transfer amount.")
-
-/obj/item/reagent_containers/create_reagents(max_vol, flags)
+/obj/item/reagent_containers/create_reagents(max_vol, flags, _allowed_reagents)
 	. = ..()
 	RegisterSignal(reagents, list(COMSIG_REAGENTS_NEW_REAGENT, COMSIG_REAGENTS_ADD_REAGENT, COMSIG_REAGENTS_DEL_REAGENT, COMSIG_REAGENTS_REM_REAGENT), .proc/on_reagent_change)
 	RegisterSignal(reagents, COMSIG_PARENT_QDELETING, .proc/on_reagents_del)
-
-/obj/item/reagent_containers/attack(mob/living/M, mob/living/user, params)
-	if (!user.combat_mode)
-		return
-	return ..()
 
 /obj/item/reagent_containers/proc/on_reagents_del(datum/reagents/reagents)
 	SIGNAL_HANDLER
@@ -56,34 +36,25 @@
 		reagents.add_reagent_list(list_reagents)
 
 /obj/item/reagent_containers/attack_self(mob/user)
-	change_transfer_amount(user, FORWARD)
+	if(possible_transfer_amounts.len)
+		var/i=0
+		for(var/A in possible_transfer_amounts)
+			i++
+			if(A == amount_per_transfer_from_this)
+				if(i<possible_transfer_amounts.len)
+					amount_per_transfer_from_this = possible_transfer_amounts[i+1]
+				else
+					amount_per_transfer_from_this = possible_transfer_amounts[1]
+				to_chat(user, span_notice("Transferring [amount_per_transfer_from_this] units."))
+				return
 
-/obj/item/reagent_containers/attack_self_secondary(mob/user)
-	change_transfer_amount(user, BACKWARD)
-
-/obj/item/reagent_containers/proc/mode_change_message(mob/user)
-	return
-
-/obj/item/reagent_containers/proc/change_transfer_amount(mob/user, direction = FORWARD)
-	var/list_len = length(possible_transfer_amounts)
-	if(!list_len)
-		return
-	switch(direction)
-		if(FORWARD)
-			amount_list_position = (amount_list_position % list_len) + 1
-		if(BACKWARD)
-			amount_list_position = (amount_list_position - 1) || list_len
-		else
-			CRASH("change_transfer_amount() called with invalid direction value")
-	amount_per_transfer_from_this = possible_transfer_amounts[amount_list_position]
-	balloon_alert(user, "transferring [amount_per_transfer_from_this]u")
-	mode_change_message(user)
-
-/obj/item/reagent_containers/pre_attack_secondary(atom/target, mob/living/user, params)
+/obj/item/reagent_containers/attack(atom/target, mob/living/user, def_zone)
+	if(user.a_intent == INTENT_HARM)
+		return ..()
 	if(HAS_TRAIT(target, DO_NOT_SPLASH))
 		return ..()
 	if (try_splash(user, target))
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+		return ..()
 
 	return ..()
 
@@ -99,17 +70,17 @@
 
 	var/reagent_text
 	user.visible_message(
-		span_danger("[user] splashes the contents of [src] onto [target][punctuation]"),
-		span_danger("You splash the contents of [src] onto [target][punctuation]"),
+		span_danger("[user] splashes the contents of [src] onto [target][punctuation]") ,
+		span_danger("You splash the contents of [src] onto [target][punctuation]") ,
 		ignored_mobs = target,
 	)
 
 	if (ismob(target))
 		var/mob/target_mob = target
 		target_mob.show_message(
-			span_userdanger("[user] splash the contents of [src] onto you!"),
+			span_userdanger("[user] splashes the contents of [src] onto you!") ,
 			MSG_VISUAL,
-			span_userdanger("You feel drenched!"),
+			span_userdanger("You feel drenched!") ,
 		)
 
 	for(var/datum/reagent/reagent as anything in reagents.reagent_list)
@@ -152,6 +123,13 @@
 
 	return ..()
 
+/obj/item/reagent_containers/ex_act()
+	if(reagents)
+		for(var/datum/reagent/R in reagents.reagent_list)
+			R.on_ex_act()
+	if(!QDELETED(src))
+		..()
+
 /obj/item/reagent_containers/fire_act(exposed_temperature, exposed_volume)
 	reagents.expose_temperature(exposed_temperature)
 	..()
@@ -163,7 +141,7 @@
 /obj/item/reagent_containers/proc/bartender_check(atom/target)
 	. = FALSE
 	var/mob/thrown_by = thrownby?.resolve()
-	if(target.CanPass(src, get_dir(target, src)) && thrown_by && HAS_TRAIT(thrown_by, TRAIT_BOOZE_SLIDER))
+	if(target.CanPass(src, get_turf(src)) && thrown_by && HAS_TRAIT(thrown_by, TRAIT_BOOZE_SLIDER))
 		. = TRUE
 
 /obj/item/reagent_containers/proc/SplashReagents(atom/target, thrown = FALSE, override_spillable = FALSE)
@@ -176,7 +154,7 @@
 			reagents.total_volume *= rand(5,10) * 0.1 //Not all of it makes contact with the target
 		var/mob/M = target
 		var/R
-		target.visible_message(span_danger("[M] is splashed with something!"), \
+		target.visible_message(span_danger("[M] is splashed with something!") , \
 						span_userdanger("[M] is splashed with something!"))
 		for(var/datum/reagent/A in reagents.reagent_list)
 			R += "[A.type]  ([num2text(A.volume)]),"
@@ -186,7 +164,7 @@
 		reagents.expose(target, TOUCH)
 
 	else if(bartender_check(target) && thrown)
-		visible_message(span_notice("[src] lands onto the [target.name] without spilling a single drop."))
+		visible_message(span_notice("[capitalize(src.name)] lands onto [target.name] without spilling a single drop."))
 		return
 
 	else
@@ -201,17 +179,13 @@
 
 	reagents.clear_reagents()
 
-/obj/item/reagent_containers/microwave_act(obj/machinery/microwave/M)
-	reagents.expose_temperature(1000)
-	..()
-
 /obj/item/reagent_containers/fire_act(temperature, volume)
 	reagents.expose_temperature(temperature)
 
 /// Updates the icon of the container when the reagents change. Eats signal args
 /obj/item/reagent_containers/proc/on_reagent_change(datum/reagents/holder, ...)
 	SIGNAL_HANDLER
-	update_appearance()
+	update_icon()
 	return NONE
 
 /obj/item/reagent_containers/update_overlays()

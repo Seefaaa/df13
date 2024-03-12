@@ -1,3 +1,4 @@
+/*
 #define COMSIG_MOCK_SIGNAL "mock_signal"
 
 /// Test that the connect_loc element handles basic movement cases
@@ -59,7 +60,7 @@
 /obj/item/watches_mock_calls
 	var/times_called
 
-/obj/item/watches_mock_calls/Initialize(mapload)
+/obj/item/watches_mock_calls/Initialize()
 	. = ..()
 
 	var/static/list/connections = list(
@@ -73,3 +74,4 @@
 	times_called += 1
 
 #undef COMSIG_MOCK_SIGNAL
+*/

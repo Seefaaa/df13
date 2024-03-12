@@ -7,7 +7,7 @@
 	var/t_is = p_are()
 
 	. = list("<span class='info'>*---------*\nThis is [icon2html(src, user)] \a <EM>[src]</EM>!")
-	var/obscured = check_obscured_slots()
+	var/list/obscured = check_obscured_slots()
 
 	if (handcuffed)
 		. += span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] handcuffed!")
@@ -45,25 +45,21 @@
 				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] stuck to [t_his] [BP.name]!</B>\n"
 			else
 				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] embedded in [t_his] [BP.name]!</B>\n"
-		for(var/i in BP.wounds)
-			var/datum/wound/W = i
-			msg += "[W.get_examine_description(user)]\n"
 
 	for(var/X in disabled)
 		var/obj/item/bodypart/BP = X
 		var/damage_text
 		if(!(BP.get_damage(include_stamina = FALSE) >= BP.max_damage)) //Stamina is disabling the limb
-			damage_text = "limp and lifeless"
+			damage_text = "li,p and lifeless"
 		else
 			damage_text = (BP.brute_dam >= BP.burn_dam) ? BP.heavy_brute_msg : BP.heavy_burn_msg
-		msg += "<B>[capitalize(t_his)] [BP.name] is [damage_text]!</B>\n"
+		msg += "<B>[capitalize(t_his)] [BP.name] [damage_text]!</B>\n"
 
 	for(var/t in missing)
 		if(t==BODY_ZONE_HEAD)
-			msg += "[span_deadsay("<B>[t_His] [parse_zone(t)] is missing!</B>")]\n"
+			msg += "<span class='deadsay'><B>[p_they(TRUE)] [parse_zone(t)] is missing!</B></span>\n"
 			continue
-		msg += "[span_warning("<B>[t_His] [parse_zone(t)] is missing!</B>")]\n"
-
+		msg += "<span class='warning'><B>[p_they(TRUE)] [parse_zone(t)] is missing!</B></span>\n"
 
 	var/temp = getBruteLoss()
 	if(!(user == src && src.hal_screwyhud == SCREWYHUD_HEALTHY)) //fake healthy
@@ -84,15 +80,6 @@
 			else
 				msg += "<B>[t_He] [t_has] severe burns!</B>\n"
 
-		temp = getCloneLoss()
-		if(temp)
-			if(temp < 25)
-				msg += "[t_He] [t_is] slightly deformed.\n"
-			else if (temp < 50)
-				msg += "[t_He] [t_is] <b>moderately</b> deformed!\n"
-			else
-				msg += "<b>[t_He] [t_is] severely deformed!</b>\n"
-
 	if(HAS_TRAIT(src, TRAIT_DUMB))
 		msg += "[t_He] seem[p_s()] to be clumsy and unable to think.\n"
 
@@ -103,22 +90,6 @@
 
 	if(pulledby?.grab_state)
 		msg += "[t_He] [t_is] restrained by [pulledby]'s grip.\n"
-
-	var/scar_severity = 0
-	for(var/i in all_scars)
-		var/datum/scar/S = i
-		if(S.is_visible(user))
-			scar_severity += S.severity
-
-	switch(scar_severity)
-		if(1 to 4)
-			msg += "[span_tinynoticeital("[t_He] [t_has] visible scarring, you can look again to take a closer look...")]\n"
-		if(5 to 8)
-			msg += "[span_smallnoticeital("[t_He] [t_has] several bad scars, you can look again to take a closer look...")]\n"
-		if(9 to 11)
-			msg += "[span_notice("<i>[t_He] [t_has] significantly disfiguring scarring, you can look again to take a closer look...</i>")]\n"
-		if(12 to INFINITY)
-			msg += "[span_notice("<b><i>[t_He] [t_is] just absolutely fucked up, you can look again to take a closer look...</i></b>")]\n"
 
 	msg += "</span>"
 
@@ -150,28 +121,6 @@
 				. += "[t_He] look[p_s()] very happy."
 			if(MOOD_LEVEL_HAPPY4 to INFINITY)
 				. += "[t_He] look[p_s()] ecstatic."
-	. += "*---------*</span>"
+	. += "</span>"
 
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
-
-/mob/living/carbon/examine_more(mob/user)
-	if(!all_scars)
-		return ..()
-
-	var/list/visible_scars
-	for(var/i in all_scars)
-		var/datum/scar/S = i
-		if(S.is_visible(user))
-			LAZYADD(visible_scars, S)
-
-	if(!visible_scars)
-		return ..()
-
-	var/msg = list(span_notice("<i>You examine [src] closer, and note the following...</i>"))
-	for(var/i in visible_scars)
-		var/datum/scar/S = i
-		var/scar_text = S.get_examine_description(user)
-		if(scar_text)
-			msg += "[scar_text]"
-
-	return msg

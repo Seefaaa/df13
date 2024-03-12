@@ -1,71 +1,79 @@
 //A set of constants used to determine which type of mute an admin wishes to apply:
 //Please read and understand the muting/automuting stuff before changing these. MUTE_IC_AUTO etc = (MUTE_IC << 1)
 //Therefore there needs to be a gap between the flags for the automute flags
-#define MUTE_IC (1<<0)
-#define MUTE_OOC (1<<1)
-#define MUTE_PRAY (1<<2)
-#define MUTE_ADMINHELP (1<<3)
-#define MUTE_DEADCHAT (1<<4)
-#define MUTE_ALL (~0)
+#define MUTE_IC			(1<<0)
+#define MUTE_OOC		(1<<1)
+#define MUTE_PRAY		(1<<2)
+#define MUTE_ADMINHELP	(1<<3)
+#define MUTE_DEADCHAT	(1<<4)
+#define MUTE_ALL		(~0)
 
 //Some constants for DB_Ban
-#define BANTYPE_PERMA 1
-#define BANTYPE_TEMP 2
-#define BANTYPE_JOB_PERMA 3
-#define BANTYPE_JOB_TEMP 4
+#define BANTYPE_PERMA		1
+#define BANTYPE_TEMP		2
+#define BANTYPE_JOB_PERMA	3
+#define BANTYPE_JOB_TEMP	4
 /// used to locate stuff to unban.
-#define BANTYPE_ANY_FULLBAN 5
+#define BANTYPE_ANY_FULLBAN	5
 
-#define BANTYPE_ADMIN_PERMA 7
-#define BANTYPE_ADMIN_TEMP 8
+#define BANTYPE_ADMIN_PERMA	7
+#define BANTYPE_ADMIN_TEMP	8
 /// used to remove jobbans
-#define BANTYPE_ANY_JOB 9
+#define BANTYPE_ANY_JOB		9
 
 //Admin Permissions
-#define R_BUILD (1<<0)
-#define R_ADMIN (1<<1)
-#define R_BAN (1<<2)
-#define R_FUN (1<<3)
-#define R_SERVER (1<<4)
-#define R_DEBUG (1<<5)
-#define R_POSSESS (1<<6)
-#define R_PERMISSIONS (1<<7)
-#define R_STEALTH (1<<8)
-#define R_POLL (1<<9)
-#define R_VAREDIT (1<<10)
-#define R_SOUND (1<<11)
-#define R_SPAWN (1<<12)
-#define R_AUTOADMIN (1<<13)
-#define R_DBRANKS (1<<14)
+#define R_BUILD			(1<<0)
+#define R_ADMIN			(1<<1)
+#define R_BAN			(1<<2)
+#define R_FUN			(1<<3)
+#define R_SERVER		(1<<4)
+#define R_DEBUG			(1<<5)
+#define R_POSSESS		(1<<6)
+#define R_PERMISSIONS	(1<<7)
+#define R_STEALTH		(1<<8)
+#define R_POLL			(1<<9)
+#define R_VAREDIT		(1<<10)
+#define R_SOUND			(1<<11)
+#define R_SPAWN			(1<<12)
+#define R_AUTOADMIN		(1<<13)
+#define R_DBRANKS		(1<<14)
+#define R_SECURED		(1<<15)
+#define R_SDQL			(1<<16)
 
 #define R_DEFAULT R_AUTOADMIN
 
-#define R_EVERYTHING (1<<15)-1 //the sum of all other rank permissions, used for +EVERYTHING
+#define R_EVERYTHING (1<<17)-1 //the sum of all other rank permissions, used for +EVERYTHING
 
-#define ADMIN_QUE(user) "(<a href='?_src_=holder;[HrefToken(TRUE)];adminmoreinfo=[REF(user)]'>?</a>)"
-#define ADMIN_FLW(user) "(<a href='?_src_=holder;[HrefToken(TRUE)];adminplayerobservefollow=[REF(user)]'>FLW</a>)"
-#define ADMIN_PP(user) "(<a href='?_src_=holder;[HrefToken(TRUE)];adminplayeropts=[REF(user)]'>PP</a>)"
-#define ADMIN_VV(atom) "(<a href='?_src_=vars;[HrefToken(TRUE)];Vars=[REF(atom)]'>VV</a>)"
-#define ADMIN_SM(user) "(<a href='?_src_=holder;[HrefToken(TRUE)];subtlemessage=[REF(user)]'>SM</a>)"
-#define ADMIN_TP(user) "(<a href='?_src_=holder;[HrefToken(TRUE)];traitor=[REF(user)]'>TP</a>)"
-#define ADMIN_SP(user) "(<a href='?_src_=holder;[HrefToken(TRUE)];skill=[REF(user)]'>SP</a>)"
+#define ADMIN_QUE(user) 	"([ADMIN_QUE_NB(user)])"
+#define ADMIN_PP(user)  	"([ADMIN_PP_NB(user)])"
+#define ADMIN_VV(atom)  	"([ADMIN_VV_NB(atom)])"
+#define ADMIN_SM(user)  	"([ADMIN_SM_NB(user)])"
+#define ADMIN_FLW(user) 	"([ADMIN_FLW_NB(user)])"
+#define ADMIN_TP(user)  	"([ADMIN_TP_NB(user)])"
+#define ADMIN_SMITE(user) 	"([ADMIN_SMITE_NB(user)])"
+#define ADMIN_INDIVIDUALLOG(user) "([ADMIN_INDIVIDUALLOG_NB(user)])"
+#define ADMIN_QUE_NB(user) "<a href='?_src_=holder;[HrefToken(TRUE)];adminmoreinfo=[REF(user)]'>?</a>"
+#define ADMIN_FLW_NB(user) "<a href='?_src_=holder;[HrefToken(TRUE)];adminplayerobservefollow=[REF(user)]'>FLW</a>"
+#define ADMIN_PP_NB(user) "<a href='?_src_=holder;[HrefToken(TRUE)];adminplayeropts=[REF(user)]'>PP</a>"
+#define ADMIN_VV_NB(atom) "<a href='?_src_=vars;[HrefToken(TRUE)];Vars=[REF(atom)]'>VV</a>"
+#define ADMIN_SM_NB(user) "<a href='?_src_=holder;[HrefToken(TRUE)];subtlemessage=[REF(user)]'>SM</a>"
+#define ADMIN_TP_NB(user) "<a href='?_src_=holder;[HrefToken(TRUE)];traitor=[REF(user)]'>TP</a>"
+#define ADMIN_SMITE_NB(user) "<a href='?_src_=holder;[HrefToken(TRUE)];adminsmite=[REF(user)]'>SMITE</a>"
+#define ADMIN_INDIVIDUALLOG_NB(user) "<a href='?_src_=holder;[HrefToken(TRUE)];individuallog=[REF(user)]'>LOGS</a>"
+#define ADMIN_SKP(user) "(<a href='?_src_=holder;[HrefToken(TRUE)];skill=[REF(user)]'>SP</a>)"
 #define ADMIN_KICK(user) "(<a href='?_src_=holder;[HrefToken(TRUE)];boot2=[REF(user)]'>KICK</a>)"
-#define ADMIN_CENTCOM_REPLY(user) "(<a href='?_src_=holder;[HrefToken(TRUE)];CentComReply=[REF(user)]'>RPLY</a>)"
-#define ADMIN_SYNDICATE_REPLY(user) "(<a href='?_src_=holder;[HrefToken(TRUE)];SyndicateReply=[REF(user)]'>RPLY</a>)"
 #define ADMIN_SC(user) "(<a href='?_src_=holder;[HrefToken(TRUE)];adminspawncookie=[REF(user)]'>SC</a>)"
-#define ADMIN_SMITE(user) "(<a href='?_src_=holder;[HrefToken(TRUE)];adminsmite=[REF(user)]'>SMITE</a>)"
 #define ADMIN_LOOKUP(user) "[key_name_admin(user)][ADMIN_QUE(user)]"
 #define ADMIN_LOOKUPFLW(user) "[key_name_admin(user)][ADMIN_QUE(user)] [ADMIN_FLW(user)]"
 #define ADMIN_SET_SD_CODE "(<a href='?_src_=holder;[HrefToken(TRUE)];set_selfdestruct_code=1'>SETCODE</a>)"
 #define ADMIN_FULLMONTY_NONAME(user) "[ADMIN_QUE(user)] [ADMIN_PP(user)] [ADMIN_VV(user)] [ADMIN_SM(user)] [ADMIN_FLW(user)] [ADMIN_TP(user)] [ADMIN_INDIVIDUALLOG(user)] [ADMIN_SMITE(user)]"
+#define ADMIN_FULLMONTY_NONAME_NOBRACKET(user) "[ADMIN_QUE_NB(user)] [ADMIN_PP_NB(user)] [ADMIN_VV_NB(user)] [ADMIN_SM_NB(user)] [ADMIN_FLW_NB(user)] [ADMIN_TP_NB(user)] [ADMIN_INDIVIDUALLOG_NB(user)] [ADMIN_SMITE_NB(user)]"
 #define ADMIN_FULLMONTY(user) "[key_name_admin(user)] [ADMIN_FULLMONTY_NONAME(user)]"
 #define ADMIN_JMP(src) "(<a href='?_src_=holder;[HrefToken(TRUE)];adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>JMP</a>)"
 #define COORD(src) "[src ? src.Admin_Coordinates_Readable() : "nonexistent location"]"
 #define AREACOORD(src) "[src ? src.Admin_Coordinates_Readable(TRUE) : "nonexistent location"]"
 #define ADMIN_COORDJMP(src) "[src ? src.Admin_Coordinates_Readable(FALSE, TRUE) : "nonexistent location"]"
 #define ADMIN_VERBOSEJMP(src) "[src ? src.Admin_Coordinates_Readable(TRUE, TRUE) : "nonexistent location"]"
-#define ADMIN_INDIVIDUALLOG(user) "(<a href='?_src_=holder;[HrefToken(TRUE)];individuallog=[REF(user)]'>LOGS</a>)"
-#define ADMIN_TAG(datum) "(<A href='?src=[REF(src)];[HrefToken(TRUE)];tag_datum=[REF(datum)]'>TAG</a>)"
 
 /atom/proc/Admin_Coordinates_Readable(area_name, admin_jump_ref)
 	var/turf/T = Safe_COORD_Location()
@@ -90,17 +98,19 @@
 #define AHELP_RESOLVED 3
 
 /// Amount of time (in deciseconds) after the rounds starts, that the player disconnect report is issued.
-#define ROUNDSTART_LOGOUT_REPORT_TIME 6000
+#define ROUNDSTART_LOGOUT_REPORT_TIME	6000
 
 /// Number of identical messages required before the spam-prevention will warn you to stfu
-#define SPAM_TRIGGER_WARNING 5
+#define SPAM_TRIGGER_WARNING	5
 /// Number of identical messages required before the spam-prevention will automute you
-#define SPAM_TRIGGER_AUTOMUTE 10
+#define SPAM_TRIGGER_AUTOMUTE	10
 
 ///Max length of a keypress command before it's considered to be a forged packet/bogus command
 #define MAX_KEYPRESS_COMMANDLENGTH 16
 ///Maximum keys that can be bound to one button
 #define MAX_COMMANDS_PER_KEY 5
+///Maximum keys per keybind
+#define MAX_KEYS_PER_KEYBIND 3
 ///Max amount of keypress messages per second over two seconds before client is autokicked
 #define MAX_KEYPRESS_AUTOKICK 50
 ///Length of held key buffer
@@ -127,15 +137,15 @@ GLOBAL_VAR_INIT(ghost_role_flags, (~0))
 
 //Flags that control what ways ghosts can get back into the round
 //ie fugitives, space dragon, etc. also includes dynamic midrounds as it's the same deal
-#define GHOSTROLE_MIDROUND_EVENT (1<<0)
+#define GHOSTROLE_MIDROUND_EVENT	(1<<0)
 //ie ashwalkers, free golems, beach bums
-#define GHOSTROLE_SPAWNER (1<<1)
+#define GHOSTROLE_SPAWNER			(1<<1)
 //ie mind monkeys, sentience potion
-#define GHOSTROLE_STATION_SENTIENCE (1<<2)
+#define GHOSTROLE_STATION_SENTIENCE	(1<<2)
 //ie pais, posibrains
-#define GHOSTROLE_SILICONS (1<<3)
+#define GHOSTROLE_SILICONS			(1<<3)
 //ie mafia, ctf
-#define GHOSTROLE_MINIGAME (1<<4)
+#define GHOSTROLE_MINIGAME 			(1<<4)
 
 //smite defines
 

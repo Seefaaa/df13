@@ -74,7 +74,6 @@
 
 ///called by linking remotes to tie an assembly to the trapdoor
 /datum/component/trapdoor/proc/on_link_requested(datum/source, obj/item/assembly/trapdoor/assembly)
-	SIGNAL_HANDLER
 	if(get_dist(parent, assembly) > TRAPDOOR_LINKING_SEARCH_RANGE)
 		return
 	. = LINKED_UP
@@ -188,7 +187,6 @@
 		assembly_turf.visible_message("<span class='notice'>[src] has linked up to a nearby trapdoor! \
 		You may now use it to check where the trapdoor is... be careful!</span>", vision_distance = SAMETILE_MESSAGE_RANGE)
 	else
-		playsound(assembly_turf, 'sound/machines/buzz-sigh.ogg', 50, FALSE)
 		assembly_turf.visible_message(span_warning("[src] has failed to find a trapdoor nearby to link to."), vision_distance = SAMETILE_MESSAGE_RANGE)
 
 /**
@@ -265,6 +263,6 @@
 ///subtype with internals already included. If you're giving a department a roundstart trapdoor, this is what you want
 /obj/item/trapdoor_remote/preloaded
 
-/obj/item/trapdoor_remote/preloaded/Initialize(mapload)
+/obj/item/trapdoor_remote/preloaded/Initialize()
 	. = ..()
 	internals = new(src)

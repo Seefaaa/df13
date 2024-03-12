@@ -10,7 +10,6 @@
 #define CLICKCATCHER_PLANE -99
 
 #define PLANE_SPACE -95
-#define PLANE_SPACE_PARALLAX -90
 
 #define GRAVITY_PULSE_PLANE -11
 #define GRAVITY_PULSE_RENDER_TARGET "*GRAVPULSE_RENDER_TARGET"
@@ -24,19 +23,15 @@
 
 #define FLOOR_PLANE -7
 
-#define GAME_PLANE -6
-#define GAME_PLANE_FOV_HIDDEN -5
-#define GAME_PLANE_UPPER -4
-#define GAME_PLANE_UPPER_FOV_HIDDEN -3
+#define LOWER_SHUTTLE_MOVEMENT_PLANE -5
+#define LOWER_SHUTTLE_MOVEMENT_RENDER_TARGET "LOWER_SHUTTLE_MOVEMENT_PLANE"
 
+#define GAME_PLANE -4
+#define GAME_PLANE_FOV_HIDDEN -3
 #define ABOVE_GAME_PLANE -2
 
-// PLANE_SPACE layer(s)
 #define SPACE_LAYER 1.8
-
-//#define TURF_LAYER 2 //For easy recordkeeping; this is a byond define. Most floors (FLOOR_PLANE) and walls (GAME_PLANE) use this.
-
-// GAME_PLANE layers
+//#define TURF_LAYER 2 //For easy recordkeeping; this is a byond define
 #define CULT_OVERLAY_LAYER 2.01
 #define MID_TURF_LAYER 2.02
 #define HIGH_TURF_LAYER 2.03
@@ -76,50 +71,42 @@
 #define BELOW_OBJ_LAYER 2.9
 #define LOW_ITEM_LAYER 2.95
 //#define OBJ_LAYER 3 //For easy recordkeeping; this is a byond define
+#define CLOSED_BLASTDOOR_LAYER 3.05
 #define CLOSED_DOOR_LAYER 3.1
 #define CLOSED_FIREDOOR_LAYER 3.11
+#define SHUTTER_LAYER 3.12 // HERE BE DRAGONS
 #define ABOVE_OBJ_LAYER 3.2
-#define CLOSED_BLASTDOOR_LAYER 3.3 // ABOVE WINDOWS AND DOORS
-#define SHUTTER_LAYER 3.3 // HERE BE DRAGONS
 #define ABOVE_WINDOW_LAYER 3.3
 #define SIGN_LAYER 3.4
 #define CORGI_ASS_PIN_LAYER 3.41
 #define NOT_HIGH_OBJ_LAYER 3.5
 #define HIGH_OBJ_LAYER 3.6
-#define BELOW_MOB_LAYER 3.7
 
-// GAME_PLANE_FOV_HIDDEN layers
-#define LOW_MOB_LAYER 3.75
+#define BELOW_MOB_LAYER 3.7
 #define LYING_MOB_LAYER 3.8
-#define VEHICLE_LAYER 3.9
 #define MOB_BELOW_PIGGYBACK_LAYER 3.94
 //#define MOB_LAYER 4 //For easy recordkeeping; this is a byond define
 #define MOB_SHIELD_LAYER 4.01
 #define MOB_ABOVE_PIGGYBACK_LAYER 4.06
-#define MOB_UPPER_LAYER 4.07
-#define HITSCAN_PROJECTILE_LAYER 4.09 //above all mob but still hidden by FoV
-
-// GAME_PLANE_UPPER layers
 #define ABOVE_MOB_LAYER 4.1
+#define OBSERVER_LAYER 4.2
 #define WALL_OBJ_LAYER 4.25
 #define EDGED_TURF_LAYER 4.3
 #define ON_EDGED_TURF_LAYER 4.35
-#define SPACEVINE_LAYER 4.4
+#define LARGE_MOB_LAYER 4.4
+#define ABOVE_ALL_MOB_LAYER 4.5
 
-// GAME_PLANE_UPPER_FOV_HIDDEN layers
-#define LARGE_MOB_LAYER 4.5
-#define SPACEVINE_MOB_LAYER 4.6
-
-// Intermediate layer used by both GAME_PLANE_FOV_HIDDEN and ABOVE_GAME_PLANE
-#define ABOVE_ALL_MOB_LAYER 4.7
-
-// ABOVE_GAME_PLANE layers
+#define SPACEVINE_LAYER 4.8
+#define SPACEVINE_MOB_LAYER 4.9
 //#define FLY_LAYER 5 //For easy recordkeeping; this is a byond define
 #define GASFIRE_LAYER 5.05
 #define RIPPLE_LAYER 5.1
 
-
 #define BLACKNESS_PLANE 0 //To keep from conflicts with SEE_BLACKNESS internals
+
+#define SINGULARITY_PLANE 10
+#define SINGULARITY_LAYER 1
+#define ABOVE_SINGULARITY_LAYER 2
 
 #define AREA_PLANE 60
 #define MASSIVE_OBJ_PLANE 70
@@ -187,6 +174,7 @@
 
 //-------------------- Rendering ---------------------
 #define RENDER_PLANE_GAME 990
+#define RENDER_PLANE_ABOVE_GAME 991
 #define RENDER_PLANE_NON_GAME 995
 #define RENDER_PLANE_MASTER 999
 

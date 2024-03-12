@@ -1,8 +1,3 @@
-//Luma coefficients suggested for HDTVs. If you change these, make sure they add up to 1.
-#define LUMA_R 0.213
-#define LUMA_G 0.715
-#define LUMA_B 0.072
-
 /// Datum which stores information about a matrix decomposed with decompose().
 /datum/decompose_matrix
 	///?
@@ -21,14 +16,11 @@
 /// If other operations were applied on the matrix, such as shearing, the result
 /// will not be precise.
 ///
-/// Negative scales are now supported. =)
+/// Negative scales are not supported.
 /matrix/proc/decompose()
 	var/datum/decompose_matrix/decompose_matrix = new
 	. = decompose_matrix
-	var/flip_sign = (a*e - b*d < 0)? -1 : 1 // Det < 0 => only 1 axis is flipped - start doing some sign flipping
-	// If both axis are flipped, nothing bad happens and Det >= 0, it just treats it like a 180° rotation
-	// If only 1 axis is flipped, we need to flip one direction - in this case X, so we flip a, b and the x scaling
-	decompose_matrix.scale_x = sqrt(a * a + d * d) * flip_sign
+	decompose_matrix.scale_x = sqrt(a * a + d * d)
 	decompose_matrix.scale_y = sqrt(b * b + e * e)
 	decompose_matrix.shift_x = c
 	decompose_matrix.shift_y = f
@@ -36,8 +28,8 @@
 		return
 	// If only translated, scaled and rotated, a/xs == e/ys and -d/xs == b/xy
 	var/cossine = (a/decompose_matrix.scale_x + e/decompose_matrix.scale_y) / 2
-	var/sine = (b/decompose_matrix.scale_y - d/decompose_matrix.scale_x) / 2 * flip_sign
-	decompose_matrix.rotation = arctan(cossine, sine) * flip_sign
+	var/sine = (b/decompose_matrix.scale_y - d/decompose_matrix.scale_x) / 2
+	decompose_matrix.rotation = arctan(cossine, sine)
 
 /matrix/proc/TurnTo(old_angle, new_angle)
 	. = new_angle - old_angle
@@ -202,6 +194,10 @@ round(cos_inv_third+sqrt3_sin, 0.001), round(cos_inv_third-sqrt3_sin, 0.001), ro
 			output[offset+x] = round(A[offset+1]*B[x] + A[offset+2]*B[x+4] + A[offset+3]*B[x+8] + A[offset+4]*B[x+12]+(y==5?B[x+16]:0), 0.001)
 	return output
 
+//gandon suka
+/matrix/proc/set_skew(x = 0, y = 0)
+	b = x
+	d = y
 ///Converts RGB shorthands into RGBA matrices complete of constants rows (ergo a 20 keys list in byond).
 /proc/color_to_full_rgba_matrix(color)
 	if(istext(color))
@@ -238,6 +234,29 @@ round(cos_inv_third+sqrt3_sin, 0.001), round(cos_inv_third-sqrt3_sin, 0.001), ro
 		else
 			CRASH("Invalid/unsupported color format argument in color_to_full_rgba_matrix()")
 
-#undef LUMA_R
-#undef LUMA_G
-#undef LUMA_B
+/atom/proc/DabAnimation(speed = 1, loops = 1, direction = 1 , hold_seconds = 0  , angle = 1 , stay = FALSE) // Hopek 2019
+	// By making this in atom/proc everything in the game can potentially dab. You have been warned.
+	if(hold_seconds > 9999) // if you need to hold a dab for more than 2 hours intentionally let me know.
+		return
+	if(hold_seconds > 0)
+		hold_seconds = hold_seconds * 10 // Converts seconds to deciseconds
+	if(angle == 1) //if angle is 1: random angle. Else take angle
+		angle = rand(25,50)
+	if(direction == 1) // direciton:: 1 for random pick, 2 for clockwise , 3 for anti-clockwise
+		direction = pick(2,3)
+	if(direction == 3) // if 3 then counter clockwise
+		angle = angle * -1
+	if(speed == 1) // if speed is 1 choose random speed from list
+		speed = rand(3,5)
+
+	// dab matrix here
+	var/matrix/DAB_COMMENCE = matrix(transform)
+	var/matrix/DAB_RETURN = matrix(transform)
+	DAB_COMMENCE.Turn(angle) // dab angle to matrix
+
+	// Dab animation
+	animate(src, transform = DAB_COMMENCE, time = speed, loops ) // dab to hold angle
+	if(hold_seconds > 0)
+		sleep(hold_seconds) // time to hold the dab before going back
+	if(!stay) // if stay param is true dab doesn't return
+		animate(src, transform = DAB_RETURN, time = speed * 1.5, loops ) // reverse dab to starting position , slower

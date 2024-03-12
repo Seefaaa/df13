@@ -44,7 +44,7 @@ type AlternateAction = {
 const ALTERNATE_ACTIONS: Record<string, AlternateAction> = {
   knot: {
     icon: "shoe-prints",
-    text: "Knot",
+    text: "Tie-up",
   },
 
   untie: {
@@ -54,22 +54,22 @@ const ALTERNATE_ACTIONS: Record<string, AlternateAction> = {
 
   unknot: {
     icon: "shoe-prints",
-    text: "Unknot",
+    text: "Untie",
   },
 
   enable_internals: {
     icon: "tg-air-tank",
-    text: "Enable internals",
+    text: "Open Valve",
   },
 
   disable_internals: {
     icon: "tg-air-tank-slash",
-    text: "Disable internals",
+    text: "Close Valve",
   },
 
   adjust_jumpsuit: {
     icon: "tshirt",
-    text: "Adjust jumpsuit",
+    text: "Change Appearance",
   },
 };
 
@@ -83,19 +83,19 @@ const SLOTS: Record<
   }
 > = {
   eyes: {
-    displayName: "eyewear",
+    displayName: "eyes",
     gridSpot: getGridSpotKey([0, 1]),
     image: "inventory-glasses.png",
   },
 
   head: {
-    displayName: "headwear",
+    displayName: "head",
     gridSpot: getGridSpotKey([0, 2]),
     image: "inventory-head.png",
   },
 
   neck: {
-    displayName: "neckwear",
+    displayName: "neck",
     gridSpot: getGridSpotKey([1, 1]),
     image: "inventory-neck.png",
   },
@@ -113,7 +113,7 @@ const SLOTS: Record<
   },
 
   ears: {
-    displayName: "earwear",
+    displayName: "ears",
     gridSpot: getGridSpotKey([1, 3]),
     image: "inventory-ears.png",
   },
@@ -130,7 +130,7 @@ const SLOTS: Record<
   },
 
   legcuffs: {
-    displayName: "legcuffs",
+    displayName: "claws",
     gridSpot: getGridSpotKey([1, 5]),
   },
 
@@ -173,7 +173,7 @@ const SLOTS: Record<
   },
 
   suit_storage: {
-    displayName: "suit storage item",
+    displayName: "suit storage",
     gridSpot: getGridSpotKey([4, 0]),
     image: "inventory-suit_storage.png",
   },
@@ -191,7 +191,7 @@ const SLOTS: Record<
   },
 
   back: {
-    displayName: "backpack",
+    displayName: "back",
     gridSpot: getGridSpotKey([4, 3]),
     image: "inventory-back.png",
   },
@@ -257,7 +257,7 @@ export const StripMenu = (props, context) => {
   }
 
   return (
-    <Window title={`Stripping ${data.name}`} width={400} height={400}>
+    <Window title={`Inventory ${data.name}`} width={340} height={350}>
       <Window.Content>
         <Stack fill vertical>
           {range(0, ROWS).map(row => (
@@ -327,7 +327,7 @@ export const StripMenu = (props, context) => {
                       />
                     );
 
-                    tooltip = `obscured ${slot.displayName}`;
+                    tooltip = `hidden: ${slot.displayName}`;
                   }
 
                   return (
@@ -366,9 +366,17 @@ export const StripMenu = (props, context) => {
                           {slot.image && (
                             <Box
                               as="img"
-                              className="centered-image"
                               src={resolveAsset(slot.image)}
                               opacity={0.7}
+                              style={{
+                                position: "absolute",
+                                width: "32px",
+                                height: "32px",
+                                left: "50%",
+                                top: "50%",
+                                transform:
+                                  "translateX(-50%) translateY(-50%) scale(0.8)",
+                              }}
                             />
                           )}
 

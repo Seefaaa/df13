@@ -75,9 +75,6 @@ export const Button = props => {
       ])}
       tabIndex={!disabled && '0'}
       onKeyDown={e => {
-        if (props.captureKeys === false) {
-          return;
-        }
         const keyCode = window.event ? e.which : e.keyCode;
         // Simulate a click when pressing space or enter.
         if (keyCode === KEY_SPACE || keyCode === KEY_ENTER) {
@@ -90,7 +87,6 @@ export const Button = props => {
         // Refocus layout on pressing escape.
         if (keyCode === KEY_ESCAPE) {
           e.preventDefault();
-          return;
         }
       }}
       {...computeBoxProps(rest)}>

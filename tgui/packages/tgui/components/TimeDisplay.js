@@ -1,3 +1,4 @@
+import { toFixed } from 'common/math';
 import { formatTime } from '../format';
 import { Component } from 'inferno';
 

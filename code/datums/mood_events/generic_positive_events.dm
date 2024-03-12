@@ -264,6 +264,14 @@
 	mood_change = 2
 	timeout = 30 SECONDS
 
+/datum/mood_event/fan_clown_pin
+	description = "<span class='nicegreen'>I love showing off my clown pin!</span>\n"
+	mood_change = 1
+
+/datum/mood_event/fan_mime_pin
+	description = "<span class='nicegreen'>I love showing off my mime pin!</span>\n"
+	mood_change = 1
+
 /datum/mood_event/observed_soda_spill/add_effects(mob/spilled_mob, atom/soda_can)
 	if(!spilled_mob)
 		return

@@ -6,10 +6,10 @@
 	var/bloodiness = 0 //0-100, amount of blood in this decal, used for making footprints and affecting the alpha of bloody footprints
 	var/mergeable_decal = TRUE //when two of these are on a same tile or do we need to merge them into just one?
 	var/beauty = 0
-	///The type of cleaning required to clean the decal. See __DEFINES/cleaning.dm for the options
+	///The type of cleaning required to clean the decal, CLEAN_TYPE_LIGHT_DECAL can be cleaned with mops and soap, CLEAN_TYPE_HARD_DECAL can be cleaned by soap, see __DEFINES/cleaning.dm for the others
 	var/clean_type = CLEAN_TYPE_LIGHT_DECAL
 
-/obj/effect/decal/cleanable/Initialize(mapload, list/datum/disease/diseases)
+/obj/effect/decal/cleanable/Initialize(mapload)
 	. = ..()
 	if (random_icon_states && (icon_state == initial(icon_state)) && length(random_icon_states) > 0)
 		icon_state = pick(random_icon_states)
@@ -20,18 +20,10 @@
 				if (replace_decal(C))
 					return INITIALIZE_HINT_QDEL
 
-	if(LAZYLEN(diseases))
-		var/list/datum/disease/diseases_to_add = list()
-		for(var/datum/disease/D in diseases)
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
-				diseases_to_add += D
-		if(LAZYLEN(diseases_to_add))
-			AddComponent(/datum/component/infective, diseases_to_add)
-
 	AddElement(/datum/element/beauty, beauty)
 
 	var/turf/T = get_turf(src)
-	if(T && is_station_level(T.z))
+	if(T && is_fortress_level(T.z))
 		SSblackbox.record_feedback("tally", "station_mess_created", 1, name)
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = .proc/on_entered,
@@ -40,7 +32,7 @@
 
 /obj/effect/decal/cleanable/Destroy()
 	var/turf/T = get_turf(src)
-	if(T && is_station_level(T.z))
+	if(T && is_fortress_level(T.z))
 		SSblackbox.record_feedback("tally", "station_mess_destroyed", 1, name)
 	return ..()
 
@@ -73,6 +65,12 @@
 	else
 		return ..()
 
+/obj/effect/decal/cleanable/ex_act(severity)
+	if(reagents)
+		for(var/datum/reagent/R in reagents.reagent_list)
+			R.on_ex_act(severity)
+	return ..()
+
 /obj/effect/decal/cleanable/fire_act(exposed_temperature, exposed_volume)
 	if(reagents)
 		reagents.expose_temperature(exposed_temperature)
@@ -85,7 +83,7 @@
 	SIGNAL_HANDLER
 	if(iscarbon(AM) && blood_state && bloodiness >= 40)
 		SEND_SIGNAL(AM, COMSIG_STEP_ON_BLOOD, src)
-		update_appearance()
+		update_icon()
 
 /obj/effect/decal/cleanable/wash(clean_types)
 	. = ..()

@@ -6,7 +6,7 @@
 	. += "<div class='statusDisplay'>"
 	. += "<b><a href='?src=[REF(src)];switchinstrument=1'>Current instrument</a>:</b> "
 	if(!using_instrument)
-		. += "[span_danger("No instrument loaded!")]<br>"
+		. += "<span class='danger'>No instrument loaded!</span><br>"
 	else
 		. += "[using_instrument.name]<br>"
 	. += "Playback Settings:<br>"
@@ -38,14 +38,14 @@
 	if(lines.len > 0)
 		dat += "<H3>Playback</H3>"
 		if(!playing)
-			dat += "<A href='?src=[REF(src)];play=1'>Play</A> <span class='linkOn'>Stop</span><BR><BR>"
+			dat += "<A href='?src=[REF(src)];play=1'>Play</A> <SPAN CLASS='linkOn'>Stop</SPAN><BR><BR>"
 			dat += "Repeat Song: "
-			dat += repeat > 0 ? "<A href='?src=[REF(src)];repeat=-10'>-</A><A href='?src=[REF(src)];repeat=-1'>-</A>" : "<span class='linkOff'>-</SPAN><SPAN CLASS='linkOff'>-</span>"
+			dat += repeat > 0 ? "<A href='?src=[REF(src)];repeat=-10'>-</A><A href='?src=[REF(src)];repeat=-1'>-</A>" : span_linkoff("-</SPAN><SPAN CLASS='linkOff'>-")
 			dat += " [repeat] times "
-			dat += repeat < max_repeats ? "<A href='?src=[REF(src)];repeat=1'>+</A><A href='?src=[REF(src)];repeat=10'>+</A>" : "<span class='linkOff'>+</SPAN><SPAN CLASS='linkOff'>+</span>"
+			dat += repeat < max_repeats ? "<A href='?src=[REF(src)];repeat=1'>+</A><A href='?src=[REF(src)];repeat=10'>+</A>" : span_linkoff("+</SPAN><SPAN CLASS='linkOff'>+")
 			dat += "<BR>"
 		else
-			dat += "<span class='linkOn'>Play</span> <A href='?src=[REF(src)];stop=1'>Stop</A><BR>"
+			dat += "<SPAN CLASS='linkOn'>Play</SPAN> <A href='?src=[REF(src)];stop=1'>Stop</A><BR>"
 			dat += "Repeats left: <B>[repeat]</B><BR>"
 	if(!editing)
 		dat += "<BR><B><A href='?src=[REF(src)];edit=2'>Show Editor</A></B><BR>"
@@ -90,15 +90,15 @@
 /**
  * Parses a song the user has input into lines and stores them.
  */
-/datum/song/proc/ParseSong(new_song)
+/datum/song/proc/ParseSong(text)
 	set waitfor = FALSE
 	//split into lines
-	lines = islist(new_song) ? new_song : splittext(new_song, "\n")
+	lines = splittext(text, "\n")
 	if(lines.len)
 		var/bpm_string = "BPM: "
 		if(findtext(lines[1], bpm_string, 1, length(bpm_string) + 1))
 			var/divisor = text2num(copytext(lines[1], length(bpm_string) + 1)) || 120 // default
-			tempo = sanitize_tempo(BPM_TO_TEMPO_SETTING(divisor))
+			tempo = sanitize_tempo(600 / round(divisor, 1))
 			lines.Cut(1, 2)
 		else
 			tempo = sanitize_tempo(5) // default 120 BPM
@@ -112,12 +112,11 @@
 				lines.Remove(l)
 			else
 				linenum++
-		updateDialog(usr) // make sure updates when complete
+		updateDialog(usr)		// make sure updates when complete
 
 /datum/song/Topic(href, href_list)
 	if(!usr.canUseTopic(parent, TRUE, FALSE, FALSE, FALSE))
 		usr << browse(null, "window=instrument")
-		usr.unset_machine()
 		return
 
 	parent.add_fingerprint(usr)
@@ -135,8 +134,8 @@
 				return
 
 			if(length_char(t) >= MUSIC_MAXLINES * MUSIC_MAXLINECHARS)
-				var/cont = tgui_alert(usr, "Your message is too long! Would you like to continue editing it?", "Warning", list("Yes", "No"))
-				if(cont != "Yes")
+				var/cont = input(usr, "Your message is too long! Would you like to continue editing it?", "", "yes") in list("yes", "no")
+				if(cont == "no")
 					break
 		while(length_char(t) > MUSIC_MAXLINES * MUSIC_MAXLINECHARS)
 		ParseSong(t)
@@ -148,7 +147,13 @@
 		editing = text2num(href_list["edit"]) - 1
 
 	if(href_list["repeat"]) //Changing this from a toggle to a number of repeats to avoid infinite loops.
-		set_repeats(repeat + text2num(href_list["repeat"]))
+		if(playing)
+			return //So that people cant keep adding to repeat. If the do it intentionally, it could result in the server crashing.
+		repeat += round(text2num(href_list["repeat"]))
+		if(repeat < 0)
+			repeat = 0
+		if(repeat > max_repeats)
+			repeat = max_repeats
 
 	else if(href_list["tempo"])
 		tempo = sanitize_tempo(tempo + text2num(href_list["tempo"]))
@@ -157,7 +162,7 @@
 		INVOKE_ASYNC(src, .proc/start_playing, usr)
 
 	else if(href_list["newline"])
-		var/newline = tgui_input_text(usr, "Enter your line ", parent.name)
+		var/newline = html_encode(input("Enter your line: ", parent.name) as text|null)
 		if(!newline || !in_range(parent, usr))
 			return
 		if(lines.len > MUSIC_MAXLINES)
@@ -174,7 +179,7 @@
 
 	else if(href_list["modifyline"])
 		var/num = round(text2num(href_list["modifyline"]),1)
-		var/content = tgui_input_text(usr, "Enter your line ", parent.name, lines[num], MUSIC_MAXLINECHARS)
+		var/content = stripped_input(usr, "Enter your line: ", parent.name, lines[num], MUSIC_MAXLINECHARS)
 		if(!content || !in_range(parent, usr))
 			return
 		if(num > lines.len || num < 1)
@@ -185,24 +190,24 @@
 		stop_playing()
 
 	else if(href_list["setlinearfalloff"])
-		var/amount = tgui_input_number(usr, "Set linear sustain duration in seconds", "Linear Sustain Duration", 0.1, INSTRUMENT_MAX_TOTAL_SUSTAIN, 0.1)
+		var/amount = input(usr, "Set linear sustain duration in seconds", "Linear Sustain Duration") as null|num
 		if(!isnull(amount))
-			set_linear_falloff_duration(amount)
+			set_linear_falloff_duration(round(amount * 10, world.tick_lag))
 
 	else if(href_list["setexpfalloff"])
-		var/amount = tgui_input_number(usr, "Set exponential sustain factor", "Exponential sustain factor", INSTRUMENT_EXP_FALLOFF_MIN, INSTRUMENT_EXP_FALLOFF_MAX,  INSTRUMENT_EXP_FALLOFF_MIN)
+		var/amount = input(usr, "Set exponential sustain factor", "Exponential sustain factor") as null|num
 		if(!isnull(amount))
-			set_exponential_drop_rate(amount)
+			set_exponential_drop_rate(round(amount, 0.00001))
 
 	else if(href_list["setvolume"])
-		var/amount = tgui_input_number(usr, "Set volume", "Volume", 1, 75, 1)
+		var/amount = input(usr, "Set volume", "Volume") as null|num
 		if(!isnull(amount))
-			set_volume(amount)
+			set_volume(round(amount, 1))
 
 	else if(href_list["setdropoffvolume"])
-		var/amount = tgui_input_number(usr, "Set dropoff threshold", "Dropoff Volume", max_value = 100)
+		var/amount = input(usr, "Set dropoff threshold", "Dropoff Threshold Volume") as null|num
 		if(!isnull(amount))
-			set_dropoff_volume(amount)
+			set_dropoff_volume(round(amount, 0.01))
 
 	else if(href_list["switchinstrument"])
 		if(!length(allowed_instrument_ids))
@@ -215,16 +220,14 @@
 			var/datum/instrument/I = SSinstruments.get_instrument(i)
 			if(I)
 				LAZYSET(categories[I.category || "ERROR CATEGORY"], I.name, I.id)
-		var/cat = tgui_input_list(usr, "Select Category", "Instrument Category", categories)
-		if(isnull(cat))
+		var/cat = input(usr, "Select Category", "Instrument Category") as null|anything in categories
+		if(!cat)
 			return
 		var/list/instruments = categories[cat]
-		var/choice = tgui_input_list(usr, "Select Instrument", "Instrument Selection", instruments)
-		if(isnull(choice))
+		var/choice = input(usr, "Select Instrument", "Instrument Selection") as null|anything in instruments
+		if(!choice)
 			return
-		if(isnull(instruments[choice]))
-			return
-		choice = instruments[choice] //get id
+		choice = instruments[choice]		//get id
 		if(choice)
 			set_instrument(choice)
 
@@ -234,11 +237,14 @@
 			note_shift = clamp(amount, note_shift_min, note_shift_max)
 
 	else if(href_list["setsustainmode"])
-		var/choice = tgui_input_list(usr, "Choose a sustain mode", "Sustain Mode", SSinstruments.note_sustain_modes)
-		if(choice)
-			sustain_mode = SSinstruments.note_sustain_modes[choice]
+		var/choice = input(usr, "Choose a sustain mode", "Sustain Mode") as null|anything in list("Linear", "Exponential")
+		switch(choice)
+			if("Linear")
+				sustain_mode = SUSTAIN_LINEAR
+			if("Exponential")
+				sustain_mode = SUSTAIN_EXPONENTIAL
 
 	else if(href_list["togglesustainhold"])
 		full_sustain_held_note = !full_sustain_held_note
 
-	updateDialog(usr)
+	updateDialog()

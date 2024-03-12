@@ -433,14 +433,11 @@
 			var/server = query_get_type_messages.item[7]
 			var/editor_key = query_get_type_messages.item[8]
 			var/expire_timestamp = query_get_type_messages.item[9]
-			var/playtime = query_get_type_messages.item[10]
 			var/round_id = query_get_type_messages.item[11]
 			output += "<b>"
 			if(type == "watchlist entry")
 				output += "[t_key] | "
 			output += "[timestamp] | [server] | Round [round_id] | [admin_key]"
-			if(type == "watchlist entry")
-				output += " | [get_exp_format(text2num(playtime))] Living Playtime"
 			if(expire_timestamp)
 				output += " | Expires [expire_timestamp]"
 			output += "</b>"
@@ -490,17 +487,12 @@
 			if(linkless && secret)
 				continue
 			var/id = query_get_messages.item[3]
-			var/admin_key = query_get_messages.item[4]
 			var/text = query_get_messages.item[5]
-			var/timestamp = query_get_messages.item[6]
-			var/server = query_get_messages.item[7]
 			var/editor_key = query_get_messages.item[8]
 			var/age = text2num(query_get_messages.item[9])
 			target_key = query_get_messages.item[10]
 			var/expire_timestamp = query_get_messages.item[11]
 			var/severity = query_get_messages.item[12]
-			var/playtime = query_get_messages.item[13]
-			var/round_id = query_get_messages.item[14]
 			var/alphatext = ""
 			var/nsd = CONFIG_GET(number/note_stale_days)
 			var/nfd = CONFIG_GET(number/note_fresh_days)
@@ -515,9 +507,6 @@
 						skipped = TRUE
 					alphatext = "filter: alpha(opacity=[alpha]); opacity: [alpha/100];"
 			var/list/data = list("<div style='margin:0px;[alphatext]'><p class='severity'>")
-			if(severity)
-				data += "<img src='[SSassets.transport.get_asset_url("[severity]_button.png")]' height='24' width='24'></img> "
-			data += "<b>[timestamp] | [server] | Round [round_id] | [admin_key][secret ? " | <i>- Secret</i>" : ""] | [get_exp_format(text2num(playtime))] Living Playtime"
 			if(expire_timestamp)
 				data += " | Expires [expire_timestamp]"
 			data += "</b></p><center>"
@@ -680,10 +669,10 @@
 					return
 				qdel(query_message_read)
 			if("note")
-				output += "<font color='red' size='3'><b>Note left by [span_prefix("[admin_key]")] on [timestamp]</b></font>"
-				output += "<br><font color='red'>[text]</font><br>"
+				output += "<font color='rose' size='3'><b>Note left by [span_prefix("[admin_key]")] on [timestamp]</b></font>"
+				output += "<br><font color='rose'>[text]</font><br>"
 			if("watchlist entry")
-				message_admins("<font color='red'><B>Notice: </B></font><font color='blue'>[key_name_admin(target_ckey)] has been on the watchlist since [timestamp] and has just connected - Reason: [text]</font>")
+				message_admins(span_red("<B>Notice: </B>[key_name_admin(target_ckey)] has been on the watchlist since [timestamp] and has just connected - Reason: [text]"))
 				send2tgs_adminless_only("Watchlist", "[key_name(target_ckey)] is on the watchlist and has just connected - Reason: [text]")
 			if("memo")
 				output += "[span_memo("Memo by <span class='prefix'>[admin_key]")] on [timestamp]"

@@ -24,8 +24,7 @@ em						{font-style: normal;	font-weight: bold;}
 .bold					{					font-weight: bold;}
 
 .prefix					{					font-weight: bold;}
-.oocplain				{}
-.warningplain			{}
+
 .ooc					{					font-weight: bold;}
 .adminobserverooc		{color: #0099cc;	font-weight: bold;}
 .adminooc				{color: #700038;	font-weight: bold;}
@@ -42,6 +41,7 @@ em						{font-style: normal;	font-weight: bold;}
 .binarysay a:active, .binarysay a:visited {color: #88ff88;}
 .radio					{color: #008000;}
 .sciradio				{color: #993399;}
+.explradio				{color: #7ed4c2;}
 .comradio				{color: #948f02;}
 .secradio				{color: #a30000;}
 .medradio				{color: #337296;}
@@ -55,6 +55,7 @@ em						{font-style: normal;	font-weight: bold;}
 .blueteamradio			{color: #0000ff;}
 .greenteamradio			{color: #00ff00;}
 .yellowteamradio		{color: #d1ba22;}
+.yoheiradio				{color: #8888cc;}
 .gangradio				{color: #ac2ea1;}
 
 .yell					{					font-weight: bold;}
@@ -64,6 +65,7 @@ h1.alert, h2.alert		{color: #000000;}
 
 .emote					{}
 .infoplain				{}
+.mentor					{}
 
 .userdanger				{color: #ff0000;	font-weight: bold;	font-size: 3;}
 .danger					{color: #ff0000;	font-weight: bold;}
@@ -108,8 +110,6 @@ h1.alert, h2.alert		{color: #000000;}
 .revenminor				{color: #823abb}
 .revenwarning			{color: #760fbb;	font-style: italic;}
 .revendanger			{color: #760fbb;	font-weight: bold;	font-size: 3;}
-
-.sentientdisease		{color: #446600;}
 
 .deconversion_message	{color: #5000A0;	font-size: 3;	font-style: italic;}
 

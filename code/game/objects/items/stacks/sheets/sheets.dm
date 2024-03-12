@@ -11,7 +11,6 @@
 	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "smashes")
 	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "smash")
 	novariants = FALSE
-	material_flags = MATERIAL_EFFECTS
 	var/sheettype = null //this is used for girders in the creation of walls/false walls
 	var/point_value = 0 //turn-in value for the gulag stacker - loosely relative to its rarity.
 	///What type of wall does this sheet spawn
@@ -19,8 +18,8 @@
 
 /obj/item/stack/sheet/Initialize(mapload, new_amount, merge = TRUE, list/mat_override=null, mat_amt=1)
 	. = ..()
-	pixel_x = rand(-4, 4)
-	pixel_y = rand(-4, 4)
+	pixel_x = rand(-5, 5)
+	pixel_y = rand(-5, 5)
 
 /**
  * Facilitates sheets being smacked on the floor

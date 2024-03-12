@@ -22,6 +22,9 @@ export const SkillPanel = (props, context) => {
       height={500}>
       <Window.Content scrollable>
         <Section title={skills.playername}>
+          <Button
+            content="Grant Skill"
+            onClick={() => act('add_skill')} />
           <LabeledList>
             {skills.map(skill => (
               <LabeledList.Item
@@ -35,37 +38,42 @@ export const SkillPanel = (props, context) => {
                   skill_lvl_num={skill.lvlnum}
                   skill_lvl={skill.lvl} />
                 <br />
-                Total Experience: [{skill.exp} XP]
+                Total XP: [{skill.exp} XP]
                 <br />
-                XP To Next Level:
+                XP until next LVL:
                 {skill.exp_req !== 0 ? (
                   <span>
                     [{skill.exp_prog} / {skill.exp_req}]
                   </span>
                 ) : (
                   <span style={skillgreen}>
-                    [MAXXED]
+                    [MAXED]
                   </span>
                 )}
                 <br />
-                Overall Skill Progress: [{skill.exp} / {skill.max_exp}]
+                Total Progress: [{skill.exp} / {skill.max_exp}]
                 <ProgressBar
                   value={skill.exp_percent}
                   color="good" />
                 <br />
                 <Button
-                  content="Adjust Exp"
+                  content="Adjust XP"
                   onClick={() => act('adj_exp', {
                     skill: skill.path,
                   })} />
                 <Button
-                  content="Set Exp"
+                  content="Set XP"
                   onClick={() => act('set_exp', {
                     skill: skill.path,
                   })} />
                 <Button
-                  content="Set Level"
+                  content="Set LVL"
                   onClick={() => act('set_lvl', {
+                    skill: skill.path,
+                  })} />
+                <Button
+                  content="Remove"
+                  onClick={() => act('remove_skill', {
                     skill: skill.path,
                   })} />
                 <br />
@@ -86,7 +94,7 @@ const Level = props => {
   } = props;
   return (
     <Box inline>
-      Level: [
+      LVL: [
       <Box
         inline
         bold

@@ -34,5 +34,3 @@
 	target.balloon_alert(source, alert_message)
 
 	return COMPONENT_HOSTILE_NO_ATTACK
-
-

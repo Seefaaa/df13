@@ -3,7 +3,6 @@
 	desc = "A hard-light chip encoded with an amount of credits. It is a modern replacement for physical money that can be directly converted to virtual currency and viceversa. Keep away from magnets."
 	icon = 'icons/obj/economy.dmi'
 	icon_state = "holochip"
-	base_icon_state = "holochip"
 	throwforce = 0
 	force = 0
 	w_class = WEIGHT_CLASS_TINY
@@ -13,46 +12,31 @@
 	. = ..()
 	if(amount)
 		credits = amount
-	update_appearance()
+	update_icon()
 
 /obj/item/holochip/examine(mob/user)
 	. = ..()
-	. += "[span_notice("It's loaded with [credits] credit[( credits > 1 ) ? "s" : ""]")]\n"+\
-	span_notice("Alt-Click to split.")
+	. += "<hr><span class='notice'>It's loaded with [credits] credit[( credits > 1 ) ? "s" : ""]</span>\n"+\
+	"<hr><span class='notice'>Alt-Click to split.</span>"
 
-/obj/item/holochip/get_item_credit_value()
+/obj/item/holochip/proc/get_item_credit_value()
 	return credits
 
-/obj/item/holochip/update_name()
+/obj/item/holochip/update_icon()
 	name = "\improper [credits] credit holochip"
-	return ..()
-
-/obj/item/holochip/update_icon_state()
-	var/icon_suffix = ""
+	var/rounded_credits = credits
 	switch(credits)
-		if(1e3 to (1e6 - 1))
-			icon_suffix = "_kilo"
-		if(1e6 to (1e9 - 1))
-			icon_suffix = "_mega"
-		if(1e9 to INFINITY)
-			icon_suffix = "_giga"
-
-	icon_state = "[base_icon_state][icon_suffix]"
-	return ..()
-
-/obj/item/holochip/update_overlays()
-	. = ..()
-	var/rounded_credits
-	switch(credits)
-		if(0 to (1e3 - 1))
-			rounded_credits = round(credits)
-		if(1e3 to (1e6 - 1))
-			rounded_credits = round(credits * 1e-3)
-		if(1e6 to (1e9 - 1))
-			rounded_credits = round(credits * 1e-6)
-		if(1e9 to INFINITY)
-			rounded_credits = round(credits * 1e-9)
-
+		if(1 to 999)
+			icon_state = "holochip"
+		if(1000 to 999999)
+			icon_state = "holochip_kilo"
+			rounded_credits = round(rounded_credits * 0.001)
+		if(1000000 to 999999999)
+			icon_state = "holochip_mega"
+			rounded_credits = round(rounded_credits * 0.000001)
+		if(1000000000 to INFINITY)
+			icon_state = "holochip_giga"
+			rounded_credits = round(rounded_credits * 0.000000001)
 	var/overlay_color = "#914792"
 	switch(rounded_credits)
 		if(0 to 4)
@@ -71,17 +55,18 @@
 			overlay_color = "#0153C1"
 		if(500 to INFINITY)
 			overlay_color = "#2C2C2C"
-
+	cut_overlays()
 	var/mutable_appearance/holochip_overlay = mutable_appearance('icons/obj/economy.dmi', "[icon_state]-color")
 	holochip_overlay.color = overlay_color
-	. += holochip_overlay
+	add_overlay(holochip_overlay)
+	return ..()
 
 /obj/item/holochip/proc/spend(amount, pay_anyway = FALSE)
 	if(credits >= amount)
 		credits -= amount
 		if(credits == 0)
 			qdel(src)
-		update_appearance()
+		update_icon()
 		return amount
 	else if(pay_anyway)
 		qdel(src)
@@ -95,35 +80,24 @@
 		var/obj/item/holochip/H = I
 		credits += H.credits
 		to_chat(user, span_notice("You insert the credits into [src]."))
-		update_appearance()
+		update_icon()
 		qdel(H)
 
 /obj/item/holochip/AltClick(mob/user)
-	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, NO_TK, !iscyborg(user)))
+	if(!user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE))
 		return
-	if(loc != user)
-		to_chat(user, span_warning("You must be holding the holochip to continue!"))
-		return FALSE
-	var/split_amount = tgui_input_number(user, "How many credits do you want to extract from the holochip? (Max: [credits] cr)", "Holochip", max_value = credits)
-	if(!split_amount || QDELETED(user) || QDELETED(src) || issilicon(user) || !usr.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, NO_TK, !iscyborg(user)) || loc != user)
+	var/split_amount = round(input(user,"How many credits do you want to extract from the holochip?") as null|num)
+	if(split_amount == null || split_amount <= 0 || !user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE))
 		return
-	var/new_credits = spend(split_amount, TRUE)
-	var/obj/item/holochip/H = new(user ? user : drop_location(), new_credits)
-	if(user)
-		if(!user.put_in_hands(H))
-			H.forceMove(user.drop_location())
-		add_fingerprint(user)
-	H.add_fingerprint(user)
-	to_chat(user, span_notice("You extract [split_amount] credits into a new holochip."))
-
-/obj/item/holochip/emp_act(severity)
-	. = ..()
-	if(. & EMP_PROTECT_SELF)
-		return
-	var/wipe_chance = 60 / severity
-	if(prob(wipe_chance))
-		visible_message(span_warning("[src] fizzles and disappears!"))
-		qdel(src) //rip cash
+	else
+		var/new_credits = spend(split_amount, TRUE)
+		var/obj/item/holochip/H = new(user ? user : drop_location(), new_credits)
+		if(user)
+			if(!user.put_in_hands(H))
+				H.forceMove(user.drop_location())
+			add_fingerprint(user)
+		H.add_fingerprint(user)
+		to_chat(user, span_notice("You extract [split_amount] credits into a new holochip."))
 
 /obj/item/holochip/thousand
 	credits = 1000

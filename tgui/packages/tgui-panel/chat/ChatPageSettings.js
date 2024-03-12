@@ -37,7 +37,7 @@ export const ChatPageSettings = (props, context) => {
         </Stack.Item>
       </Stack>
       <Divider />
-      <Section title="Messages to display" level={2}>
+      <Section title="Filters" level={2}>
         {MESSAGE_TYPES
           .filter(typeDef => !typeDef.important && !typeDef.admin)
           .map(typeDef => (
@@ -54,7 +54,7 @@ export const ChatPageSettings = (props, context) => {
         <Collapsible
           mt={1}
           color="transparent"
-          title="Admin stuff">
+          title="Pedalique Bullshit">
           {MESSAGE_TYPES
             .filter(typeDef => !typeDef.important && typeDef.admin)
             .map(typeDef => (

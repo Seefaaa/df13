@@ -9,7 +9,7 @@
 	mouse_opacity = MOUSE_OPACITY_ICON
 	friendly_verb_continuous = "howls at"
 	friendly_verb_simple = "howl at"
-	speak_emote = list("howls")
+	speak_emote = list("woofs")
 	speed = 5
 	move_to_delay = 5
 	maxHealth = 130
@@ -19,7 +19,6 @@
 	melee_damage_upper = 7.5
 	rapid_melee = 2 // every second attack
 	dodging = TRUE
-	dodge_prob = 50
 	attack_verb_continuous = "bites"
 	attack_verb_simple = "bite"
 	attack_sound = 'sound/weapons/bite.ogg'
@@ -29,9 +28,8 @@
 	move_force = MOVE_FORCE_WEAK
 	move_resist = MOVE_FORCE_WEAK
 	pull_force = MOVE_FORCE_WEAK
-	butcher_results = list(/obj/item/food/meat/slab = 2, /obj/item/stack/sheet/sinew/wolf = 2, /obj/item/stack/sheet/bone = 2)
+	butcher_results = list(/obj/item/food/meat/slab = list(1,2))
 	loot = list()
-	crusher_loot = /obj/item/crusher_trophy/wolf_ear
 	stat_attack = HARD_CRIT
 	robust_searching = TRUE
 	footstep_type = FOOTSTEP_MOB_CLAW
@@ -59,15 +57,3 @@
 		return
 	adjustHealth(-0.0125 * maxHealth * delta_time)
 	retreat_message_said = FALSE
-
-/obj/item/crusher_trophy/wolf_ear
-	name = "wolf ear"
-	desc = "It's a wolf ear."
-	icon_state = "wolf_ear"
-	denied_type = /obj/item/crusher_trophy/wolf_ear
-
-/obj/item/crusher_trophy/wolf_ear/effect_desc()
-	return "mark detonation to gain a slight speed boost temporarily"
-
-/obj/item/crusher_trophy/wolf_ear/on_mark_detonation(mob/living/target, mob/living/user)
-	user.apply_status_effect(/datum/status_effect/speed_boost, 1 SECONDS)

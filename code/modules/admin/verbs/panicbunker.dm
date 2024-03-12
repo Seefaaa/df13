@@ -2,7 +2,7 @@
 	set category = "Server"
 	set name = "Toggle Panic Bunker"
 	if (!CONFIG_GET(flag/sql_enabled))
-		to_chat(usr, span_adminnotice("The Database is not enabled!"), confidential = TRUE)
+		to_chat(usr, span_adminnotice("The Database is not enabled!") , confidential = TRUE)
 		return
 
 	var/new_pb = !CONFIG_GET(flag/panic_bunker)
@@ -25,13 +25,3 @@
 	if (new_pb && !SSdbcore.Connect())
 		message_admins("The Database is not connected! Panic bunker will not work until the connection is reestablished.")
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle Panic Bunker", "[new_pb ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-/client/proc/toggle_interviews()
-	set category = "Server"
-	set name = "Toggle PB Interviews"
-	if (!CONFIG_GET(flag/panic_bunker))
-		to_chat(usr, span_adminnotice("NOTE: The panic bunker is not enabled, so this change will not effect anything until it is enabled."), confidential = TRUE)
-	var/new_interview = !CONFIG_GET(flag/panic_bunker_interview)
-	CONFIG_SET(flag/panic_bunker_interview, new_interview)
-	log_admin("[key_name(usr)] has toggled the Panic Bunker's interview system, it is now [new_interview ? "enabled" : "disabled"].")
-	message_admins("[key_name(usr)] has toggled the Panic Bunker's interview system, it is now [new_interview ? "enabled" : "disabled"].")

@@ -48,6 +48,9 @@
 	window.send_asset(get_asset_datum(/datum/asset/simple/namespaced/fontawesome))
 	window.send_asset(get_asset_datum(/datum/asset/simple/namespaced/tgfont))
 	window.send_asset(get_asset_datum(/datum/asset/spritesheet/chat))
+	// Preload assets for /datum/tgui_window
+	var/datum/asset/asset_tgui = get_asset_datum(/datum/asset/simple/tgui)
+	asset_tgui.send(src.client)
 	// Other setup
 	request_telemetry()
 	addtimer(CALLBACK(src, .proc/on_initialize_timed_out), 5 SECONDS)
@@ -59,7 +62,7 @@
  */
 /datum/tgui_panel/proc/on_initialize_timed_out()
 	// Currently does nothing but sending a message to old chat.
-	SEND_TEXT(client, "<span class=\"userdanger\">Failed to load fancy chat, click <a href='?src=[REF(src)];reload_tguipanel=1'>HERE</a> to attempt to reload it.</span>")
+	SEND_TEXT(client, "<span class=\"userdanger\"> Chat failed to load, <a href='?src=[REF(src)];reload_tguipanel=1'>CLICK HERE</a> to reload it.</span>")
 
 /**
  * private

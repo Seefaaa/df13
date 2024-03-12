@@ -12,12 +12,6 @@
 	var/def_zone
 	pass_flags = PASSTABLE
 
-/obj/effect/beam/singularity_act()
-	return
-
-/obj/effect/beam/singularity_pull()
-	return
-
 /obj/effect/spawner
 	name = "object spawner"
 
@@ -28,7 +22,7 @@
 	name = "mobl"
 	var/master = null
 
-	var/list/container = list()
+	var/list/container = list(  )
 
 /obj/effect/overlay/thermite
 	name = "thermite"
@@ -39,7 +33,6 @@
 	opacity = TRUE
 	density = TRUE
 	layer = FLY_LAYER
-	plane = ABOVE_GAME_PLANE
 
 //Makes a tile fully lit no matter what
 /obj/effect/fullbright
@@ -47,7 +40,6 @@
 	icon_state = "white"
 	plane = LIGHTING_PLANE
 	blend_mode = BLEND_ADD
-	luminosity = 1
 
 /obj/effect/abstract/marker
 	name = "marker"
@@ -55,7 +47,6 @@
 	anchored = TRUE
 	icon_state = "wave3"
 	layer = RIPPLE_LAYER
-	plane = ABOVE_GAME_PLANE
 
 /obj/effect/abstract/marker/Initialize(mapload)
 	. = ..()
@@ -80,7 +71,6 @@
 	light_range = MINIMUM_USEFUL_LIGHT_RANGE
 	light_color = COLOR_WHITE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	blocks_emissive = NONE
 
 /obj/effect/dummy/lighting_obj/Initialize(mapload, _range, _power, _color, _duration)
 	. = ..()

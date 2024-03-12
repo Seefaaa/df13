@@ -28,6 +28,7 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/spines, GLOB.spines_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/spines_animated, GLOB.animated_spines_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/legs, GLOB.legs_list)
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/wings, GLOB.r_wings_list,roundstart = TRUE)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/caps, GLOB.caps_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_wings, GLOB.moth_wings_list)
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/moth_antennae, GLOB.moth_antennae_list)
@@ -59,6 +60,8 @@
 	GLOB.emote_list = init_emote_list()
 
 	init_crafting_recipes(GLOB.crafting_recipes)
+
+	init_subtypes_w_path_keys(/obj/projectile, GLOB.proj_by_path_key)
 
 /// Inits the crafting recipe list, sorting crafting recipe requirements in the process.
 /proc/init_crafting_recipes(list/crafting_recipes)
@@ -93,47 +96,3 @@
 	for(var/path as anything in subtypesof(prototype))
 		L[path] = new path()
 	return L
-
-/**
- * Checks if that loc and dir has an item on the wall
-**/
-// Wall mounted machinery which are visually on the wall.
-GLOBAL_LIST_INIT(WALLITEMS_INTERIOR, typecacheof(list(
-	/obj/item/radio/intercom,
-	/obj/item/storage/secure/safe,
-	/obj/machinery/airalarm,
-	/obj/machinery/bounty_board,
-	/obj/machinery/button,
-	/obj/machinery/computer/security/telescreen,
-	/obj/machinery/computer/security/telescreen/entertainment,
-	/obj/machinery/bluespace_vendor,
-	/obj/machinery/defibrillator_mount,
-	/obj/machinery/door_timer,
-	/obj/machinery/embedded_controller/radio/simple_vent_controller,
-	/obj/machinery/firealarm,
-	/obj/machinery/flasher,
-	/obj/machinery/keycard_auth,
-	/obj/machinery/light_switch,
-	/obj/machinery/newscaster,
-	/obj/machinery/power/apc,
-	/obj/machinery/requests_console,
-	/obj/machinery/status_display,
-	/obj/machinery/ticket_machine,
-	/obj/machinery/turretid,
-	/obj/structure/extinguisher_cabinet,
-	/obj/structure/fireaxecabinet,
-	/obj/structure/mirror,
-	/obj/structure/noticeboard,
-	/obj/structure/reagent_dispensers/wall,
-	/obj/structure/sign,
-	/obj/structure/sign/picture_frame
-	)))
-
-// Wall mounted machinery which are visually coming out of the wall.
-// These do not conflict with machinery which are visually placed on the wall.
-GLOBAL_LIST_INIT(WALLITEMS_EXTERIOR, typecacheof(list(
-	/obj/machinery/camera,
-	/obj/machinery/light,
-	/obj/structure/camera_assembly,
-	/obj/structure/light_construct
-	)))

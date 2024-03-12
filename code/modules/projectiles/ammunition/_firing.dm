@@ -1,7 +1,7 @@
-/obj/item/ammo_casing/proc/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, atom/fired_from)
+/obj/item/ammo_casing/proc/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, atom/fired_from, extra_damage, extra_penetration)
 	distro += variance
 	var/targloc = get_turf(target)
-	ready_proj(target, user, quiet, zone_override, fired_from)
+	ready_proj(target, user, quiet, zone_override, fired_from, extra_damage, extra_penetration)
 	if(pellets == 1)
 		if(distro) //We have to spread a pixel-precision bullet. throw_proj was called before so angles should exist by now...
 			if(randomspread)
@@ -13,26 +13,26 @@
 	else
 		if(isnull(loaded_projectile))
 			return FALSE
-		AddComponent(/datum/component/pellet_cloud, projectile_type, pellets)
-		SEND_SIGNAL(src, COMSIG_PELLET_CLOUD_INIT, target, user, fired_from, randomspread, spread, zone_override, params, distro)
 
-	var/next_delay = click_cooldown_override || CLICK_CD_RANGE
-	if(HAS_TRAIT(user, TRAIT_DOUBLE_TAP))
-		next_delay = round(next_delay * 0.5)
+	if(click_cooldown_override)
+		user.changeNext_move(click_cooldown_override)
+	else
+		user.changeNext_move(CLICK_CD_RANGE)
 
-	user.changeNext_move(next_delay)
-
-	user.newtonian_move(get_dir(target, user))
 	update_appearance()
 	return TRUE
 
-/obj/item/ammo_casing/proc/ready_proj(atom/target, mob/living/user, quiet, zone_override = "", atom/fired_from)
+/obj/item/ammo_casing/proc/ready_proj(atom/target, mob/living/user, quiet, zone_override = "", atom/fired_from, extra_damage = 0, extra_penetration = 0)
 	if (!loaded_projectile)
 		return
 	loaded_projectile.original = target
 	loaded_projectile.firer = user
 	loaded_projectile.fired_from = fired_from
-	loaded_projectile.hit_prone_targets = user.combat_mode
+
+	loaded_projectile.damage = initial(loaded_projectile.damage) + extra_damage
+	if(isnum(extra_penetration))
+		loaded_projectile.armour_penetration = initial(loaded_projectile.armour_penetration) + extra_penetration
+
 	if (zone_override)
 		loaded_projectile.def_zone = zone_override
 	else

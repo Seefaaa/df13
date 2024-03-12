@@ -64,8 +64,6 @@
 	mid_length = 18
 	volume = 50
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 /datum/looping_sound/oven
 	start_sound = 'sound/machines/oven/oven_loop_start.ogg' //my immersions
 	start_length = 12
@@ -96,11 +94,10 @@
 
 /datum/looping_sound/jackpot
 	mid_length = 11
-	mid_sounds = list('sound/machines/roulettejackpot.ogg'=1)
+	mid_sounds = list('sound/machines/roulettejackpot.ogg')
 	volume = 85
 	vary = TRUE
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /datum/looping_sound/server
 	mid_sounds = list('sound/machines/tcomms/tcomms_mid1.ogg'=1,'sound/machines/tcomms/tcomms_mid2.ogg'=1,'sound/machines/tcomms/tcomms_mid3.ogg'=1,'sound/machines/tcomms/tcomms_mid4.ogg'=1,\
@@ -110,8 +107,6 @@
 	falloff_distance = 1
 	falloff_exponent = 5
 	volume = 50
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /datum/looping_sound/computer
 	start_sound = 'sound/machines/computer/computer_start.ogg'
@@ -126,26 +121,10 @@
 	extra_range = -12
 	falloff_distance = 1 //Instant falloff after initial tile
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 /datum/looping_sound/gravgen
 	mid_sounds = list('sound/machines/gravgen/gravgen_mid1.ogg'=1,'sound/machines/gravgen/gravgen_mid2.ogg'=1,'sound/machines/gravgen/gravgen_mid3.ogg'=1,'sound/machines/gravgen/gravgen_mid4.ogg'=1,)
 	mid_length = 1.8 SECONDS
-	extra_range = 10
-	volume = 40
-	falloff_distance = 5
-	falloff_exponent = 20
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/datum/looping_sound/firealarm
-	mid_sounds = list('sound/machines/FireAlarm1.ogg'=1,'sound/machines/FireAlarm2.ogg'=1,'sound/machines/FireAlarm3.ogg'=1,'sound/machines/FireAlarm4.ogg'=1 )
-	mid_length = 2.4 SECONDS
-	volume = 75
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/datum/looping_sound/gravgen/kinesis
-	volume = 20
+	extra_range = 3
+	volume = 10
 	falloff_distance = 2
-	falloff_exponent = 5
+	falloff_exponent = 20

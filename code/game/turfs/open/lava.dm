@@ -22,19 +22,53 @@
 	var/lava_firestacks = 20
 	/// How much temperature we expose objects with
 	var/temperature_damage = 10000
-	/// mobs with this trait won't burn.
-	var/immunity_trait = TRAIT_LAVA_IMMUNE
-	/// objects with these flags won't burn.
-	var/immunity_resistance_flags = LAVA_PROOF
+
+	var/spread = TRUE
+
+	var/turf/open/lava/magmus_top
+
+/turf/open/lava/Initialize(mapload)
+	. = ..()
+	if(!spread)
+		return
+	update_lava_effect()
+
+/turf/open/lava/proc/update_lava_effect()
+	if(!spread)
+		return
+
+	LAZYADD(SSliquids.liquid_turfs_list, src)
+
+	var/turf/top_turf = SSmapping.get_turf_above(src)
+	if(isopenspace(top_turf))
+		magmus_top = top_turf.ChangeTurf(/turf/open/lava/smooth/nospread)
+
+/turf/open/lava/spread_liquid()
+	var/list/temp_turf_list = list()
+	for(var/direction in GLOB.cardinals)
+		temp_turf_list += get_step(src, direction)
+
+	for(var/turf/T as() in temp_turf_list)
+
+		if(!T || isclosedturf(T) || islava(T))
+			continue
+
+		T.ChangeTurf(/turf/open/lava/smooth)
+
+	return TRUE
+
+/turf/open/lava/Destroy(force)
+	if(magmus_top)
+		magmus_top.ChangeTurf(/turf/open/openspace)
+	. = ..()
 
 /turf/open/lava/ex_act(severity, target)
-	return
+	contents_explosion(severity, target)
 
 /turf/open/lava/MakeSlippery(wet_setting, min_wet_time, wet_time_to_add, max_wet_time, permanent)
 	return
 
 /turf/open/lava/Melt()
-	to_be_destroyed = FALSE
 	return src
 
 /turf/open/lava/acid_act(acidpwr, acid_volume)
@@ -43,18 +77,15 @@
 /turf/open/lava/MakeDry(wet_setting = TURF_WET_WATER)
 	return
 
-/turf/open/lava/airless
-	initial_gas_mix = AIRLESS_ATMOS
-
-/turf/open/lava/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
-	if(burn_stuff(arrived))
+/turf/open/lava/Entered(atom/movable/AM)
+	if(burn_stuff(AM))
 		START_PROCESSING(SSobj, src)
 
-/turf/open/lava/Exited(atom/movable/gone, direction)
+/turf/open/lava/Exited(atom/movable/Obj, atom/newloc)
 	. = ..()
-	if(isliving(gone))
-		var/mob/living/L = gone
-		if(!islava(get_step(src, direction)))
+	if(isliving(Obj))
+		var/mob/living/L = Obj
+		if(!islava(newloc))
 			REMOVE_TRAIT(L, TRAIT_PERMANENTLY_ONFIRE, TURF_TRAIT)
 		if(!L.on_fire)
 			L.update_fire()
@@ -67,160 +98,82 @@
 	if(!burn_stuff(null, delta_time))
 		STOP_PROCESSING(SSobj, src)
 
-/turf/open/lava/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
-	switch(the_rcd.mode)
-		if(RCD_FLOORWALL)
-			return list("mode" = RCD_FLOORWALL, "delay" = 0, "cost" = 3)
-	return FALSE
-
-/turf/open/lava/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, passed_mode)
-	switch(passed_mode)
-		if(RCD_FLOORWALL)
-			to_chat(user, span_notice("You build a floor."))
-			PlaceOnTop(/turf/open/floor/plating, flags = CHANGETURF_INHERIT_AIR)
-			return TRUE
-	return FALSE
-
-/turf/open/lava/rust_heretic_act()
-	return FALSE
-
-/turf/open/lava/singularity_act()
-	return
-
-/turf/open/lava/singularity_pull(S, current_size)
-	return
-
 /turf/open/lava/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
 	underlay_appearance.icon = 'icons/turf/floors.dmi'
 	underlay_appearance.icon_state = "basalt"
 	return TRUE
 
-/turf/open/lava/GetHeatCapacity()
-	. = 700000
-
-/turf/open/lava/GetTemperature()
-	. = 5000
-
-/turf/open/lava/TakeTemperature(temp)
-
-/turf/open/lava/attackby(obj/item/C, mob/user, params)
-	..()
-	if(istype(C, /obj/item/stack/rods/lava))
-		var/obj/item/stack/rods/lava/R = C
-		var/obj/structure/lattice/lava/H = locate(/obj/structure/lattice/lava, src)
-		if(H)
-			to_chat(user, span_warning("There is already a lattice here!"))
-			return
-		if(R.use(1))
-			to_chat(user, span_notice("You construct a lattice."))
-			playsound(src, 'sound/weapons/genhit.ogg', 50, TRUE)
-			new /obj/structure/lattice/lava(locate(x, y, z))
-		else
-			to_chat(user, span_warning("You need one rod to build a heatproof lattice."))
-		return
-
 /turf/open/lava/proc/is_safe()
 	//if anything matching this typecache is found in the lava, we don't burn things
-	var/static/list/lava_safeties_typecache = typecacheof(list(/obj/structure/lattice/catwalk, /obj/structure/stone_tile, /obj/structure/lattice/lava))
+	var/static/list/lava_safeties_typecache = typecacheof(list(/obj/structure/stone_tile))
 	var/list/found_safeties = typecache_filter_list(contents, lava_safeties_typecache)
 	for(var/obj/structure/stone_tile/S in found_safeties)
 		if(S.fallen)
 			LAZYREMOVE(found_safeties, S)
 	return LAZYLEN(found_safeties)
 
-///Generic return value of the can_burn_stuff() proc. Does nothing.
-#define LAVA_BE_IGNORING 0
-/// Another. Won't burn the target but will make the turf start processing.
-#define LAVA_BE_PROCESSING 1
-/// Burns the target and makes the turf process (depending on the return value of do_burn()).
-#define LAVA_BE_BURNING 2
 
-///Proc that sets on fire something or everything on the turf that's not immune to lava. Returns TRUE to make the turf start processing.
-/turf/open/lava/proc/burn_stuff(atom/movable/to_burn, delta_time = 1)
+/turf/open/lava/proc/burn_stuff(AM, delta_time = 1)
+	. = 0
+
 	if(is_safe())
 		return FALSE
 
 	var/thing_to_check = src
-	if (to_burn)
-		thing_to_check = list(to_burn)
-	for(var/atom/movable/burn_target as anything in thing_to_check)
-		switch(can_burn_stuff(burn_target))
-			if(LAVA_BE_IGNORING)
+	if (AM)
+		thing_to_check = list(AM)
+	for(var/thing in thing_to_check)
+		if(isobj(thing))
+			var/obj/O = thing
+			if((O.resistance_flags & (LAVA_PROOF|INDESTRUCTIBLE)) || O.throwing)
 				continue
-			if(LAVA_BE_BURNING)
-				if(!do_burn(burn_target, delta_time))
+			. = 1
+			if((O.resistance_flags & (ON_FIRE)))
+				continue
+			if(!(O.resistance_flags & FLAMMABLE))
+				O.resistance_flags |= FLAMMABLE //Even fireproof things burn up in lava
+			if(O.resistance_flags & FIRE_PROOF)
+				O.resistance_flags &= ~FIRE_PROOF
+			if(O.armor?.fire > 50) //obj with 100% fire armor still get slowly burned away.
+				O.armor = O.armor.setRating(fire = 50)
+			O.fire_act(temperature_damage, 1000 * delta_time)
+			if(istype(O, /obj/structure/closet))
+				var/obj/structure/closet/C = O
+				for(var/I in C.contents)
+					burn_stuff(I)
+		else if (isliving(thing))
+			. = 1
+			var/mob/living/L = thing
+			if(L.movement_type & FLYING)
+				continue	//YOU'RE FLYING OVER IT
+			var/buckle_check = L.buckled
+			if(isobj(buckle_check))
+				var/obj/O = buckle_check
+				if(O.resistance_flags & LAVA_PROOF)
 					continue
-		. = TRUE
+			else if(isliving(buckle_check))
+				var/mob/living/live = buckle_check
+				if(WEATHER_LAVA in live.weather_immunities)
+					continue
 
-/turf/open/lava/proc/can_burn_stuff(atom/movable/burn_target)
-	if(burn_target.movement_type & (FLYING|FLOATING)) //you're flying over it.
-		return LAVA_BE_IGNORING
+			if(iscarbon(L))
+				var/mob/living/carbon/C = L
+				var/obj/item/clothing/S = C.get_item_by_slot(ITEM_SLOT_OCLOTHING)
+				var/obj/item/clothing/H = C.get_item_by_slot(ITEM_SLOT_HEAD)
 
-	if(isobj(burn_target))
-		if(burn_target.throwing) // to avoid gulag prisoners easily escaping, throwing only works for objects.
-			return LAVA_BE_IGNORING
-		var/obj/burn_obj = burn_target
-		if((burn_obj.resistance_flags & immunity_resistance_flags))
-			return LAVA_BE_PROCESSING
-		return LAVA_BE_BURNING
+				if(S && H && S.clothing_flags & LAVAPROTECT && H.clothing_flags & LAVAPROTECT)
+					return
 
-	if (!isliving(burn_target))
-		return LAVA_BE_IGNORING
+			if(WEATHER_LAVA in L.weather_immunities)
+				continue
 
-	if(HAS_TRAIT(burn_target, immunity_trait))
-		return LAVA_BE_PROCESSING
-	var/mob/living/burn_living = burn_target
-	var/atom/movable/burn_buckled = burn_living.buckled
-	if(burn_buckled)
-		if(burn_buckled.movement_type & (FLYING|FLOATING))
-			return LAVA_BE_PROCESSING
-		if(isobj(burn_buckled))
-			var/obj/burn_buckled_obj = burn_buckled
-			if(burn_buckled_obj.resistance_flags & immunity_resistance_flags)
-				return LAVA_BE_PROCESSING
-		else if(HAS_TRAIT(burn_buckled, immunity_trait))
-			return LAVA_BE_PROCESSING
+			ADD_TRAIT(L, TRAIT_PERMANENTLY_ONFIRE,TURF_TRAIT)
+			L.update_fire()
 
-	if(iscarbon(burn_living))
-		var/mob/living/carbon/burn_carbon = burn_living
-		var/obj/item/clothing/burn_suit = burn_carbon.get_item_by_slot(ITEM_SLOT_OCLOTHING)
-		var/obj/item/clothing/burn_helmet = burn_carbon.get_item_by_slot(ITEM_SLOT_HEAD)
-		if(burn_suit?.clothing_flags & LAVAPROTECT && burn_helmet?.clothing_flags & LAVAPROTECT)
-			return LAVA_BE_PROCESSING
-
-	return LAVA_BE_BURNING
-
-#undef LAVA_BE_IGNORING
-#undef LAVA_BE_PROCESSING
-#undef LAVA_BE_BURNING
-
-/turf/open/lava/proc/do_burn(atom/movable/burn_target, delta_time = 1)
-	. = TRUE
-	if(isobj(burn_target))
-		var/obj/burn_obj = burn_target
-		if(burn_obj.resistance_flags & ON_FIRE) // already on fire; skip it.
-			return
-		if(!(burn_obj.resistance_flags & FLAMMABLE))
-			burn_obj.resistance_flags |= FLAMMABLE //Even fireproof things burn up in lava
-		if(burn_obj.resistance_flags & FIRE_PROOF)
-			burn_obj.resistance_flags &= ~FIRE_PROOF
-		if(burn_obj.armor.fire > 50) //obj with 100% fire armor still get slowly burned away.
-			burn_obj.armor = burn_obj.armor.setRating(fire = 50)
-		burn_obj.fire_act(temperature_damage, 1000 * delta_time)
-		if(istype(burn_obj, /obj/structure/closet))
-			var/obj/structure/closet/burn_closet = burn_obj
-			for(var/burn_content in burn_closet.contents)
-				burn_stuff(burn_content)
-		return
-
-	var/mob/living/burn_living = burn_target
-	ADD_TRAIT(burn_living, TRAIT_PERMANENTLY_ONFIRE, TURF_TRAIT)
-	burn_living.update_fire()
-
-	burn_living.adjustFireLoss(lava_damage * delta_time)
-	if(!QDELETED(burn_living)) //mobs turning into object corpses could get deleted here.
-		burn_living.adjust_fire_stacks(lava_firestacks * delta_time)
-		burn_living.IgniteMob()
+			L.adjustFireLoss(lava_damage * delta_time)
+			if(L) //mobs turning into object corpses could get deleted here.
+				L.adjust_fire_stacks(lava_firestacks * delta_time)
+				L.IgniteMob()
 
 /turf/open/lava/smooth
 	name = "lava"
@@ -233,9 +186,7 @@
 	canSmoothWith = list(SMOOTH_GROUP_FLOOR_LAVA)
 
 /turf/open/lava/smooth/lava_land_surface
-	initial_gas_mix = LAVALAND_DEFAULT_ATMOS
-	planetary_atmos = TRUE
 	baseturfs = /turf/open/lava/smooth/lava_land_surface
 
-/turf/open/lava/smooth/airless
-	initial_gas_mix = AIRLESS_ATMOS
+/turf/open/lava/smooth/nospread
+	spread = FALSE

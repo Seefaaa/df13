@@ -7,12 +7,14 @@
 	id_arg_index = 2
 	/// Whether we stop the current action if backfire is triggered (EX: returning CANCEL_ATTACK_CHAIN)
 	var/cancel_action = FALSE
+	/// The callback of the backfire effect of the plant.
+	var/datum/callback/backfire_callback
 	/// Any extra traits we want to check in addition to TRAIT_PLANT_SAFE. Mobs with a trait in this list will be considered safe. List of traits.
 	var/extra_traits
 	/// Any plant genes we want to check that are required for our plant to be dangerous. Plants without a gene in this list will be considered safe. List of typepaths.
 	var/extra_genes
 
-/datum/element/plant_backfire/Attach(datum/target, cancel_action = FALSE, extra_traits, extra_genes)
+/datum/element/plant_backfire/Attach(datum/target, backfire_callback, cancel_action = FALSE, extra_traits, extra_genes)
 	. = ..()
 	if(!isitem(target))
 		return ELEMENT_INCOMPATIBLE
@@ -20,6 +22,7 @@
 	src.cancel_action = cancel_action
 	src.extra_traits = extra_traits
 	src.extra_genes = extra_genes
+	src.backfire_callback = backfire_callback
 
 	RegisterSignal(target, COMSIG_ITEM_PRE_ATTACK, .proc/attack_safety_check)
 	RegisterSignal(target, COMSIG_ITEM_PICKUP, .proc/pickup_safety_check)
@@ -40,7 +43,7 @@
 
 	if(plant_safety_check(source, user))
 		return
-	SEND_SIGNAL(source, COMSIG_PLANT_ON_BACKFIRE, user)
+	backfire_callback.Invoke(source, user)
 	if(cancel_action)
 		return COMPONENT_CANCEL_ATTACK_CHAIN
 
@@ -55,7 +58,7 @@
 
 	if(plant_safety_check(source, user))
 		return
-	SEND_SIGNAL(source, COMSIG_PLANT_ON_BACKFIRE, user)
+	backfire_callback.Invoke(source, user)
 
 /*
  * Checks before we throw the plant if we're okay to continue.
@@ -69,7 +72,7 @@
 	var/mob/living/thrower = arguments[4] // 4th arg = mob/thrower
 	if(plant_safety_check(source, thrower))
 		return
-	SEND_SIGNAL(source, COMSIG_PLANT_ON_BACKFIRE, thrower)
+	backfire_callback.Invoke(source, thrower)
 	if(cancel_action)
 		return COMPONENT_CANCEL_THROW
 
@@ -94,17 +97,6 @@
 
 	for(var/checked_trait in extra_traits)
 		if(HAS_TRAIT(user, checked_trait))
-			return TRUE
-
-	var/obj/item/parent_item = source
-	var/obj/item/seeds/our_seed = parent_item.get_plant_seed()
-	if(our_seed)
-		for(var/checked_gene in extra_genes)
-			if(!our_seed.get_gene(checked_gene))
-				return TRUE
-
-	for(var/obj/item/clothing/worn_item in user.get_equipped_items())
-		if((worn_item.body_parts_covered & HANDS) && (worn_item.clothing_flags & THICKMATERIAL))
 			return TRUE
 
 	return FALSE

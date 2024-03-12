@@ -1,5 +1,3 @@
-#define FILL_WARNING_MIN 150
-
 /datum/buildmode_mode/fill
 	key = "fill"
 
@@ -8,7 +6,7 @@
 
 /datum/buildmode_mode/fill/show_help(client/c)
 	to_chat(c, span_notice("***********************************************************"))
-	to_chat(c, span_notice("Left Mouse Button on turf/obj/mob      = Select corner"))
+	to_chat(c, span_notice("Left Mouse Button on turf/obj/mob = Select corner"))
 	to_chat(c, span_notice("Left Mouse Button + Alt on turf/obj/mob = Delete region"))
 	to_chat(c, span_notice("Right Mouse Button on buildmode button = Select object type"))
 	to_chat(c, span_notice("***********************************************************"))
@@ -35,10 +33,12 @@
 	..()
 
 /datum/buildmode_mode/fill/handle_selected_area(client/c, params)
-	var/list/modifiers = params2list(params)
+	var/list/pa = params2list(params)
+	var/left_click = pa.Find("left")
+	var/alt_click = pa.Find("alt")
 
-	if(LAZYACCESS(modifiers, LEFT_CLICK)) //rectangular
-		if(LAZYACCESS(modifiers, ALT_CLICK))
+	if(left_click) //rectangular
+		if(alt_click)
 			var/list/deletion_area = block(get_turf(cornerA),get_turf(cornerB))
 			for(var/beep in deletion_area)
 				var/turf/T = beep
@@ -53,13 +53,13 @@
 			// if there's an analogous proc for this on tg lmk
 			// empty_region(block(get_turf(cornerA),get_turf(cornerB)))
 		else
-			var/selection_size = abs(cornerA.x - cornerB.x) * abs(cornerA.y - cornerB.y)
-
+			//var/selection_size = abs(cornerA.x - cornerB.x) * abs(cornerA.y - cornerB.y)
+			/*
 			if(selection_size > FILL_WARNING_MIN) // Confirm fill if the number of tiles in the selection is greater than FILL_WARNING_MIN
 				var/choice = tgui_alert(usr,"Your selected area is [selection_size] tiles! Continue?", "Large Fill Confirmation", list("Yes", "No"))
 				if(choice != "Yes")
 					return
-
+			*/
 			for(var/turf/T in block(get_turf(cornerA),get_turf(cornerB)))
 				if(ispath(objholder,/turf))
 					T = T.ChangeTurf(objholder)
@@ -70,5 +70,3 @@
 					var/obj/A = new objholder(T)
 					A.setDir(BM.build_dir)
 			log_admin("Build Mode: [key_name(c)] with path [objholder], filled the region from [AREACOORD(cornerA)] through [AREACOORD(cornerB)]")
-
-#undef FILL_WARNING_MIN

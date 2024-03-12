@@ -28,9 +28,6 @@
 	else if(istype(var_value, /client))
 		. = VV_CLIENT
 
-	else if(istype(var_value, /datum/weakref))
-		. = VV_WEAKREF
-
 	else if(istype(var_value, /datum))
 		. = VV_DATUM_REFERENCE
 
@@ -43,10 +40,7 @@
 			. = VV_TYPE
 
 	else if(islist(var_value))
-		if(var_name in GLOB.color_vars)
-			. = VV_COLOR_MATRIX
-		else
-			. = VV_LIST
+		. = VV_LIST
 
 	else if(isfile(var_value))
 		. = VV_FILE
@@ -63,7 +57,6 @@
 				VV_MESSAGE,
 				VV_ICON,
 				VV_COLOR,
-				VV_COLOR_MATRIX,
 				VV_ATOM_REFERENCE,
 				VV_DATUM_REFERENCE,
 				VV_MOB_REFERENCE,
@@ -77,11 +70,10 @@
 				VV_NEW_TYPE,
 				VV_NEW_LIST,
 				VV_NULL,
-				VV_INFINITY,
 				VV_RESTORE_DEFAULT,
 				VV_TEXT_LOCATE,
 				VV_PROCCALL_RETVAL,
-				VV_WEAKREF,
+				VV_CALLERMOB
 				)
 
 		var/markstring
@@ -89,30 +81,16 @@
 			markstring = "[VV_MARKED_DATUM] (CURRENT: [(istype(holder) && istype(holder.marked_datum))? holder.marked_datum.type : "NULL"])"
 			classes += markstring
 
-		var/list/tagstrings = new
-		if(!(VV_TAGGED_DATUM in restricted_classes) && holder && LAZYLEN(holder.tagged_datums))
-			var/i = 0
-			for(var/datum/iter_tagged_datum as anything in holder.tagged_datums)
-				i++
-				var/new_tagstring = "[VV_TAGGED_DATUM] #[i]: [iter_tagged_datum.type])"
-				tagstrings[new_tagstring] = iter_tagged_datum
-				classes += new_tagstring
-
 		if(restricted_classes)
 			classes -= restricted_classes
 
 		if(extra_classes)
 			classes += extra_classes
 
-		.["class"] = input(src, "What kind of data?", "Variable Type", default_class) as null|anything in classes
+		//.["class"] = input(src, "What kind of data?", "Variable Type", default_class) as null|anything in classes
+		.["class"] = tgui_input_list(src, "What kind of data?", "Variable Type", classes)
 		if(holder && holder.marked_datum && .["class"] == markstring)
 			.["class"] = VV_MARKED_DATUM
-
-		if(holder && tagstrings[.["class"]])
-			var/datum/chosen_datum = tagstrings[.["class"]]
-			.["value"] = chosen_datum
-			.["class"] = VV_TAGGED_DATUM
-
 
 	switch(.["class"])
 		if(VV_TEXT)
@@ -205,19 +183,6 @@
 				return
 			.["value"] = things[value]
 
-		if(VV_WEAKREF)
-			var/type = pick_closest_path(FALSE, get_fancy_list_of_datum_types())
-			var/subtypes = vv_subtype_prompt(type)
-			if(subtypes == null)
-				.["class"] = null
-				return
-			var/list/things = vv_reference_list(type, subtypes)
-			var/value = input("Select reference:", "Reference", current_value) as null|anything in things
-			if(!value)
-				.["class"] = null
-				return
-			.["value"] = WEAKREF(things[value])
-
 		if(VV_CLIENT)
 			.["value"] = input("Select reference:", "Reference", current_value) as null|anything in GLOB.clients
 			if(.["value"] == null)
@@ -242,15 +207,16 @@
 				.["class"] = null
 				return
 
-		if(VV_TAGGED_DATUM)
+		if(VV_PROCCALL_RETVAL)
+			var/list/get_retval = list()
+			callproc_blocking(get_retval)
+			.["value"] = get_retval[1]		//should have been set in proccall!
 			if(.["value"] == null)
 				.["class"] = null
 				return
 
-		if(VV_PROCCALL_RETVAL)
-			var/list/get_retval = list()
-			callproc_blocking(get_retval)
-			.["value"] = get_retval[1] //should have been set in proccall!
+		if(VV_CALLERMOB)
+			.["value"] = mob
 			if(.["value"] == null)
 				.["class"] = null
 				return
@@ -320,11 +286,3 @@
 			if(.["value"] == null)
 				.["class"] = null
 				return
-
-		if(VV_COLOR_MATRIX)
-			.["value"] = open_color_matrix_editor()
-			if(.["value"] == color_matrix_identity()) //identity is equivalent to null
-				.["class"] = null
-
-		if(VV_INFINITY)
-			.["value"] = INFINITY

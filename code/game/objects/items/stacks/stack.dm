@@ -1,9 +1,3 @@
-//stack recipe placement check types
-/// Checks if there is an object of the result type in any of the cardinal directions
-#define STACK_CHECK_CARDINALS "cardinals"
-/// Checks if there is an object of the result type within one tile
-#define STACK_CHECK_ADJACENT "adjacent"
-
 /* Stack type objects!
  * Contains:
  * Stacks
@@ -24,9 +18,6 @@
 	var/singular_name
 	var/amount = 1
 	var/max_amount = 50 //also see stack recipes initialisation, param "max_res_amount" must be equal to this max_amount
-	var/is_cyborg = FALSE // It's TRUE if module is used by a cyborg, and uses its storage
-	var/datum/robot_energy_storage/source
-	var/cost = 1 // How much energy from storage it costs
 	var/merge_type = null // This path and its children should merge with this stack, defaults to src.type
 	var/full_w_class = WEIGHT_CLASS_NORMAL //The weight class the stack should have at amount > 2/3rds max_amount
 	var/novariants = TRUE //Determines whether the item should update it's sprites based on amount.
@@ -39,14 +30,10 @@
 		// The following are all for medical treatment, they're here instead of /stack/medical because sticky tape can be used as a makeshift bandage or splint
 	/// If set and this used as a splint for a broken bone wound, this is used as a multiplier for applicable slowdowns (lower = better) (also for speeding up burn recoveries)
 	var/splint_factor
-	/// Like splint_factor but for burns instead of bone wounds. This is a multiplier used to speed up burn recoveries
-	var/burn_cleanliness_bonus
 	/// How much blood flow this stack can absorb if used as a bandage on a cut wound, note that absorption is how much we lower the flow rate, not the raw amount of blood we suck up
 	var/absorption_capacity
 	/// How quickly we lower the blood flow on a cut wound we're bandaging. Expected lifetime of this bandage in seconds is thus absorption_capacity/absorption_rate, or until the cut heals, whichever comes first
 	var/absorption_rate
-	/// Amount of matter for RCD
-	var/matter_amount = 0
 	/// Does this stack require a unique girder in order to make a wall?
 	var/has_unique_girder = FALSE
 
@@ -88,7 +75,7 @@
 					var/list/temp = SSmaterials.rigid_stack_recipes.Copy()
 					recipes += temp
 	update_weight()
-	update_appearance()
+	update_icon()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = .proc/on_movable_entered_occupied_turf,
 	)
@@ -121,12 +108,6 @@
 	for(var/i in 1 to length(grind_results)) //This should only call if it's ground, so no need to check if grind_results exists
 		grind_results[grind_results[i]] *= get_amount() //Gets the key at position i, then the reagent amount of that key, then multiplies it by stack size
 
-/obj/item/stack/grind_requirements()
-	if(is_cyborg)
-		to_chat(usr, span_warning("[src] is electronically synthesized in your chassis and can't be ground up!"))
-		return
-	return TRUE
-
 /obj/item/stack/proc/get_main_recipes()
 	SHOULD_CALL_PARENT(TRUE)
 	return list()//empty list
@@ -153,12 +134,7 @@
 
 /obj/item/stack/examine(mob/user)
 	. = ..()
-	if(is_cyborg)
-		if(singular_name)
-			. += "There is enough energy for [get_amount()] [singular_name]\s."
-		else
-			. += "There is enough energy for [get_amount()]."
-		return
+	. += "<hr>"
 	if(singular_name)
 		if(get_amount()>1)
 			. += "There are [get_amount()] [singular_name]\s in the stack."
@@ -168,13 +144,10 @@
 		. += "There are [get_amount()] in the stack."
 	else
 		. += "There is [get_amount()] in the stack."
-	. += span_notice("<b>Right-click</b> with an empty hand to take a custom amount.")
+	. += "<hr><span class='notice'><b>Right-click</b> with an empty hand to take a custom amount.</span>"
 
 /obj/item/stack/proc/get_amount()
-	if(is_cyborg)
-		. = round(source?.energy / cost)
-	else
-		. = (amount)
+	. = (amount)
 
 /**
  * Builds all recipes in a given recipe list and returns an association list containing them
@@ -250,9 +223,6 @@
 
 	switch(action)
 		if("make")
-			if(get_amount() < 1 && !is_cyborg)
-				qdel(src)
-				return
 			var/datum/stack_recipe/recipe = locate(params["ref"])
 			if(!is_valid_recipe(recipe, recipes)) //href exploit protection
 				return
@@ -263,7 +233,7 @@
 				return
 			if(recipe.time)
 				var/adjusted_time = 0
-				usr.visible_message(span_notice("[usr] starts building \a [recipe.title]."), span_notice("You start building \a [recipe.title]..."))
+				usr.visible_message(span_notice("[usr] starts building \a [recipe.title].") , span_notice("You start building \a [recipe.title]..."))
 				if(HAS_TRAIT(usr, recipe.trait_booster))
 					adjusted_time = (recipe.time * recipe.trait_modifier)
 				else
@@ -294,12 +264,13 @@
 				else
 					O.set_custom_materials(mats_per_unit, recipe.req_amount / recipe.res_amount)
 
+			if(isitem(O))
+				usr.put_in_hands(O)
+
 			if(QDELETED(O))
 				return //It's a stack and has already been merged
 
-			O.add_fingerprint(usr) //Add fingerprints first, otherwise O might already be deleted because of stack merging
-			if(isitem(O))
-				usr.put_in_hands(O)
+			O.add_fingerprint(usr)
 
 			//BubbleWrap - so newly formed boxes are empty
 			if(istype(O, /obj/item/storage))
@@ -327,13 +298,6 @@
 		return FALSE
 	var/turf/dest_turf = get_turf(usr)
 
-	// If we're making a window, we have some special snowflake window checks to do.
-	if(ispath(recipe.result_type, /obj/structure/window))
-		var/obj/structure/window/result_path = recipe.result_type
-		if(!valid_window_location(dest_turf, usr.dir, is_fulltile = initial(result_path.fulltile)))
-			to_chat(usr, span_warning("The [recipe.title] won't fit here!"))
-			return FALSE
-
 	if(recipe.one_per_turf && (locate(recipe.result_type) in dest_turf))
 		to_chat(usr, span_warning("There is another [recipe.title] here!"))
 		return FALSE
@@ -344,14 +308,8 @@
 			return FALSE
 
 		for(var/obj/object in dest_turf)
-			if(istype(object, /obj/structure/grille))
-				continue
 			if(istype(object, /obj/structure/table))
 				continue
-			if(istype(object, /obj/structure/window))
-				var/obj/structure/window/window_structure = object
-				if(!window_structure.fulltile)
-					continue
 			if(object.density || NO_BUILD & object.obj_flags)
 				to_chat(usr, span_warning("There is \a [object.name] here. You can\'t make \a [recipe.title] here!"))
 				return FALSE
@@ -373,8 +331,6 @@
 /obj/item/stack/use(used, transfer = FALSE, check = TRUE) // return 0 = borked; return 1 = had enough
 	if(check && is_zero_amount(delete_if_zero = TRUE))
 		return FALSE
-	if(is_cyborg)
-		return source.use_charge(used * cost)
 	if (amount < used)
 		return FALSE
 	amount -= used
@@ -382,7 +338,7 @@
 		return TRUE
 	if(length(mats_per_unit))
 		update_custom_materials()
-	update_appearance()
+	update_icon()
 	update_weight()
 	return TRUE
 
@@ -404,11 +360,8 @@
  * Returns TRUE if the item stack is the equivalent of a 0 amount item.
  *
  * Also deletes the item if delete_if_zero is TRUE and the stack does not have
- * is_cyborg set to true.
  */
 /obj/item/stack/proc/is_zero_amount(delete_if_zero = TRUE)
-	if(is_cyborg)
-		return source.energy < cost
 	if(amount < 1)
 		if(delete_if_zero)
 			qdel(src)
@@ -421,13 +374,10 @@
  * - _amount: The number of units to add to this stack.
  */
 /obj/item/stack/proc/add(_amount)
-	if(is_cyborg)
-		source.add_charge(_amount * cost)
-	else
-		amount += _amount
+	amount += _amount
 	if(length(mats_per_unit))
 		update_custom_materials()
-	update_appearance()
+	update_icon()
 	update_weight()
 
 /** Checks whether this stack can merge itself into another stack.
@@ -438,9 +388,7 @@
 /obj/item/stack/proc/can_merge(obj/item/stack/check)
 	if(!istype(check, merge_type))
 		return FALSE
-	if(mats_per_unit ~! check.mats_per_unit) // ~! in case of lists this operator checks only keys, but not values
-		return FALSE
-	if(is_cyborg) // No merging cyborg stacks into other stacks
+	if(mats_per_unit != check.mats_per_unit)
 		return FALSE
 	return TRUE
 
@@ -462,20 +410,12 @@
 		CRASH("Stack attempted to merge into itself.")
 
 	var/transfer = get_amount()
-	if(target_stack.is_cyborg)
-		transfer = min(transfer, round((target_stack.source.max_energy - target_stack.source.energy) / target_stack.cost))
-	else
-		transfer = min(transfer, (limit ? limit : target_stack.max_amount) - target_stack.amount)
+	transfer = min(transfer, (limit ? limit : target_stack.max_amount) - target_stack.amount)
 	if(pulledby)
 		pulledby.start_pulling(target_stack)
 	target_stack.copy_evidences(src)
 	use(transfer, transfer = TRUE, check = FALSE)
 	target_stack.add(transfer)
-	if(target_stack.mats_per_unit != mats_per_unit) // We get the average value of mats_per_unit between two stacks getting merged
-		var/list/temp_mats_list = list() // mats_per_unit is passed by ref into this coil, and that same ref is used in other places. If we didn't make a new list here we'd end up contaminating those other places, which leads to batshit behavior
-		for(var/mat_type in target_stack.mats_per_unit)
-			temp_mats_list[mat_type] = (target_stack.mats_per_unit[mat_type] * (target_stack.amount - transfer) + mats_per_unit[mat_type] * transfer) / target_stack.amount
-		target_stack.mats_per_unit = temp_mats_list
 	return transfer
 
 /**
@@ -486,6 +426,15 @@
 /obj/item/stack/proc/merge(obj/item/stack/target_stack, limit)
 	. = merge_without_del(target_stack, limit)
 	is_zero_amount(delete_if_zero = TRUE)
+
+/obj/item/stack/Moved()
+	. = ..()
+	if(!throwing && isturf(loc))
+		for(var/obj/item/stack/item_stack in loc)
+			if(item_stack == src)
+				continue
+			if(can_merge(item_stack))
+				INVOKE_ASYNC(item_stack, .proc/merge, src)
 
 /// Signal handler for connect_loc element. Called when a movable enters the turf we're currently occupying. Merges if possible.
 /obj/item/stack/proc/on_movable_entered_occupied_turf(datum/source, atom/movable/arrived)
@@ -517,14 +466,14 @@
 	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
 		return
 
-	if(is_cyborg || !user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE, !iscyborg(user)))
-		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	if(is_zero_amount(delete_if_zero = TRUE))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	var/max = get_amount()
-	var/stackmaterial = tgui_input_number(user, "How many sheets do you wish to take out of this stack?", "Stack Split", max_value = max)
-	if(!stackmaterial || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, BE_CLOSE, FALSE, NO_TK, !iscyborg(user)))
-		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+	var/stackmaterial = round(input(user, "How many sheets do you wish to take out of this stack? (Maximum [max])", "Stack Split") as null|num)
+	max = get_amount()
+	stackmaterial = min(max, stackmaterial)
+	if(stackmaterial == null || stackmaterial <= 0 || !user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY, FALSE))
+		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	split_stack(user, stackmaterial)
 	to_chat(user, span_notice("You take [stackmaterial] sheets out of the stack."))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
@@ -561,12 +510,8 @@
 	add_blood_DNA(from.return_blood_DNA())
 	add_fingerprint_list(from.return_fingerprints())
 	add_hiddenprint_list(from.return_hiddenprints())
-	fingerprintslast = from.fingerprintslast
+	fingerprintslast  = from.fingerprintslast
 	//TODO bloody overlay
-
-/obj/item/stack/microwave_act(obj/machinery/microwave/M)
-	if(istype(M) && M.dirty < 100)
-		M.dirty += amount
 
 /*
  * Recipe datum
@@ -608,6 +553,3 @@
 /datum/stack_recipe_list/New(title, recipes)
 	src.title = title
 	src.recipes = recipes
-
-#undef STACK_CHECK_CARDINALS
-#undef STACK_CHECK_ADJACENT

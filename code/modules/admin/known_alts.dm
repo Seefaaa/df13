@@ -21,11 +21,11 @@ GLOBAL_DATUM_INIT(known_alts, /datum/known_alts, new)
 
 	switch (href_list["action"])
 		if ("add")
-			var/ckey1 = input(usr, "Put in the name of the main ckey") as null|text
+			var/ckey1 = input(usr, "Enter main account ckey") as null|text
 			if (!ckey1)
 				return
 
-			var/ckey2 = input(usr, "Put in the name of their alt") as null|text
+			var/ckey2 = input(usr, "enter multiaccount ckey") as null|text
 			if (!ckey2)
 				return
 
@@ -51,7 +51,7 @@ GLOBAL_DATUM_INIT(known_alts, /datum/known_alts, new)
 			qdel(query_already_exists)
 
 			if (already_exists_row)
-				alert(usr, "Those two are already in the list of known alts!")
+				alert(usr, "It's already recorded!")
 				return
 
 			var/datum/db_query/query_add_known_alt = SSdbcore.NewQuery({"
@@ -64,7 +64,7 @@ GLOBAL_DATUM_INIT(known_alts, /datum/known_alts, new)
 			))
 
 			if (query_add_known_alt.warn_execute())
-				var/message = "[key_name(usr)] has added a new known alt connection between [ckey1] and [ckey2]."
+				var/message = "[key_name(usr)] Added new known alt: [ckey1] and [ckey2]."
 				message_admins(message)
 				log_admin_private(message)
 
@@ -75,7 +75,7 @@ GLOBAL_DATUM_INIT(known_alts, /datum/known_alts, new)
 			show_panel(usr.client)
 
 			if (!is_banned_from(ckey2, "Server"))
-				var/ban_choice = alert("[ckey2] is not banned from the server. Do you want to open up the ban panel as well?",,"Yes", "No")
+				var/ban_choice = alert("[ckey2] isn't banned. Open Ban Panel?",,"Yes", "No")
 				if (ban_choice == "Yes")
 					holder.ban_panel(ckey2, role = "Server", duration = BAN_PANEL_PERMANENT)
 		if ("delete")
@@ -96,14 +96,14 @@ GLOBAL_DATUM_INIT(known_alts, /datum/known_alts, new)
 				return
 
 			if (!query_known_alt_info.NextRow())
-				alert("Couldn't find the known alt with the ID [id]")
+				alert("Cannot find this id: [id]")
 				qdel(query_known_alt_info)
 				return
 
 			var/list/result = query_known_alt_info.item
 			qdel(query_known_alt_info)
 
-			if (alert("Are you sure you want to delete the alt connection between [result[1]] and [result[2]]?",,"Yes", "No") != "Yes")
+			if (alert("Delete known multiaccounts between [result[1]] & [result[2]]?",,"Yes", "No") != "Yes")
 				return
 
 			var/datum/db_query/query_delete_known_alt = SSdbcore.NewQuery({"
@@ -114,7 +114,7 @@ GLOBAL_DATUM_INIT(known_alts, /datum/known_alts, new)
 			))
 
 			if (query_delete_known_alt.warn_execute())
-				var/message = "[key_name(usr)] has deleted the known alt connection between [result[1]] and [result[2]]."
+				var/message = "[key_name(usr)] removed known alts between [result[1]] & [result[2]]."
 				message_admins(message)
 				log_admin_private(message)
 
@@ -168,18 +168,18 @@ GLOBAL_DATUM_INIT(known_alts, /datum/known_alts, new)
 	var/list/known_alts_html = list()
 
 	for (var/known_alt in load_known_alts())
-		known_alts_html += "<a href='?src=[REF(src)];[HrefToken()];action=delete;id=[known_alt[4]]'>\[-\] Delete</a> <b>[known_alt[1]]</b> is an alt of <b>[known_alt[2]]</b> (added by <b>[known_alt[3]]</b>)."
+		known_alts_html += "<a href='?src=[REF(src)];[HrefToken()];action=delete;id=[known_alt[4]]'>\[-\] Delete</a> <b>[known_alt[1]]</b> multiaccount <b>[known_alt[2]]</b> (added <b>[known_alt[3]]</b>)."
 
 	var/html = {"
 		<head>
-			<title>Known Alts</title>
+			<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
+			<title>Multiaccounts</title>
 		</head>
 
 		<body>
-			<p>Any two ckeys in this panel will not show in "banned connection history".</p>
-			<p>Sometimes players switch account, and it's customary to perma-ban the old one.</p>
+			<p>This information may be untrustworthy...</p>
 
-			<h2>All Known Alts:</h2> <a href='?src=[REF(src)];[HrefToken()];action=add'>\[+\] Add</a><hr>
+			<h2>Multiaccounts:</h2> <a href='?src=[REF(src)];[HrefToken()];action=add'>\[+\] Add</a><hr>
 
 			[known_alts_html.Join("<br />")]
 		</body>
@@ -188,7 +188,7 @@ GLOBAL_DATUM_INIT(known_alts, /datum/known_alts, new)
 	client << browse(html, "window=known_alts;size=700x400")
 
 /datum/admins/proc/known_alts_panel()
-	set name = "Known Alts Panel"
+	set name = "Multiaccounts"
 	set category = "Admin"
 
 	GLOB.known_alts.show_panel(usr.client)

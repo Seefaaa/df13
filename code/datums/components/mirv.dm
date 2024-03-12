@@ -4,18 +4,15 @@
 	var/override_projectile_range
 
 /datum/component/mirv/Initialize(projectile_type, radius=1, override_projectile_range)
-	if(!isgun(parent) && !ismachinery(parent) && !isstructure(parent) && !isgrenade(parent))
+	if(!isgun(parent) && !isstructure(parent))
 		return COMPONENT_INCOMPATIBLE
 
 	src.projectile_type = projectile_type
 	src.radius = radius
 	src.override_projectile_range = override_projectile_range
 
-	if(isgrenade(parent))
-		parent.AddComponent(/datum/component/pellet_cloud, projectile_type=projectile_type)
-
 /datum/component/mirv/RegisterWithParent()
-	if(ismachinery(parent) || isstructure(parent) || isgun(parent)) // turrets, etc
+	if(isstructure(parent) || isgun(parent)) // turrets, etc
 		RegisterSignal(parent, COMSIG_PROJECTILE_ON_HIT, .proc/projectile_hit)
 
 /datum/component/mirv/UnregisterFromParent()

@@ -1,16 +1,18 @@
 /*
-	mid_sounds (list or soundfile) Since this can be either a list or a single soundfile you can have random sounds. May contain further lists but must contain a soundfile at the end.
-	mid_length (num) The length to wait between playing mid_sounds
+	output_atoms	(list of atoms)			The destination(s) for the sounds
 
-	start_sound (soundfile) Played before starting the mid_sounds loop
-	start_length (num) How long to wait before starting the main loop after playing start_sound
+	mid_sounds		(list or soundfile)		Since this can be either a list or a single soundfile you can have random sounds. May contain further lists but must contain a soundfile at the end.
+	mid_length		(num)					The length to wait between playing mid_sounds
 
-	end_sound (soundfile) The sound played after the main loop has concluded
+	start_sound		(soundfile)				Played before starting the mid_sounds loop
+	start_length	(num)					How long to wait before starting the main loop after playing start_sound
 
-	chance (num) Chance per loop to play a mid_sound
-	volume (num) Sound output volume
-	max_loops (num) The max amount of loops to run for.
-	direct (bool) If true plays directly to provided atoms instead of from them
+	end_sound		(soundfile)				The sound played after the main loop has concluded
+
+	chance			(num)					Chance per loop to play a mid_sound
+	volume			(num)					Sound output volume
+	max_loops		(num)					The max amount of loops to run for.
+	direct			(bool)					If true plays directly to provided atoms instead of from them
 */
 /datum/looping_sound
 	var/atom/parent
@@ -58,7 +60,7 @@
 		return
 	on_start()
 
-/datum/looping_sound/proc/stop(null_parent = FALSE)
+/datum/looping_sound/proc/stop(null_parent)
 	if(null_parent)
 		set_parent(null)
 	if(!timerid)
@@ -92,7 +94,7 @@
 /datum/looping_sound/proc/get_sound(starttime, _mid_sounds)
 	. = _mid_sounds || mid_sounds
 	while(!isfile(.) && !isnull(.))
-		. = pick_weight(.)
+		. = pickweight(.)
 
 /datum/looping_sound/proc/on_start()
 	var/start_wait = 0
@@ -111,9 +113,6 @@
 	parent = new_parent
 	if(parent)
 		RegisterSignal(parent, COMSIG_PARENT_QDELETING, .proc/handle_parent_del)
-
-/datum/looping_sound/proc/is_active()
-	return !!timerid
 
 /datum/looping_sound/proc/handle_parent_del(datum/source)
 	SIGNAL_HANDLER

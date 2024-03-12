@@ -6,15 +6,15 @@
  * validate the input inside the UI and ui_act.
  *
  * Arguments:
- * * user - The user to show the number input to.
- * * message - The content of the number input, shown in the body of the TGUI window.
- * * title - The title of the number input modal, shown on the top of the TGUI window.
+ * * user - The user to show the numbox to.
+ * * message - The content of the numbox, shown in the body of the TGUI window.
+ * * title - The title of the numbox modal, shown on the top of the TGUI window.
  * * default - The default (or current) value, shown as a placeholder. Users can press refresh with this.
  * * max_value - Specifies a maximum value. If none is set, any number can be entered. Pressing "max" defaults to 1000.
  * * min_value - Specifies a minimum value. Often 0.
- * * timeout - The timeout of the number input, after which the modal will close and qdel itself. Set to zero for no timeout.
+ * * timeout - The timeout of the numbox, after which the modal will close and qdel itself. Set to zero for no timeout.
  */
-/proc/tgui_input_number(mob/user, message, title = "Number Input", default = 0, max_value = 10000, min_value = 0, timeout = 0)
+/proc/tgui_input_number(mob/user, message, title = "Enter Number", default, max_value, min_value, timeout = 0)
 	if (!user)
 		user = usr
 	if (!istype(user))
@@ -23,32 +23,29 @@
 			user = client.mob
 		else
 			return
-	// Client does NOT have tgui_input on: Returns regular input
-	if(!user.client.prefs.read_preference(/datum/preference/toggle/tgui_input))
-		return clamp(round(input(user, message, title, default) as null|num), min_value, max_value)
-	var/datum/tgui_input_number/number_input = new(user, message, title, default, max_value, min_value, timeout)
-	number_input.ui_interact(user)
-	number_input.wait()
-	if (number_input)
-		. = number_input.entry
-		qdel(number_input)
+	var/datum/tgui_input_number/numbox = new(user, message, title, default, max_value, min_value, timeout)
+	numbox.ui_interact(user)
+	numbox.wait()
+	if (numbox)
+		. = numbox.entry
+		qdel(numbox)
 
 /**
  * Creates an asynchronous TGUI number input window with an associated callback.
  *
- * This proc should be used to create number inputs that invoke a callback with the user's entry.
+ * This proc should be used to create numboxes that invoke a callback with the user's entry.
  *
  * Arguments:
- * * user - The user to show the number input to.
- * * message - The content of the number input, shown in the body of the TGUI window.
- * * title - The title of the number input modal, shown on the top of the TGUI window.
+ * * user - The user to show the numbox to.
+ * * message - The content of the numbox, shown in the body of the TGUI window.
+ * * title - The title of the numbox modal, shown on the top of the TGUI window.
  * * default - The default (or current) value, shown as a placeholder. Users can press refresh with this.
  * * max_value - Specifies a maximum value. If none is set, any number can be entered. Pressing "max" defaults to 1000.
  * * min_value - Specifies a minimum value. Often 0.
  * * callback - The callback to be invoked when a choice is made.
- * * timeout - The timeout of the number input, after which the modal will close and qdel itself. Set to zero for no timeout.
+ * * timeout - The timeout of the numbox, after which the modal will close and qdel itself. Disabled by default, can be set to seconds otherwise.
  */
-/proc/tgui_input_number_async(mob/user, message, title = "Number Input", default = 0, max_value = 10000, min_value = 0, datum/callback/callback, timeout = 60 SECONDS)
+/proc/tgui_input_number_async(mob/user, message, title = "Enter Number", default, max_value, min_value, datum/callback/callback, timeout = 60 SECONDS)
 	if (!user)
 		user = usr
 	if (!istype(user))
@@ -57,17 +54,14 @@
 			user = client.mob
 		else
 			return
-	// Client does NOT have tgui_input on: Returns regular input
-	if(!user.client.prefs.read_preference(/datum/preference/toggle/tgui_input))
-		return clamp(round(input(user, message, title, default) as null|num), min_value, max_value)
-	var/datum/tgui_input_number/async/number_input = new(user, message, title, default, max_value, min_value, callback, timeout)
-	number_input.ui_interact(user)
+	var/datum/tgui_input_number/async/numbox = new(user, message, title, default, max_value, min_value, callback, timeout)
+	numbox.ui_interact(user)
 
 /**
  * # tgui_input_number
  *
- * Datum used for instantiating and using a TGUI-controlled number input that prompts the user with
- * a message and has an input for number entry.
+ * Datum used for instantiating and using a TGUI-controlled numbox that prompts the user with
+ * a message and has an input for text entry.
  */
 /datum/tgui_input_number
 	/// Boolean field describing if the tgui_input_number was closed by the user.
@@ -82,9 +76,9 @@
 	var/message
 	/// The minimum value that can be entered.
 	var/min_value
-	/// The time at which the number input was created, for displaying timeout progress.
+	/// The time at which the tgui_modal was created, for displaying timeout progress.
 	var/start_time
-	/// The lifespan of the number input, after which the window will close and delete itself.
+	/// The lifespan of the tgui_input_number, after which the window will close and delete itself.
 	var/timeout
 	/// The title of the TGUI window
 	var/title
@@ -100,16 +94,6 @@
 		src.timeout = timeout
 		start_time = world.time
 		QDEL_IN(src, timeout)
-	/// Checks for empty numbers - bank accounts, etc.
-	if(max_value == 0)
-		src.min_value = 0
-		if(default)
-			src.default = 0
-	/// Sanity check
-	if(default < min_value)
-		src.default = min_value
-	if(default > max_value)
-		CRASH("Default value is greater than max value.")
 
 /datum/tgui_input_number/Destroy(force, ...)
 	SStgui.close_uis(src)
@@ -137,14 +121,15 @@
 	return GLOB.always_state
 
 /datum/tgui_input_number/ui_static_data(mob/user)
-	. = list()
-	.["init_value"] = default // Default is a reserved keyword
-	.["large_buttons"] = user.client.prefs.read_preference(/datum/preference/toggle/tgui_input_large)
-	.["max_value"] = max_value
-	.["message"] = message
-	.["min_value"] = min_value
-	.["swapped_buttons"] = user.client.prefs.read_preference(/datum/preference/toggle/tgui_input_swapped)
-	.["title"] = title
+	. = list(
+		"init_value" = default || 0, // Default is a reserved keyword
+		"max_value" = max_value,
+		"message" = message,
+		"min_value"	= min_value,
+		"placeholder" = default, /// You cannot use default as a const
+		"min_value" = min_value || 0,
+		"title" = title
+	)
 
 /datum/tgui_input_number/ui_data(mob/user)
 	. = list()
@@ -156,20 +141,16 @@
 	if (.)
 		return
 	switch(action)
-		if("submit")
-			if(!isnum(params["entry"]))
-				CRASH("A non number was input into tgui input number by [usr]")
-			var/choice = round(params["entry"])
-			if(choice > max_value)
-				CRASH("A number greater than the max value was input into tgui input number by [usr]")
-			if(choice < min_value)
-				CRASH("A number less than the min value was input into tgui input number by [usr]")
-			set_entry(choice)
-			closed = TRUE
+		if("choose")
+			if(max_value && (length(params["choice"]) > max_value))
+				return FALSE
+			if(min_value && (length(params["choice"]) < min_value))
+				return FALSE
+			set_entry(params["choice"])
 			SStgui.close_uis(src)
 			return TRUE
 		if("cancel")
-			closed = TRUE
+			set_entry(null)
 			SStgui.close_uis(src)
 			return TRUE
 

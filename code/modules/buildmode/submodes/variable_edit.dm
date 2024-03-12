@@ -12,8 +12,8 @@
 /datum/buildmode_mode/varedit/show_help(client/c)
 	to_chat(c, span_notice("***********************************************************"))
 	to_chat(c, span_notice("Right Mouse Button on buildmode button = Select var(type) & value"))
-	to_chat(c, span_notice("Left Mouse Button on turf/obj/mob      = Set var(type) & value"))
-	to_chat(c, span_notice("Right Mouse Button on turf/obj/mob     = Reset var's value"))
+	to_chat(c, span_notice("Left Mouse Button on turf/obj/mob = Set var(type) & value"))
+	to_chat(c, span_notice("Right Mouse Button on turf/obj/mob = Reset var's value"))
 	to_chat(c, span_notice("***********************************************************"))
 
 /datum/buildmode_mode/varedit/Reset()
@@ -35,26 +35,28 @@
 	valueholder = temp_value["value"]
 
 /datum/buildmode_mode/varedit/handle_click(client/c, params, obj/object)
-	var/list/modifiers = params2list(params)
+	var/list/pa = params2list(params)
+	var/left_click = pa.Find("left")
+	var/right_click = pa.Find("right")
 
 	if(isnull(varholder))
 		to_chat(c, span_warning("Choose a variable to modify first."))
 		return
-	if(LAZYACCESS(modifiers, LEFT_CLICK))
+	if(left_click)
 		if(object.vars.Find(varholder))
 			if(object.vv_edit_var(varholder, valueholder) == FALSE)
 				to_chat(c, span_warning("Your edit was rejected by the object."))
 				return
-			log_admin("Build Mode: [key_name(c)] modified [object.name]'s [varholder] to [valueholder]")
+			log_admin("Build Mode: [key_name(c)] modified [object.name] [varholder] to [valueholder]")
 		else
 			to_chat(c, span_warning("[initial(object.name)] does not have a var called '[varholder]'"))
-	if(LAZYACCESS(modifiers, RIGHT_CLICK))
+	if(right_click)
 		if(object.vars.Find(varholder))
 			var/reset_value = initial(object.vars[varholder])
 			if(object.vv_edit_var(varholder, reset_value) == FALSE)
 				to_chat(c, span_warning("Your edit was rejected by the object."))
 				return
-			log_admin("Build Mode: [key_name(c)] modified [object.name]'s [varholder] to [reset_value]")
+			log_admin("Build Mode: [key_name(c)] modified [object.name] [varholder] to [reset_value]")
 		else
 			to_chat(c, span_warning("[initial(object.name)] does not have a var called '[varholder]'"))
 

@@ -127,7 +127,7 @@ export const Orbit = (props, context) => {
 
   return (
     <Window
-      title="Orbit"
+      title="Follow"
       width={350}
       height={700}>
       <Window.Content scrollable>
@@ -161,19 +161,10 @@ export const Orbit = (props, context) => {
                 icon={autoObserve ? "toggle-on" : "toggle-off"}
                 onClick={() => setAutoObserve(!autoObserve)} />
             </Flex.Item>
-            <Flex.Item>
-              <Button
-                inline
-                color="transparent"
-                tooltip="Refresh"
-                tooltipPosition="bottom-start"
-                icon="sync-alt"
-                onClick={() => act("refresh")} />
-            </Flex.Item>
           </Flex>
         </Section>
         {antagonists.length > 0 && (
-          <Section title="Ghost-Visible Antagonists">
+          <Section title="Antags">
             {sortedAntagonists.map(([name, antags]) => (
               <Section key={name} title={name} level={2}>
                 {antags
@@ -192,7 +183,7 @@ export const Orbit = (props, context) => {
           </Section>
         )}
 
-        <Section title={`Alive - (${alive.length})`}>
+        <Section title={`Living - (${alive.length})`}>
           {alive
             .filter(searchFor(searchText))
             .sort(compareNumberedText)
@@ -226,7 +217,7 @@ export const Orbit = (props, context) => {
         />
 
         <BasicSection
-          title="NPCs"
+          title="NPC"
           source={npcs}
           searchText={searchText}
         />

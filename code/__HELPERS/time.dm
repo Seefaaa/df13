@@ -21,7 +21,7 @@
 	if(isnum(force_set))
 		SSticker.gametime_offset = force_set
 		return
-	SSticker.gametime_offset = rand(0, 864000) //hours in day * minutes in hour * seconds in minute * deciseconds in second
+	SSticker.gametime_offset = rand(0, 864000)		//hours in day * minutes in hour * seconds in minute * deciseconds in second
 	if(prob(50))
 		SSticker.gametime_offset = FLOOR(SSticker.gametime_offset, 3600)
 	else
@@ -76,46 +76,30 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 /proc/DisplayTimeText(time_value, round_seconds_to = 0.1)
 	var/second = FLOOR(time_value * 0.1, round_seconds_to)
 	if(!second)
-		return "right now"
+		return "now"
 	if(second < 60)
-		return "[second] second[(second != 1)? "s":""]"
+		return "[second] seconds"
 	var/minute = FLOOR(second / 60, 1)
 	second = FLOOR(MODULUS(second, 60), round_seconds_to)
 	var/secondT
 	if(second)
-		secondT = " and [second] second[(second != 1)? "s":""]"
+		secondT = " and [second] seconds"
 	if(minute < 60)
-		return "[minute] minute[(minute != 1)? "s":""][secondT]"
+		return "[minute] minutes[secondT]"
 	var/hour = FLOOR(minute / 60, 1)
 	minute = MODULUS(minute, 60)
 	var/minuteT
 	if(minute)
-		minuteT = " and [minute] minute[(minute != 1)? "s":""]"
+		minuteT = " and [minute] minutes"
 	if(hour < 24)
-		return "[hour] hour[(hour != 1)? "s":""][minuteT][secondT]"
+		return "[hour] [(hour != 1)? "hours":"hour"][minuteT][secondT]"
 	var/day = FLOOR(hour / 24, 1)
 	hour = MODULUS(hour, 24)
 	var/hourT
 	if(hour)
-		hourT = " and [hour] hour[(hour != 1)? "s":""]"
-	return "[day] day[(day != 1)? "s":""][hourT][minuteT][secondT]"
+		hourT = " and [hour] [(hour != 1)? "hours":"hour"]"
+	return "[day] [(day != 1)? "days":"day"][hourT][minuteT][secondT]"
 
 
 /proc/daysSince(realtimev)
 	return round((world.realtime - realtimev) / (24 HOURS))
-
-/**
- * Converts a time expressed in deciseconds (like world.time) to the 12-hour time format.
- * the format arg is the format passed down to time2text() (e.g. "hh:mm" is hours and minutes but not seconds).
- * the timezone is the time value offset from the local time. It's to be applied outside time2text() to get the AM/PM right.
- */
-/proc/time_to_twelve_hour(time, format = "hh:mm:ss", timezone = TIMEZONE_UTC)
-	time = MODULUS(time + (timezone - GLOB.timezoneOffset) HOURS, 24 HOURS)
-	var/am_pm = "AM"
-	if(time > 12 HOURS)
-		am_pm = "PM"
-		if(time > 13 HOURS)
-			time -= 12 HOURS // e.g. 4:16 PM but not 00:42 PM
-	else if (time < 1 HOURS)
-		time += 12 HOURS // e.g. 12.23 AM
-	return "[time2text(time, format)] [am_pm]"

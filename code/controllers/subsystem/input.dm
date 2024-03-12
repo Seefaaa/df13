@@ -1,5 +1,5 @@
 SUBSYSTEM_DEF(input)
-	name = "Input"
+	name = "Controls"
 	wait = 1 //SS_TICKER means this runs every tick
 	init_order = INIT_ORDER_INPUT
 	flags = SS_TICKER
@@ -22,8 +22,11 @@ SUBSYSTEM_DEF(input)
 	macro_set = list(
 	"Any" = "\"KeyDown \[\[*\]\]\"",
 	"Any+UP" = "\"KeyUp \[\[*\]\]\"",
+	"O" = "ooc",
+	"T" = ".say",
+	"M" = "me",
 	"Back" = "\".winset \\\"input.text=\\\"\\\"\\\"\"",
-	"Tab" = "\".winset \\\"input.focus=true?map.focus=true input.background-color=[COLOR_INPUT_DISABLED]:input.focus=true input.background-color=[COLOR_INPUT_ENABLED]\\\"\"",
+	"Tab" = "\".winset \\\"input.focus=true?map.focus=true:input.focus=true\\\"\"",
 	"Escape" = "Reset-Held-Keys",
 	)
 

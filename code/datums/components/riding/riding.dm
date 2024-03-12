@@ -62,7 +62,6 @@
 	RegisterSignal(parent, COMSIG_MOVABLE_UNBUCKLE, .proc/vehicle_mob_unbuckle)
 	RegisterSignal(parent, COMSIG_MOVABLE_BUCKLE, .proc/vehicle_mob_buckle)
 	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, .proc/vehicle_moved)
-	RegisterSignal(parent, COMSIG_MOVABLE_BUMP, .proc/vehicle_bump)
 	RegisterSignal(parent, COMSIG_BUCKLED_CAN_Z_MOVE, .proc/riding_can_z_move)
 
 /**
@@ -115,6 +114,7 @@
 	var/atom/movable/movable_parent = parent
 	if (isnull(dir))
 		dir = movable_parent.dir
+	movable_parent.set_glide_size(DELAY_TO_GLIDE_SIZE(vehicle_move_delay))
 	for (var/m in movable_parent.buckled_mobs)
 		var/mob/buckled_mob = m
 		ride_check(buckled_mob)
@@ -127,7 +127,7 @@
 /datum/component/riding/proc/vehicle_turned(datum/source, _old_dir, new_dir)
 	SIGNAL_HANDLER
 
-	vehicle_moved(source, null, new_dir)
+	vehicle_moved(source, new_dir)
 
 /**
  * Check to see if we have all of the necessary bodyparts and not-falling-over statuses we need to stay onboard.
@@ -196,10 +196,6 @@
 	if(!keytype)
 		return TRUE
 
-	if(isvehicle(parent))
-		var/obj/vehicle/vehicle_parent = parent
-		return istype(vehicle_parent.inserted_key, keytype)
-
 	return user.is_holding_item_of_type(keytype)
 
 //BUCKLE HOOKS
@@ -221,23 +217,10 @@
 /// Every time the driver tries to move, this is called to see if they can actually drive and move the vehicle (via relaymove)
 /datum/component/riding/proc/driver_move(atom/movable/movable_parent, mob/living/user, direction)
 	SIGNAL_HANDLER
-	SHOULD_CALL_PARENT(TRUE)
-	movable_parent.set_glide_size(DELAY_TO_GLIDE_SIZE(vehicle_move_delay))
-
-/// So we can check all occupants when we bump a door to see if anyone has access
-/datum/component/riding/proc/vehicle_bump(atom/movable/movable_parent, obj/machinery/door/possible_bumped_door)
-	SIGNAL_HANDLER
-	if(!istype(possible_bumped_door))
-		return
-	for(var/occupant in movable_parent.buckled_mobs)
-		INVOKE_ASYNC(possible_bumped_door, /obj/machinery/door/.proc/bumpopen, occupant)
+	return
 
 /datum/component/riding/proc/Unbuckle(atom/movable/M)
 	addtimer(CALLBACK(parent, /atom/movable/.proc/unbuckle_mob, M), 0, TIMER_UNIQUE)
-
-/datum/component/riding/proc/Process_Spacemove(direction)
-	var/atom/movable/AM = parent
-	return override_allow_spacemove || AM.has_gravity()
 
 /// currently replicated from ridable because we need this behavior here too, see if we can deal with that
 /datum/component/riding/proc/unequip_buckle_inhands(mob/living/carbon/user)

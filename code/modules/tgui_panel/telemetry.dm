@@ -109,7 +109,6 @@
 		var/msg = "[key_name(client)] has a banned account in connection history! (Matched: [found["ckey"]], [found["address"]], [found["computer_id"]])"
 		message_admins(msg)
 		log_admin_private(msg)
-		log_suspicious_login(msg, access_log_mirror = FALSE)
 
 	// Only log them all at the end, since it's not as important as reporting an evader
 	for (var/list/one_query as anything in query_data)
@@ -133,7 +132,7 @@
 			"ckey" = ckey,
 			"telemetry_ckey" = one_query["telemetry_ckey"],
 			"address" = one_query["address"],
-			"computer_id" = one_query["computer_id"], 
+			"computer_id" = one_query["computer_id"],
 			"round_id" = GLOB.round_id,
 		))
 		query.Execute()

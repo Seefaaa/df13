@@ -1,7 +1,7 @@
 /obj/item/ammo_casing
 	name = "bullet casing"
 	desc = "A bullet casing."
-	icon = 'icons/obj/guns/ammo.dmi'
+	icon = 'icons/obj/ammo.dmi'
 	icon_state = "s-casing"
 	worn_icon_state = "bullet"
 	flags_1 = CONDUCT_1
@@ -9,7 +9,6 @@
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
 	custom_materials = list(/datum/material/iron = 500)
-	override_notes = TRUE
 	///What sound should play when this ammo is fired
 	var/fire_sound = null
 	///Which kind of guns it can be loaded into
@@ -38,24 +37,21 @@
 	name = "spent bullet casing"
 	loaded_projectile = null
 
-/obj/item/ammo_casing/Initialize(mapload)
+/obj/item/ammo_casing/Initialize()
 	. = ..()
 	if(projectile_type)
 		loaded_projectile = new projectile_type(src)
 	pixel_x = base_pixel_x + rand(-10, 10)
 	pixel_y = base_pixel_y + rand(-10, 10)
 	setDir(pick(GLOB.alldirs))
-	update_appearance()
+	update_icon()
 
 /obj/item/ammo_casing/Destroy()
 	var/turf/T = get_turf(src)
-	if(T && !loaded_projectile && is_station_level(T.z))
+	if(T && !loaded_projectile && is_fortress_level(T.z))
 		SSblackbox.record_feedback("tally", "station_mess_destroyed", 1, name)
 	QDEL_NULL(loaded_projectile)
 	return ..()
-
-/obj/item/ammo_casing/add_weapon_description()
-	AddElement(/datum/element/weapon_description, attached_proc = .proc/add_notes_ammo)
 
 /**
  *
@@ -65,27 +61,17 @@
  */
 /obj/item/ammo_casing/proc/add_notes_ammo()
 	// Try to get a projectile to derive stats from
-	var/obj/projectile/exam_proj = projectile_type
-	if(!ispath(exam_proj) || pellets == 0)
+	var/obj/projectile/exam_proj = GLOB.proj_by_path_key[projectile_type]
+	if(!istype(exam_proj) || pellets == 0)
 		return
 
 	var/list/readout = list()
-	// No dividing by 0
-	if(initial(exam_proj.damage) > 0)
-		readout += "Most monkeys our legal team subjected to these [span_warning(caliber)] rounds succumbed to their wounds after [span_warning("[HITS_TO_CRIT(initial(exam_proj.damage) * pellets)] shot\s")] at point-blank, taking [span_warning("[pellets] shot\s")] per round"
-	if(initial(exam_proj.stamina) > 0)
-		readout += "[!readout.len ? "Most monkeys" : "More fortunate monkeys"] collapsed from exhaustion after [span_warning("[HITS_TO_CRIT(initial(exam_proj.stamina) * pellets)] impact\s")] of these [span_warning("[caliber]")] rounds"
-	if(!readout.len) // Everything else failed, give generic text
-		return "Our legal team has determined the offensive nature of these [span_warning(caliber)] rounds to be esoteric"
 	return readout.Join("\n") // Sending over a single string, rather than the whole list
 
-/obj/item/ammo_casing/update_icon_state()
-	icon_state = "[initial(icon_state)][loaded_projectile ? "-live" : null]"
-	return ..()
-
-/obj/item/ammo_casing/update_desc()
+/obj/item/ammo_casing/update_icon()
+	. = ..()
+	icon_state = "[initial(icon_state)][loaded_projectile ? "-live" : ""]"
 	desc = "[initial(desc)][loaded_projectile ? null : " This one is spent."]"
-	return ..()
 
 /*
  * On accidental consumption, 'spend' the ammo, and add in some gunpowder
@@ -93,9 +79,7 @@
 /obj/item/ammo_casing/on_accidental_consumption(mob/living/carbon/victim, mob/living/carbon/user, obj/item/source_item,  discover_after = TRUE)
 	if(loaded_projectile)
 		loaded_projectile = null
-		update_appearance()
-		victim.reagents?.add_reagent(/datum/reagent/gunpowder, 3)
-		source_item?.reagents?.add_reagent(/datum/reagent/gunpowder, source_item.reagents.total_volume*(2/3))
+		update_icon()
 
 	return ..()
 
@@ -118,7 +102,7 @@
 				else
 					continue
 			if (boolets > 0)
-				box.update_appearance()
+				box.update_icon()
 				to_chat(user, span_notice("You collect [boolets] shell\s. [box] now contains [box.stored_ammo.len] shell\s."))
 			else
 				to_chat(user, span_warning("You fail to collect anything!"))
@@ -132,7 +116,7 @@
 /obj/item/ammo_casing/proc/bounce_away(still_warm = FALSE, bounce_delay = 3)
 	if(!heavy_metal)
 		return
-	update_appearance()
+	update_icon()
 	SpinAnimation(10, 1)
 	var/turf/T = get_turf(src)
 	if(still_warm && T?.bullet_sizzle)

@@ -1,19 +1,13 @@
 /obj/effect/overlay
 	name = "overlay"
 
-/obj/effect/overlay/singularity_act()
-	return
-
-/obj/effect/overlay/singularity_pull()
-	return
-
 /obj/effect/overlay/beam//Not actually a projectile, just an effect.
 	name="beam"
 	icon='icons/effects/beam.dmi'
 	icon_state="b_beam"
 	var/atom/BeamSource
 
-/obj/effect/overlay/beam/Initialize(mapload)
+/obj/effect/overlay/beam/Initialize()
 	. = ..()
 	QDEL_IN(src, 10)
 
@@ -23,7 +17,6 @@
 	icon_state = "palm1"
 	density = TRUE
 	layer = WALL_OBJ_LAYER
-	plane = GAME_PLANE_UPPER
 	anchored = TRUE
 
 /obj/effect/overlay/palmtree_l
@@ -32,7 +25,6 @@
 	icon_state = "palm2"
 	density = TRUE
 	layer = WALL_OBJ_LAYER
-	plane = GAME_PLANE_UPPER
 	anchored = TRUE
 
 /obj/effect/overlay/coconut
@@ -67,11 +59,3 @@
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 	plane = ATMOS_GROUP_PLANE
-
-/// Door overlay for animating closets
-/obj/effect/overlay/closet_door
-	anchored = TRUE
-	plane = FLOAT_PLANE
-	layer = FLOAT_LAYER
-	vis_flags = VIS_INHERIT_ID
-	appearance_flags = KEEP_TOGETHER | LONG_GLIDE | PIXEL_SCALE

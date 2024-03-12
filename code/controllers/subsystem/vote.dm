@@ -1,5 +1,5 @@
 SUBSYSTEM_DEF(vote)
-	name = "Vote"
+	name = "Voting"
 	wait = 10
 
 	flags = SS_KEEP_TIMING|SS_NO_INIT
@@ -58,13 +58,18 @@ SUBSYSTEM_DEF(vote)
 				non_voters -= non_voter_ckey
 		if(non_voters.len > 0)
 			if(mode == "restart")
-				choices["Continue Playing"] += non_voters.len
-				if(choices["Continue Playing"] >= greatest_votes)
-					greatest_votes = choices["Continue Playing"]
+				choices["Continue"] += non_voters.len
+				if(choices["Continue"] >= greatest_votes)
+					greatest_votes = choices["Continue"]
+			else if(mode == "gamemode")
+				if(GLOB.master_mode in choices)
+					choices[GLOB.master_mode] += non_voters.len
+					if(choices[GLOB.master_mode] >= greatest_votes)
+						greatest_votes = choices[GLOB.master_mode]
 			else if(mode == "map")
 				for (var/non_voter_ckey in non_voters)
 					var/client/C = non_voters[non_voter_ckey]
-					var/preferred_map = C.prefs.read_preference(/datum/preference/choiced/preferred_map)
+					var/preferred_map = C.prefs.preferred_map
 					if(isnull(global.config.defaultmap))
 						continue
 					if(!preferred_map)
@@ -85,26 +90,26 @@ SUBSYSTEM_DEF(vote)
 		if(question)
 			text += "<b>[question]</b>"
 		else
-			text += "<b>[capitalize(mode)] Vote</b>"
-		for(var/i in 1 to choices.len)
+			text += "<b>Vote for [mode]</b>"
+		for(var/i=1,i<=choices.len,i++)
 			var/votes = choices[choices[i]]
 			if(!votes)
 				votes = 0
 			text += "\n<b>[choices[i]]:</b> [votes]"
 		if(mode != "custom")
 			if(winners.len > 1)
-				text = "\n<b>Vote Tied Between:</b>"
+				text = "\n<b>Winners:</b>"
 				for(var/option in winners)
 					text += "\n\t[option]"
 			. = pick(winners)
-			text += "\n<b>Vote Result: [.]</b>"
+			text += "\n<b>Result: [.]</b>"
 		else
 			text += "\n<b>Did not vote:</b> [GLOB.clients.len-voted.len]"
 	else
-		text += "<b>Vote Result: Inconclusive - No Votes!</b>"
+		text += "<b>Result: Inconclusive!</b>"
 	log_vote(text)
 	remove_action_buttons()
-	to_chat(world, "\n<span class='infoplain'><font color='purple'>[text]</font></span>")
+	to_chat(world, "\n<span class='purple'>[text]</span>")
 	return .
 
 /datum/controller/subsystem/vote/proc/result()
@@ -115,6 +120,13 @@ SUBSYSTEM_DEF(vote)
 			if("restart")
 				if(. == "Restart Round")
 					restart = TRUE
+			if("gamemode")
+				if(GLOB.master_mode != .)
+					SSticker.save_mode(.)
+					if(SSticker.HasRoundStarted())
+						restart = TRUE
+					else
+						GLOB.master_mode = .
 			if("map")
 				SSmapping.changemap(global.config.maplist[.])
 				SSmapping.map_voted = TRUE
@@ -126,9 +138,9 @@ SUBSYSTEM_DEF(vote)
 				break
 		if(!active_admins)
 			// No delay in case the restart is due to lag
-			SSticker.Reboot("Restart vote successful.", "restart vote", 1)
+			SSticker.Reboot("Restart vote successfull!", "restart vote", 1)
 		else
-			to_chat(world, span_boldannounce("Notice: Restart vote will not restart the server automatically because there are active admins on."))
+			to_chat(world, span_green("Notice: Restart vote will not restart the server automatically because there are active admins on."))
 			message_admins("A restart vote has passed, but there are active admins on with +server, so it has been canceled. If you wish, you may restart the server.")
 
 	return .
@@ -172,10 +184,12 @@ SUBSYSTEM_DEF(vote)
 		reset()
 		switch(vote_type)
 			if("restart")
-				choices.Add("Restart Round","Continue Playing")
+				choices.Add("Restart Round","Continue")
+			if("gamemode")
+				choices.Add(config.votable_modes)
 			if("map")
 				if(!lower_admin && SSmapping.map_voted)
-					to_chat(usr, span_warning("The next map has already been selected."))
+					to_chat(usr, span_warning("Next map is already selected."))
 					return FALSE
 				// Randomizes the list so it isn't always METASTATION
 				var/list/maps = list()
@@ -183,34 +197,30 @@ SUBSYSTEM_DEF(vote)
 					var/datum/map_config/VM = config.maplist[map]
 					if(!VM.votable || (VM.map_name in SSpersistence.blocked_maps))
 						continue
-					if (VM.config_min_users > 0 && GLOB.clients.len < VM.config_min_users)
-						continue
-					if (VM.config_max_users > 0 && GLOB.clients.len > VM.config_max_users)
-						continue
 					maps += VM.map_name
 					shuffle_inplace(maps)
 				for(var/valid_map in maps)
 					choices.Add(valid_map)
 			if("custom")
-				question = tgui_input_text(usr, "What is the vote for?", "Custom Vote")
+				question = stripped_input(usr,"What are we voting for?")
 				if(!question)
 					return FALSE
-				for(var/i in 1 to 10)
-					var/option = tgui_input_text(usr, "Please enter an option or hit cancel to finish", "Options", max_length = MAX_NAME_LEN)
+				for(var/i=1,i<=10,i++)
+					var/option = capitalize(stripped_input(usr,"Please enter an option or hit cancel to finish"))
 					if(!option || mode || !usr.client)
 						break
-					choices.Add(capitalize(option))
+					choices.Add(option)
 			else
 				return FALSE
 		mode = vote_type
 		initiator = initiator_key
 		started_time = world.time
-		var/text = "[capitalize(mode)] vote started by [initiator || "CentCom"]."
+		var/text = "Vote for [mode] started [initiator || "CentCom"]."
 		if(mode == "custom")
 			text += "\n[question]"
 		log_vote(text)
 		var/vp = CONFIG_GET(number/vote_period)
-		to_chat(world, "\n<span class='infoplain'><font color='purple'><b>[text]</b>\nType <b>vote</b> or click <a href='byond://winset?command=vote'>here</a> to place your votes.\nYou have [DisplayTimeText(vp)] to vote.</font></span>")
+		to_chat(world, "\n<font color='purple'><b>[text]</b>\nClick on <b>Vote!</b> or click <a href='byond://winset?command=vote'>here</a>, to place your votes.\n You have [DisplayTimeText(vp)] to vote.</font>")
 		time_remaining = round(vp/10)
 		for(var/c in GLOB.clients)
 			var/client/C = c
@@ -245,6 +255,7 @@ SUBSYSTEM_DEF(vote)
 /datum/controller/subsystem/vote/ui_data(mob/user)
 	var/list/data = list(
 		"allow_vote_map" = CONFIG_GET(flag/allow_vote_map),
+		"allow_vote_mode" = CONFIG_GET(flag/allow_vote_mode),
 		"allow_vote_restart" = CONFIG_GET(flag/allow_vote_restart),
 		"choices" = list(),
 		"lower_admin" = !!user.client?.holder,
@@ -286,12 +297,18 @@ SUBSYSTEM_DEF(vote)
 		if("toggle_restart")
 			if(usr.client.holder && upper_admin)
 				CONFIG_SET(flag/allow_vote_restart, !CONFIG_GET(flag/allow_vote_restart))
+		if("toggle_gamemode")
+			if(usr.client.holder && upper_admin)
+				CONFIG_SET(flag/allow_vote_mode, !CONFIG_GET(flag/allow_vote_mode))
 		if("toggle_map")
 			if(usr.client.holder && upper_admin)
 				CONFIG_SET(flag/allow_vote_map, !CONFIG_GET(flag/allow_vote_map))
 		if("restart")
 			if(CONFIG_GET(flag/allow_vote_restart) || usr.client.holder)
 				initiate_vote("restart",usr.key)
+		if("gamemode")
+			if(CONFIG_GET(flag/allow_vote_mode) || usr.client.holder)
+				initiate_vote("gamemode",usr.key)
 		if("map")
 			if(CONFIG_GET(flag/allow_vote_map) || usr.client.holder)
 				initiate_vote("map",usr.key)
@@ -310,14 +327,14 @@ SUBSYSTEM_DEF(vote)
 			V.Remove(V.owner)
 	generated_actions = list()
 
-/datum/controller/subsystem/vote/ui_close(mob/user)
+/datum/controller/subsystem/vote/ui_close(mob/user, datum/tgui/tgui)
 	voting -= user.client?.ckey
 
 /datum/action/vote
 	name = "Vote!"
 	button_icon_state = "vote"
 
-/datum/action/vote/Trigger(trigger_flags)
+/datum/action/vote/Trigger()
 	if(owner)
 		owner.vote()
 		remove_from_client()

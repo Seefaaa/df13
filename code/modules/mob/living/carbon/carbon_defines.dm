@@ -1,16 +1,15 @@
 /mob/living/carbon
 	blood_volume = BLOOD_VOLUME_NORMAL
 	gender = MALE
-	pressure_resistance = 15
-	hud_possible = list(HEALTH_HUD,STATUS_HUD,ANTAG_HUD,GLAND_HUD)
-	has_limbs = TRUE
+	possible_a_intents = list(INTENT_HELP, INTENT_HARM)
+	hud_possible = list(HEALTH_HUD,STATUS_HUD,ANTAG_HUD)
+	has_limbs = 1
 	held_items = list(null, null)
 	num_legs = 0 //Populated on init through list/bodyparts
 	usable_legs = 0 //Populated on init through list/bodyparts
 	num_hands = 0 //Populated on init through list/bodyparts
 	usable_hands = 0 //Populated on init through list/bodyparts
 	mobility_flags = MOBILITY_FLAGS_CARBON_DEFAULT
-	blocks_emissive = NONE
 	///List of [/obj/item/organ] in the mob. They don't go in the contents for some reason I don't want to know.
 	var/list/internal_organs = list()
 	///Same as [above][/mob/living/carbon/var/internal_organs], but stores "slot ID" - "organ" pairs for easy access.
@@ -31,7 +30,6 @@
 	var/obj/item/back = null
 	var/obj/item/clothing/mask/wear_mask = null
 	var/obj/item/clothing/neck/wear_neck = null
-	var/obj/item/tank/internal = null
 	var/obj/item/clothing/head = null
 
 	///only used by humans
@@ -52,6 +50,7 @@
 	var/failed_last_breath = FALSE
 
 	var/co2overloadtime = null
+	var/temperature_resistance = 273.15+75
 	var/obj/item/food/meat/slab/type_of_meat = /obj/item/food/meat/slab
 
 	var/gib_type = /obj/effect/decal/cleanable/blood/gibs
@@ -97,16 +96,11 @@
 
 	/// All of the wounds a carbon has afflicted throughout their limbs
 	var/list/all_wounds
-	/// All of the scars a carbon has afflicted throughout their limbs
-	var/list/all_scars
 
 	/// Simple modifier for whether this mob can handle greater or lesser skillchip complexity. See /datum/mutation/human/biotechcompat/ for example.
 	var/skillchip_complexity_modifier = 0
 
 	/// Can other carbons be shoved into this one to make it fall?
 	var/can_be_shoved_into = FALSE
-
-	/// Only load in visual organs
-	var/visual_only_organs = FALSE
 
 	COOLDOWN_DECLARE(bleeding_message_cd)

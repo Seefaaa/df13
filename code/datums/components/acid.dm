@@ -20,6 +20,8 @@
 	var/stage = 0
 	/// The proc used to handle the parent [/atom] when processing. TODO: Unify damage and resistance flags so that this doesn't need to exist!
 	var/datum/callback/process_effect
+	/// The icon state intended to be used for the acid component. Used to override the default acid overlay icon state.
+	var/custom_acid_overlay = null
 
 /datum/component/acid/Initialize(_acid_power, _acid_volume, _max_volume=null)
 	if((_acid_power) <= 0 || (_acid_volume <= 0))
@@ -49,7 +51,7 @@
 
 	var/atom/parent_atom = parent
 	RegisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS, .proc/on_update_overlays)
-	parent_atom.update_appearance()
+	parent_atom.update_icon()
 	sizzle = new(parent, TRUE)
 	START_PROCESSING(SSacid, src)
 
@@ -61,7 +63,7 @@
 	UnregisterSignal(parent, COMSIG_ATOM_UPDATE_OVERLAYS)
 	if(parent && !QDELING(parent))
 		var/atom/parent_atom = parent
-		parent_atom.update_appearance()
+		parent_atom.update_icon()
 	return ..()
 
 /datum/component/acid/RegisterWithParent()
@@ -148,13 +150,13 @@
 /datum/component/acid/proc/on_update_overlays(atom/parent_atom, list/overlays)
 	SIGNAL_HANDLER
 
-	overlays += mutable_appearance('icons/effects/acid.dmi', parent_atom.custom_acid_overlay || ACID_OVERLAY_DEFAULT)
+	overlays += mutable_appearance('icons/effects/acid.dmi', custom_acid_overlay || ACID_OVERLAY_DEFAULT)
 
 /// Alerts any examiners to the acid on the parent atom.
 /datum/component/acid/proc/on_examine(atom/A, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 
-	examine_list += span_danger("[A.p_theyre()] covered in corrosive liquid!")
+	examine_list += span_danger("\n[A] is covered in acid!")
 
 /// Makes it possible to clean acid off of objects.
 /datum/component/acid/proc/on_clean(atom/A, clean_types)
@@ -194,7 +196,7 @@
 	if(!affecting?.receive_damage(0, 5))
 		return NONE
 
-	to_chat(user, span_warning("The acid on \the [parent_atom] burns your hand!"))
+	to_chat(user, span_warning("You touch [parent_atom] and burn your hand!"))
 	playsound(parent_atom, 'sound/weapons/sear.ogg', 50, TRUE)
 	user.update_damage_overlays()
 	return COMPONENT_CANCEL_ATTACK_CHAIN
@@ -217,5 +219,5 @@
 	var/acid_used = min(acid_volume * 0.05, 20)
 	if(crosser.acid_act(acid_power, acid_used, FEET))
 		playsound(crosser, 'sound/weapons/sear.ogg', 50, TRUE)
-		to_chat(crosser, span_userdanger("The acid on the [parent] burns you!"))
+		to_chat(crosser, span_userdanger("You step on [parent] and burn your foot!"))
 		set_volume(max(acid_volume - acid_used, 10))

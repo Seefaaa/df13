@@ -28,7 +28,7 @@
 /mob/proc/get_item_for_held_index(i)
 	if(i > 0 && i <= held_items.len)
 		return held_items[i]
-	return null
+	return FALSE
 
 
 //Odd = left. Even = right
@@ -76,7 +76,9 @@
 	var/list/L
 	for(var/i in 1 to held_items.len)
 		if(!held_items[i])
-			LAZYADD(L, i)
+			if(!L)
+				L = list()
+			L += i
 	return L
 
 /mob/proc/get_held_index_of_item(obj/item/I)
@@ -183,11 +185,10 @@
 	return put_in_hand(I, get_empty_held_index_for_side(RIGHT_HANDS))
 
 /mob/proc/put_in_hand_check(obj/item/I)
-	return FALSE //nonliving mobs don't have hands
+	return FALSE					//nonliving mobs don't have hands
 
 /mob/living/put_in_hand_check(obj/item/I)
-	if(istype(I) && ((mobility_flags & MOBILITY_PICKUP) || (I.item_flags & ABSTRACT)) \
-		&& !(SEND_SIGNAL(src, COMSIG_LIVING_TRY_PUT_IN_HAND, I) & COMPONENT_LIVING_CANT_PUT_IN_HAND))
+	if(istype(I) && ((mobility_flags & MOBILITY_PICKUP) || (I.item_flags & ABSTRACT)))
 		return TRUE
 	return FALSE
 
@@ -219,13 +220,13 @@
 		if (merge_stacks)
 			if (istype(active_stack) && active_stack.can_merge(item_stack))
 				if (item_stack.merge(active_stack))
-					to_chat(usr, span_notice("Your [active_stack.name] stack now contains [active_stack.get_amount()] [active_stack.singular_name]\s."))
+					to_chat(usr, span_notice("[capitalize(active_stack.name)] now contains [active_stack.get_amount()] [active_stack.singular_name]."))
 					return TRUE
 			else
 				var/obj/item/stack/inactive_stack = get_inactive_held_item()
 				if (istype(inactive_stack) && inactive_stack.can_merge(item_stack))
 					if (item_stack.merge(inactive_stack))
-						to_chat(usr, span_notice("Your [inactive_stack.name] stack now contains [inactive_stack.get_amount()] [inactive_stack.singular_name]\s."))
+						to_chat(usr, span_notice("[capitalize(active_stack.name)] now contains [inactive_stack.get_amount()] [inactive_stack.singular_name]."))
 						return TRUE
 
 	if(put_in_active_hand(I, forced))
@@ -233,7 +234,7 @@
 
 	var/hand = get_empty_held_index_for_side(LEFT_HANDS)
 	if(!hand)
-		hand = get_empty_held_index_for_side(RIGHT_HANDS)
+		hand =  get_empty_held_index_for_side(RIGHT_HANDS)
 	if(hand)
 		if(put_in_hand(I, hand, forced))
 			return TRUE
@@ -307,14 +308,11 @@
 	PROTECTED_PROC(TRUE)
 	if(!I) //If there's nothing to drop, the drop is automatically succesfull. If(unEquip) should generally be used to check for TRAIT_NODROP.
 		return TRUE
-
 	if(HAS_TRAIT(I, TRAIT_NODROP) && !force)
 		return FALSE
 
-	if((SEND_SIGNAL(I, COMSIG_ITEM_PRE_UNEQUIP, force, newloc, no_move, invdrop, silent) & COMPONENT_ITEM_BLOCK_UNEQUIP) && !force)
-		return FALSE
-
 	var/hand_index = get_held_index_of_item(I)
+
 	if(hand_index)
 		held_items[hand_index] = null
 		update_inv_hands()
@@ -324,13 +322,12 @@
 		I.layer = initial(I.layer)
 		I.plane = initial(I.plane)
 		I.appearance_flags &= ~NO_CLIENT_COLOR
-		if(!no_move && !(I.item_flags & DROPDEL)) //item may be moved/qdel'd immedietely, don't bother moving it
+		if(!no_move && !(I.item_flags & DROPDEL))	//item may be moved/qdel'd immedietely, don't bother moving it
 			if (isnull(newloc))
 				I.moveToNullspace()
 			else
 				I.forceMove(newloc)
 		I.dropped(src, silent)
-	SEND_SIGNAL(I, COMSIG_ITEM_POST_UNEQUIP, force, newloc, no_move, invdrop, silent)
 	return TRUE
 
 /**
@@ -400,7 +397,11 @@
 	return obscured
 
 
-/obj/item/proc/equip_to_best_slot(mob/M)
+/obj/item/proc/equip_to_best_slot(mob/M, check_hand = TRUE)
+	if(check_hand && src != M.get_active_held_item())
+		to_chat(M, span_warning("Your hand is empty!"))
+		return FALSE
+
 	if(M.equip_to_appropriate_slot(src))
 		M.update_inv_hands()
 		return TRUE
@@ -411,7 +412,7 @@
 	if(M.active_storage && M.active_storage.parent && SEND_SIGNAL(M.active_storage.parent, COMSIG_TRY_STORAGE_INSERT, src,M))
 		return TRUE
 
-	var/list/obj/item/possible = list(M.get_inactive_held_item(), M.get_item_by_slot(ITEM_SLOT_BELT), M.get_item_by_slot(ITEM_SLOT_DEX_STORAGE), M.get_item_by_slot(ITEM_SLOT_BACK))
+	var/list/obj/item/possible = list(M.get_inactive_held_item(), M.get_item_by_slot(ITEM_SLOT_BELT), M.get_item_by_slot(ITEM_SLOT_DEX_STORAGE), M.get_item_by_slot(ITEM_SLOT_BACK), M.get_item_by_slot(ITEM_SLOT_SUITSTORE))
 	for(var/i in possible)
 		if(!i)
 			continue
@@ -419,7 +420,7 @@
 		if(SEND_SIGNAL(I, COMSIG_TRY_STORAGE_INSERT, src, M))
 			return TRUE
 
-	to_chat(M, span_warning("You are unable to equip that!"))
+	to_chat(M, span_warning("Cannot equip!"))
 	return FALSE
 
 
@@ -428,15 +429,8 @@
 	set hidden = TRUE
 
 	var/obj/item/I = get_active_held_item()
-	if(!I)
-		to_chat(src, span_warning("You are not holding anything to equip!"))
-		return
-	if (temporarilyRemoveItemFromInventory(I) && !QDELETED(I))
-		if(I.equip_to_best_slot(src))
-			return
-		if(put_in_active_hand(I))
-			return
-		I.forceMove(drop_location())
+	if (I)
+		I.equip_to_best_slot(src)
 
 //used in code for items usable by both carbon and drones, this gives the proper back slot for each mob.(defibrillator, backpack watertank, ...)
 /mob/proc/getBackSlot()

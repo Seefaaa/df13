@@ -54,6 +54,11 @@
 		qdel(src, TRUE, TRUE)
 		return
 
+	if(!parent)
+		stack_trace("Component [type] initialized without parent! Args: [json_encode(arguments)]")
+		qdel(src, TRUE, TRUE)
+		return
+
 	_JoinParent(parent)
 
 /**
@@ -86,6 +91,10 @@
  */
 /datum/component/proc/_JoinParent()
 	var/datum/P = parent
+	if(!parent)
+		stack_trace("_JoinParent() was called on [type] without valid parent!")
+		qdel(src, TRUE, TRUE)
+		return
 	//lazy init the parent's dc list
 	var/list/dc = P.datum_components
 	if(!dc)
@@ -190,7 +199,8 @@
 	var/list/sig_types = islist(sig_type_or_types) ? sig_type_or_types : list(sig_type_or_types)
 	for(var/sig_type in sig_types)
 		if(!override && procs[target][sig_type])
-			stack_trace("[sig_type] overridden. Use override = TRUE to suppress this warning")
+			stack_trace("SIGNAL WARNING: [sig_type] overridden. Source: [src], target: [target], old proctype: [procs[target][sig_type]], new proctype: [proctype].\
+				Use override = TRUE to suppress this warning")
 
 		procs[target][sig_type] = proctype
 
@@ -216,7 +226,7 @@
  * * sig_typeor_types Signal string key or list of signal keys to stop listening to specifically
  */
 /datum/proc/UnregisterSignal(datum/target, sig_type_or_types)
-	var/list/lookup = target.comp_lookup
+	var/list/lookup = target?.comp_lookup
 	if(!signal_procs || !signal_procs[target] || !lookup)
 		return
 	if(!islist(sig_type_or_types))
@@ -377,10 +387,12 @@
  * * c_type The component type path
  */
 /datum/proc/GetComponents(c_type)
-	var/list/components = datum_components?[c_type]
-	if(!components)
-		return list()
-	return islist(components) ? components : list(components)
+	var/list/dc = datum_components
+	if(!dc)
+		return null
+	. = dc[c_type]
+	if(!length(.))
+		return list(.)
 
 /**
  * Creates an instance of `new_type` in the datum and attaches to it as parent

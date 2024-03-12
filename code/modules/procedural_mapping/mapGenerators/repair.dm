@@ -1,5 +1,5 @@
 /datum/map_generator_module/bottom_layer/repair_floor_plasteel
-	spawnableTurfs = list(/turf/open/floor/iron = 100)
+	spawnableTurfs = list(/turf/open/floor/stone = 100)
 	var/ignore_wall = FALSE
 	allowAtomsOnSpace = TRUE
 
@@ -30,8 +30,6 @@
 		bounds = parsed?.bounds
 		z_offset += bounds[MAP_MAXZ] - bounds[MAP_MINZ] + 1
 
-	var/list/obj/machinery/atmospherics/atmos_machines = list()
-	var/list/obj/structure/cable/cables = list()
 	var/list/atom/atoms = list()
 
 	repopulate_sorted_areas()
@@ -43,15 +41,8 @@
 		atoms += B
 		for(var/A in B)
 			atoms += A
-			if(istype(A,/obj/structure/cable))
-				cables += A
-				continue
-			if(istype(A,/obj/machinery/atmospherics))
-				atmos_machines += A
 
 	SSatoms.InitializeAtoms(atoms)
-	SSmachines.setup_template_powernets(cables)
-	SSair.setup_template_machinery(atmos_machines)
 	GLOB.reloading_map = FALSE
 
 /datum/map_generator/repair
@@ -91,7 +82,7 @@
 
 /datum/map_generator/repair/reload_station_map/defineRegion(turf/start, turf/end)
 	. = ..()
-	if(!is_station_level(start.z) || !is_station_level(end.z))
+	if(!is_fortress_level(start.z) || !is_fortress_level(end.z))
 		return
 	x_low = min(start.x, end.x)
 	y_low = min(start.y, end.y)
@@ -105,7 +96,7 @@ GLOBAL_VAR_INIT(reloading_map, FALSE)
 	if(!loader)
 		loader = new
 	if(cleanload)
-		..() //Trigger mass deletion.
+		..()			//Trigger mass deletion.
 	modules |= loader
 	syncModules()
 	loader.generate()

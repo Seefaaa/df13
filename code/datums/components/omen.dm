@@ -60,16 +60,6 @@
 
 	if(!prob(15))
 		return
-	var/our_guy_pos = get_turf(living_guy)
-	for(var/turf_content in our_guy_pos)
-		if(istype(turf_content, /obj/machinery/door/airlock))
-			to_chat(living_guy, span_warning("A malevolent force launches your body to the floor..."))
-			var/obj/machinery/door/airlock/darth_airlock = turf_content
-			living_guy.apply_status_effect(/datum/status_effect/incapacitating/paralyzed, 10)
-			INVOKE_ASYNC(darth_airlock, /obj/machinery/door/airlock.proc/close, TRUE)
-			if(!permanent)
-				qdel(src)
-			return
 
 	for(var/turf/the_turf as anything in get_adjacent_open_turfs(living_guy))
 		if(the_turf.zPassOut(living_guy, DOWN) && living_guy.can_z_move(DOWN, the_turf, z_move_flags = ZMOVE_FALL_FLAGS))
@@ -78,14 +68,6 @@
 			if(!permanent)
 				qdel(src)
 			return
-
-		for(var/obj/machinery/vending/darth_vendor in the_turf)
-			if(darth_vendor.tiltable)
-				to_chat(living_guy, span_warning("A malevolent force tugs at the [darth_vendor]..."))
-				INVOKE_ASYNC(darth_vendor, /obj/machinery/vending.proc/tilt, living_guy)
-				if(!permanent)
-					qdel(src)
-				return
 
 /// If we get knocked down, see if we have a really bad slip and bash our head hard
 /datum/component/omen/proc/check_slip(mob/living/our_guy, amount)

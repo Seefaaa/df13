@@ -8,15 +8,14 @@
 	///Assoc list of object being climbed on - climbers.  This allows us to check who needs to be shoved off a climbable object when its clicked on.
 	var/list/current_climbers
 
-/datum/element/climbable/Attach(datum/target, climb_time, climb_stun)
+/datum/element/climbable/Attach(datum/target, climb_time = (2 SECONDS), climb_stun = (2 SECONDS))
 	. = ..()
 
 	if(!isatom(target) || isarea(target))
 		return ELEMENT_INCOMPATIBLE
-	if(climb_time)
-		src.climb_time = climb_time
-	if(climb_stun)
-		src.climb_stun = climb_stun
+
+	src.climb_time = climb_time
+	src.climb_stun = climb_stun
 
 	RegisterSignal(target, COMSIG_ATOM_ATTACK_HAND, .proc/attack_hand)
 	RegisterSignal(target, COMSIG_PARENT_EXAMINE, .proc/on_examine)
@@ -31,7 +30,7 @@
 
 /datum/element/climbable/proc/on_examine(atom/source, mob/user, list/examine_texts)
 	SIGNAL_HANDLER
-	examine_texts += span_notice("[source] looks climbable.")
+	examine_texts += span_notice("<hr>Looks like you can climb on \the [source].")
 
 /datum/element/climbable/proc/can_climb(atom/source, mob/user)
 	var/dir_step = get_dir(user, source.loc)
@@ -63,8 +62,6 @@
 	var/adjusted_climb_stun = climb_stun
 	if(HAS_TRAIT(user, TRAIT_HANDS_BLOCKED)) //climbing takes twice as long without help from the hands.
 		adjusted_climb_time *= 2
-	if(isalien(user))
-		adjusted_climb_time *= 0.25 //aliens are terrifyingly fast
 	if(HAS_TRAIT(user, TRAIT_FREERUNNING)) //do you have any idea how fast I am???
 		adjusted_climb_time *= 0.8
 		adjusted_climb_stun *= 0.8

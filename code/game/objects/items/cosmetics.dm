@@ -7,8 +7,6 @@
 	w_class = WEIGHT_CLASS_TINY
 	var/colour = "red"
 	var/open = FALSE
-	/// A trait that's applied while someone has this lipstick applied, and is removed when the lipstick is removed
-	var/lipstick_trait
 
 /obj/item/lipstick/purple
 	name = "purple lipstick"
@@ -23,16 +21,11 @@
 	name = "black lipstick"
 	colour = "black"
 
-/obj/item/lipstick/black/death
-	name = "\improper Kiss of Death"
-	desc = "An incredibly potent tube of lipstick made from the venom of the dreaded Yellow Spotted Space Lizard, as deadly as it is chic. Try not to smear it!"
-	lipstick_trait = TRAIT_KISS_OF_DEATH
-
 /obj/item/lipstick/random
 	name = "lipstick"
 	icon_state = "random_lipstick"
 
-/obj/item/lipstick/random/Initialize(mapload)
+/obj/item/lipstick/random/Initialize()
 	. = ..()
 	icon_state = "lipstick"
 	colour = pick("red","purple","lime","black","green","blue","white")
@@ -40,7 +33,7 @@
 
 /obj/item/lipstick/attack_self(mob/user)
 	cut_overlays()
-	to_chat(user, span_notice("You twist \the [src] [open ? "closed" : "open"]."))
+	to_chat(user, span_notice("You twist <b>[src.name]</b> [open ? "closed" : "open"]."))
 	open = !open
 	if(open)
 		var/mutable_appearance/colored_overlay = mutable_appearance(icon, "lipstick_uncap_color")
@@ -51,55 +44,60 @@
 		icon_state = "lipstick"
 
 /obj/item/lipstick/attack(mob/M, mob/user)
-	if(!open || !ismob(M))
+	if(!open)
 		return
 
-	if(!ishuman(M))
+	if(!ismob(M))
+		return
+
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		if(H.is_mouth_covered())
+			to_chat(user, span_warning("Remove [ H == user ? "your" : "[H.p_their()]" ] mask!"))
+			return
+		if(H.lip_style)	//if they already have lipstick on
+			to_chat(user, span_warning("You need to wipe off the old lipstick first!"))
+			return
+		if(H == user)
+			user.visible_message(span_notice("[user] does [user.p_their()] lips with <b>[src.name]</b>.") , \
+				span_notice("You take a moment to apply <b>[src.name]</b>. Perfect!"))
+			H.lip_style = "lipstick"
+			H.lip_color = colour
+			H.update_body()
+		else
+			user.visible_message(span_warning("[user] begins to do [H] lips with <b>[src.name]</b>.") , \
+				span_notice("You begin to apply <b>[src.name]</b> on [H] lips..."))
+			if(do_after(user, 20, target = H))
+				user.visible_message(span_notice("[user] does [H] lips with <b>[src.name]</b>.") , \
+					span_notice("You apply <b>[src.name]</b> on [H] lips."))
+				H.lip_style = "lipstick"
+				H.lip_color = colour
+				H.update_body()
+	else
 		to_chat(user, span_warning("Where are the lips on that?"))
-		return
-
-	var/mob/living/carbon/human/target = M
-	if(target.is_mouth_covered())
-		to_chat(user, span_warning("Remove [ target == user ? "your" : "[target.p_their()]" ] mask!"))
-		return
-	if(target.lip_style) //if they already have lipstick on
-		to_chat(user, span_warning("You need to wipe off the old lipstick first!"))
-		return
-
-	if(target == user)
-		user.visible_message(span_notice("[user] does [user.p_their()] lips with \the [src]."), \
-			span_notice("You take a moment to apply \the [src]. Perfect!"))
-		target.update_lips("lipstick", colour, lipstick_trait)
-		return
-
-	user.visible_message(span_warning("[user] begins to do [target]'s lips with \the [src]."), \
-		span_notice("You begin to apply \the [src] on [target]'s lips..."))
-	if(!do_after(user, 2 SECONDS, target = target))
-		return
-	user.visible_message(span_notice("[user] does [target]'s lips with \the [src]."), \
-		span_notice("You apply \the [src] on [target]'s lips."))
-	target.update_lips("lipstick", colour, lipstick_trait)
-
 
 //you can wipe off lipstick with paper!
 /obj/item/paper/attack(mob/M, mob/user)
-	if(user.zone_selected != BODY_ZONE_PRECISE_MOUTH || !ishuman(M))
-		return ..()
+	if(user.zone_selected == BODY_ZONE_PRECISE_MOUTH)
+		if(!ismob(M))
+			return
 
-	var/mob/living/carbon/human/target = M
-	if(target == user)
-		to_chat(user, span_notice("You wipe off the lipstick with [src]."))
-		target.update_lips(null)
-		return
-
-	user.visible_message(span_warning("[user] begins to wipe [target]'s lipstick off with \the [src]."), \
-		span_notice("You begin to wipe off [target]'s lipstick..."))
-	if(!do_after(user, 10, target = target))
-		return
-	user.visible_message(span_notice("[user] wipes [target]'s lipstick off with \the [src]."), \
-		span_notice("You wipe off [target]'s lipstick."))
-	target.update_lips(null)
-
+		if(ishuman(M))
+			var/mob/living/carbon/human/H = M
+			if(H == user)
+				to_chat(user, span_notice("You wipe off the lipstick with [src]."))
+				H.lip_style = null
+				H.update_body()
+			else
+				user.visible_message(span_warning("[user] begins to wipe [H] lipstick off with <b>[src.name]</b>.") , \
+					span_notice("You begin to wipe off [H] lipstick..."))
+				if(do_after(user, 10, target = H))
+					user.visible_message(span_notice("[user] wipes [H] lipstick off with <b>[src.name]</b>.") , \
+						span_notice("You wipe off [H] lipstick."))
+					H.lip_style = null
+					H.update_body()
+	else
+		..()
 
 /obj/item/razor
 	name = "electric razor"
@@ -119,13 +117,13 @@
 	if(location == BODY_ZONE_PRECISE_MOUTH)
 		H.facial_hairstyle = "Shaved"
 	else
-		H.hairstyle = "Skinhead"
+		H.hairstyle = "Bald"
 
 	H.update_hair()
 	playsound(loc, 'sound/items/welder2.ogg', 20, TRUE)
 
 
-/obj/item/razor/attack(mob/M, mob/living/user)
+/obj/item/razor/attack(mob/M, mob/user)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/location = user.zone_selected
@@ -133,22 +131,20 @@
 			to_chat(user, span_warning("[H] doesn't have a head!"))
 			return
 		if(location == BODY_ZONE_PRECISE_MOUTH)
-			if(!user.combat_mode)
+			if(user.a_intent == INTENT_HELP)
 				if(H.gender == MALE)
 					if (H == user)
 						to_chat(user, span_warning("You need a mirror to properly style your own facial hair!"))
 						return
 					if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
 						return
-					var/new_style = tgui_input_list(user, "Select a facial hairstyle", "Grooming", GLOB.facial_hairstyles_list)
-					if(isnull(new_style))
-						return
+					var/new_style = input(user, "Select a facial hairstyle", "Grooming")  as null|anything in GLOB.facial_hairstyles_list
 					if(!get_location_accessible(H, location))
 						to_chat(user, span_warning("The mask is in the way!"))
 						return
-					user.visible_message(span_notice("[user] tries to change [H]'s facial hairstyle using [src]."), span_notice("You try to change [H]'s facial hairstyle using [src]."))
+					user.visible_message(span_notice("[user] tries to change [H] facial hairstyle using [src].") , span_notice("You try to change [H] facial hairstyle using [src]."))
 					if(new_style && do_after(user, 60, target = H))
-						user.visible_message(span_notice("[user] successfully changes [H]'s facial hairstyle using [src]."), span_notice("You successfully change [H]'s facial hairstyle using [src]."))
+						user.visible_message(span_notice("[user] successfully changes [H] facial hairstyle using [src].") , span_notice("You successfully change [H] facial hairstyle using [src]."))
 						H.facial_hairstyle = new_style
 						H.update_hair()
 						return
@@ -167,39 +163,37 @@
 					return
 
 				if(H == user) //shaving yourself
-					user.visible_message(span_notice("[user] starts to shave [user.p_their()] facial hair with [src]."), \
+					user.visible_message(span_notice("[user] starts to shave [user.p_their()] facial hair with [src].") , \
 						span_notice("You take a moment to shave your facial hair with [src]..."))
 					if(do_after(user, 50, target = H))
-						user.visible_message(span_notice("[user] shaves [user.p_their()] facial hair clean with [src]."), \
+						user.visible_message(span_notice("[user] shaves [user.p_their()] facial hair clean with [src].") , \
 							span_notice("You finish shaving with [src]. Fast and clean!"))
 						shave(H, location)
 				else
-					user.visible_message(span_warning("[user] tries to shave [H]'s facial hair with [src]."), \
-						span_notice("You start shaving [H]'s facial hair..."))
+					user.visible_message(span_warning("[user] tries to shave [H] facial hair with [src].") , \
+						span_notice("You start shaving [H] facial hair..."))
 					if(do_after(user, 50, target = H))
-						user.visible_message(span_warning("[user] shaves off [H]'s facial hair with [src]."), \
-							span_notice("You shave [H]'s facial hair clean off."))
+						user.visible_message(span_warning("[user] shaves off [H] facial hair with [src].") , \
+							span_notice("You shave [H] facial hair clean off."))
 						shave(H, location)
 
 		else if(location == BODY_ZONE_HEAD)
-			if(!user.combat_mode)
+			if(user.a_intent == INTENT_HELP)
 				if (H == user)
 					to_chat(user, span_warning("You need a mirror to properly style your own hair!"))
 					return
 				if(!user.canUseTopic(src, BE_CLOSE, FALSE, NO_TK))
 					return
-				var/new_style = tgui_input_list(user, "Select a hairstyle", "Grooming", GLOB.hairstyles_list)
-				if(isnull(new_style))
-					return
+				var/new_style = input(user, "Select a hairstyle", "Grooming")  as null|anything in GLOB.hairstyles_list
 				if(!get_location_accessible(H, location))
 					to_chat(user, span_warning("The headgear is in the way!"))
 					return
 				if(HAS_TRAIT(H, TRAIT_BALD))
 					to_chat(H, span_warning("[H] is just way too bald. Like, really really bald."))
 					return
-				user.visible_message(span_notice("[user] tries to change [H]'s hairstyle using [src]."), span_notice("You try to change [H]'s hairstyle using [src]."))
+				user.visible_message(span_notice("[user] tries to change [H] hairstyle using [src].") , span_notice("You try to change [H] hairstyle using [src]."))
 				if(new_style && do_after(user, 60, target = H))
-					user.visible_message(span_notice("[user] successfully changes [H]'s hairstyle using [src]."), span_notice("You successfully change [H]'s hairstyle using [src]."))
+					user.visible_message(span_notice("[user] successfully changes [H] hairstyle using [src].") , span_notice("You successfully change [H] hairstyle using [src]."))
 					H.hairstyle = new_style
 					H.update_hair()
 					return
@@ -216,20 +210,20 @@
 					return
 
 				if(H == user) //shaving yourself
-					user.visible_message(span_notice("[user] starts to shave [user.p_their()] head with [src]."), \
+					user.visible_message(span_notice("[user] starts to shave [user.p_their()] head with [src].") , \
 						span_notice("You start to shave your head with [src]..."))
 					if(do_after(user, 5, target = H))
-						user.visible_message(span_notice("[user] shaves [user.p_their()] head with [src]."), \
+						user.visible_message(span_notice("[user] shaves [user.p_their()] head with [src].") , \
 							span_notice("You finish shaving with [src]."))
 						shave(H, location)
 				else
 					var/turf/H_loc = H.loc
-					user.visible_message(span_warning("[user] tries to shave [H]'s head with [src]!"), \
-						span_notice("You start shaving [H]'s head..."))
+					user.visible_message(span_warning("[user] tries to shave [H] head with [src]!") , \
+						span_notice("You start shaving [H] head..."))
 					if(do_after(user, 50, target = H))
 						if(H_loc == H.loc)
-							user.visible_message(span_warning("[user] shaves [H]'s head bald with [src]!"), \
-								span_notice("You shave [H]'s head bald."))
+							user.visible_message(span_warning("[user] shaves [H] head bald with [src]!") , \
+								span_notice("You shave [H] head bald."))
 							shave(H, location)
 		else
 			..()

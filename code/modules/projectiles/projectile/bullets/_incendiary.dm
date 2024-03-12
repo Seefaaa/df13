@@ -9,13 +9,6 @@
 		M.adjust_fire_stacks(fire_stacks)
 		M.IgniteMob()
 
-/obj/projectile/bullet/incendiary/Move()
-	. = ..()
-	var/turf/location = get_turf(src)
-	if(location)
-		new /obj/effect/hotspot(location)
-		location.hotspot_expose(700, 50, 1)
-
 /// Used in [the backblast element][/datum/element/backblast]
 /obj/projectile/bullet/incendiary/backblast
 	damage = 15
@@ -25,13 +18,12 @@
 	sharpness = NONE
 	shrapnel_type = null
 	embedding = null
-	impact_effect_type = null
 	ricochet_chance = 10000
 	ricochets_max = 4
 	ricochet_incidence_leeway = 0
 	suppressed = SUPPRESSED_VERY
 	damage_type = BURN
-	flag = BOMB
+	flag = BLUNT
 	speed = 1.2
 	wound_bonus = 30
 	bare_wound_bonus = 30
@@ -44,14 +36,7 @@
 	var/list/launched_items
 
 /// we only try to knock back the first 6 items per tile
-#define BACKBLAST_MAX_ITEM_KNOCKBACK 6
-
-/obj/projectile/bullet/incendiary/backblast/on_hit(atom/target, blocked)
-	. = ..()
-	var/turf/location = get_turf(target)
-	if(isopenturf(location))
-		new /obj/effect/hotspot(location)
-		location.hotspot_expose(700, 50, 1)
+#define BACKBLAST_MAX_ITEM_KNOCKBACK	6
 
 /obj/projectile/bullet/incendiary/backblast/Move()
 	. = ..()
@@ -59,6 +44,10 @@
 		return
 	knockback_range--
 	var/turf/current_turf = get_turf(src)
+
+	if(!current_turf)
+		return
+
 	var/turf/throw_at_turf = get_turf_in_angle(Angle, current_turf, 7)
 	var/thrown_items = 0
 

@@ -31,8 +31,6 @@
 	var/closing = FALSE
 	/// The status/visibility of the UI.
 	var/status = UI_INTERACTIVE
-	/// Timed refreshing state
-	var/refreshing = FALSE
 	/// Topic state used to determine status/interactability.
 	var/datum/ui_state/state = null
 	/// Rate limit client refreshes to prevent DoS.
@@ -54,7 +52,7 @@
  */
 /datum/tgui/New(mob/user, datum/src_object, interface, title, ui_x, ui_y)
 	log_tgui(user,
-		"new [interface] fancy [user?.client?.prefs.read_preference(/datum/preference/toggle/tgui_fancy)]",
+		"new [interface] fancy [user?.client?.prefs.tgui_fancy]",
 		src_object = src_object)
 	src.user = user
 	src.src_object = src_object
@@ -94,7 +92,7 @@
 	window.acquire_lock(src)
 	if(!window.is_ready())
 		window.initialize(
-			fancy = user.client.prefs.read_preference(/datum/preference/toggle/tgui_fancy),
+			fancy = user.client.prefs.tgui_fancy,
 			inline_assets = list(
 				get_asset_datum(/datum/asset/simple/tgui),
 			))
@@ -184,17 +182,11 @@
 /datum/tgui/proc/send_full_update(custom_data, force)
 	if(!user.client || !initialized || closing)
 		return
-	if(!COOLDOWN_FINISHED(src, refresh_cooldown))
-		refreshing = TRUE
-		addtimer(CALLBACK(src, .proc/send_full_update), TGUI_REFRESH_FULL_UPDATE_COOLDOWN, TIMER_UNIQUE)
-		return
-	refreshing = FALSE
 	var/should_update_data = force || status >= UI_UPDATE
 	window.send_message("update", get_payload(
 		custom_data,
 		with_data = should_update_data,
 		with_static_data = TRUE))
-	COOLDOWN_START(src, refresh_cooldown, TGUI_REFRESH_FULL_UPDATE_COOLDOWN)
 
 /**
  * public
@@ -205,7 +197,7 @@
  * optional force bool Send an update even if UI is not interactive.
  */
 /datum/tgui/proc/send_update(custom_data, force)
-	if(!user.client || !initialized || closing)
+	if(!user?.client || !initialized || closing)
 		return
 	var/should_update_data = force || status >= UI_UPDATE
 	window.send_message("update", get_payload(
@@ -225,12 +217,11 @@
 		"title" = title,
 		"status" = status,
 		"interface" = interface,
-		"refreshing" = refreshing,
 		"window" = list(
 			"key" = window_key,
 			"size" = window_size,
-			"fancy" = user.client.prefs.read_preference(/datum/preference/toggle/tgui_fancy),
-			"locked" = user.client.prefs.read_preference(/datum/preference/toggle/tgui_lock),
+			"fancy" = user.client.prefs.tgui_fancy,
+			"locked" = user.client.prefs.tgui_lock,
 		),
 		"client" = list(
 			"ckey" = user.client.ckey,
@@ -314,8 +305,9 @@
 	switch(type)
 		if("ready")
 			// Send a full update when the user manually refreshes the UI
-			if(initialized)
+			if (initialized && COOLDOWN_FINISHED(src, refresh_cooldown))
 				send_full_update()
+				COOLDOWN_START(src, refresh_cooldown, TGUI_REFRESH_FULL_UPDATE_COOLDOWN)
 			initialized = TRUE
 		if("pingReply")
 			initialized = TRUE

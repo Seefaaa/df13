@@ -33,7 +33,7 @@
 
 		maprotatechoices[mapname] = VM
 	var/chosenmap = tgui_input_list(usr, "Choose a map to change to", "Change Map", sort_list(maprotatechoices)|"Custom")
-	if (isnull(chosenmap))
+	if (!chosenmap)
 		return
 
 	if(chosenmap == "Custom")
@@ -69,32 +69,20 @@
 
 		qdel(M)
 
-		var/shuttles = tgui_alert(usr,"Do you want to modify the shuttles?", "Map Shuttles", list("Yes", "No"))
-		if(shuttles == "Yes")
-			for(var/s in VM.shuttles)
-				var/shuttle = input(s, "Map Shuttles") as null|text
-				if(!shuttle)
-					continue
-				if(!SSmapping.shuttle_templates[shuttle])
-					to_chat(usr, span_warning("No such shuttle as '[shuttle]' exists, using default."))
-					continue
-				VM.shuttles[s] = shuttle
-
-		VM.map_path = CUSTOM_MAP_PATH
+		VM.map_path = "custom"
 		VM.map_file = "[map_file]"
-		VM.config_filename = PATH_TO_NEXT_MAP_JSON
+		VM.config_filename = "data/next_map.json"
 		var/json_value = list(
 			"version" = MAP_CURRENT_VERSION,
 			"map_name" = VM.map_name,
 			"map_path" = VM.map_path,
 			"map_file" = VM.map_file,
-			"shuttles" = VM.shuttles
 		)
 
 		// If the file isn't removed text2file will just append.
-		if(fexists(PATH_TO_NEXT_MAP_JSON))
-			fdel(PATH_TO_NEXT_MAP_JSON)
-		text2file(json_encode(json_value), PATH_TO_NEXT_MAP_JSON)
+		if(fexists("data/next_map.json"))
+			fdel("data/next_map.json")
+		text2file(json_encode(json_value), "data/next_map.json")
 
 		if(SSmapping.changemap(VM))
 			message_admins("[key_name_admin(usr)] has changed the map to [VM.map_name]")

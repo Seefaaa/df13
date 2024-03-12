@@ -259,7 +259,6 @@ a.popt {
 .name,
 .prefix,
 .ooc,
-.looc,
 .adminooc,
 .admin,
 .medal,
@@ -329,7 +328,7 @@ em {
   font-weight: bold;
 }
 
-.say, .emote, .infoplain, .oocplain, .warningplain {
+.say, .emote, .infoplain, .mentor {
 }
 
 .deadsay {
@@ -357,6 +356,10 @@ em {
 
 .sciradio {
   color: #993399;
+}
+
+.explradio {
+  color: #358d7a;
 }
 
 .comradio {
@@ -415,12 +418,18 @@ em {
   color: #d1ba22;
 }
 
+.yoheiradio {
+  color: #51517e;
+}
+
 .yell {
   font-weight: bold;
+  font-size: 115%;
 }
 
 .alert {
   color: #ff0000;
+  text-shadow: none;
 }
 
 h1.alert, h2.alert {
@@ -430,42 +439,50 @@ h1.alert, h2.alert {
 .userdanger {
   color: #ff0000;
   font-weight: bold;
-  font-size: 185%;
+  font-size: 135%;
+  text-shadow: none;
 }
 
 .bolddanger {
   color: #ff0000;
   font-weight: bold;
+  text-shadow: none;
 }
 
 .danger {
   color: #ff0000;
+  text-shadow: none;
 }
 
 .tinydanger {
   color: #ff0000;
   font-size: 85%;
+  text-shadow: none;
 }
 
 .smalldanger {
   color: #ff0000;
   font-size: 90%;
+  text-shadow: none;
 }
 
 .warning {
   color: #ff0000;
   font-style: italic;
+  text-shadow: none;
 }
 
 .alertwarning {
   color: #FF0000;
   font-weight: bold;
+  text-shadow: none;
 }
 
 .boldwarning {
   color: #ff0000;
   font-style: italic;
   font-weight: bold;
+  text-shadow: none;
 }
 
 .announce {
@@ -476,6 +493,7 @@ h1.alert, h2.alert {
 .boldannounce {
   color: #ff0000;
   font-weight: bold;
+  text-shadow: none;
 }
 
 .minorannounce {
@@ -484,7 +502,7 @@ h1.alert, h2.alert {
 }
 
 .greenannounce {
-  color: #00ff00;
+  color: #3d7b3d;
   font-weight: bold;
 }
 
@@ -494,32 +512,38 @@ h1.alert, h2.alert {
 
 .info {
   color: #0000CC;
+  text-shadow: none;
 }
 
 .notice {
   color: #000099;
+  text-shadow: none;
 }
 
 .tinynotice {
   color: #000099;
   font-size: 85%;
+  text-shadow: none;
 }
 
 .tinynoticeital {
   color: #000099;
   font-style: italic;
   font-size: 85%;
+  text-shadow: none;
 }
 
 .smallnotice {
   color: #000099;
-  font-size: 90%;
+  font-size: 95%;
+  text-shadow: none;
 }
 
 .smallnoticeital {
   color: #000099;
   font-style: italic;
-  font-size: 90%;
+  font-size: 95%;
+  text-shadow: none;
 }
 
 .boldnotice {
@@ -530,10 +554,12 @@ h1.alert, h2.alert {
 .hear {
   color: #000099;
   font-style: italic;
+  text-shadow: none;
 }
 
 .adminnotice {
   color: #0000ff;
+  text-shadow: none;
 }
 
 .adminhelp {
@@ -552,7 +578,7 @@ h1.alert, h2.alert {
 }
 
 .green {
-  color: #03ff39;
+  color: #43704d;
 }
 
 .red {
@@ -564,7 +590,7 @@ h1.alert, h2.alert {
 }
 
 .nicegreen {
-  color: #14a833;
+  color: #488254;
 }
 
 .cult {
@@ -585,30 +611,30 @@ h1.alert, h2.alert {
 .cultboldtalic {
   color: #973e3b;
   font-weight: bold;
-  font-size: 185%;
+  font-size: 135%;
 }
 
 .cultlarge {
   color: #973e3b;
   font-weight: bold;
-  font-size: 185%;
+  font-size: 135%;
 }
 
 .narsie {
   color: #973e3b;
   font-weight: bold;
-  font-size: 925%;
+  font-size: 225%;
 }
 
 .narsiesmall {
   color: #973e3b;
   font-weight: bold;
-  font-size: 370%;
+  font-size: 170%;
 }
 
 .colossus {
   color: #7F282A;
-  font-size: 310%;
+  font-size: 195%;
 }
 
 .hierophant {
@@ -642,7 +668,7 @@ h1.alert, h2.alert {
 .revenbignotice {
   color: #1d2953;
   font-weight: bold;
-  font-size: 185%;
+  font-size: 135%;
 }
 
 .revenminor {
@@ -657,12 +683,12 @@ h1.alert, h2.alert {
 .revendanger {
   color: #760fbb;
   font-weight: bold;
-  font-size: 185%;
+  font-size: 135%;
 }
 
 .deconversion_message {
   color: #5000A0;
-  font-size: 185%;
+  font-size: 135%;
   font-style: italic;
 }
 
@@ -692,14 +718,14 @@ h1.alert, h2.alert {
 
 .alertsyndie {
   color: #FF0000;
-  font-size: 185%;
+  font-size: 135%;
   font-weight: bold;
 }
 
 .spider {
   color: #4d004d;
   font-weight: bold;
-  font-size: 185%;
+  font-size: 135%;
 }
 
 .interface {
@@ -718,45 +744,40 @@ h1.alert, h2.alert {
   font-family: "Courier New", cursive, sans-serif;
 }
 
-.tape_recorder {
-  color: #800000;
-  font-family: "Courier New", cursive, sans-serif;
-}
-
 .command_headset {
   font-weight: bold;
-  font-size: 160%;
+  font-size: 135%;
 }
 
 .small {
-  font-size: 60%;
+  font-size: 95%;
 }
 
 .big {
-  font-size: 185%;
+  font-size: 135%;
 }
 
 .reallybig {
-  font-size: 245%;
+  font-size: 155%;
 }
 
 .extremelybig {
-  font-size: 310%;
+  font-size: 195%;
 }
 
 .greentext {
   color: #00FF00;
-  font-size: 185%;
+  font-size: 135%;
 }
 
 .redtext {
   color: #FF0000;
-  font-size: 185%;
+  font-size: 135%;
 }
 
 .clown {
   color: #FF69Bf;
-  font-size: 160%;
+  font-size: 135%;
   font-family: "Comic Sans MS", cursive, sans-serif;
   font-weight: bold;
 }
@@ -827,7 +848,8 @@ h1.alert, h2.alert {
 }
 
 .bigicon {
-  font-size: 2.5em;
+  height: 4em;
+  width: auto;
 }
 
 .memo {
@@ -923,3 +945,162 @@ h1.alert, h2.alert {
 .ml-3 {
   margin-left: 3em;
 }
+
+/* WHITE SHIT */
+
+.veryalert {
+  background: repeating-linear-gradient(-45deg,#daaa18,#daaa18 8px,#000000 8px,#000000 16px);
+  border: none;
+  height: 8px;
+}
+
+/* MOTD SHIT */
+#motd-main {
+  padding: 5px 0 1px 0;
+  background: repeating-linear-gradient(45deg,#232323,#232323 8px,#222222 8px,#222222 16px);
+  text-shadow: 0 0 3px black;
+  box-shadow: 0 0 24px rgba(0, 0, 0, 1);
+  border: 1px solid #111;
+  margin: 16px 0 16px 0;
+  border-bottom: 8px solid #151515;
+}
+
+#motd-header {
+  color: #fff;
+  font-family: sans-serif;
+  text-decoration: none;
+}
+
+#motd-p {
+  font-family: sans-serif;
+  color: #faa;
+}
+
+#motd-a {
+  padding: 2px;
+  color: #ddd;
+}
+
+#motd-b {
+  padding: 2px;
+  color: #ddd;
+}
+
+#motd-warn {
+  padding: 2px;
+  color: #faa;
+  font-size: 14px;
+}
+
+#motd-hr {
+  border: none;
+  border-top: 1px solid #333;
+  border-bottom: 2px solid #151515;
+  padding: 4px 0 8px 0;
+  background: #232323;
+}
+
+#motd-footer {
+  font-family: sans-serif;
+  color: #fff;
+  padding: 4px;
+}
+
+#stbst {
+  width: 3px;
+  height: 14px;
+  animation: spin 0.7s infinite linear;
+  background: #fff;
+  margin-left: 5px;
+  margin-right: 10px;
+}
+
+@keyframes spin {
+  from {transform:rotate(0deg);}
+  to {transform:rotate(-360deg);}
+}
+
+.examine_block {
+  background: rgba(0, 0, 0, 0.1);
+  border: 1px solid #111a27;
+  margin: 2px 8px;
+  padding: 8px 12px;
+  max-width: 550px;
+}
+.examine_block hr {
+  border: none;
+  background: #333;
+  height: 1px;
+  margin: 8px 16px 8px 16px;
+}
+
+a, b, h1, h2, h3, h4, h5, h6 {
+  text-shadow: none;
+}
+
+.katanafont {
+  font-family: "RetroVilleNC";
+}
+
+.chat_step_0 {
+  font-size: 100%;
+}
+
+.chat_step_1 {
+  font-size: 97%;
+}
+
+.chat_step_2 {
+  font-size: 96%;
+}
+
+.chat_step_3 {
+  font-size: 95%;
+}
+
+.chat_step_4 {
+  font-size: 94%;
+}
+
+.chat_step_5 {
+  font-size: 93%;
+}
+
+.chat_step_6 {
+  font-size: 92%;
+}
+
+.chat_step_7 {
+  font-size: 90%;
+}
+
+.Layout__content {
+  background-image: url('../../assets/bginvert.png');
+}
+
+.brass					{color: #BE8700;}
+.heavy_brass			{color: #BE8700; font-weight: bold; font-style: italic;}
+.large_brass			{color: #BE8700; font-size: 24px;}
+.leader_brass			{color: #BE8700; font-size: 16px;}
+.big_brass				{color: #BE8700; font-size: 24px; font-weight: bold; font-style: italic;}
+.ratvar					{color: #BE8700; font-size: 48px; font-weight: bold; font-style: italic; animation: ratvarcolor 5000ms infinite;}
+.ratvarsmall			{color: #BE8700; font-size: 24px; font-weight: bold; font-style: italic; animation: ratvarcolor 5000ms infinite;}
+.alloy					{color: #42474D;}
+.heavy_alloy			{color: #42474D; font-weight: bold; font-style: italic;}
+.nezbere_large			{color: #42474D; font-size: 24px; font-weight: bold; font-style: italic;}
+.nezbere				{color: #42474D; font-weight: bold; font-style: italic;}
+.nezbere_small			{color: #42474D;}
+.sevtug_large			{color: #AF0AAF; font-size: 24px; font-weight: bold; font-style: italic;}
+.sevtug					{color: #AF0AAF; font-weight: bold; font-style: italic;}
+.sevtug_small			{color: #AF0AAF;}
+.inathneq_large			{color: #1E8CE1; font-size: 24px; font-weight: bold; font-style: italic;}
+.inathneq				{color: #1E8CE1; font-weight: bold; font-style: italic;}
+.inathneq_small			{color: #1E8CE1;}
+.nzcrentr_large			{color: #DAAA18; font-size: 24px; font-weight: bold; font-style: italic;}
+.nzcrentr				{color: #DAAA18; font-weight: bold; font-style: italic;}
+.nzcrentr_small			{color: #DAAA18;}
+.neovgre_large			{color: #6E001A; font-size: 24px; font-weight: bold; font-style: italic;}
+.neovgre				{color: #6E001A; font-weight: bold; font-style: italic;}
+.neovgre_small			{color: #6E001A;}
+
+.mentor         {color: #8a2be2;}

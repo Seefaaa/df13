@@ -7,15 +7,12 @@
 
 #define isatom(A) (isloc(A))
 
-#define isdatum(thing) (istype(thing, /datum))
-
 #define isweakref(D) (istype(D, /datum/weakref))
 
 //Turfs
 //#define isturf(A) (istype(A, /turf)) This is actually a byond built-in. Added here for completeness sake.
 
 GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
-	/turf/open/space,
 	/turf/open/chasm,
 	/turf/open/lava,
 	/turf/open/water,
@@ -28,7 +25,7 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 #define isindestructiblefloor(A) (istype(A, /turf/open/indestructible))
 
-#define isspaceturf(A) (istype(A, /turf/open/space))
+#define isopenspace(A) (istype(A, /turf/open/openspace))
 
 #define isfloorturf(A) (istype(A, /turf/open/floor))
 
@@ -43,8 +40,6 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 #define islava(A) (istype(A, /turf/open/lava))
 
 #define ischasm(A) (istype(A, /turf/open/chasm))
-
-#define isplatingturf(A) (istype(A, /turf/open/floor/plating))
 
 #define istransparentturf(A) (HAS_TRAIT(A, TURF_Z_TRANSPARENT_TRAIT))
 
@@ -62,54 +57,16 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 #define isabductor(A) (is_species(A, /datum/species/abductor))
 #define isgolem(A) (is_species(A, /datum/species/golem))
 #define islizard(A) (is_species(A, /datum/species/lizard))
-#define isplasmaman(A) (is_species(A, /datum/species/plasmaman))
 #define ispodperson(A) (is_species(A, /datum/species/pod))
 #define isflyperson(A) (is_species(A, /datum/species/fly))
-#define isjellyperson(A) (is_species(A, /datum/species/jelly))
-#define isslimeperson(A) (is_species(A, /datum/species/jelly/slime))
-#define isluminescent(A) (is_species(A, /datum/species/jelly/luminescent))
 #define iszombie(A) (is_species(A, /datum/species/zombie))
 #define isskeleton(A) (is_species(A, /datum/species/skeleton))
 #define ismoth(A) (is_species(A, /datum/species/moth))
+#define ishumanbasic(A) (is_species(A, /datum/species/human))
 #define isfelinid(A) (is_species(A, /datum/species/human/felinid))
-#define isethereal(A) (is_species(A, /datum/species/ethereal))
-#define isvampire(A) (is_species(A,/datum/species/vampire))
 #define isdullahan(A) (is_species(A, /datum/species/dullahan))
 #define ismonkey(A) (is_species(A, /datum/species/monkey))
-#define isandroid(A) (is_species(A, /datum/species/android))
-
-//more carbon mobs
-
-#define isalien(A) (istype(A, /mob/living/carbon/alien))
-
-#define islarva(A) (istype(A, /mob/living/carbon/alien/larva))
-
-#define isalienadult(A) (istype(A, /mob/living/carbon/alien/humanoid) || istype(A, /mob/living/simple_animal/hostile/alien))
-
-#define isalienhunter(A) (istype(A, /mob/living/carbon/alien/humanoid/hunter))
-
-#define isaliensentinel(A) (istype(A, /mob/living/carbon/alien/humanoid/sentinel))
-
-#define isalienroyal(A) (istype(A, /mob/living/carbon/alien/humanoid/royal))
-
-#define isalienqueen(A) (istype(A, /mob/living/carbon/alien/humanoid/royal/queen))
-
-//Silicon mobs
-#define issilicon(A) (istype(A, /mob/living/silicon))
-
-#define issiliconoradminghost(A) (istype(A, /mob/living/silicon) || isAdminGhostAI(A))
-
-#define iscyborg(A) (istype(A, /mob/living/silicon/robot))
-
-#define isAI(A) (istype(A, /mob/living/silicon/ai))
-
-#define ispAI(A) (istype(A, /mob/living/silicon/pai))
-
-// basic mobs
-#define isbasicmob(A) (istype(A, /mob/living/basic))
-
-/// returns whether or not the atom is either a basic mob OR simple animal
-#define isanimal_or_basicmob(A) (istype(A, /mob/living/simple_animal) || istype(A, /mob/living/basic))
+#define isdwarf(A) (is_species(A, /datum/species/dwarf))
 
 //Simple animals
 #define isanimal(A) (istype(A, /mob/living/simple_animal))
@@ -122,11 +79,7 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 #define ismouse(A) (istype(A, /mob/living/simple_animal/mouse))
 
-#define iscow(A) (istype(A, /mob/living/basic/cow))
-
-#define isslime(A) (istype(A, /mob/living/simple_animal/slime))
-
-#define isdrone(A) (istype(A, /mob/living/simple_animal/drone))
+#define iscow(A) (istype(A, /mob/living/simple_animal/cow))
 
 #define iscat(A) (istype(A, /mob/living/simple_animal/pet/cat))
 
@@ -140,14 +93,13 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 #define isregalrat(A) (istype(A, /mob/living/simple_animal/hostile/regalrat))
 
-#define isguardian(A) (istype(A, /mob/living/simple_animal/hostile/guardian))
+#define isswarmer(A) (istype(A, /mob/living/simple_animal/hostile/swarmer))
 
-#define isconstruct(A) (istype(A, /mob/living/simple_animal/hostile/construct))
+#define isguardian(A) (istype(A, /mob/living/simple_animal/hostile/guardian))
 
 #define ismegafauna(A) (istype(A, /mob/living/simple_animal/hostile/megafauna))
 
-#define isclown(A) (istype(A, /mob/living/simple_animal/hostile/retaliate/clown))
-
+#define isclown(A) (istype(A, /mob/living/simple_animal/hostile/clown))
 
 //Misc mobs
 #define isobserver(A) (istype(A, /mob/dead/observer))
@@ -158,11 +110,9 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 #define isovermind(A) (istype(A, /mob/camera/blob))
 
-#define issentientdisease(A) (istype(A, /mob/camera/disease))
+#define iskeeper(A) (istype(A, /mob/camera/dungeon_keeper))
 
 #define iscameramob(A) (istype(A, /mob/camera))
-
-#define isaicamera(A) (istype(A, /mob/camera/ai_eye))
 
 //Objects
 #define isobj(A) istype(A, /obj) //override the byond proc because it returns true on children of /atom/movable that aren't objs
@@ -170,8 +120,6 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 #define isitem(A) (istype(A, /obj/item))
 
 #define isstack(A) (istype(A, /obj/item/stack))
-
-#define isgrenade(A) (istype(A, /obj/item/grenade))
 
 #define islandmine(A) (istype(A, /obj/effect/mine))
 
@@ -182,14 +130,6 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 #define isidcard(I) (istype(I, /obj/item/card/id))
 
 #define isstructure(A) (istype(A, /obj/structure))
-
-#define ismachinery(A) (istype(A, /obj/machinery))
-
-#define isvehicle(A) (istype(A, /obj/vehicle))
-
-#define ismecha(A) (istype(A, /obj/vehicle/sealed/mecha))
-
-#define ismedicalmecha(A) (istype(A, /obj/vehicle/sealed/mecha/medical))
 
 #define ismopable(A) (A && (A.layer <= FLOOR_CLEAN_LAYER)) //If something can be cleaned by floor-cleaning devices such as mops or clean bots
 
@@ -216,13 +156,7 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 #define issignaler(O) (istype(O, /obj/item/assembly/signaler))
 
-GLOBAL_LIST_INIT(glass_sheet_types, typecacheof(list(
-	/obj/item/stack/sheet/glass,
-	/obj/item/stack/sheet/rglass,
-	/obj/item/stack/sheet/plasmaglass,
-	/obj/item/stack/sheet/plasmarglass,
-	/obj/item/stack/sheet/titaniumglass,
-	/obj/item/stack/sheet/plastitaniumglass)))
+GLOBAL_LIST_INIT(glass_sheet_types, typecacheof(list()))
 
 #define is_glass_sheet(O) (is_type_in_typecache(O, GLOB.glass_sheet_types))
 
@@ -237,21 +171,12 @@ GLOBAL_LIST_INIT(glass_sheet_types, typecacheof(list(
 #define isProbablyWallMounted(O) (O.pixel_x > 20 || O.pixel_x < -20 || O.pixel_y > 20 || O.pixel_y < -20)
 #define isbook(O) (is_type_in_typecache(O, GLOB.book_types))
 
-GLOBAL_LIST_INIT(book_types, typecacheof(list(
-	/obj/item/book,
-	/obj/item/spellbook,
-	/obj/item/storage/book)))
+GLOBAL_LIST_INIT(book_types, typecacheof(list()))
 
+#define is_thrall(M) (istype(M, /mob/living) && M.mind?.has_antag_datum(/datum/antagonist/thrall))
+#define is_shadow(M) (istype(M, /mob/living) && M.mind?.has_antag_datum(/datum/antagonist/shadowling))
+#define is_shadow_or_thrall(M) (is_thrall(M) || is_shadow(M))
 
-// Jobs
-#define is_job(job_type)  (istype(job_type, /datum/job))
-#define is_assistant_job(job_type) (istype(job_type, /datum/job/assistant))
-#define is_bartender_job(job_type) (istype(job_type, /datum/job/bartender))
-#define is_captain_job(job_type) (istype(job_type, /datum/job/captain))
-#define is_chaplain_job(job_type) (istype(job_type, /datum/job/chaplain))
-#define is_clown_job(job_type) (istype(job_type, /datum/job/clown))
-#define is_detective_job(job_type) (istype(job_type, /datum/job/detective))
-#define is_scientist_job(job_type) (istype(job_type, /datum/job/scientist))
-#define is_security_officer_job(job_type) (istype(job_type, /datum/job/security_officer))
-#define is_research_director_job(job_type) (istype(job_type, /datum/job/research_director))
-#define is_unassigned_job(job_type) (istype(job_type, /datum/job/unassigned))
+#define isIPC(A) (is_species(A, /datum/species/ipc))
+
+#define isspacepod(A) (istype(A, /obj/spacepod))

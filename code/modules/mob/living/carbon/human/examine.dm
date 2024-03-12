@@ -7,6 +7,7 @@
 	var/t_has = p_have()
 	var/t_is = p_are()
 	var/t_es = p_es()
+
 	var/obscure_name
 
 	if(isliving(user))
@@ -14,10 +15,45 @@
 		if(HAS_TRAIT(L, TRAIT_PROSOPAGNOSIA) || HAS_TRAIT(L, TRAIT_INVISIBLE_MAN))
 			obscure_name = TRUE
 
-	. = list("<span class='info'>*---------*\nThis is <EM>[!obscure_name ? name : "Unknown"]</EM>!")
+	. = list("")
+
+	. += "<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"]</EM>!<hr>"
+
+	if(user?.stat == CONSCIOUS && ishuman(user))
+		user.visible_message(span_small("<b>[user]</b> looks at <b>[!obscure_name ? name : "Unknown"]</b>.") , span_small("You look at <b>[!obscure_name ? name : "Unknown"]</b>.") , null, COMBAT_MESSAGE_RANGE)
 
 	var/obscured = check_obscured_slots()
 	var/skipface = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
+
+	//head
+	if(head && !(obscured & ITEM_SLOT_HEAD) && !(head.item_flags & EXAMINE_SKIP))
+		. += "[t_He] [t_is] wearing [head.get_examine_string(user)] on [t_his] head.\n"
+
+	//eyes
+	if(!(obscured & ITEM_SLOT_EYES) )
+		if(glasses  && !(glasses.item_flags & EXAMINE_SKIP))
+			. += "[t_He] [t_has] [glasses.get_examine_string(user)] covering [t_his] eyes.\n"
+		else if(eye_color == COLOR_RED)
+			if(HAS_TRAIT(src, TRAIT_BLOODSHOT_EYES))
+				. += "<span class='warning'><B>[t_His] eyes are gloving an unnatural red!</B></span>\n"
+
+	//ears
+	if(ears && !(obscured & ITEM_SLOT_EARS) && !(ears.item_flags & EXAMINE_SKIP))
+		. += "[t_He] [t_has] [ears.get_examine_string(user)] on [t_his] ears.\n"
+
+	//mask
+	if(wear_mask && !(obscured & ITEM_SLOT_MASK)  && !(wear_mask.item_flags & EXAMINE_SKIP))
+		. += "[t_He] [t_has] [wear_mask.get_examine_string(user)] on [t_his] face.\n"
+
+	if(wear_neck && !(obscured & ITEM_SLOT_NECK)  && !(wear_neck.item_flags & EXAMINE_SKIP))
+		. += "[t_He] [t_is] wearing [wear_neck.get_examine_string(user)] around [t_his] neck.\n"
+
+	//suit/armor
+	if(wear_suit && !(wear_suit.item_flags & EXAMINE_SKIP))
+		//suit/armor storage
+		. += "[t_He] [t_is] wearing [wear_suit.get_examine_string(user)]."
+		if(s_store && !(obscured & ITEM_SLOT_SUITSTORE) && !(s_store.item_flags & EXAMINE_SKIP))
+			. += "[t_He] [t_is] carrying [s_store.get_examine_string(user)] on [t_his] [wear_suit.name]."
 
 	//uniform
 	if(w_uniform && !(obscured & ITEM_SLOT_ICLOTHING) && !(w_uniform.item_flags & EXAMINE_SKIP))
@@ -28,73 +64,42 @@
 			if(U.attached_accessory)
 				accessory_msg += " with [icon2html(U.attached_accessory, user)] \a [U.attached_accessory]"
 
-		. += "[t_He] [t_is] wearing [w_uniform.get_examine_string(user)][accessory_msg]."
-	//head
-	if(head && !(obscured & ITEM_SLOT_HEAD) && !(head.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_is] wearing [head.get_examine_string(user)] on [t_his] head."
-	//suit/armor
-	if(wear_suit && !(wear_suit.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_is] wearing [wear_suit.get_examine_string(user)]."
-		//suit/armor storage
-		if(s_store && !(obscured & ITEM_SLOT_SUITSTORE) && !(s_store.item_flags & EXAMINE_SKIP))
-			. += "[t_He] [t_is] carrying [s_store.get_examine_string(user)] on [t_his] [wear_suit.name]."
+		. += "[t_He] [t_is] wearing [w_uniform.get_examine_string(user)][accessory_msg].\n"
+
 	//back
 	if(back && !(back.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_has] [back.get_examine_string(user)] on [t_his] back."
+		. += "[t_He] [t_has] [back.get_examine_string(user)] on [t_his] back.\n"
 
 	//Hands
 	for(var/obj/item/I in held_items)
 		if(!(I.item_flags & ABSTRACT) && !(I.item_flags & EXAMINE_SKIP))
-			. += "[t_He] [t_is] holding [I.get_examine_string(user)] in [t_his] [get_held_index_name(get_held_index_of_item(I))]."
+			. += "[t_He] [t_is] holding [I.get_examine_string(user)] in [t_his] [get_held_index_name(get_held_index_of_item(I))].\n"
 
 	var/datum/component/forensics/FR = GetComponent(/datum/component/forensics)
 	//gloves
 	if(gloves && !(obscured & ITEM_SLOT_GLOVES) && !(gloves.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_has] [gloves.get_examine_string(user)] on [t_his] hands."
+		. += "[t_He] [t_has] [gloves.get_examine_string(user)] on [t_his] hands.\n"
 	else if(FR && length(FR.blood_DNA))
 		if(num_hands)
-			. += span_warning("[t_He] [t_has] [num_hands > 1 ? "" : "a"] blood-stained hand[num_hands > 1 ? "s" : ""]!")
+			. += "<span class='warning'>[t_He] [t_has] [num_hands > 1 ? "" : "a"] blood-stained hand[num_hands > 1 ? "s" : ""]!</span>\n"
 
 	//handcuffed?
 	if(handcuffed)
-		if(istype(handcuffed, /obj/item/restraints/handcuffs/cable))
-			. += span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] restrained with cable!")
-		else
-			. += span_warning("[t_He] [t_is] [icon2html(handcuffed, user)] handcuffed!")
+		. += "<span class='warning'>[t_He] [t_is] [icon2html(handcuffed, user)] handcuffed!</span>\n"
 
 	//belt
 	if(belt && !(belt.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_has] [belt.get_examine_string(user)] about [t_his] waist."
+		. += "[t_He] [t_has] [belt.get_examine_string(user)] about [t_his] waist.\n"
 
 	//shoes
 	if(shoes && !(obscured & ITEM_SLOT_FEET)  && !(shoes.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_is] wearing [shoes.get_examine_string(user)] on [t_his] feet."
-
-	//mask
-	if(wear_mask && !(obscured & ITEM_SLOT_MASK)  && !(wear_mask.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_has] [wear_mask.get_examine_string(user)] on [t_his] face."
-
-	if(wear_neck && !(obscured & ITEM_SLOT_NECK)  && !(wear_neck.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_is] wearing [wear_neck.get_examine_string(user)] around [t_his] neck."
-
-	//eyes
-	if(!(obscured & ITEM_SLOT_EYES) )
-		if(glasses  && !(glasses.item_flags & EXAMINE_SKIP))
-			. += "[t_He] [t_has] [glasses.get_examine_string(user)] covering [t_his] eyes."
-		else if(HAS_TRAIT(src, TRAIT_UNNATURAL_RED_GLOWY_EYES))
-			. += "<span class='warning'><B>[t_His] eyes are glowing with an unnatural red aura!</B></span>"
-		else if(HAS_TRAIT(src, TRAIT_BLOODSHOT_EYES))
-			. += "<span class='warning'><B>[t_His] eyes are bloodshot!</B></span>"
-
-	//ears
-	if(ears && !(obscured & ITEM_SLOT_EARS) && !(ears.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_has] [ears.get_examine_string(user)] on [t_his] ears."
+		. += "[t_He] [t_is] wearing [shoes.get_examine_string(user)] on [t_his] feet.\n"
 
 	//ID
 	if(wear_id && !(wear_id.item_flags & EXAMINE_SKIP))
-		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)]."
+		. += "[t_He] [t_is] wearing [wear_id.get_examine_string(user)].\n"
 
-		. += wear_id.get_id_examine_strings(user)
+	. += "<hr>"
 
 	//Status effects
 	var/list/status_examines = status_effect_examines()
@@ -104,32 +109,26 @@
 	//Jitters
 	switch(jitteriness)
 		if(300 to INFINITY)
-			. += span_warning("<B>[t_He] [t_is] convulsing violently!</B>")
+			. += "<span class='warning'><B>[t_He] [t_is] convulsing violently!</B></span>\n"
 		if(200 to 300)
-			. += span_warning("[t_He] [t_is] extremely jittery.")
+			. += "<span class='warning'>[t_He] [t_is] extremely jittery.</span>\n"
 		if(100 to 200)
-			. += span_warning("[t_He] [t_is] twitching ever so slightly.")
+			. += "<span class='warning'>[t_He] [t_is] twitching ever so slightly.</span>\n"
 
 	var/appears_dead = FALSE
 	var/just_sleeping = FALSE
-
 	if(stat == DEAD || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
 		appears_dead = TRUE
-
-		var/obj/item/clothing/glasses/G = get_item_by_slot(ITEM_SLOT_EYES)
-		var/are_we_in_weekend_at_bernies = G?.tint && buckled && istype(buckled, /obj/vehicle/ridden/wheelchair)
-
-		if(isliving(user) && (HAS_TRAIT(user, TRAIT_NAIVE) || are_we_in_weekend_at_bernies))
+		if(isliving(user) && HAS_TRAIT(user, TRAIT_NAIVE))
 			just_sleeping = TRUE
-
 		if(!just_sleeping)
 			if(suiciding)
-				. += span_warning("[t_He] appear[p_s()] to have committed suicide... there is no hope of recovery.")
+				. += "<span class='warning'>[t_He] appear[p_s()] to have committed suicide... there is no hope of recovery.</span>\n"
 
 			. += generate_death_examine_text()
 
 	if(get_bodypart(BODY_ZONE_HEAD) && !getorgan(/obj/item/organ/brain))
-		. += span_deadsay("It appears that [t_his] brain is missing...")
+		. += "<span class='deadsay'>It appears that [t_his] brain is missing...</span>\n"
 
 	var/list/msg = list()
 
@@ -145,10 +144,6 @@
 				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] stuck to [t_his] [body_part.name]!</B>\n"
 			else
 				msg += "<B>[t_He] [t_has] [icon2html(I, user)] \a [I] embedded in [t_his] [body_part.name]!</B>\n"
-
-		for(var/i in body_part.wounds)
-			var/datum/wound/iter_wound = i
-			msg += "[iter_wound.get_examine_description(user)]\n"
 
 	for(var/X in disabled)
 		var/obj/item/bodypart/body_part = X
@@ -166,14 +161,14 @@
 	var/r_limbs_missing = 0
 	for(var/t in missing)
 		if(t==BODY_ZONE_HEAD)
-			msg += "<span class='deadsay'><B>[t_His] [parse_zone(t)] is missing!</B><span class='warning'>\n"
+			msg += "<span class='deadsay'><B>[t_His] [parse_zone(t)] is missing!</B></span>\n"
 			continue
 		if(t == BODY_ZONE_L_ARM || t == BODY_ZONE_L_LEG)
 			l_limbs_missing++
 		else if(t == BODY_ZONE_R_ARM || t == BODY_ZONE_R_LEG)
 			r_limbs_missing++
 
-		msg += "<B>[capitalize(t_his)] [parse_zone(t)] is missing!</B>\n"
+		msg += "<span class='warning'><B>[t_His] [parse_zone(t)] is missing!</B></span>\n"
 
 	if(l_limbs_missing >= 2 && r_limbs_missing == 0)
 		msg += "[t_He] look[p_s()] all right now.\n"
@@ -205,16 +200,6 @@
 			else
 				msg += "<B>[t_He] [t_has] severe burns!</B>\n"
 
-		temp = getCloneLoss()
-		if(temp)
-			if(temp < 25)
-				msg += "[t_He] [t_has] minor cellular damage.\n"
-			else if(temp < 50)
-				msg += "[t_He] [t_has] <b>moderate</b> cellular damage!\n"
-			else
-				msg += "<b>[t_He] [t_has] severe cellular damage!</b>\n"
-
-
 	if(fire_stacks > 0)
 		msg += "[t_He] [t_is] covered in something flammable.\n"
 	if(fire_stacks < 0)
@@ -239,16 +224,8 @@
 		if(DISGUST_LEVEL_DISGUSTED to INFINITY)
 			msg += "[t_He] look[p_s()] extremely disgusted.\n"
 
-	var/apparent_blood_volume = blood_volume
-	if(skin_tone == "albino")
-		apparent_blood_volume -= 150 // enough to knock you down one tier
-	switch(apparent_blood_volume)
-		if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
-			msg += "[t_He] [t_has] pale skin.\n"
-		if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
-			msg += "<b>[t_He] look[p_s()] like pale death.</b>\n"
-		if(-INFINITY to BLOOD_VOLUME_BAD)
-			msg += "[span_deadsay("<b>[t_He] resemble[p_s()] a crushed, empty juice pouch.</b>")]\n"
+	if(blood_volume < BLOOD_VOLUME_SAFE || skin_tone == "albino")
+		msg += "[t_He] [t_has] pale skin.\n"
 
 	if(is_bleeding())
 		var/list/obj/item/bodypart/bleeding_limbs = list()
@@ -281,9 +258,6 @@
 		if(appears_dead)
 			bleed_text += ", but it has pooled and is not flowing.</span></B>\n"
 		else
-			if(reagents.has_reagent(/datum/reagent/toxin/heparin, needs_metabolizing = TRUE))
-				bleed_text += " incredibly quickly"
-
 			bleed_text += "!</B>\n"
 
 		for(var/i in grasped_limbs)
@@ -291,9 +265,6 @@
 			bleed_text += "[t_He] [t_is] holding [t_his] [grasped_part.name] to slow the bleeding!\n"
 
 		msg += bleed_text.Join()
-
-	if(reagents.has_reagent(/datum/reagent/teslium, needs_metabolizing = TRUE))
-		msg += "[t_He] [t_is] emitting a gentle blue glow!\n"
 
 	if(islist(stun_absorption))
 		for(var/i in stun_absorption)
@@ -319,9 +290,12 @@
 				if(91.01 to INFINITY)
 					msg += "[t_He] [t_is] a shitfaced, slobbering wreck.\n"
 
+		if(!user)
+			return
+
 		if(src != user)
 			if(HAS_TRAIT(user, TRAIT_EMPATH))
-				if (combat_mode)
+				if (a_intent != INTENT_HELP)
 					msg += "[t_He] seem[p_s()] to be on guard.\n"
 				if (getOxyLoss() >= 10)
 					msg += "[t_He] seem[p_s()] winded.\n"
@@ -340,8 +314,6 @@
 				if (bodytemperature < dna.species.bodytemp_cold_damage_limit)
 					msg += "[t_He] [t_is] shivering.\n"
 
-			msg += "</span>"
-
 			if(HAS_TRAIT(user, TRAIT_SPIRITUAL) && mind?.holy_role)
 				msg += "[t_He] [t_has] a holy aura about [t_him].\n"
 				SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, "religious_comfort", /datum/mood_event/religiously_comforted)
@@ -356,77 +328,18 @@
 					msg += "[t_He] [t_has] a stupid expression on [t_his] face.\n"
 		if(getorgan(/obj/item/organ/brain))
 			if(ai_controller?.ai_status == AI_STATUS_ON)
-				msg += "[span_deadsay("[t_He] do[t_es]n't appear to be [t_him]self.")]\n"
-			else if(!key)
-				msg += "[span_deadsay("[t_He] [t_is] totally catatonic. The stresses of life in deep-space must have been too much for [t_him]. Any recovery is unlikely.")]\n"
+				msg += "<span class='deadsay'>[t_He] do[t_es]n't appear to be [t_him]self.</span>\n"
+			if(!key)
+				msg += "<span class='deadsay'>[t_He] [t_is] totally catatonic. The stresses of life in deep-space must have been too much for [t_him]. Any recovery is unlikely.</span>\n"
 			else if(!client)
 				msg += "[t_He] [t_has] a blank, absent-minded stare and appears completely unresponsive to anything. [t_He] may snap out of it soon.\n"
 
-	var/scar_severity = 0
-	for(var/i in all_scars)
-		var/datum/scar/S = i
-		if(S.is_visible(user))
-			scar_severity += S.severity
-
-	switch(scar_severity)
-		if(1 to 4)
-			msg += "[span_tinynoticeital("[t_He] [t_has] visible scarring, you can look again to take a closer look...")]\n"
-		if(5 to 8)
-			msg += "[span_smallnoticeital("[t_He] [t_has] several bad scars, you can look again to take a closer look...")]\n"
-		if(9 to 11)
-			msg += "[span_notice("<i>[t_He] [t_has] significantly disfiguring scarring, you can look again to take a closer look...</i>")]\n"
-		if(12 to INFINITY)
-			msg += "[span_notice("<b><i>[t_He] [t_is] just absolutely fucked up, you can look again to take a closer look...</i></b>")]\n"
-
+	var/trait_exam = common_trait_examine()
+	if (!isnull(trait_exam))
+		msg += trait_exam
 
 	if (length(msg))
 		. += span_warning("[msg.Join("")]")
-
-	var/trait_exam = common_trait_examine()
-	if (!isnull(trait_exam))
-		. += trait_exam
-
-	var/perpname = get_face_name(get_id_name(""))
-	if(perpname && (HAS_TRAIT(user, TRAIT_SECURITY_HUD) || HAS_TRAIT(user, TRAIT_MEDICAL_HUD)))
-		var/datum/data/record/R = find_record("name", perpname, GLOB.data_core.general)
-		if(R)
-			. += "<span class='deptradio'>Rank:</span> [R.fields["rank"]]\n<a href='?src=[REF(src)];hud=1;photo_front=1'>\[Front photo\]</a><a href='?src=[REF(src)];hud=1;photo_side=1'>\[Side photo\]</a>"
-		if(HAS_TRAIT(user, TRAIT_MEDICAL_HUD))
-			var/cyberimp_detect
-			for(var/obj/item/organ/cyberimp/CI in internal_organs)
-				if(CI.status == ORGAN_ROBOTIC && !CI.syndicate_implant)
-					cyberimp_detect += "[!cyberimp_detect ? "[CI.get_examine_string(user)]" : ", [CI.get_examine_string(user)]"]"
-			if(cyberimp_detect)
-				. += "<span class='notice ml-1'>Detected cybernetic modifications:</span>"
-				. += "<span class='notice ml-2'>[cyberimp_detect]</span>"
-			if(R)
-				var/health_r = R.fields["p_stat"]
-				. += "<a href='?src=[REF(src)];hud=m;p_stat=1'>\[[health_r]\]</a>"
-				health_r = R.fields["m_stat"]
-				. += "<a href='?src=[REF(src)];hud=m;m_stat=1'>\[[health_r]\]</a>"
-			R = find_record("name", perpname, GLOB.data_core.medical)
-			if(R)
-				. += "<a href='?src=[REF(src)];hud=m;evaluation=1'>\[Medical evaluation\]</a><br>"
-			. += "<a href='?src=[REF(src)];hud=m;quirk=1'>\[See quirks\]</a>"
-
-		if(HAS_TRAIT(user, TRAIT_SECURITY_HUD))
-			if(!user.stat && user != src)
-			//|| !user.canmove || user.restrained()) Fluff: Sechuds have eye-tracking technology and sets 'arrest' to people that the wearer looks and blinks at.
-				var/criminal = "None"
-
-				R = find_record("name", perpname, GLOB.data_core.security)
-				if(R)
-					criminal = R.fields["criminal"]
-
-				. += "<span class='deptradio'>Criminal status:</span> <a href='?src=[REF(src)];hud=s;status=1'>\[[criminal]\]</a>"
-				. += jointext(list("<span class='deptradio'>Security record:</span> <a href='?src=[REF(src)];hud=s;view=1'>\[View\]</a>",
-					"<a href='?src=[REF(src)];hud=s;add_citation=1'>\[Add citation\]</a>",
-					"<a href='?src=[REF(src)];hud=s;add_crime=1'>\[Add crime\]</a>",
-					"<a href='?src=[REF(src)];hud=s;view_comment=1'>\[View comment log\]</a>",
-					"<a href='?src=[REF(src)];hud=s;add_comment=1'>\[Add comment\]</a>"), "")
-	else if(isobserver(user))
-		. += span_info("<b>Traits:</b> [get_quirk_string(FALSE, CAT_QUIRK_ALL)]")
-	. += "*---------*</span>"
 
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE, user, .)
 
@@ -437,8 +350,7 @@
 	for(var/V in status_effects)
 		var/datum/status_effect/E = V
 		if(E.examine_text)
-			var/new_text = replacetext(E.examine_text, "SUBJECTPRONOUN", pronoun_replacement)
-			new_text = replacetext(new_text, "[pronoun_replacement] is", "[pronoun_replacement] [p_are()]") //To make sure something become "They are" or "She is", not "They are" and "She are"
+			var/new_text = replacetext_char(E.examine_text, "SUBJECTPRONOUN", pronoun_replacement)
 			dat += "[new_text]\n" //dat.Join("\n") doesn't work here, for some reason
 	if(dat.len)
 		return dat.Join()
@@ -452,13 +364,17 @@
 		if(-INFINITY to 25)
 			age_text = "very young"
 		if(26 to 35)
-			age_text = "of adult age"
+			age_text = "young"
 		if(36 to 55)
 			age_text = "middle-aged"
 		if(56 to 75)
-			age_text = "rather old"
+			age_text = "old enough"
 		if(76 to 100)
-			age_text = "very old"
+			age_text = "an elderly "
+			if(gender == FEMALE)
+				age_text += "woman"
+			else
+				age_text += "man"
 		if(101 to INFINITY)
-			age_text = "withering away"
-	. += list(span_notice("[p_they(TRUE)] appear[p_s()] to be [age_text]."))
+			age_text = "about to turn to dust"
+	. += list(span_notice("<hr>[src] appears to be [age_text]."))

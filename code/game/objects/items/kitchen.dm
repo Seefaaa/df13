@@ -2,18 +2,20 @@
  * Contains:
  * Fork
  * Kitchen knives
+ * Ritual Knife
+ * Bloodletter
+ * Butcher's cleaver
+ * Combat Knife
  * Rolling Pins
  * Plastic Utensils
  */
-
-#define PLASTIC_BREAK_PROBABILITY 25
 
 /obj/item/kitchen
 	icon = 'icons/obj/kitchen.dmi'
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/kitchen_righthand.dmi'
 
-/obj/item/kitchen/Initialize(mapload)
+/obj/item/kitchen/Initialize()
 	. = ..()
 	ADD_TRAIT(src, TRAIT_APC_SHOCKING, INNATE_TRAIT)
 
@@ -31,12 +33,11 @@
 	attack_verb_continuous = list("attacks", "stabs", "pokes")
 	attack_verb_simple = list("attack", "stab", "poke")
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
-	sharpness = SHARP_POINTY
+	atck_type = SHARP
 	var/datum/reagent/forkload //used to eat omelette
 	custom_price = PAYCHECK_PRISONER
 
-/obj/item/kitchen/fork/Initialize(mapload)
+/obj/item/kitchen/fork/Initialize()
 	. = ..()
 	AddElement(/datum/element/eyestab)
 
@@ -61,46 +62,48 @@
 	else
 		return ..()
 
-/obj/item/kitchen/fork/plastic
-	name = "plastic fork"
-	desc = "Really takes you back to highschool lunch."
-	icon_state = "plastic_fork"
-	force = 0
-	w_class = WEIGHT_CLASS_TINY
-	throwforce = 0
-	custom_materials = list(/datum/material/plastic=80)
-	custom_price = PAYCHECK_PRISONER * 2
-
-/obj/item/kitchen/fork/plastic/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/easily_fragmented, PLASTIC_BREAK_PROBABILITY)
-
-/obj/item/knife/kitchen
+/obj/item/kitchen/knife
 	name = "kitchen knife"
-	desc = "A general purpose Chef's Knife made by SpaceCook Incorporated. Guaranteed to stay sharp for years to come."
-
-/obj/item/knife/plastic
-	name = "plastic knife"
-	icon_state = "plastic_knife"
+	icon = 'dwarfs/icons/items/kitchen.dmi'
+	icon_state = "kitchen_knife"
 	inhand_icon_state = "knife"
-	desc = "A very safe, barely sharp knife made of plastic. Good for cutting food and not much else."
-	force = 0
-	w_class = WEIGHT_CLASS_TINY
-	throwforce = 0
-	throw_range = 5
-	custom_materials = list(/datum/material/plastic = 100)
-	attack_verb_continuous = list("prods", "whiffs", "scratches", "pokes")
-	attack_verb_simple = list("prod", "whiff", "scratch", "poke")
-	sharpness = SHARP_EDGED
-	custom_price = PAYCHECK_PRISONER * 2
+	worn_icon_state = "knife"
+	desc = "A general purpose Chef's Knife made by SpaceCook Incorporated. Guaranteed to stay sharp for years to come."
+	flags_1 = CONDUCT_1
+	force = 10
+	w_class = WEIGHT_CLASS_SMALL
+	throwforce = 10
+	hitsound = 'sound/weapons/bladeslice.ogg'
+	throw_speed = 3
+	throw_range = 6
+	custom_materials = list(/datum/material/iron=12000)
+	attack_verb_continuous = list("slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
+	attack_verb_simple = list("slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
+	atck_type = SHARP
+	var/bayonet = FALSE //Can this be attached to a gun?
+	wound_bonus = -5
+	bare_wound_bonus = 10
+	tool_behaviour = TOOL_KNIFE
 
-/obj/item/knife/plastic/Initialize(mapload)
+/obj/item/kitchen/knife/Initialize()
 	. = ..()
-	AddElement(/datum/element/easily_fragmented, PLASTIC_BREAK_PROBABILITY)
+	AddElement(/datum/element/eyestab)
+	set_butchering()
+
+///Adds the butchering component, used to override stats for special cases
+/obj/item/kitchen/knife/proc/set_butchering()
+	AddComponent(/datum/component/butchering, 80 - force)
+
+/obj/item/kitchen/knife/suicide_act(mob/user)
+	user.visible_message(pick(span_suicide("[user] is slitting [user.p_their()] wrists with the [src.name]! It looks like [user.p_theyre()] trying to commit suicide.") , \
+						span_suicide("[user] is slitting [user.p_their()] throat with the [src.name]! It looks like [user.p_theyre()] trying to commit suicide.") , \
+						span_suicide("[user] is slitting [user.p_their()] stomach open with the [src.name]! It looks like [user.p_theyre()] trying to commit seppuku.")))
+	return (BRUTELOSS)
 
 /obj/item/kitchen/rollingpin
 	name = "rolling pin"
 	desc = "Used to knock out the Bartender."
+	icon = 'dwarfs/icons/items/kitchen.dmi'
 	icon_state = "rolling_pin"
 	worn_icon_state = "rolling_pin"
 	force = 8
@@ -130,22 +133,7 @@
 	throw_range = 5
 	attack_verb_simple = list("whack", "spoon", "tap")
 	attack_verb_continuous = list("whacks", "spoons", "taps")
-	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	custom_materials = list(/datum/material/iron=120)
 	custom_price = PAYCHECK_PRISONER * 5
 	tool_behaviour = TOOL_MINING
 	toolspeed = 25 // Literally 25 times worse than the base pickaxe
-
-/obj/item/kitchen/spoon/plastic
-	name = "plastic spoon"
-	icon_state = "plastic_spoon"
-	force = 0
-	custom_materials = list(/datum/material/plastic=120)
-	custom_price = PAYCHECK_PRISONER * 2
-	toolspeed = 75 // The plastic spoon takes 5 minutes to dig through a single mineral turf... It's one, continuous, breakable, do_after...
-
-/obj/item/kitchen/spoon/plastic/Initialize(mapload)
-	. = ..()
-	AddElement(/datum/element/easily_fragmented, PLASTIC_BREAK_PROBABILITY)
-
-#undef PLASTIC_BREAK_PROBABILITY

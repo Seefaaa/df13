@@ -13,7 +13,7 @@
 	/// description of weather
 	var/desc = "Heavy gusts of wind blanket the area, periodically knocking down anyone caught in the open."
 	/// The message displayed in chat to foreshadow the weather's beginning
-	var/telegraph_message = "<span class='warning'>The wind begins to pick up.</span>"
+	var/telegraph_message = span_warning("Wind begins to pick up.")
 	/// In deciseconds, how long from the beginning of the telegraph until the weather begins
 	var/telegraph_duration = 300
 	/// The sound file played to everyone on an affected z-level
@@ -22,7 +22,7 @@
 	var/telegraph_overlay
 
 	/// Displayed in chat once the weather begins in earnest
-	var/weather_message = "<span class='userdanger'>The wind begins to blow ferociously!</span>"
+	var/weather_message = span_userdanger("The wind begins to blow ferociously!")
 	/// In deciseconds, how long the weather lasts once it begins
 	var/weather_duration = 1200
 	/// See above - this is the lowest possible duration
@@ -37,7 +37,7 @@
 	var/weather_color = null
 
 	/// Displayed once the weather is over
-	var/end_message = "<span class='danger'>The wind relents its assault.</span>"
+	var/end_message = span_danger("The wind relents its assault.")
 	/// In deciseconds, how long the "wind-down" graphic will appear before vanishing entirely
 	var/end_duration = 300
 	/// Sound that plays while weather is ending
@@ -46,7 +46,7 @@
 	var/end_overlay
 
 	/// Types of area to affect
-	var/area_type = /area/space
+	var/area_type = /area/dwarf/fortress
 	/// TRUE value protects areas with outdoors marked as false, regardless of area type
 	var/protect_indoors = FALSE
 	/// Areas to be affected by the weather, calculated when the weather begins
@@ -62,8 +62,8 @@
 	var/overlay_plane = ABOVE_LIGHTING_PLANE
 	/// If the weather has no purpose other than looks
 	var/aesthetic = FALSE
-	/// Used by mobs (or movables containing mobs, such as enviro bags) to prevent them from being affected by the weather.
-	var/immunity_type
+	/// Used by mobs to prevent them from being affected by the weather
+	var/immunity_type = WEATHER_STORM
 
 	/// The stage of the weather, from 1-4
 	var/stage = END_STAGE
@@ -71,7 +71,7 @@
 	/// Weight amongst other eligible weather. If zero, will never happen randomly.
 	var/probability = 0
 	/// The z-level trait to affect when run randomly or when not overridden.
-	var/target_trait = ZTRAIT_STATION
+	var/target_trait = ZTRAIT_FORTRESS
 
 	/// Whether a barometer can predict when the weather will happen
 	var/barometer_predictable = FALSE
@@ -103,12 +103,12 @@
 		affectareas -= get_areas(V)
 	for(var/V in affectareas)
 		var/area/A = V
-		if(protect_indoors && !A.outdoors)
+		if(protect_indoors)
 			continue
 		if(A.z in impacted_z_levels)
 			impacted_areas |= A
 	weather_duration = rand(weather_duration_lower, weather_duration_upper)
-	SSweather.processing |= src
+	START_PROCESSING(SSweather, src)
 	update_areas()
 	for(var/z_level in impacted_z_levels)
 		for(var/mob/player as anything in SSmobs.clients_by_zlevel[z_level])
@@ -182,7 +182,7 @@
 		return
 	SEND_GLOBAL_SIGNAL(COMSIG_WEATHER_END(type))
 	stage = END_STAGE
-	SSweather.processing -= src
+	STOP_PROCESSING(SSweather, src)
 	update_areas()
 
 /**
@@ -198,14 +198,14 @@
 	if(!(mob_turf.z in impacted_z_levels))
 		return
 
-	if((immunity_type && HAS_TRAIT(mob_to_check, immunity_type)) || HAS_TRAIT(mob_to_check, TRAIT_WEATHER_IMMUNE))
-		return
+	if(istype(mob_to_check.loc, /obj/structure/closet))
+		var/obj/structure/closet/current_locker = mob_to_check.loc
+		if(current_locker.weather_protection)
+			if((immunity_type in current_locker.weather_protection) || (WEATHER_ALL in current_locker.weather_protection))
+				return
 
-	var/atom/loc_to_check = mob_to_check.loc
-	while(loc_to_check != mob_turf)
-		if((immunity_type && HAS_TRAIT(loc_to_check, immunity_type)) || HAS_TRAIT(loc_to_check, TRAIT_WEATHER_IMMUNE))
-			return
-		loc_to_check = loc_to_check.loc
+	if((immunity_type in mob_to_check.weather_immunities) || (WEATHER_ALL in mob_to_check.weather_immunities))
+		return
 
 	if(!(get_area(mob_to_check) in impacted_areas))
 		return

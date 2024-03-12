@@ -130,7 +130,7 @@
 		return
 	if(QDELETED(wielder) || is_obscured())
 		return
-	if(wielder.body_position == LYING_DOWN || !wielder.has_gravity(wielder.loc))
+	if(wielder.body_position == LYING_DOWN)
 		return
 
 	var/half_our_blood = bloody_shoes[last_blood_state] / 2
@@ -144,7 +144,7 @@
 			add_parent_to_footprint(oldLocFP)
 			if (!(oldLocFP.exited_dirs & wielder.dir))
 				oldLocFP.exited_dirs |= wielder.dir
-				oldLocFP.update_appearance()
+				oldLocFP.update_icon()
 		else if(find_pool_by_blood_state(oldLocTurf))
 			// No footprints in the tile we left, but there was some other blood pool there. Add exit footprints on it
 			bloody_shoes[last_blood_state] -= half_our_blood
@@ -157,7 +157,7 @@
 				add_parent_to_footprint(oldLocFP)
 				oldLocFP.bloodiness = half_our_blood
 				oldLocFP.add_blood_DNA(parent_atom.return_blood_DNA())
-				oldLocFP.update_appearance()
+				oldLocFP.update_icon()
 
 			half_our_blood = bloody_shoes[last_blood_state] / 2
 
@@ -177,7 +177,7 @@
 			add_parent_to_footprint(FP)
 			FP.bloodiness = half_our_blood
 			FP.add_blood_DNA(parent_atom.return_blood_DNA())
-			FP.update_appearance()
+			FP.update_icon()
 
 
 /**
@@ -198,7 +198,7 @@
 		if((bloody_shoes[last_blood_state] / 2) >= BLOOD_FOOTPRINTS_MIN && !(pool_FP.entered_dirs & wielder.dir))
 			// If our feet are bloody enough, add an entered dir
 			pool_FP.entered_dirs |= wielder.dir
-			pool_FP.update_appearance()
+			pool_FP.update_icon()
 
 	share_blood(pool)
 

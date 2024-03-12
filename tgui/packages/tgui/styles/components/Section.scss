@@ -10,7 +10,11 @@
 
 $title-text-color: base.$color-fg !default;
 $background-color: base.$color-bg-section !default;
-$separator-color: colors.$primary !default;
+$separator-color: lighten(base.$color-bg-section, 30%) !default;
+$shadow-color: rgba(0, 0, 0, 0.5) !default;
+$shadow-type: inset !default;
+$shadow-size: 0.5em !default;
+$shadow-offset: 0 0 !default;
 
 .Section {
   position: relative;
@@ -27,6 +31,7 @@ $separator-color: colors.$primary !default;
 .Section__title {
   position: relative;
   padding: 0.5em;
+  padding-bottom: 0.7em;
   border-bottom: base.em(2px) solid $separator-color;
 }
 

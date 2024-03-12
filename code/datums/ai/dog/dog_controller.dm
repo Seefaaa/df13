@@ -35,7 +35,7 @@
 /datum/ai_controller/dog/UnpossessPawn(destroy)
 	var/obj/item/carried_item = blackboard[BB_SIMPLE_CARRY_ITEM]
 	if(carried_item)
-		pawn.visible_message(span_danger("[pawn] drops [carried_item]"))
+		pawn.visible_message("<span='danger'>[pawn] drops [carried_item].</span>")
 		carried_item.forceMove(pawn.drop_location())
 		blackboard[BB_SIMPLE_CARRY_ITEM] = null
 	UnregisterSignal(pawn, list(COMSIG_ATOM_ATTACK_HAND, COMSIG_PARENT_EXAMINE, COMSIG_CLICK_ALT, COMSIG_LIVING_DEATH, COMSIG_GLOB_CARBON_THROW_THING, COMSIG_PARENT_QDELETING))
@@ -48,12 +48,26 @@
 		return FALSE
 	return ..()
 
-/datum/ai_controller/dog/get_access()
-	var/mob/living/simple_animal/simple_pawn = pawn
-	if(!istype(simple_pawn))
+/datum/ai_controller/dog/PerformIdleBehavior(delta_time)
+	var/mob/living/living_pawn = pawn
+	if(!isturf(living_pawn.loc) || living_pawn.pulledby)
 		return
 
-	return simple_pawn.access_card
+	// if we were just ordered to heel, chill out for a bit
+	if(!COOLDOWN_FINISHED(src, heel_cooldown))
+		return
+
+	// if we're just ditzing around carrying something, occasionally print a message so people know we have something
+	if(blackboard[BB_SIMPLE_CARRY_ITEM] && DT_PROB(5, delta_time))
+		var/obj/item/carry_item = blackboard[BB_SIMPLE_CARRY_ITEM]
+		living_pawn.visible_message(span_notice("[living_pawn] gently teethes on \the [carry_item] in [living_pawn.p_their()] mouth."), vision_distance=COMBAT_MESSAGE_RANGE)
+
+	if(DT_PROB(5, delta_time) && (living_pawn.mobility_flags & MOBILITY_MOVE))
+		var/move_dir = pick(GLOB.alldirs)
+		living_pawn.Move(get_step(living_pawn, move_dir), move_dir)
+	else if(DT_PROB(10, delta_time))
+		living_pawn.manual_emote(pick("dances around.","chases [living_pawn.p_their()] tail!"))
+		living_pawn.AddComponent(/datum/component/spinny)
 
 /// Someone has thrown something, see if it's someone we care about and start listening to the thrown item so we can see if we want to fetch it when it lands
 /datum/ai_controller/dog/proc/listened_throw(datum/source, mob/living/carbon/carbon_thrower)
@@ -80,21 +94,16 @@
 	if(!istype(thrown_thing) || !isturf(thrown_thing.loc) || !can_see(pawn, thrown_thing, length=AI_DOG_VISION_RANGE))
 		return
 
-	var/mob/living/living_pawn = pawn
-	if(IS_DEAD_OR_INCAP(living_pawn))
-		return
 	current_movement_target = thrown_thing
 	blackboard[BB_FETCH_TARGET] = thrown_thing
 	blackboard[BB_FETCH_DELIVER_TO] = throwing_datum.thrower
-	if(living_pawn.buckled)
-		queue_behavior(/datum/ai_behavior/resist)
 	queue_behavior(/datum/ai_behavior/fetch)
 
 /// Someone's interacting with us by hand, see if they're being nice or mean
 /datum/ai_controller/dog/proc/on_attack_hand(datum/source, mob/living/user)
 	SIGNAL_HANDLER
 
-	if(user.combat_mode)
+	if(user.a_intent == INTENT_HARM)
 		unfriend(user)
 	else
 		if(prob(AI_DOG_PET_FRIEND_PROB))
@@ -103,7 +112,7 @@
 		var/list/friends = blackboard[BB_DOG_FRIENDS]
 		if(blackboard[BB_SIMPLE_CARRY_ITEM] && !current_movement_target && friends[WEAKREF(user)])
 			var/obj/item/carried_item = blackboard[BB_SIMPLE_CARRY_ITEM]
-			pawn.visible_message(span_danger("[pawn] drops [carried_item] at [user]'s feet!"))
+			pawn.visible_message("<span='danger'>[pawn] drops [carried_item] at [user]'s feet!</span>")
 			// maybe have a dedicated proc for dropping things
 			carried_item.forceMove(get_turf(user))
 			blackboard[BB_SIMPLE_CARRY_ITEM] = null
@@ -146,7 +155,7 @@
 	if(!carried_item)
 		return
 
-	ol_yeller.visible_message(span_danger("[ol_yeller] drops [carried_item] as [ol_yeller.p_they()] die[ol_yeller.p_s()]."))
+	ol_yeller.visible_message("<span='danger'>[ol_yeller] drops [carried_item] as [ol_yeller.p_they()] die[ol_yeller.p_s()].</span>")
 	carried_item.forceMove(ol_yeller.drop_location())
 	blackboard[BB_SIMPLE_CARRY_ITEM] = null
 
@@ -200,13 +209,13 @@
 
 	var/spoken_text = speech_args[SPEECH_MESSAGE] // probably should check for full words
 	var/command
-	if(findtext(spoken_text, "heel") || findtext(spoken_text, "sit") || findtext(spoken_text, "stay"))
+	if(findtext_char(spoken_text, "lay down") || findtext_char(spoken_text, "sit") || findtext_char(spoken_text, "stand"))
 		command = COMMAND_HEEL
-	else if(findtext(spoken_text, "fetch") || findtext(spoken_text, "get it"))
+	else if(findtext_char(spoken_text, "fetch"))
 		command = COMMAND_FETCH
-	else if(findtext(spoken_text, "attack") || findtext(spoken_text, "sic"))
+	else if(findtext_char(spoken_text, "attack") || findtext_char(spoken_text, "bite"))
 		command = COMMAND_ATTACK
-	else if(findtext(spoken_text, "play dead"))
+	else if(findtext_char(spoken_text, "die"))
 		command = COMMAND_DIE
 	else
 		return

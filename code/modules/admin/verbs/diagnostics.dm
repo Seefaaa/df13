@@ -1,12 +1,3 @@
-/client/proc/air_status(turf/target)
-	set category = "Debug"
-	set name = "Display Air Status"
-
-	if(!isturf(target))
-		return
-	atmosanalyzer_scan(usr, target, TRUE)
-	SSblackbox.record_feedback("tally", "admin_verb", 1, "Show Air Status") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
 /client/proc/fix_next_move()
 	set category = "Debug"
 	set name = "Unfreeze Everyone"
@@ -86,7 +77,7 @@
 	set name = "Toggle CDN"
 	set category = "Server"
 	var/static/admin_disabled_cdn_transport = null
-	if (alert(usr, "Are you sure you want to toggle the CDN asset transport?", "Confirm", "Yes", "No") != "Yes")
+	if (tgui_alert(usr, "Are you sure you want to toggle the CDN asset transport?", "Confirm", list("Yes", "No")) != "Yes")
 		return
 	var/current_transport = CONFIG_GET(string/asset_transport)
 	if (!current_transport || current_transport == "simple")

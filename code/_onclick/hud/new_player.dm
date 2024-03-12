@@ -23,12 +23,6 @@
 /atom/movable/screen/lobby/proc/SlowInit()
 	return
 
-/atom/movable/screen/lobby/background
-	layer = LOBBY_BACKGROUND_LAYER
-	icon = 'icons/hud/lobby/background.dmi'
-	icon_state = "background"
-	screen_loc = "TOP,CENTER:-61"
-
 /atom/movable/screen/lobby/button
 	///Is the button currently enabled?
 	var/enabled = TRUE
@@ -84,8 +78,8 @@
 
 ///Prefs menu
 /atom/movable/screen/lobby/button/character_setup
-	screen_loc = "TOP:-70,CENTER:-54"
-	icon = 'icons/hud/lobby/character_setup.dmi'
+	screen_loc = "EAST-4:26,TOP:-38"
+	icon = 'icons/hud/lobbyv2/character_setup.dmi'
 	icon_state = "character_setup"
 	base_icon_state = "character_setup"
 
@@ -94,15 +88,12 @@
 	if(!.)
 		return
 
-	var/datum/preferences/preferences = hud.mymob.client.prefs
-	preferences.current_window = PREFERENCE_TAB_CHARACTER_PREFERENCES
-	preferences.update_static_data(usr)
-	preferences.ui_interact(usr)
+	hud.mymob.client.prefs.ShowChoices(hud.mymob)
 
 ///Button that appears before the game has started
 /atom/movable/screen/lobby/button/ready
-	screen_loc = "TOP:-8,CENTER:-65"
-	icon = 'icons/hud/lobby/ready.dmi'
+	screen_loc = "EAST-4:26,TOP:-2"
+	icon = 'icons/hud/lobbyv2/ready.dmi'
 	icon_state = "not_ready"
 	base_icon_state = "not_ready"
 	var/ready = FALSE
@@ -135,6 +126,9 @@
 	if(!.)
 		return
 	var/mob/dead/new_player/new_player = hud.mymob
+	if(!(new_player?.client?.holder))
+		to_chat(hud.mymob, span_boldwarning("Disabled for testing."))
+		return
 	ready = !ready
 	if(ready)
 		new_player.ready = PLAYER_READY_TO_PLAY
@@ -146,8 +140,8 @@
 
 ///Shown when the game has started
 /atom/movable/screen/lobby/button/join
-	screen_loc = "TOP:-13,CENTER:-58"
-	icon = 'icons/hud/lobby/join.dmi'
+	screen_loc = "EAST-4:26,TOP:-2"
+	icon = 'icons/hud/lobbyv2/join.dmi'
 	icon_state = "" //Default to not visible
 	base_icon_state = "join_game"
 	enabled = FALSE
@@ -168,7 +162,7 @@
 	if(!.)
 		return
 	if(!SSticker?.IsRoundInProgress())
-		to_chat(hud.mymob, span_boldwarning("The round is either not ready, or has already finished..."))
+		to_chat(hud.mymob, span_boldwarning("The round did not start yet or has already ended..."))
 		return
 
 	//Determines Relevent Population Cap
@@ -194,7 +188,11 @@
 			SSticker.queued_players += new_player
 			to_chat(new_player, span_notice("You have been added to the queue to join the game. Your position in queue is [SSticker.queued_players.len]."))
 		return
-	new_player.LateChoices()
+	if(check_whitelist(new_player?.client?.ckey) || new_player?.client?.holder)
+		new_player.Try_Latejion()
+	else
+		to_chat(hud.mymob, span_boldwarning("Disabled for testing."))
+		return
 
 /atom/movable/screen/lobby/button/join/proc/show_join_button()
 	SIGNAL_HANDLER
@@ -209,8 +207,8 @@
 	RegisterSignal(SSticker, COMSIG_TICKER_ENTER_SETTING_UP, .proc/show_join_button)
 
 /atom/movable/screen/lobby/button/observe
-	screen_loc = "TOP:-40,CENTER:-54"
-	icon = 'icons/hud/lobby/observe.dmi'
+	screen_loc = "EAST-4:26,TOP:-20"
+	icon = 'icons/hud/lobbyv2/observe.dmi'
 	icon_state = "observe_disabled"
 	base_icon_state = "observe"
 	enabled = FALSE
@@ -227,114 +225,13 @@
 	if(!.)
 		return
 	var/mob/dead/new_player/new_player = hud.mymob
-	new_player.make_me_an_observer()
+	if(new_player?.client?.holder)
+		new_player.make_me_an_observer()
+	else
+		to_chat(hud.mymob, span_boldwarning("Disabled for testing."))
 
 /atom/movable/screen/lobby/button/observe/proc/enable_observing()
 	SIGNAL_HANDLER
 	flick("[base_icon_state]_enabled", src)
 	set_button_status(TRUE)
 	UnregisterSignal(SSticker, COMSIG_TICKER_ENTER_PREGAME, .proc/enable_observing)
-
-/atom/movable/screen/lobby/button/settings
-	icon = 'icons/hud/lobby/bottom_buttons.dmi'
-	icon_state = "settings"
-	base_icon_state = "settings"
-	screen_loc = "TOP:-122,CENTER:+30"
-
-/atom/movable/screen/lobby/button/settings/Click(location, control, params)
-	. = ..()
-	if(!.)
-		return
-
-	var/datum/preferences/preferences = hud.mymob.client.prefs
-	preferences.current_window = PREFERENCE_TAB_GAME_PREFERENCES
-	preferences.update_static_data(usr)
-	preferences.ui_interact(usr)
-
-/atom/movable/screen/lobby/button/changelog_button
-	icon = 'icons/hud/lobby/bottom_buttons.dmi'
-	icon_state = "changelog"
-	base_icon_state = "changelog"
-	screen_loc ="TOP:-122,CENTER:+58"
-
-
-/atom/movable/screen/lobby/button/crew_manifest
-	icon = 'icons/hud/lobby/bottom_buttons.dmi'
-	icon_state = "crew_manifest"
-	base_icon_state = "crew_manifest"
-	screen_loc = "TOP:-122,CENTER:+2"
-
-/atom/movable/screen/lobby/button/crew_manifest/Click(location, control, params)
-	. = ..()
-	if(!.)
-		return
-	var/mob/dead/new_player/new_player = hud.mymob
-	new_player.ViewManifest()
-
-/atom/movable/screen/lobby/button/changelog_button/Click(location, control, params)
-	. = ..()
-	usr.client?.changelog()
-
-/atom/movable/screen/lobby/button/poll
-	icon = 'icons/hud/lobby/bottom_buttons.dmi'
-	icon_state = "poll"
-	base_icon_state = "poll"
-	screen_loc = "TOP:-122,CENTER:-26"
-
-	var/new_poll = FALSE
-
-/atom/movable/screen/lobby/button/poll/SlowInit(mapload)
-	. = ..()
-	if(!usr)
-		return
-	var/mob/dead/new_player/new_player = usr
-	if(is_guest_key(new_player.key))
-		set_button_status(FALSE)
-		return
-	if(!SSdbcore.Connect())
-		set_button_status(FALSE)
-		return
-	var/isadmin = FALSE
-	if(new_player.client?.holder)
-		isadmin = TRUE
-	var/datum/db_query/query_get_new_polls = SSdbcore.NewQuery({"
-		SELECT id FROM [format_table_name("poll_question")]
-		WHERE (adminonly = 0 OR :isadmin = 1)
-		AND Now() BETWEEN starttime AND endtime
-		AND deleted = 0
-		AND id NOT IN (
-			SELECT pollid FROM [format_table_name("poll_vote")]
-			WHERE ckey = :ckey
-			AND deleted = 0
-		)
-		AND id NOT IN (
-			SELECT pollid FROM [format_table_name("poll_textreply")]
-			WHERE ckey = :ckey
-			AND deleted = 0
-		)
-	"}, list("isadmin" = isadmin, "ckey" = new_player.ckey))
-	if(!query_get_new_polls.Execute())
-		qdel(query_get_new_polls)
-		set_button_status(FALSE)
-		return
-	if(query_get_new_polls.NextRow())
-		new_poll = TRUE
-	else
-		new_poll = FALSE
-	update_appearance(UPDATE_OVERLAYS)
-	qdel(query_get_new_polls)
-	if(QDELETED(new_player))
-		set_button_status(FALSE)
-		return
-
-/atom/movable/screen/lobby/button/poll/update_overlays()
-	. = ..()
-	if(new_poll)
-		. += mutable_appearance('icons/hud/lobby/poll_overlay.dmi', "new_poll")
-
-/atom/movable/screen/lobby/button/poll/Click(location, control, params)
-	. = ..()
-	if(!.)
-		return
-	var/mob/dead/new_player/new_player = hud.mymob
-	new_player.handle_player_polling()

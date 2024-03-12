@@ -20,7 +20,6 @@
 	pixel_x = -16
 	base_pixel_x = -16
 	layer = LARGE_MOB_LAYER
-	plane = GAME_PLANE_UPPER_FOV_HIDDEN
 	speed = 10
 	stat_attack = HARD_CRIT
 	robust_searching = 1
@@ -57,13 +56,12 @@
 
 /obj/effect/temp_visual/leaper_projectile_impact
 	name = "leaper bubble"
-	icon = 'icons/obj/guns/projectiles.dmi'
+	icon = 'icons/obj/projectiles.dmi'
 	icon_state = "leaper_bubble_pop"
 	layer = ABOVE_ALL_MOB_LAYER
-	plane = GAME_PLANE_UPPER_FOV_HIDDEN
 	duration = 3
 
-/obj/effect/temp_visual/leaper_projectile_impact/Initialize(mapload)
+/obj/effect/temp_visual/leaper_projectile_impact/Initialize()
 	. = ..()
 	new /obj/effect/decal/cleanable/leaper_sludge(get_turf(src))
 
@@ -73,26 +71,21 @@
 	icon = 'icons/effects/tomatodecal.dmi'
 	icon_state = "tomato_floor1"
 
-/obj/effect/decal/cleanable/leaper_sludge/Initialize(mapload, list/datum/disease/diseases)
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_LEAPER, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
-
 /obj/structure/leaper_bubble
 	name = "leaper bubble"
 	desc = "A floating bubble containing leaper venom. The contents are under a surprising amount of pressure."
-	icon = 'icons/obj/guns/projectiles.dmi'
+	icon = 'icons/obj/projectiles.dmi'
 	icon_state = "leaper"
 	max_integrity = 10
 	density = FALSE
 
-/obj/structure/leaper_bubble/Initialize(mapload)
+/obj/structure/leaper_bubble/Initialize()
 	. = ..()
 	QDEL_IN(src, 100)
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = .proc/on_entered,
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_LEAPER, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 /obj/structure/leaper_bubble/ComponentInitialize()
 	. = ..()
@@ -124,7 +117,7 @@
 	description = "A toxin spat out by leapers that, while harmless in small doses, quickly creates a toxic reaction if too much is in the body."
 	color = "#801E28" // rgb: 128, 30, 40
 	toxpwr = 0
-	taste_description = "french cuisine"
+	taste_description = "french kitchen"
 	taste_mult = 1.3
 
 /datum/reagent/toxin/leaper_venom/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
@@ -138,21 +131,19 @@
 	icon = 'icons/effects/96x96.dmi'
 	icon_state = "lily_pad"
 	layer = BELOW_MOB_LAYER
-	plane = GAME_PLANE
 	pixel_x = -32
 	base_pixel_x = -32
 	pixel_y = -32
 	base_pixel_y = -32
 	duration = 30
 
-/mob/living/simple_animal/hostile/jungle/leaper/Initialize(mapload)
+/mob/living/simple_animal/hostile/jungle/leaper/Initialize()
 	. = ..()
 	remove_verb(src, /mob/living/verb/pulled)
-	add_cell_sample()
 
 /mob/living/simple_animal/hostile/jungle/leaper/CtrlClickOn(atom/A)
 	face_atom(A)
-	GiveTarget(A)
+	target = A
 	if(!isturf(loc))
 		return
 	if(next_move > world.time)
@@ -281,9 +272,5 @@
 			icon_state = "leaper_alert"
 			return
 	icon_state = "leaper"
-
-/mob/living/simple_animal/hostile/jungle/leaper/add_cell_sample()
-	. = ..()
-	AddElement(/datum/element/swabable, CELL_LINE_TABLE_LEAPER, CELL_VIRUS_TABLE_GENERIC_MOB, 1, 5)
 
 #undef PLAYER_HOP_DELAY

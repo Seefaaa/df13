@@ -1,6 +1,6 @@
 //Asteroid turfs
 /datum/map_generator_module/bottom_layer/asteroid_turfs
-	spawnableTurfs = list(/turf/open/floor/plating/asteroid = 100)
+	spawnableTurfs = list(/turf/open/floor/stone = 100)
 
 /datum/map_generator_module/bottom_layer/asteroid_walls
 	spawnableTurfs = list(/turf/closed/mineral = 100)
@@ -19,9 +19,7 @@
 //Monsters
 /datum/map_generator_module/splatter_layer/asteroid_monsters
 	spawnableTurfs = list()
-	spawnableAtoms = list(/mob/living/simple_animal/hostile/asteroid/basilisk = 10, \
-		/mob/living/simple_animal/hostile/asteroid/hivelord = 10, \
-		/mob/living/simple_animal/hostile/asteroid/goliath = 10)
+	spawnableAtoms = list(/mob/living/simple_animal/hostile/asteroid/goliath = 10)
 
 
 // GENERATORS

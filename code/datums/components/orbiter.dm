@@ -69,8 +69,6 @@
 			orbiter.orbiting.end_orbit(orbiter)
 	orbiter_list[orbiter] = TRUE
 	orbiter.orbiting = src
-
-	ADD_TRAIT(orbiter, TRAIT_NO_FLOATING_ANIM, ORBITING_TRAIT)
 	RegisterSignal(orbiter, COMSIG_MOVABLE_MOVED, .proc/orbiter_move_react)
 
 	SEND_SIGNAL(parent, COMSIG_ATOM_ORBIT_BEGIN, orbiter)
@@ -100,8 +98,8 @@
 		var/atom/movable/movable_parent = parent
 		orbiter.glide_size = movable_parent.glide_size
 
+	to_chat(orbiter, span_notice("Orbiting <b>[parent]</b>."))
 	orbiter.abstract_move(get_turf(parent))
-	to_chat(orbiter, span_notice("Now orbiting [parent]."))
 
 /datum/component/orbiter/proc/end_orbit(atom/movable/orbiter, refreshing=FALSE)
 	if(!orbiter_list[orbiter])
@@ -119,8 +117,6 @@
 		var/mob/orbiter_mob = orbiter
 		orbiter_mob.updating_glide_size = TRUE
 		orbiter_mob.glide_size = 8
-
-	REMOVE_TRAIT(orbiter, TRAIT_NO_FLOATING_ANIM, ORBITING_TRAIT)
 
 	if(!refreshing && !length(orbiter_list) && !QDELING(src))
 		qdel(src)

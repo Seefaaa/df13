@@ -1,10 +1,5 @@
 #define RESTART_COUNTER_PATH "data/round_counter.txt"
 
-/// Force the log directory to be something specific in the data/logs folder
-#define OVERRIDE_LOG_DIRECTORY_PARAMETER "log-directory"
-/// Prevent the master controller from starting automatically
-#define NO_INIT_PARAMETER "no-init"
-
 GLOBAL_VAR(restart_counter)
 
 /**
@@ -23,30 +18,25 @@ GLOBAL_VAR(restart_counter)
  * For clarity, this proc gets triggered later in the initialization pipeline, it is not the first thing to happen, as it might seem.
  *
  * Initialization Pipeline:
- * Global vars are new()'ed, (including config, glob, and the master controller will also new and preinit all subsystems when it gets new()ed)
- * Compiled in maps are loaded (mainly centcom). all areas/turfs/objs/mobs(ATOMs) in these maps will be new()ed
- * world/New() (You are here)
- * Once world/New() returns, client's can connect.
- * 1 second sleep
- * Master Controller initialization.
- * Subsystem initialization.
- * Non-compiled-in maps are maploaded, all atoms are new()ed
- * All atoms in both compiled and uncompiled maps are initialized()
+ *		Global vars are new()'ed, (including config, glob, and the master controller will also new and preinit all subsystems when it gets new()ed)
+ *		Compiled in maps are loaded (mainly centcom). all areas/turfs/objs/mobs(ATOMs) in these maps will be new()ed
+ *		world/New() (You are here)
+ *		Once world/New() returns, client's can connect.
+ *		1 second sleep
+ *		Master Controller initialization.
+ *		Subsystem initialization.
+ *			Non-compiled-in maps are maploaded, all atoms are new()ed
+ *			All atoms in both compiled and uncompiled maps are initialized()
  */
 /world/New()
 
+	enable_debugger()
+
 	log_world("World loaded at [time_stamp()]!")
 
-	make_datum_references_lists() //initialises global lists for referencing frequently used datums (so that we only ever do it once)
+	make_datum_references_lists()	//initialises global lists for referencing frequently used datums (so that we only ever do it once)
 
-	GLOB.config_error_log = GLOB.world_manifest_log = GLOB.world_pda_log = GLOB.world_job_debug_log = GLOB.sql_error_log = GLOB.world_href_log = GLOB.world_runtime_log = GLOB.world_attack_log = GLOB.world_game_log = GLOB.world_econ_log = GLOB.world_shuttle_log = "data/logs/config_error.[GUID()].log" //temporary file used to record errors with loading config, moved to log directory once logging is set bl
-	#ifdef REFERENCE_DOING_IT_LIVE
-	GLOB.harddel_log = GLOB.world_game_log
-	#endif
-
-	GLOB.revdata = new
-
-	InitTgs()
+	GLOB.config_error_log = GLOB.world_manifest_log = GLOB.world_job_debug_log = GLOB.sql_error_log = GLOB.world_href_log = GLOB.world_runtime_log = GLOB.world_attack_log = GLOB.world_game_log = "data/logs/config_error.[GUID()].log" //temporary file used to record errors with loading config, moved to log directory once logging is set bl
 
 	config.Load(params[OVERRIDE_CONFIG_DIRECTORY_PARAMETER])
 
@@ -61,14 +51,11 @@ GLOBAL_VAR(restart_counter)
 
 #ifndef USE_CUSTOM_ERROR_HANDLER
 	world.log = file("[GLOB.log_directory]/dd.log")
-#else
-	if (TgsAvailable())
-		world.log = file("[GLOB.log_directory]/dd.log") //not all runtimes trigger world/Error, so this is the only way to ensure we can see all of them.
 #endif
 
 	LoadVerbs(/datum/verbs/menu)
-	if(CONFIG_GET(flag/usewhitelist))
-		load_whitelist()
+
+	load_whitelist()
 
 	GLOB.timezoneOffset = text2num(time2text(0,"hh")) * 36000
 
@@ -80,18 +67,10 @@ GLOBAL_VAR(restart_counter)
 		return
 
 	Master.Initialize(10, FALSE, TRUE)
-
 	#ifdef UNIT_TESTS
-	HandleTestRun()
+	spawn(100)
+		HandleTestRun()
 	#endif
-
-	#ifdef AUTOWIKI
-	setup_autowiki()
-	#endif
-
-/world/proc/InitTgs()
-	TgsNew(new /datum/tgs_event_handler/impl, TGS_SECURITY_TRUSTED)
-	GLOB.revdata.load_tgs_info()
 
 /world/proc/HandleTestRun()
 	//trigger things to run the whole process
@@ -130,21 +109,11 @@ GLOBAL_VAR(restart_counter)
 		GLOB.picture_log_directory = "data/picture_logs/[override_dir]"
 
 	GLOB.world_game_log = "[GLOB.log_directory]/game.log"
-	GLOB.world_silicon_log = "[GLOB.log_directory]/silicon.log"
-	GLOB.world_tool_log = "[GLOB.log_directory]/tools.log"
-	GLOB.world_suspicious_login_log = "[GLOB.log_directory]/suspicious_logins.log"
-	GLOB.world_mecha_log = "[GLOB.log_directory]/mecha.log"
 	GLOB.world_virus_log = "[GLOB.log_directory]/virus.log"
-	GLOB.world_cloning_log = "[GLOB.log_directory]/cloning.log"
 	GLOB.world_asset_log = "[GLOB.log_directory]/asset.log"
 	GLOB.world_attack_log = "[GLOB.log_directory]/attack.log"
-	GLOB.world_econ_log = "[GLOB.log_directory]/econ.log"
-	GLOB.world_pda_log = "[GLOB.log_directory]/pda.log"
-	GLOB.world_uplink_log = "[GLOB.log_directory]/uplink.log"
-	GLOB.world_telecomms_log = "[GLOB.log_directory]/telecomms.log"
 	GLOB.world_manifest_log = "[GLOB.log_directory]/manifest.log"
 	GLOB.world_href_log = "[GLOB.log_directory]/hrefs.log"
-	GLOB.world_mob_tag_log = "[GLOB.log_directory]/mob_tags.log"
 	GLOB.sql_error_log = "[GLOB.log_directory]/sql.log"
 	GLOB.world_qdel_log = "[GLOB.log_directory]/qdel.log"
 	GLOB.world_map_error_log = "[GLOB.log_directory]/map_errors.log"
@@ -153,35 +122,23 @@ GLOBAL_VAR(restart_counter)
 	GLOB.world_job_debug_log = "[GLOB.log_directory]/job_debug.log"
 	GLOB.world_paper_log = "[GLOB.log_directory]/paper.log"
 	GLOB.tgui_log = "[GLOB.log_directory]/tgui.log"
-	GLOB.world_shuttle_log = "[GLOB.log_directory]/shuttle.log"
-
-	GLOB.demo_log = "[GLOB.log_directory]/demo.log"
+	GLOB.world_exrp_log = "[GLOB.log_directory]/exrp.log"
 
 #ifdef UNIT_TESTS
 	GLOB.test_log = "[GLOB.log_directory]/tests.log"
 	start_log(GLOB.test_log)
 #endif
-#ifdef REFERENCE_DOING_IT_LIVE
-	GLOB.harddel_log = "[GLOB.log_directory]/harddels.log"
-	start_log(GLOB.harddel_log)
-#endif
 	start_log(GLOB.world_game_log)
 	start_log(GLOB.world_attack_log)
-	start_log(GLOB.world_econ_log)
-	start_log(GLOB.world_pda_log)
-	start_log(GLOB.world_uplink_log)
-	start_log(GLOB.world_telecomms_log)
 	start_log(GLOB.world_manifest_log)
 	start_log(GLOB.world_href_log)
-	start_log(GLOB.world_mob_tag_log)
 	start_log(GLOB.world_qdel_log)
 	start_log(GLOB.world_runtime_log)
 	start_log(GLOB.world_job_debug_log)
 	start_log(GLOB.tgui_log)
-	start_log(GLOB.world_shuttle_log)
+	start_log(GLOB.world_exrp_log)
 
-	var/latest_changelog = file("[global.config.directory]/../html/changelogs/archive/" + time2text(world.timeofday, "YYYY-MM") + ".yml")
-	GLOB.changelog_hash = fexists(latest_changelog) ? md5(latest_changelog) : 0 //for telling if the changelog has changed recently
+	GLOB.changelog_hash = md5('html/changelog.html') //for telling if the changelog has changed recently
 	if(fexists(GLOB.config_error_log))
 		fcopy(GLOB.config_error_log, "[GLOB.log_directory]/config_error.log")
 		fdel(GLOB.config_error_log)
@@ -189,14 +146,7 @@ GLOBAL_VAR(restart_counter)
 	if(GLOB.round_id)
 		log_game("Round ID: [GLOB.round_id]")
 
-	// This was printed early in startup to the world log and config_error.log,
-	// but those are both private, so let's put the commit info in the runtime
-	// log which is ultimately public.
-	log_runtime(GLOB.revdata.get_log_message())
-
 /world/Topic(T, addr, master, key)
-	TGS_TOPIC //redirect to server tools if necessary
-
 	var/static/list/topic_handlers = TopicHandlers()
 
 	var/list/input = params2list(T)
@@ -216,13 +166,13 @@ GLOBAL_VAR(restart_counter)
 	return handler.TryRun(input)
 
 /world/proc/AnnouncePR(announcement, list/payload)
-	var/static/list/PRcounts = list() //PR id -> number of times announced this round
+	var/static/list/PRcounts = list()	//PR id -> number of times announced this round
 	var/id = "[payload["pull_request"]["id"]]"
 	if(!PRcounts[id])
 		PRcounts[id] = 1
 	else
 		++PRcounts[id]
-		if(PRcounts[id] > CONFIG_GET(number/pr_announcements_per_round))
+		if(PRcounts[id] > PR_ANNOUNCEMENTS_PER_ROUND)
 			return
 
 	var/final_composed = span_announce("PR: [announcement]")
@@ -247,97 +197,46 @@ GLOBAL_VAR(restart_counter)
 		text2file("Success!", "[GLOB.log_directory]/clean_run.lk")
 	else
 		log_world("Test run failed!\n[fail_reasons.Join("\n")]")
-	sleep(0) //yes, 0, this'll let Reboot finish and prevent byond memes
-	qdel(src) //shut it down
+	sleep(0)	//yes, 0, this'll let Reboot finish and prevent byond memes
+	qdel(src)	//shut it down
 
 /world/Reboot(reason = 0, fast_track = FALSE)
 	if (reason || fast_track) //special reboot, do none of the normal stuff
 		if (usr)
 			log_admin("[key_name(usr)] Has requested an immediate world restart via client side debugging tools")
 			message_admins("[key_name_admin(usr)] Has requested an immediate world restart via client side debugging tools")
-		to_chat(world, span_boldannounce("Rebooting World immediately due to host request."))
+		to_chat(world, span_boldannounce("Immediate world reboot requested by server."))
 	else
-		to_chat(world, span_boldannounce("Rebooting world..."))
-		Master.Shutdown() //run SS shutdowns
+		to_chat(world, span_boldannounce("Reboot!"))
+		Master.Shutdown()	//run SS shutdowns
 
 	#ifdef UNIT_TESTS
 	FinishTestRun()
 	return
 	#endif
 
-	if(TgsAvailable())
-		var/do_hard_reboot
-		// check the hard reboot counter
-		var/ruhr = CONFIG_GET(number/rounds_until_hard_restart)
-		switch(ruhr)
-			if(-1)
-				do_hard_reboot = FALSE
-			if(0)
-				do_hard_reboot = TRUE
-			else
-				if(GLOB.restart_counter >= ruhr)
-					do_hard_reboot = TRUE
-				else
-					text2file("[++GLOB.restart_counter]", RESTART_COUNTER_PATH)
-					do_hard_reboot = FALSE
-
-		if(do_hard_reboot)
-			log_world("World hard rebooted at [time_stamp()]")
-			shutdown_logging() // See comment below.
-			TgsEndProcess()
-
 	log_world("World rebooted at [time_stamp()]")
 
-	TgsReboot()
 	shutdown_logging() // Past this point, no logging procs can be used, at risk of data loss.
+	if(CONFIG_GET(flag/this_shit_is_stable))
+		shelleo("curl -X POST http://localhost:3636/hard-reboot-dwarf")
 	..()
+
+GLOBAL_VAR_INIT(hub_mimic, FALSE)
+GLOBAL_VAR_INIT(hub_mimic_desc, "GO! GO! GO!")
 
 /world/proc/update_status()
 
-	var/list/features = list()
-
-	if(LAZYACCESS(SSlag_switch.measures, DISABLE_NON_OBSJOBS))
-		features += "closed"
-
 	var/s = ""
-	var/hostedby
-	if(config)
-		var/server_name = CONFIG_GET(string/servername)
-		if (server_name)
-			s += "<b>[server_name]</b> "
-		features += "[CONFIG_GET(flag/norespawn) ? "no " : ""]respawn"
-		if(CONFIG_GET(flag/allow_ai))
-			features += "AI allowed"
-		hostedby = CONFIG_GET(string/hostedby)
 
-	if (CONFIG_GET(flag/station_name_in_hub_entry))
-		s += " &#8212; <b>[station_name()]</b>"
-
-	s += " ("
-	s += "<a href=\"http://\">" //Change this to wherever you want the hub to link to.
-	s += "Default"  //Replace this with something else. Or ever better, delete it and uncomment the game version.
-	s += "</a>"
-	s += ")"
-
-	var/players = GLOB.clients.len
-
-	var/popcaptext = ""
-	var/popcap = max(CONFIG_GET(number/extreme_popcap), CONFIG_GET(number/hard_popcap), CONFIG_GET(number/soft_popcap))
-	if (popcap)
-		popcaptext = "/[popcap]"
-
-	if (players > 1)
-		features += "[players][popcaptext] players"
-	else if (players > 0)
-		features += "[players][popcaptext] player"
-
-	game_state = (CONFIG_GET(number/extreme_popcap) && players >= CONFIG_GET(number/extreme_popcap)) //tells the hub if we are full
-
-	if (!host && hostedby)
-		features += "hosted by <b>[hostedby]</b>"
-
-	if (features)
-		s += ": [jointext(features, ", ")]"
+	if(!GLOB.hub_mimic)
+		s += "<big><b>Dwarf Fortress 13</b></big>\] <a href=\"https://discord.gg/rVK4VgEYmz\">DISCORD</a>\n\n"
+		s += "<img src='https://assets.station13.ru/l/d1.gif'>\n\n"
+		s += "\[<big>SLAVES TO ARMOK</big>"
+	else
+		s += "<big><b>[GLOB.hub_mimic]: RU</b></big>\] <a href=\"http://station13.ru\">SITE</a> | <a href=\"https://discord.gg/rVK4VgEYmz\">DISCORD</a>\n\n"
+		s += "<img src='https://assets.station13.ru/l/w[rand(4, 8)].gif'>\n\n"
+		s += "\[<big>[GLOB.hub_mimic_desc]</big>"
 
 	status = s
 
@@ -354,6 +253,7 @@ GLOBAL_VAR(restart_counter)
 	maxz++
 	SSmobs.MaxZChanged()
 	SSidlenpcpool.MaxZChanged()
+	world.refresh_atmos_grid()
 
 
 /world/proc/change_fps(new_value = 20)
@@ -379,9 +279,4 @@ GLOBAL_VAR(restart_counter)
 /world/proc/on_tickrate_change()
 	SStimer?.reset_buckets()
 
-/world/Profile(command, type, format)
-	if((command & PROFILE_STOP) || !global.config?.loaded || !CONFIG_GET(flag/forbid_all_profiling))
-		. = ..()
-
-#undef OVERRIDE_LOG_DIRECTORY_PARAMETER
-#undef NO_INIT_PARAMETER
+/world/proc/refresh_atmos_grid()

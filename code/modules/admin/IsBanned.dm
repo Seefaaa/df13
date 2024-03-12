@@ -46,13 +46,13 @@
 				return list("reason"="whitelist", "desc" = "\nReason: You are not on the white list for this server")
 
 	//Guest Checking
-	if(!real_bans_only && !C && is_guest_key(key))
+	if(!real_bans_only && !C && IsGuestKey(key))
 		if (CONFIG_GET(flag/guest_ban))
 			log_access("Failed Login: [key] - Guests not allowed")
-			return list("reason"="guest", "desc"="\nReason: Guests not allowed. Please sign in with a byond account.")
+			return list("reason"="guest", "desc"="\nGuests are not allowed.")
 		if (CONFIG_GET(flag/panic_bunker) && SSdbcore.Connect())
 			log_access("Failed Login: [key] - Guests not allowed during panic bunker")
-			return list("reason"="guest", "desc"="\nReason: Sorry but the server is currently not accepting connections from never before seen players or guests. If you have played on this server with a byond account before, please log in to the byond account you have played from.")
+			return list("reason"="guest", "desc"="\nPanic bunker enabled, retry later.")
 
 	//Population Cap Checking
 	var/extreme_popcap = CONFIG_GET(number/extreme_popcap)
@@ -85,22 +85,19 @@
 							message_admins(msg)
 							addclientmessage(ckey,span_adminnotice("Admin [key] has been allowed to bypass a matching non-admin ban on [i["key"]] [i["ip"]]-[i["computerid"]]."))
 						continue
-				var/expires = "This is a permanent ban."
+				var/expires = "Never."
 				if(i["expiration_time"])
-					expires = " The ban is for [DisplayTimeText(text2num(i["duration"]) MINUTES)] and expires on [i["expiration_time"]] (server time)."
-				var/desc = {"You, or another user of this computer or connection ([i["key"]]) is banned from playing here.
-				The ban reason is: [i["reason"]]
-				This ban (BanID #[i["id"]]) was applied by [i["admin_key"]] on [i["bantime"]] during round ID [i["round_id"]].
-				[expires]"}
-				log_suspicious_login("Failed Login: [key] [computer_id] [address] - Banned (#[i["id"]])")
+					expires = "Banned for [DisplayTimeText(text2num(i["duration"]) MINUTES)] ends on [i["expiration_time"]]."
+				var/desc = {"Access denied, [i["key"]]. \nReason: [html_decode(i["reason"])]. \nBan id #[i["id"]] banned on [i["bantime"]] round id [i["round_id"]]. \n[expires]"}
+				log_access("Failed Login: [key] [computer_id] [address] - Banned (#[i["id"]])")
 				return list("reason"="Banned","desc"="[desc]")
 	if (admin)
 		if (GLOB.directory[ckey])
 			return
 
 		//oh boy, so basically, because of a bug in byond, sometimes stickyban matches don't trigger here, so we can't exempt admins.
-		// Whitelisting the ckey with the byond whitelist field doesn't work.
-		// So we instead have to remove every stickyban than later re-add them.
+		//	Whitelisting the ckey with the byond whitelist field doesn't work.
+		//	So we instead have to remove every stickyban than later re-add them.
 		if (!length(GLOB.stickybanadminexemptions))
 			for (var/banned_ckey in world.GetConfig("ban"))
 				GLOB.stickybanadmintexts[banned_ckey] = world.GetConfig("ban", banned_ckey)
@@ -111,7 +108,7 @@
 		stoplag() // sleep a byond tick
 		GLOB.stickbanadminexemptiontimerid = addtimer(CALLBACK(GLOBAL_PROC, /proc/restore_stickybans), 5 SECONDS, TIMER_STOPPABLE|TIMER_UNIQUE|TIMER_OVERRIDE)
 		return
-	var/list/ban = ..() //default pager ban stuff
+	var/list/ban = ..()	//default pager ban stuff
 
 	if (ban)
 		if (!admin)
@@ -221,11 +218,11 @@
 			return null
 
 		if (C) //user is already connected!.
-			to_chat(C, span_redtext("You are about to get disconnected for matching a sticky ban after you connected. If this turns out to be the ban evasion detection system going haywire, we will automatically detect this and revert the matches. if you feel that this is the case, please wait EXACTLY 6 seconds then reconnect using file -> reconnect to see if the match was automatically reversed."), confidential = TRUE)
+			to_chat(C, "It seems there has been a problem with ban checking. Please contact the coders.", confidential = TRUE)
 
-		var/desc = "\nReason:(StickyBan) You, or another user of this computer or connection ([bannedckey]) is banned from playing here. The ban reason is:\n[ban["message"]]\nThis ban was applied by [ban["admin"]]\nThis is a BanEvasion Detection System ban, if you think this ban is a mistake, please wait EXACTLY 6 seconds, then try again before filing an appeal.\n"
+		var/desc = "\nRetry again, ([bannedckey]). Reason:\n[html_decode(ban["message"])]\nBanned by: [ban["admin"]]\n"
 		. = list("reason" = "Stickyban", "desc" = desc)
-		log_suspicious_login("Failed Login: [key] [computer_id] [address] - StickyBanned [ban["message"]] Target Username: [bannedckey] Placed by [ban["admin"]]")
+		log_access("Failed Login: [key] [computer_id] [address] - StickyBanned [ban["message"]] Target Username: [bannedckey] Placed by [ban["admin"]]")
 
 	return .
 

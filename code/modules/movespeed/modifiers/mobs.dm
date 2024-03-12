@@ -24,7 +24,7 @@
 	variable = TRUE
 
 /datum/movespeed_modifier/damage_slowdown_flying
-	movetypes = FLYING
+	movetypes = FLOATING
 	variable = TRUE
 
 /datum/movespeed_modifier/equipment_speedmod
@@ -67,7 +67,7 @@
 
 /datum/movespeed_modifier/turf_slowdown
 	movetypes = GROUND
-	blacklisted_movetypes = (FLYING|FLOATING)
+	blacklisted_movetypes = (FLYING)
 	variable = TRUE
 
 /datum/movespeed_modifier/bulky_drag
@@ -115,17 +115,12 @@
 	variable = TRUE
 	flags = IGNORE_NOSLOW
 
+/datum/movespeed_modifier/move_carefully
+	multiplicative_slowdown = INFINITY
+	priority = 100
+
 /datum/movespeed_modifier/metabolicboost
 	multiplicative_slowdown = -1.5
 
-/datum/movespeed_modifier/dragon_rage
-	multiplicative_slowdown = -0.5
-
-/datum/movespeed_modifier/dragon_depression
-	multiplicative_slowdown = 5
-
-/datum/movespeed_modifier/morph_disguised
-	multiplicative_slowdown = 1
-
-/datum/movespeed_modifier/auto_wash
-	multiplicative_slowdown = 3
+/datum/movespeed_modifier/swimming
+	multiplicative_slowdown = 4

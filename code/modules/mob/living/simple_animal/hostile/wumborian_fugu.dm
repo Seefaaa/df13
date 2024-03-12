@@ -1,14 +1,4 @@
-/**
- *
- * # Wumborian Fugu
- *
- * A strange alien creature capable of increasing its mass when threatened,
- * giving it unmatched defensive capabilities temporarily. The rest of the
- * time, it is quite fragile.
- *
- * On death, the "fugu gland" is dropped, which can be used on simple mobs
- * to increase their size, health, strength, and lets them smash walls.
- */
+//A fragile mob that becomes temporarily invincible and large to attack
 /mob/living/simple_animal/hostile/asteroid/fugu
 	name = "wumborian fugu"
 	desc = "The wumborian fugu rapidly increases its body mass in order to ward off its prey. Great care should be taken to avoid it while it's in this state as it is nearly invincible, but it cannot maintain its form forever."
@@ -21,10 +11,9 @@
 	health_doll_icon = "Fugu0"
 	mob_biotypes = MOB_ORGANIC|MOB_BEAST
 	mouse_opacity = MOUSE_OPACITY_ICON
-	move_to_delay = 5
+	move_to_delay = 10
 	friendly_verb_continuous = "floats near"
 	friendly_verb_simple = "float near"
-	speak_emote = list("puffs")
 	vision_range = 5
 	speed = 0
 	maxHealth = 50
@@ -35,8 +24,8 @@
 	obj_damage = 0
 	melee_damage_lower = 0
 	melee_damage_upper = 0
-	attack_verb_continuous = "chomps"
-	attack_verb_simple = "chomp"
+	attack_verb_continuous = "bites"
+	attack_verb_simple = "bite"
 	attack_sound = 'sound/weapons/punch1.ogg'
 	attack_vis_effect = ATTACK_EFFECT_BITE
 	throw_message = "is avoided by the"
@@ -49,7 +38,7 @@
 	var/datum/action/innate/fugu/expand/E
 	loot = list(/obj/item/fugu_gland{layer = ABOVE_MOB_LAYER})
 
-/mob/living/simple_animal/hostile/asteroid/fugu/Initialize(mapload)
+/mob/living/simple_animal/hostile/asteroid/fugu/Initialize()
 	. = ..()
 	E = new
 	E.Grant(src)
@@ -91,7 +80,7 @@
 	if(F.inflate_cooldown)
 		to_chat(F, span_warning("You need time to gather your strength!"))
 		return
-	if(HAS_TRAIT(F, TRAIT_FUGU_GLANDED))
+	if(F.buffed)
 		to_chat(F, span_warning("Something is interfering with your growth!"))
 		return
 	F.wumbo = 1
@@ -111,7 +100,7 @@
 
 /mob/living/simple_animal/hostile/asteroid/fugu/proc/Deflate()
 	if(wumbo)
-		SSmove_manager.stop_looping(src)
+		walk(src, 0)
 		wumbo = 0
 		icon_state = "Fugu0"
 		obj_damage = 0
@@ -139,29 +128,21 @@
 	item_flags = NOBLUDGEON
 	w_class = WEIGHT_CLASS_NORMAL
 	layer = MOB_LAYER
+	var/list/banned_mobs
 
 /obj/item/fugu_gland/afterattack(atom/target, mob/user, proximity_flag)
 	. = ..()
-	if(!proximity_flag)
-		return
-	if(!isanimal(target))
-		return
-	var/mob/living/simple_animal/animal = target
-
-	if(animal.stat == DEAD || HAS_TRAIT(animal, TRAIT_FAKEDEATH))
-		to_chat(user, span_warning("[src] can only multiply strength, not grant it to the dead."))
-		return
-	if(HAS_TRAIT(animal, TRAIT_FUGU_GLANDED))
-		to_chat(user, span_warning("[animal] has already been affected by \a [src]."))
-		return
-
-	ADD_TRAIT(animal, TRAIT_FUGU_GLANDED, type)
-
-	animal.maxHealth *= 1.5
-	animal.health = min(animal.maxHealth, animal.health * 1.5)
-	animal.melee_damage_lower = max((animal.melee_damage_lower * 2), 10)
-	animal.melee_damage_upper = max((animal.melee_damage_upper * 2), 10)
-	animal.transform *= 2
-	animal.environment_smash |= ENVIRONMENT_SMASH_STRUCTURES | ENVIRONMENT_SMASH_RWALLS
-	to_chat(user, span_info("You increase the size of [animal], giving [animal.p_them()] a surge of strength!"))
-	qdel(src)
+	if(proximity_flag && isanimal(target))
+		var/mob/living/simple_animal/A = target
+		if(A.buffed || (A.type in banned_mobs) || A.stat)
+			to_chat(user, span_warning("Something's interfering with [src] effects. It's no use."))
+			return
+		A.buffed++
+		A.maxHealth *= 1.5
+		A.health = min(A.maxHealth,A.health*1.5)
+		A.melee_damage_lower = max((A.melee_damage_lower * 2), 10)
+		A.melee_damage_upper = max((A.melee_damage_upper * 2), 10)
+		A.transform *= 2
+		A.environment_smash |= ENVIRONMENT_SMASH_STRUCTURES | ENVIRONMENT_SMASH_RWALLS
+		to_chat(user, span_info("You increase the size of [A], giving it a surge of strength!"))
+		qdel(src)

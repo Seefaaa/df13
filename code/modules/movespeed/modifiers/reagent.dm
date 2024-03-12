@@ -10,6 +10,9 @@
 /datum/movespeed_modifier/reagent/pepperspray
 	multiplicative_slowdown = 0.25
 
+/datum/movespeed_modifier/reagent/badstims
+	multiplicative_slowdown = -0.45
+
 /datum/movespeed_modifier/reagent/monkey_energy
 	multiplicative_slowdown = -0.35
 
@@ -19,7 +22,7 @@
 /datum/movespeed_modifier/reagent/methamphetamine
 	multiplicative_slowdown = -0.65
 
-/datum/movespeed_modifier/reagent/nitrium
+/datum/movespeed_modifier/reagent/nitryl
 	multiplicative_slowdown = -0.65
 
 /datum/movespeed_modifier/reagent/cannabis

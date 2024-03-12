@@ -23,7 +23,7 @@ GLOBAL_LIST_EMPTY(GPS_list)
 	/// UI state of GPS, altering when it can be used.
 	var/datum/ui_state/state = null
 
-/datum/component/gps/item/Initialize(_gpstag = "COM0", emp_proof = FALSE, state = null, overlay_state = "working")
+/datum/component/gps/item/Initialize(_gpstag = "COM0", emp_proof = FALSE, state = null)
 	. = ..()
 	if(. == COMPONENT_INCOMPATIBLE || !isitem(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -33,8 +33,7 @@ GLOBAL_LIST_EMPTY(GPS_list)
 	src.state = state
 
 	var/atom/A = parent
-	if(overlay_state)
-		A.add_overlay(overlay_state)
+	A.add_overlay("working")
 	A.name = "[initial(A.name)] ([gpstag])"
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, .proc/interact)
 	if(!emp_proof)
@@ -53,7 +52,7 @@ GLOBAL_LIST_EMPTY(GPS_list)
 /datum/component/gps/item/proc/on_examine(datum/source, mob/user, list/examine_list)
 	SIGNAL_HANDLER
 
-	examine_list += span_notice("Alt-click to switch it [tracking ? "off":"on"].")
+	examine_list += "<hr><span class='notice'>Right-Click to switch it [tracking ? "off":"on"].</span>"
 
 ///Called on COMSIG_ATOM_EMP_ACT
 /datum/component/gps/item/proc/on_emp_act(datum/source, severity)
@@ -150,7 +149,7 @@ GLOBAL_LIST_EMPTY(GPS_list)
 	switch(action)
 		if("rename")
 			var/atom/parentasatom = parent
-			var/a = tgui_input_text(usr, "Enter the desired tag", "GPS Tag", gpstag, 20)
+			var/a = stripped_input(usr, "Please enter desired tag.", parentasatom.name, gpstag, 20)
 
 			if (!a)
 				return

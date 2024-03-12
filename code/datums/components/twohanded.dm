@@ -108,13 +108,7 @@
 	if(wielded)
 		unwield(user)
 	if(source == offhand_item && !QDELETED(source))
-		offhand_item = null
 		qdel(source)
-
-/// Triggered on destroy of the component's offhand
-/datum/component/two_handed/proc/on_destroy(datum/source)
-	SIGNAL_HANDLER
-	offhand_item = null
 
 /// Triggered on attack self of the item containing the component
 /datum/component/two_handed/proc/on_attack_self(datum/source, mob/user)
@@ -133,13 +127,6 @@
  */
 /datum/component/two_handed/proc/wield(mob/living/carbon/user)
 	if(wielded)
-		return
-	if(ismonkey(user))
-		if(require_twohands)
-			to_chat(user, span_notice("[parent] is too heavy and cumbersome for you to carry!"))
-			user.dropItemToGround(parent, force=TRUE)
-		else
-			to_chat(user, span_notice("It's too heavy for you to wield fully."))
 		return
 	if(user.get_inactive_held_item())
 		if(require_twohands)
@@ -170,12 +157,9 @@
 	if(sharpened_increase)
 		parent_item.force += sharpened_increase
 	parent_item.name = "[parent_item.name] (Wielded)"
-	parent_item.update_appearance()
+	parent_item.update_icon()
 
-	if(iscyborg(user))
-		to_chat(user, span_notice("You dedicate your module to [parent]."))
-	else
-		to_chat(user, span_notice("You grab [parent] with both hands."))
+	to_chat(user, span_notice("You grab [parent] with both hands."))
 
 	// Play sound if one is set
 	if(wieldsound)
@@ -187,7 +171,6 @@
 	offhand_item.desc = "Your second grip on [parent_item]."
 	offhand_item.wielded = TRUE
 	RegisterSignal(offhand_item, COMSIG_ITEM_DROPPED, .proc/on_drop)
-	RegisterSignal(offhand_item, COMSIG_PARENT_QDELETING, .proc/on_destroy)
 	user.put_in_inactive_hand(offhand_item)
 
 /**
@@ -225,7 +208,7 @@
 		parent_item.name = "[initial(parent_item.name)]"
 
 	// Update icons
-	parent_item.update_appearance()
+	parent_item.update_icon()
 
 	if(istype(user)) // tk showed that we might not have a mob here
 		if(user.get_item_by_slot(ITEM_SLOT_BACK) == parent)
@@ -239,9 +222,7 @@
 
 		// Show message if requested
 		if(show_message)
-			if(iscyborg(user))
-				to_chat(user, span_notice("You free up your module."))
-			else if(require_twohands)
+			if(require_twohands)
 				to_chat(user, span_notice("You drop [parent]."))
 			else
 				to_chat(user, span_notice("You are now carrying [parent] with one hand."))
@@ -252,7 +233,7 @@
 
 	// Remove the object in the offhand
 	if(offhand_item)
-		UnregisterSignal(offhand_item, list(COMSIG_ITEM_DROPPED, COMSIG_PARENT_QDELETING))
+		UnregisterSignal(offhand_item, COMSIG_ITEM_DROPPED)
 		qdel(offhand_item)
 	// Clear any old refrence to an item that should be gone now
 	offhand_item = null
@@ -335,7 +316,7 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	var/wielded = FALSE // Off Hand tracking of wielded status
 
-/obj/item/offhand/Initialize(mapload)
+/obj/item/offhand/Initialize()
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, ABSTRACT_ITEM_TRAIT)
 

@@ -5,14 +5,13 @@
  */
 
 import { toFixed } from 'common/math';
-import { useLocalState } from 'tgui/backend';
 import { useDispatch, useSelector } from 'common/redux';
 import { Box, Button, ColorBox, Divider, Dropdown, Flex, Input, LabeledList, NumberInput, Section, Stack, Tabs, TextArea } from 'tgui/components';
 import { ChatPageSettings } from '../chat';
 import { rebuildChat, saveChatToDisk } from '../chat/actions';
 import { THEMES } from '../themes';
 import { changeSettingsTab, updateSettings } from './actions';
-import { FONTS, SETTINGS_TABS } from './constants';
+import { SETTINGS_TABS } from './constants';
 import { selectActiveTab, selectSettings } from './selectors';
 
 export const SettingsPanel = (props, context) => {
@@ -51,20 +50,16 @@ export const SettingsPanel = (props, context) => {
 export const SettingsGeneral = (props, context) => {
   const {
     theme,
-    fontFamily,
     fontSize,
     lineHeight,
     highlightText,
     highlightColor,
-    matchWord,
-    matchCase,
   } = useSelector(context, selectSettings);
   const dispatch = useDispatch(context);
-  const [freeFont, setFreeFont] = useLocalState(context, "freeFont", false);
   return (
     <Section>
       <LabeledList>
-        <LabeledList.Item label="Theme">
+        <LabeledList.Item label="Skin">
           <Dropdown
             selected={theme}
             options={THEMES}
@@ -72,39 +67,7 @@ export const SettingsGeneral = (props, context) => {
               theme: value,
             }))} />
         </LabeledList.Item>
-        <LabeledList.Item label="Font style">
-          <Stack inline align="baseline">
-            <Stack.Item>
-              {!freeFont && (
-                <Dropdown
-                  selected={fontFamily}
-                  options={FONTS}
-                  onSelected={value => dispatch(updateSettings({
-                    fontFamily: value,
-                  }))} />
-              ) || (
-                <Input
-                  value={fontFamily}
-                  onChange={(e, value) => dispatch(updateSettings({
-                    fontFamily: value,
-                  }))}
-                />
-              )}
-            </Stack.Item>
-            <Stack.Item>
-              <Button
-                content="Custom font"
-                icon={freeFont? "lock-open" : "lock"}
-                color={freeFont? "good" : "bad"}
-                ml={1}
-                onClick={() => {
-                  setFreeFont(!freeFont);
-                }}
-              />
-            </Stack.Item>
-          </Stack>
-        </LabeledList.Item>
-        <LabeledList.Item label="Font size">
+        <LabeledList.Item label="Font">
           <NumberInput
             width="4em"
             step={1}
@@ -118,7 +81,7 @@ export const SettingsGeneral = (props, context) => {
               fontSize: value,
             }))} />
         </LabeledList.Item>
-        <LabeledList.Item label="Line height">
+        <LabeledList.Item label="Line Height">
           <NumberInput
             width="4em"
             step={0.01}
@@ -136,7 +99,7 @@ export const SettingsGeneral = (props, context) => {
       <Box>
         <Flex mb={1} color="label" align="baseline">
           <Flex.Item grow={1}>
-            Highlight text (comma separated):
+            Highlight (separated with comma):
           </Flex.Item>
           <Flex.Item shrink={0}>
             <ColorBox mr={1} color={highlightColor} />
@@ -156,39 +119,23 @@ export const SettingsGeneral = (props, context) => {
           onChange={(e, value) => dispatch(updateSettings({
             highlightText: value,
           }))} />
-        <Button.Checkbox
-          checked={matchWord}
-          tooltipPosition="bottom-start"
-          tooltip="Not compatible with punctuation."
-          onClick={() => dispatch(updateSettings({
-            matchWord: !matchWord,
-          }))}>
-          Match word
-        </Button.Checkbox>
-        <Button.Checkbox
-          checked={matchCase}
-          onClick={() => dispatch(updateSettings({
-            matchCase: !matchCase,
-          }))}>
-          Match case
-        </Button.Checkbox>
       </Box>
       <Divider />
       <Box>
         <Button
           icon="check"
           onClick={() => dispatch(rebuildChat())}>
-          Apply now
+          Apply
         </Button>
         <Box inline fontSize="0.9em" ml={1} color="label">
-          Can freeze the chat for a while.
+          Chat may freeze.
         </Box>
       </Box>
       <Divider />
       <Button
         icon="save"
         onClick={() => dispatch(saveChatToDisk())}>
-        Save chat log
+        Save Log
       </Button>
     </Section>
   );

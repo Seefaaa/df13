@@ -1,3 +1,4 @@
+
 /// Called when the shuttle starts launching back to centcom, polls a few random players who joined the round for commendations
 /datum/controller/subsystem/ticker/proc/poll_hearts()
 	if(!CONFIG_GET(number/commendation_percent_poll))
@@ -19,7 +20,7 @@
 		if(number_to_ask <= 0)
 			break
 
-/// Once the round is actually over, cycle through the ckeys in the hearts list and give them the hearted status
+/// Once the round is actually over, cycle through the commendations in the hearts list and give them the hearted status
 /datum/controller/subsystem/ticker/proc/handle_hearts()
 	var/list/message = list("The following players were commended this round: ")
 	var/i = 0
@@ -31,6 +32,16 @@
 		hearted_mob.client.adjust_heart()
 		message += "[hearted_ckey][i==hearts.len ? "" : ", "]"
 	message_admins(message.Join())
+
+///Gives someone hearted status for OOC, from behavior commendations
+/client/proc/adjust_heart(duration = 24 HOURS)
+	var/new_duration = world.realtime + duration
+	if(prefs.hearted_until > new_duration)
+		return
+	tgui_alert(src, "Somebody hearted you for the last round!", "<3!", list("Confirm"))
+	prefs.hearted_until = new_duration
+	prefs.hearted = TRUE
+	prefs.save_preferences()
 
 /// Ask someone if they'd like to award a commendation for the round, 3 tries to get the name they want before we give up
 /mob/proc/query_heart(attempt=1)
@@ -48,7 +59,7 @@
 		if(3)
 			heart_nominee = tgui_input_text(src, "One more try, what was their name? Just a first or last name may be enough.", "<3?")
 
-	if(!heart_nominee)
+	if(isnull(heart_nominee) || heart_nominee == "")
 		return
 
 	heart_nominee = lowertext(heart_nominee)
@@ -63,13 +74,13 @@
 		if(heart_contender == src)
 			continue
 
-		switch(tgui_alert(src, "Is this the person: [heart_contender.real_name]?", "<3?", list("Yes!", "Nope", "Cancel"), timeout = 15 SECONDS))
+		switch(tgui_alert(src, "Is this person: [heart_contender.real_name]?", "<3?", list("Yes!", "No", "Cancel"), timeout = 15 SECONDS))
 			if("Yes!")
 				heart_contender.receive_heart(src)
 				return
-			if("Nope")
+			if("No")
 				continue
-			else
+			if("Cancel")
 				return
 
 	query_heart(attempt + 1)
@@ -88,7 +99,7 @@
 /mob/proc/receive_heart(mob/heart_sender, duration = 24 HOURS, instant = FALSE)
 	if(!client)
 		return
-	to_chat(heart_sender, span_nicegreen("Commendation sent!"))
+	to_chat(src, span_nicegreen("Commendation sent!"))
 	message_admins("[key_name(heart_sender)] commended [key_name(src)] [instant ? "(instant)" : ""]")
 	log_admin("[key_name(heart_sender)] commended [key_name(src)] [instant ? "(instant)" : ""]")
 	if(instant || SSticker.current_state == GAME_STATE_FINISHED)

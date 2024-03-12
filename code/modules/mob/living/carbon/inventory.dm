@@ -90,13 +90,9 @@
 	//We cannot call it for items that have not been handled as they are not yet correctly
 	//in a slot (handled further down inheritance chain, probably living/carbon/human/equip_to_slot
 	if(!not_handled)
-		has_equipped(I, slot, initial)
+		I.equipped(src, slot)
 
 	return not_handled
-
-/// This proc is called after an item has been successfully handled and equipped to a slot.
-/mob/living/carbon/proc/has_equipped(obj/item/item, slot, initial = FALSE)
-	return item.equipped(src, slot, initial)
 
 /mob/living/carbon/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
 	. = ..() //Sets the default return value to what the parent returns.
@@ -172,17 +168,17 @@
 		to_chat(src, span_warning("You're unable to offer anything in your current state!"))
 		return
 
-	if(has_status_effect(/datum/status_effect/offering))
+	if(has_status_effect(STATUS_EFFECT_OFFERING))
 		to_chat(src, span_warning("You're already offering up something!"))
 		return
 
 	if(offered_item.on_offered(src)) // see if the item interrupts with its own behavior
 		return
 
-	visible_message(span_notice("[src] is offering [offered_item]."), \
-					span_notice("You offer [offered_item]."), null, 2)
+	visible_message(span_notice("<b>[src]</b> is offering <b>[offered_item].</b>") , \
+					span_notice("You offer <b>[offered_item]</b>.") , null, 2)
 
-	apply_status_effect(/datum/status_effect/offering, offered_item)
+	apply_status_effect(STATUS_EFFECT_OFFERING, offered_item)
 
 /**
  * Proc called when the player clicks the give alert
@@ -196,22 +192,19 @@
 /mob/living/carbon/proc/take(mob/living/carbon/offerer, obj/item/I)
 	clear_alert("[offerer]")
 	if(get_dist(src, offerer) > 1)
-		to_chat(src, span_warning("[offerer] is out of range!"))
+		to_chat(src, span_warning("<b>[offerer]</b> is out of range!"))
 		return
 	if(!I || offerer.get_active_held_item() != I)
-		to_chat(src, span_warning("[offerer] is no longer holding the item they were offering!"))
+		to_chat(src, span_warning("<b>[offerer]</b> is no longer holding the item they were offering!"))
 		return
 	if(!get_empty_held_indexes())
 		to_chat(src, span_warning("You have no empty hands!"))
 		return
-
 	if(I.on_offer_taken(offerer, src)) // see if the item has special behavior for being accepted
 		return
-
 	if(!offerer.temporarilyRemoveItemFromInventory(I))
-		visible_message(span_notice("[offerer] tries to hand over [I] but it's stuck to them...."))
+		visible_message(span_notice("<b>[offerer]</b> tries to hand over <b>[I]</b>, but it's stuck to them..."))
 		return
-
-	visible_message(span_notice("[src] takes [I] from [offerer]."), \
-					span_notice("You take [I] from [offerer]."))
+	visible_message(span_notice("<b>[src]</b> takes [I] from <b>[offerer]</b>.") , \
+					span_notice("You take [I] from <b>[offerer]</b>."))
 	put_in_hands(I)

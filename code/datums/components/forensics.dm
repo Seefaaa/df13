@@ -72,14 +72,6 @@
 	return TRUE
 
 /datum/component/forensics/proc/add_fingerprint(mob/living/M, ignoregloves = FALSE)
-	if(!isliving(M))
-		if(!iscameramob(M))
-			return
-		if(isaicamera(M))
-			var/mob/camera/ai_eye/ai_camera = M
-			if(!ai_camera.ai)
-				return
-			M = ai_camera.ai
 	add_hiddenprint(M)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
@@ -91,7 +83,7 @@
 			if(!ignoregloves)
 				H.gloves.add_fingerprint(H, TRUE) //ignoregloves = 1 to avoid infinite loop.
 				return
-		var/full_print = md5(H.dna.unique_identity)
+		var/full_print = md5(H.dna.uni_identity)
 		LAZYSET(fingerprints, full_print, full_print)
 	return TRUE
 
@@ -144,14 +136,6 @@
 	return TRUE
 
 /datum/component/forensics/proc/add_hiddenprint(mob/M)
-	if(!isliving(M))
-		if(!iscameramob(M))
-			return
-		if(isaicamera(M))
-			var/mob/camera/ai_eye/ai_camera = M
-			if(!ai_camera.ai)
-				return
-			M = ai_camera.ai
 	if(!M.key)
 		return
 	var/hasgloves = ""

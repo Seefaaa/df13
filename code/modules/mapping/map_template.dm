@@ -36,15 +36,44 @@
 			cached_map = parsed
 	return bounds
 
+/datum/parsed_map/proc/initTemplateBounds(datum/map_template/template)
+	var/list/atom/atoms = list()
+	var/list/area/areas = list()
+	var/list/turfs = block(
+		locate(
+			bounds[MAP_MINX],
+			bounds[MAP_MINY],
+			bounds[MAP_MINZ]
+			),
+		locate(
+			bounds[MAP_MAXX],
+			bounds[MAP_MAXY],
+			bounds[MAP_MAXZ]
+			)
+		)
+	for(var/L in turfs)
+		var/turf/B = L
+		var/area/G = B.loc
+		areas |= G
+		if(!SSatoms.initialized)
+			continue
+		for(var/A in B)
+			atoms += A
+	// Not sure if there is some importance here to make sure the area is in z
+	// first or not.  Its defined In Initialize yet its run first in templates
+	// BEFORE so... hummm
+	SSmapping.reg_in_areas_in_z(areas)
+	// If the world is starting up stop here and the world will do the rest
+	if(!SSatoms.initialized)
+		return
+	SSatoms.InitializeAtoms(areas + turfs + atoms)
+
 /datum/map_template/proc/initTemplateBounds(list/bounds)
 	if (!bounds) //something went wrong
 		stack_trace("[name] template failed to initialize correctly!")
 		return
 
-	var/list/obj/machinery/atmospherics/atmos_machines = list()
-	var/list/obj/structure/cable/cables = list()
 	var/list/atom/movable/movables = list()
-	var/list/obj/docking_port/stationary/ports = list()
 	var/list/area/areas = list()
 
 	var/list/turfs = block(
@@ -67,60 +96,20 @@
 
 		for(var/movable_in_turf in current_turf)
 			movables += movable_in_turf
-			if(istype(movable_in_turf, /obj/structure/cable))
-				cables += movable_in_turf
-				continue
-			if(istype(movable_in_turf, /obj/machinery/atmospherics))
-				atmos_machines += movable_in_turf
-			if(istype(movable_in_turf, /obj/docking_port/stationary))
-				ports += movable_in_turf
-
 	// Not sure if there is some importance here to make sure the area is in z
 	// first or not.  Its defined In Initialize yet its run first in templates
 	// BEFORE so... hummm
 	SSmapping.reg_in_areas_in_z(areas)
-	SSnetworks.assign_areas_root_ids(areas, src)
 	if(!SSatoms.initialized)
 		return
 
 	SSatoms.InitializeAtoms(areas + turfs + movables, returns_created_atoms ? created_atoms : null)
 
-	for(var/turf/unlit as anything in turfs)
-		if(unlit.always_lit)
-			continue
-		var/area/loc_area = unlit.loc
-		if(!loc_area.static_lighting)
-			continue
-		unlit.lighting_build_overlay()
-
-	// NOTE, now that Initialize and LateInitialize run correctly, do we really
-	// need these two below?
-	SSmachines.setup_template_powernets(cables)
-	SSair.setup_template_machinery(atmos_machines)
-	SSshuttle.setup_shuttles(ports)
-
-	//calculate all turfs inside the border
-	var/list/template_and_bordering_turfs = block(
-		locate(
-			max(bounds[MAP_MINX]-1, 1),
-			max(bounds[MAP_MINY]-1, 1),
-			bounds[MAP_MINZ]
-			),
-		locate(
-			min(bounds[MAP_MAXX]+1, world.maxx),
-			min(bounds[MAP_MAXY]+1, world.maxy),
-			bounds[MAP_MAXZ]
-			)
-		)
-	for(var/turf/affected_turf as anything in template_and_bordering_turfs)
-		affected_turf.air_update_turf(TRUE, TRUE)
-		affected_turf.levelupdate()
-
-/datum/map_template/proc/load_new_z(secret = FALSE)
+/datum/map_template/proc/load_new_z(list/level_traits = list(ZTRAIT_AWAY = TRUE))
 	var/x = round((world.maxx - width) * 0.5) + 1
 	var/y = round((world.maxy - height) * 0.5) + 1
 
-	var/datum/space_level/level = SSmapping.add_new_zlevel(name, secret ? ZTRAITS_AWAY_SECRET : ZTRAITS_AWAY)
+	var/datum/space_level/level = SSmapping.add_new_zlevel(name, level_traits)
 	var/datum/parsed_map/parsed = load_map(file(mappath), x, y, level.z_value, no_changeturf=(SSatoms.initialized == INITIALIZATION_INSSATOMS), placeOnTop=should_place_on_top)
 	var/list/bounds = parsed.bounds
 	if(!bounds)
@@ -131,7 +120,7 @@
 	//initialize things that are normally initialized after map load
 	initTemplateBounds(bounds)
 	smooth_zlevel(world.maxz)
-	log_game("Z-level [name] loaded at [x],[y],[world.maxz]")
+	log_game("Z-level [name] ([mappath]) loaded at [x],[y],[world.maxz]")
 
 	return level
 
@@ -144,13 +133,6 @@
 		return
 	if(T.y+height > world.maxy)
 		return
-
-	var/list/border = block(locate(max(T.x-1, 1), max(T.y-1, 1),  T.z),
-							locate(min(T.x+width+1, world.maxx), min(T.y+height+1, world.maxy), T.z))
-	for(var/L in border)
-		var/turf/turf_to_disable = L
-		SSair.remove_from_active(turf_to_disable) //stop processing turfs along the border to prevent runtimes, we return it in initTemplateBounds()
-		turf_to_disable.atmos_adjacent_turfs?.Cut()
 
 	// Accept cached maps, but don't save them automatically - we don't want
 	// ruins clogging up memory for the whole round.
@@ -208,12 +190,9 @@
 				++xcrd
 			--ycrd
 
-
 //for your ever biggening badminnery kevinz000
 //❤ - Cyberboss
-/proc/load_new_z_level(file, name, secret)
-	var/datum/map_template/template = new(file, name, TRUE)
-	if(!template.cached_map || template.cached_map.check_for_errors())
-		return FALSE
-	template.load_new_z(secret)
-	return TRUE
+/proc/load_new_z_level(file, name)
+	var/datum/map_template/template = new(file, name)
+	var/datum/space_level/SL = template.load_new_z()
+	return SL.z_value

@@ -40,14 +40,9 @@
 	shooter.visible_message(span_danger("[shooter] aims [weapon] point blank at [target]!"), \
 		span_danger("You aim [weapon] point blank at [target]!"), ignored_mobs = target)
 	to_chat(target, span_userdanger("[shooter] aims [weapon] point blank at you!"))
-	add_memory_in_range(target, 7, MEMORY_GUNPOINT, list(DETAIL_PROTAGONIST = target, DETAIL_DEUTERAGONIST = shooter, DETAIL_WHAT_BY = weapon), story_value = STORY_VALUE_OKAY, memory_flags = MEMORY_CHECK_BLINDNESS)
 
-	shooter.apply_status_effect(/datum/status_effect/holdup, shooter)
-	target.apply_status_effect(/datum/status_effect/grouped/heldup, shooter)
-
-	if(istype(weapon, /obj/item/gun/ballistic/rocketlauncher) && weapon.chambered)
-		if(target.stat == CONSCIOUS && IS_NUKE_OP(shooter) && !IS_NUKE_OP(target) && (locate(/obj/item/disk/nuclear) in target.get_contents()) && shooter.client)
-			shooter.client.give_award(/datum/award/achievement/misc/rocket_holdup, shooter)
+	shooter.apply_status_effect(STATUS_EFFECT_HOLDUP, shooter)
+	target.apply_status_effect(STATUS_EFFECT_HELDUP, shooter)
 
 	target.do_alert_animation()
 	target.playsound_local(target.loc, 'sound/machines/chime.ogg', 50, TRUE)
@@ -57,8 +52,8 @@
 
 /datum/component/gunpoint/Destroy(force, silent)
 	var/mob/living/shooter = parent
-	shooter.remove_status_effect(/datum/status_effect/holdup)
-	target.remove_status_effect(/datum/status_effect/grouped/heldup, shooter)
+	shooter.remove_status_effect(STATUS_EFFECT_HOLDUP)
+	target.remove_status_effect(STATUS_EFFECT_HELDUP, shooter)
 	SEND_SIGNAL(target, COMSIG_CLEAR_MOOD_EVENT, "gunpoint")
 	return ..()
 
@@ -97,6 +92,7 @@
 	to_chat(target, span_userdanger("[shooter] bumps into you and fumbles [shooter.p_their()] aim!"))
 	qdel(src)
 
+
 ///Update the damage multiplier for whatever stage we're entering into
 /datum/component/gunpoint/proc/update_stage(new_stage)
 	stage = new_stage
@@ -124,15 +120,15 @@
 
 /datum/component/gunpoint/proc/async_trigger_reaction()
 	var/mob/living/shooter = parent
-	shooter.remove_status_effect(/datum/status_effect/holdup) // try doing these before the trigger gets pulled since the target (or shooter even) may not exist after pulling the trigger, dig?
-	target.remove_status_effect(/datum/status_effect/grouped/heldup, shooter)
+	shooter.remove_status_effect(STATUS_EFFECT_HOLDUP) // try doing these before the trigger gets pulled since the target (or shooter even) may not exist after pulling the trigger, dig?
+	target.remove_status_effect(STATUS_EFFECT_HELDUP, shooter)
 	SEND_SIGNAL(target, COMSIG_CLEAR_MOOD_EVENT, "gunpoint")
 
 	if(point_of_no_return)
 		return
 	point_of_no_return = TRUE
 
-	if(!weapon.can_shoot() || !weapon.can_trigger_gun(shooter) || (weapon.weapon_weight == WEAPON_HEAVY && shooter.get_inactive_held_item()))
+	if(!weapon.can_shoot() || (weapon.weapon_weight == WEAPON_HEAVY && shooter.get_inactive_held_item()))
 		shooter.visible_message(span_danger("[shooter] fumbles [weapon]!"), \
 			span_danger("You fumble [weapon] and fail to fire at [target]!"), ignored_mobs = target)
 		to_chat(target, span_userdanger("[shooter] fumbles [weapon] and fails to fire at you!"))

@@ -1,15 +1,12 @@
 /obj/effect/ebeam/curse_arm
 	name = "curse arm"
 	layer = LARGE_MOB_LAYER
-	plane = GAME_PLANE_UPPER_FOV_HIDDEN
 
 /obj/projectile/curse_hand
 	name = "curse hand"
 	icon_state = "cursehand0"
-	base_icon_state = "cursehand"
 	hitsound = 'sound/effects/curse4.ogg'
 	layer = LARGE_MOB_LAYER
-	plane = GAME_PLANE_UPPER_FOV_HIDDEN
 	damage_type = BURN
 	damage = 10
 	paralyze = 20
@@ -21,14 +18,14 @@
 /obj/projectile/curse_hand/Initialize(mapload)
 	. = ..()
 	handedness = prob(50)
-	icon_state = "[base_icon_state][handedness]"
+	icon_state = "cursehand[handedness]"
 
 /obj/projectile/curse_hand/Destroy()
 	QDEL_NULL(arm)
 	return ..()
 
 /obj/projectile/curse_hand/update_icon_state()
-	icon_state = "[base_icon_state]0[handedness]"
+	icon_state = "[initial(icon_state)][handedness]"
 	return ..()
 
 /obj/projectile/curse_hand/fire(setAngle)
@@ -41,8 +38,7 @@
 /obj/projectile/curse_hand/prehit_pierce(atom/target)
 	return (target == original)? PROJECTILE_PIERCE_NONE : PROJECTILE_PIERCE_PHASE
 
-/// The visual effect for the hand disappearing
-/obj/projectile/curse_hand/proc/finale()
+/obj/projectile/curse_hand/Destroy()
 	if(arm)
 		QDEL_NULL(arm)
 	if((movement_type & PHASING))
@@ -57,15 +53,7 @@
 	new /obj/effect/temp_visual/dir_setting/curse/grasp_portal/fading(starting, dir)
 	var/datum/beam/D = starting.Beam(T, icon_state = "curse[handedness]", time = 32, beam_type=/obj/effect/ebeam/curse_arm)
 	animate(D.visuals, alpha = 0, time = 32)
-
-/obj/projectile/curse_hand/on_range()
-	finale()
 	return ..()
-
-/obj/projectile/curse_hand/on_hit(atom/target, blocked, pierce_hit)
-	. = ..()
-	if (. == BULLET_ACT_HIT)
-		finale()
 
 /obj/projectile/curse_hand/hel //Used in helbital's impure reagent
 	name = "Hel's grasp"

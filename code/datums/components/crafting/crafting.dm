@@ -23,18 +23,16 @@
 				),
 				CAT_ROBOT = CAT_NONE,
 				CAT_MISC = CAT_NONE,
+				CAT_STRUCTURE = CAT_NONE,
 				CAT_PRIMAL = CAT_NONE,
 				CAT_FOOD = list(
 					CAT_BREAD,
 					CAT_BURGER,
 					CAT_CAKE,
 					CAT_EGG,
-					CAT_LIZARD,
 					CAT_ICE,
 					CAT_MEAT,
-					CAT_SEAFOOD,
 					CAT_MISCFOOD,
-					CAT_MOTH,
 					CAT_PASTRY,
 					CAT_PIE,
 					CAT_PIZZA,
@@ -42,10 +40,10 @@
 					CAT_SANDWICH,
 					CAT_SOUP,
 					CAT_SPAGHETTI,
+					CAT_MOTH,
 				),
 				CAT_DRINK = CAT_NONE,
 				CAT_CLOTHING = CAT_NONE,
-				CAT_ATMOSPHERIC = CAT_NONE,
 			)
 
 	var/cur_category = CAT_NONE
@@ -123,7 +121,6 @@
 			continue
 		. += AM
 
-
 /datum/component/personal_crafting/proc/get_surroundings(atom/a, list/blacklist=null)
 	. = list()
 	.["tool_behaviour"] = list()
@@ -147,10 +144,6 @@
 						for(var/datum/reagent/reagent in container.reagents.reagent_list)
 							.["other"][reagent.type] += reagent.volume
 				.["other"][item.type] += 1
-		else if (ismachinery(object))
-			LAZYADDASSOCLIST(.["machinery"], object.type, object)
-
-
 
 /// Returns a boolean on whether the tool requirements of the input recipe are satisfied by the input source and surroundings.
 /datum/component/personal_crafting/proc/check_tools(atom/source, datum/crafting_recipe/recipe, list/surroundings)
@@ -221,7 +214,6 @@
 	return ", missing component."
 
 /*Del reqs works like this:
-
 	Loop over reqs var of the recipe
 	Set var amt to the value current cycle req is pointing to, its amount of type we need to delete
 	Get var/surroundings list of things accessable to crafting by get_environment()
@@ -235,12 +227,9 @@
 			If no put all of the stack in the deletion list, substract its amount from amt and keep searching
 			While doing above stuff check deletion list if it already has such stack type, if yes try to merge them instead of adding new one
 		If its anything else just locate() in in the list in a while loop, each find --s the amt var and puts the found stuff in deletion loop
-
 	Then do a loop over parts var of the recipe
 		Do similar stuff to what we have done above, but now in deletion list, until the parts conditions are satisfied keep taking from the deletion list and putting it into parts list for return
-
 	After its done loop over deletion list and delete all the shit that wasn't taken by parts loop
-
 	del_reqs return the list of parts resulting object will receive as argument of CheckParts proc, on the atom level it will add them all to the contents, on all other levels it calls ..() and does whatever is needed afterwards but from contents list already
 */
 
@@ -475,8 +464,6 @@
 		//We just need the name, so cheat-typecast to /atom for speed (even tho Reagents are /datum they DO have a "name" var)
 		//Also these are typepaths so sadly we can't just do "[a]"
 		req_text += "[R.reqs[req_atom]] [initial(req_atom.name)]"
-	for(var/obj/machinery/content as anything in R.machinery)
-		req_text += "[R.reqs[content]] [initial(content.name)]"
 	if(R.additional_req_text)
 		req_text += R.additional_req_text
 	data["req_text"] = req_text.Join(", ")

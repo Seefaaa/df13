@@ -46,10 +46,6 @@
 		to_chat(user, span_warning("You failed to stab [target.p_their()] eyes, you need to remove [target.p_their()] eye protection first!"))
 		return
 
-	if (isalien(target))
-		to_chat(user, span_warning("You cannot locate any eyes on this creature!"))
-		return
-
 	if (isbrain(target))
 		to_chat(user, span_warning("You cannot locate any organic eyes on this brain!"))
 		return
@@ -78,7 +74,7 @@
 
 	SEND_SIGNAL(target, COMSIG_ADD_MOOD_EVENT, "eye_stab", /datum/mood_event/eye_stab)
 
-	log_combat(user, target, "attacked", "[item.name]", "(Combat mode: [user.combat_mode ? "On" : "Off"])")
+	//log_combat(user, target, "attacked", "[item.name]", "(Combat mode: [user.combat_mode ? "On" : "Off"])")
 
 	var/obj/item/organ/eyes/eyes = target.getorganslot(ORGAN_SLOT_EYES)
 	if (!eyes)

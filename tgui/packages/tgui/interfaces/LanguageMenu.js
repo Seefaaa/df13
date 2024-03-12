@@ -29,7 +29,7 @@ export const LanguageMenu = (props, context) => {
                       <Button
                         content={language.is_default
                           ? 'Default Language'
-                          : 'Select as Default'}
+                          : 'Selkect as Default'}
                         disabled={!language.can_speak}
                         selected={language.is_default}
                         onClick={() => act('select_default', {
@@ -57,12 +57,12 @@ export const LanguageMenu = (props, context) => {
                 Key: ,{language.key}
                 {' '}
                 {language.can_understand
-                  ? 'Can understand.'
-                  : 'Cannot understand.'}
+                  ? 'Can Understand.'
+                  : 'Can\'t Understand.'}
                 {' '}
                 {language.can_speak
                   ? 'Can speak.'
-                  : 'Cannot speak.'}
+                  : 'Can\'t Speak.'}
               </LabeledList.Item>
             ))}
           </LabeledList>
@@ -72,7 +72,7 @@ export const LanguageMenu = (props, context) => {
             title="Unknown Languages"
             buttons={(
               <Button
-                content={'Omnitongue '
+                content={'Omnilanguage '
                   + (omnitongue ? 'Enabled' : 'Disabled')}
                 selected={omnitongue}
                 onClick={() => act('toggle_omnitongue')} />
@@ -93,11 +93,11 @@ export const LanguageMenu = (props, context) => {
                   {' '}
                   Key: ,{language.key}
                   {' '}
-                  {!!language.shadow && '(gained from mob)'}
+                  {!!language.shadow && '(Granted via mob)'}
                   {' '}
                   {language.can_speak
-                    ? 'Can speak.'
-                    : 'Cannot speak.' }
+                    ? 'Can Speak.'
+                    : 'Can\'t Speak.' }
                 </LabeledList.Item>
               ))}
             </LabeledList>

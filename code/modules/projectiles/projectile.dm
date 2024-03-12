@@ -4,7 +4,7 @@
 
 /obj/projectile
 	name = "projectile"
-	icon = 'icons/obj/guns/projectiles.dmi'
+	icon = 'icons/obj/projectiles.dmi'
 	icon_state = "bullet"
 	density = FALSE
 	anchored = TRUE
@@ -13,7 +13,6 @@
 	wound_bonus = CANT_WOUND // can't wound by default
 	generic_canpass = FALSE
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
-	layer = MOB_LAYER
 	plane = GAME_PLANE_FOV_HIDDEN
 	//The sound this plays on impact.
 	var/hitsound = 'sound/weapons/pierce.ogg'
@@ -132,8 +131,8 @@
 	var/damage = 10
 	var/damage_type = BRUTE //BRUTE, BURN, TOX, OXY, CLONE are the only things that should be in here
 	var/nodamage = FALSE //Determines if the projectile will skip any damage inflictions
-	///Defines what armor to use when it hits things.  Must be set to bullet, laser, energy, or bomb
-	var/flag = BULLET
+	///Defines what armor to use when it hits things.
+	var/flag = PIERCE
 	///How much armor this projectile pierces.
 	var/armour_penetration = 0
 	///Whether or not our bullet lacks penetrative power, and is easily stopped by armor.
@@ -149,6 +148,7 @@
 	var/paralyze = 0
 	var/immobilize = 0
 	var/unconscious = 0
+	var/irradiate = 0
 	var/stutter = 0
 	var/slur = 0
 	var/eyeblur = 0
@@ -265,10 +265,7 @@
 			var/splatter_dir = dir
 			if(starting)
 				splatter_dir = get_dir(starting, target_loca)
-			if(isalien(L))
-				new /obj/effect/temp_visual/dir_setting/bloodsplatter/xenosplatter(target_loca, splatter_dir)
-			else
-				new /obj/effect/temp_visual/dir_setting/bloodsplatter(target_loca, splatter_dir)
+			new /obj/effect/temp_visual/dir_setting/bloodsplatter(target_loca, splatter_dir)
 			if(prob(33))
 				L.add_splatter_floor(target_loca)
 		else if(impact_effect_type && !hitscan)
@@ -491,10 +488,6 @@
 	// if pass_flags match, pass through entirely - unless direct target is set.
 	if((target.pass_flags_self & pass_flags) && !direct_target)
 		return FALSE
-	if(!ignore_source_check && firer)
-		var/mob/M = firer
-		if((target == firer) || ((target == firer.loc) && ismecha(firer.loc)) || (target in firer.buckled_mobs) || (istype(M) && (M.buckled == target)))
-			return FALSE
 	if(target.density || cross_failed) //This thing blocks projectiles, hit it regardless of layer/mob stuns/etc.
 		return TRUE
 	if(!isliving(target))
@@ -611,10 +604,10 @@
 	return FALSE
 
 /obj/projectile/proc/check_ricochet_flag(atom/A)
-	if((flag in list(ENERGY, LASER)) && (A.flags_ricochet & RICOCHET_SHINY))
+	if((A.flags_ricochet & RICOCHET_SHINY))
 		return TRUE
 
-	if((flag in list(BOMB, BULLET)) && (A.flags_ricochet & RICOCHET_HARD))
+	if((A.flags_ricochet & RICOCHET_HARD))
 		return TRUE
 
 	return FALSE
@@ -633,9 +626,6 @@
 	var/turf/current = get_turf(src)
 	var/turf/ending = return_predicted_turf_after_moves(moves, forced_angle)
 	return get_line(current, ending)
-
-/obj/projectile/Process_Spacemove(movement_dir = 0)
-	return TRUE //Bullets don't drift in space
 
 /obj/projectile/process()
 	last_process = world.time
@@ -738,8 +728,6 @@
 		point_cache.initialize_location(coordinates[1], coordinates[2], coordinates[3]) // Take the center of the hitscan collision tile
 		store_hitscan_collision(point_cache)
 	return TRUE
-
-
 
 /obj/projectile/forceMove(atom/target)
 	if(!isloc(target) || !isloc(loc) || !z)
@@ -1012,9 +1000,6 @@
 		QDEL_IN(thing, duration)
 	if(cleanup)
 		cleanup_beam_segments()
-
-/obj/projectile/experience_pressure_difference()
-	return
 
 ///Like [/obj/item/proc/updateEmbedding] but for projectiles instead, call this when you want to add embedding or update the stats on the embedding element
 /obj/projectile/proc/updateEmbedding()

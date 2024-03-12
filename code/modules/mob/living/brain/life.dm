@@ -15,9 +15,7 @@
 	if(stat != DEAD)
 		death()
 	var/obj/item/organ/brain/BR
-	if(container?.brain)
-		BR = container.brain
-	else if(istype(loc, /obj/item/organ/brain))
+	if(istype(loc, /obj/item/organ/brain))
 		BR = loc
 	if(BR)
 		BR.damage = BRAIN_DAMAGE_DEATH //beaten to a pulp
@@ -30,6 +28,9 @@
 		emp_damage = 0
 	else
 		emp_damage = max(emp_damage - (0.5 * delta_time), 0)
+
+/mob/living/brain/handle_status_effects(delta_time, times_fired)
+	return
 
 /mob/living/brain/handle_traits(delta_time, times_fired)
 	return

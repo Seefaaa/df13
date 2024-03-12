@@ -6,8 +6,8 @@
 	set category = "IC"
 	set instant = TRUE
 
-	if(GLOB.say_disabled) //This is here to try to identify lag problems
-		to_chat(usr, span_danger("Speech is currently admin-disabled."))
+	if(GLOB.say_disabled)	//This is here to try to identify lag problems
+		to_chat(usr, span_danger("Say is currently disabled."))
 		return
 
 	//queue this message because verbs are scheduled to process after SendMaps in the tick and speech is pretty expensive when it happens.
@@ -21,10 +21,9 @@
 	set category = "IC"
 	set instant = TRUE
 
-	if(GLOB.say_disabled) //This is here to try to identify lag problems
-		to_chat(usr, span_danger("Speech is currently admin-disabled."))
+	if(GLOB.say_disabled)	//This is here to try to identify lag problems
+		to_chat(usr, span_danger("Whisper is currently disabled."))
 		return
-
 	if(message)
 		SSspeech_controller.queue_say_for_mob(src, message, SPEECH_CONTROLLER_QUEUE_WHISPER_VERB)
 
@@ -37,21 +36,22 @@
 	set name = "Me"
 	set category = "IC"
 
-	if(GLOB.say_disabled) //This is here to try to identify lag problems
-		to_chat(usr, span_danger("Speech is currently admin-disabled."))
+	if(GLOB.say_disabled)	//This is here to try to identify lag problems
+		to_chat(usr, span_danger("Emote is currently disabled."))
 		return
 
 	message = trim(copytext_char(sanitize(message), 1, MAX_MESSAGE_LEN))
 
-	SSspeech_controller.queue_say_for_mob(src, message, SPEECH_CONTROLLER_QUEUE_EMOTE_VERB)
+	if(message)
+		SSspeech_controller.queue_say_for_mob(src, message, SPEECH_CONTROLLER_QUEUE_EMOTE_VERB)
 
 ///Speak as a dead person (ghost etc)
 /mob/proc/say_dead(message)
 	var/name = real_name
 	var/alt_name = ""
 
-	if(GLOB.say_disabled) //This is here to try to identify lag problems
-		to_chat(usr, span_danger("Speech is currently admin-disabled."))
+	if(GLOB.say_disabled)	//This is here to try to identify lag problems
+		to_chat(usr, span_danger("Say is currently disabled"))
 		return
 
 	var/jb = is_banned_from(ckey, "Deadchat")
@@ -59,20 +59,20 @@
 		return
 
 	if(jb)
-		to_chat(src, span_danger("You have been banned from deadchat."))
+		to_chat(src, span_danger("You cannot talk."))
 		return
 
 	if (src.client)
 		if(src.client.prefs.muted & MUTE_DEADCHAT)
-			to_chat(src, span_danger("You cannot talk in deadchat (muted)."))
+			to_chat(src, span_danger("You are currently muted from deadchat."))
 			return
-
+/*
 		if(SSlag_switch.measures[SLOWMODE_SAY] && !HAS_TRAIT(src, TRAIT_BYPASS_MEASURES) && src == usr)
 			if(!COOLDOWN_FINISHED(client, say_slowmode))
-				to_chat(src, span_warning("Message not sent due to slowmode. Please wait [SSlag_switch.slowmode_cooldown/10] seconds between messages.\n\"[message]\""))
+				to_chat(src, span_warning("The message was blocked due to lagswitch. Retry in [SSlag_switch.slowmode_cooldown/10] seconds.\n\"[message]\""))
 				return
 			COOLDOWN_START(client, say_slowmode, SSlag_switch.slowmode_cooldown)
-
+*/
 		if(src.client.handle_spam_prevention(message,MUTE_DEADCHAT))
 			return
 
@@ -85,9 +85,9 @@
 		else
 			name = real_name
 		if(name != real_name)
-			alt_name = " (died as [real_name])"
+			alt_name = " (as [real_name])"
 
-	var/spanned = say_quote(say_emphasis(message))
+	var/spanned = say_quote(message)
 	var/source = "<span class='game'><span class='prefix'>DEAD:</span> <span class='name'>[name]</span>[alt_name]"
 	var/rendered = " <span class='message'>[emoji_parse(spanned)]</span></span>"
 	log_talk(message, LOG_SAY, tag="DEAD")
@@ -110,19 +110,6 @@
 
 ///The amount of items we are looking for in the message
 #define MESSAGE_MODS_LENGTH 6
-
-/mob/proc/check_for_custom_say_emote(message, list/mods)
-	var/customsaypos = findtext(message, "*")
-	if(!customsaypos)
-		return message
-	if (is_banned_from(ckey, "Emote"))
-		return copytext(message, customsaypos + 1)
-	mods[MODE_CUSTOM_SAY_EMOTE] = lowertext(copytext_char(message, 1, customsaypos))
-	message = copytext(message, customsaypos + 1)
-	if (!message)
-		mods[MODE_CUSTOM_SAY_ERASE_INPUT] = TRUE
-		message = "an interesting thing to say"
-	return message
 /**
  * Extracts and cleans message of any extenstions at the begining of the message
  * Inserts the info into the passed list, returns the cleaned message

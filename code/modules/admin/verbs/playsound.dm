@@ -1,7 +1,11 @@
-//world/proc/shelleo
-#define SHELLEO_ERRORLEVEL 1
-#define SHELLEO_STDOUT 2
-#define SHELLEO_STDERR 3
+/client/proc/play_sound_wrapper()
+	set category = "Debug"
+	set name = "Debug HUDs"
+	set desc = "Debug the data or antag HUDs"
+
+	var/msg = input(src, null, "Debug HUDs") as sound|null
+	if(msg)
+		play_sound(msg)
 
 /client/proc/play_sound(S as sound)
 	set category = "Admin.Fun"
@@ -28,21 +32,35 @@
 	var/res = tgui_alert(usr, "Show the title of this song to the players?",, list("Yes","No", "Cancel"))
 	switch(res)
 		if("Yes")
-			to_chat(world, span_boldannounce("An admin played: [S]"), confidential = TRUE)
+			to_chat(world, span_boldannounce("An admin played: [S]") , confidential = TRUE)
 		if("Cancel")
 			return
 
-	log_admin("[key_name(src)] played sound [S]")
-	message_admins("[key_name_admin(src)] played sound [S]")
+	//log_admin("[key_name(src)] played sound [S]")
+	//message_admins("[key_name_admin(src)] played sound [S]")
+	var/count = 0
 
 	for(var/mob/M in GLOB.player_list)
 		if(M.client.prefs.toggles & SOUND_MIDI)
 			admin_sound.volume = vol * M.client.admin_music_volume
 			SEND_SOUND(M, admin_sound)
 			admin_sound.volume = vol
+			count++
+
+	count = round(count / GLOB.player_list.len * 100,0.5)
+	log_admin("[key_name(src)] played sound [S] to [count]% of the server.")
+	message_admins("[key_name_admin(src)] played sound [S] to [count]% of the server.")
 
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Play Global Sound") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
+
+/client/proc/play_local_sound_wrapper()
+	set category = "Admin.Fun"
+	set name = "Play Local Sound"
+
+	var/msg = input(src, null, "Play Local Sound") as sound|null
+	if(msg)
+		play_local_sound(msg)
 
 /client/proc/play_local_sound(S as sound)
 	set category = "Admin.Fun"
@@ -62,7 +80,7 @@
 		return
 
 	if(!M)
-		M = input(usr, "Choose a mob to play the sound to. Only they will hear it.", "Play Mob Sound") as null|anything in sort_names(GLOB.player_list)
+		M = input(usr, "Choose a mob to play the sound to. Only they will hear it.", "Play Mob Sound") as null|anything in sortNames(GLOB.player_list)
 	if(!M || QDELETED(M))
 		return
 	log_admin("[key_name(src)] played a direct mob sound [S] to [M].")
@@ -78,7 +96,7 @@
 
 	var/ytdl = CONFIG_GET(string/invoke_youtubedl)
 	if(!ytdl)
-		to_chat(src, span_boldwarning("Youtube-dl was not configured, action unavailable"), confidential = TRUE) //Check config.txt for the INVOKE_YOUTUBEDL value
+		to_chat(src, span_boldwarning("Youtube-dl was not configured, action unavailable") , confidential = TRUE) //Check config.txt for the INVOKE_YOUTUBEDL value
 		return
 
 	var/web_sound_input = input("Enter content URL (supported sites only, leave blank to stop playing)", "Play Internet Sound via youtube-dl") as text|null
@@ -90,8 +108,8 @@
 
 			web_sound_input = trim(web_sound_input)
 			if(findtext(web_sound_input, ":") && !findtext(web_sound_input, GLOB.is_http_protocol))
-				to_chat(src, span_boldwarning("Non-http(s) URIs are not allowed."), confidential = TRUE)
-				to_chat(src, span_warning("For youtube-dl shortcuts like ytsearch: please use the appropriate full url from the website."), confidential = TRUE)
+				to_chat(src, span_boldwarning("Non-http(s) URIs are not allowed.") , confidential = TRUE)
+				to_chat(src, span_warning("For youtube-dl shortcuts like ytsearch: please use the appropriate full url from the website.") , confidential = TRUE)
 				return
 			var/shell_scrubbed_input = shell_url_scrub(web_sound_input)
 			var/list/output = world.shelleo("[ytdl] --geo-bypass --format \"bestaudio\[ext=mp3]/best\[ext=mp4]\[height<=360]/bestaudio\[ext=m4a]/bestaudio\[ext=aac]\" --dump-single-json --no-playlist -- \"[shell_scrubbed_input]\"")
@@ -103,8 +121,8 @@
 				try
 					data = json_decode(stdout)
 				catch(var/exception/e)
-					to_chat(src, span_boldwarning("Youtube-dl JSON parsing FAILED:"), confidential = TRUE)
-					to_chat(src, span_warning("[e]: [stdout]"), confidential = TRUE)
+					to_chat(src, span_boldwarning("Youtube-dl JSON parsing FAILED:") , confidential = TRUE)
+					to_chat(src, span_warning("[e]: [stdout]") , confidential = TRUE)
 					return
 
 				if (data["url"])
@@ -116,12 +134,12 @@
 					music_extra_data["start"] = data["start_time"]
 					music_extra_data["end"] = data["end_time"]
 					music_extra_data["link"] = data["webpage_url"]
+					music_extra_data["title"] = data["title"]
 
 					var/res = tgui_alert(usr, "Show the title of and link to this song to the players?\n[title]",, list("No", "Yes", "Cancel"))
 					switch(res)
 						if("Yes")
-							music_extra_data["title"] = data["title"]
-							to_chat(world, span_boldannounce("An admin played: [webpage_url]"), confidential = TRUE)
+							to_chat(world, span_boldannounce("An admin played: [webpage_url]") , confidential = TRUE)
 						if("Cancel")
 							return
 
@@ -129,8 +147,8 @@
 					log_admin("[key_name(src)] played web sound: [web_sound_input]")
 					message_admins("[key_name(src)] played web sound: [web_sound_input]")
 			else
-				to_chat(src, span_boldwarning("Youtube-dl URL retrieval FAILED:"), confidential = TRUE)
-				to_chat(src, span_warning("[stderr]"), confidential = TRUE)
+				to_chat(src, span_boldwarning("Youtube-dl URL retrieval FAILED:") , confidential = TRUE)
+				to_chat(src, span_warning("[stderr]") , confidential = TRUE)
 
 		else //pressed ok with blank
 			log_admin("[key_name(src)] stopped web sound")
@@ -139,8 +157,8 @@
 			stop_web_sounds = TRUE
 
 		if(web_sound_url && !findtext(web_sound_url, GLOB.is_http_protocol))
-			to_chat(src, span_boldwarning("BLOCKED: Content URL not using http(s) protocol"), confidential = TRUE)
-			to_chat(src, span_warning("The media provider returned a content URL that isn't using the HTTP or HTTPS protocol"), confidential = TRUE)
+			to_chat(src, span_boldwarning("BLOCKED: Content URL not using http(s) protocol") , confidential = TRUE)
+			to_chat(src, span_warning("The media provider returned a content URL that isn't using the HTTP or HTTPS protocol") , confidential = TRUE)
 			return
 		if(web_sound_url || stop_web_sounds)
 			for(var/m in GLOB.player_list)
@@ -153,6 +171,14 @@
 						C.tgui_panel?.stop_music()
 
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Play Internet Sound")
+
+/client/proc/set_round_end_sound_wrapper()
+	set category = "Admin.Fun"
+	set name = "Set Round End Sound"
+
+	var/msg = input(src, null, "Set Round End Sound") as sound|null
+	if(msg)
+		set_round_end_sound(msg)
 
 /client/proc/set_round_end_sound(S as sound)
 	set category = "Admin.Fun"
@@ -175,12 +201,7 @@
 	log_admin("[key_name(src)] stopped all currently playing sounds.")
 	message_admins("[key_name_admin(src)] stopped all currently playing sounds.")
 	for(var/mob/M in GLOB.player_list)
-		SEND_SOUND(M, sound(null))
+		DIRECT_OUTPUT(M, sound(null))
 		var/client/C = M.client
 		C?.tgui_panel?.stop_music()
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Stop All Playing Sounds") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-//world/proc/shelleo
-#undef SHELLEO_ERRORLEVEL
-#undef SHELLEO_STDOUT
-#undef SHELLEO_STDERR

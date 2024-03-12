@@ -37,37 +37,37 @@
 		if(!areaname || !length(areaname))
 			return
 		storedarea = new areatype
-		storedarea.power_equip = 0
-		storedarea.power_light = 0
-		storedarea.power_environ = 0
-		storedarea.always_unpowered = 0
 		storedarea.name = areaname
 		areaimage.loc = storedarea // color our area
 
 /datum/buildmode_mode/area_edit/handle_click(client/c, params, object)
-	var/list/modifiers = params2list(params)
+	var/list/pa = params2list(params)
+	var/left_click = pa.Find("left")
+	var/right_click = pa.Find("right")
+	var/alt_click = pa.Find("alt")
 
-	if(LAZYACCESS(modifiers, LEFT_CLICK))
+	if(left_click)
 		if(!storedarea)
 			to_chat(c, span_warning("Configure or select the area you want to paint first!"))
 			return
-		if(LAZYACCESS(modifiers, ALT_CLICK))
+		if(alt_click)
 			var/turf/T = get_turf(object)
 			if(get_area(T) != storedarea)
 				log_admin("Build Mode: [key_name(c)] added [AREACOORD(T)] to [storedarea]")
 				storedarea.contents.Add(T)
 			return
 		return ..()
-	else if(LAZYACCESS(modifiers, RIGHT_CLICK))
+	else if(right_click)
 		var/turf/T = get_turf(object)
 		storedarea = get_area(T)
 		areaimage.loc = storedarea // color our area
 
 /datum/buildmode_mode/area_edit/handle_selected_area(client/c, params)
-	var/list/modifiers = params2list(params)
+	var/list/pa = params2list(params)
+	var/left_click = pa.Find("left")
 
-	if(LAZYACCESS(modifiers, LEFT_CLICK))
-		var/choice = alert("Are you sure you want to fill area?", "Area Fill Confirmation", "Yes", "No")
+	if(left_click)
+		var/choice = tgui_alert(usr, "Are you sure you want to fill area?", "Area Fill Confirmation", list("Yes", "No"))
 		if(choice != "Yes")
 			return
 		for(var/turf/T in block(get_turf(cornerA),get_turf(cornerB)))

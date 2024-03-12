@@ -9,13 +9,13 @@ export const Vote = (props, context) => {
   /**
    * Adds the voting type to title if there is an ongoing vote.
    */
-  let windowTitle = 'Vote';
+  let windowTitle = 'Voting';
   if (mode) {
     windowTitle += ': ' + (question || mode).replace(/^\w/, (c) => c.toUpperCase());
   }
 
   return (
-    <Window resizable title={windowTitle} width={400} height={500}>
+    <Window resizable title={windowTitle} width={400} height={550}>
       <Window.Content>
         <Stack fill vertical>
           <Section title="Create Vote">
@@ -37,6 +37,7 @@ export const Vote = (props, context) => {
 const VoteOptions = (props, context) => {
   const { act, data } = useBackend(context);
   const {
+    allow_vote_mode,
     allow_vote_restart,
     allow_vote_map,
     lower_admin,
@@ -45,7 +46,7 @@ const VoteOptions = (props, context) => {
 
   return (
     <Stack.Item>
-      <Collapsible title="Start a Vote">
+      <Collapsible title="Start Poll">
         <Stack justify="space-between">
           <Stack.Item>
             <Stack vertical>
@@ -81,12 +82,29 @@ const VoteOptions = (props, context) => {
                   Restart
                 </Button>
               </Stack.Item>
+              <Stack.Item>
+                {!!lower_admin && (
+                  <Button.Checkbox
+                    mr={!allow_vote_mode ? 1 : 1.6}
+                    color="red"
+                    checked={!!allow_vote_mode}
+                    disabled={!upper_admin}
+                    onClick={() => act('toggle_gamemode')}>
+                    {allow_vote_mode ? 'Enabled' : 'Disabled'}
+                  </Button.Checkbox>
+                )}
+                <Button
+                  disabled={!allow_vote_mode}
+                  onClick={() => act('gamemode')}>
+                  Gamemode
+                </Button>
+              </Stack.Item>
             </Stack>
           </Stack.Item>
           <Stack.Item>
             {!!lower_admin && (
               <Button disabled={!lower_admin} onClick={() => act('custom')}>
-                Create Custom Vote
+                Custom
               </Button>
             )}
           </Stack.Item>
@@ -106,7 +124,7 @@ const VotersList = (props, context) => {
 
   return (
     <Stack.Item>
-      <Collapsible title={`View Voters${voting.length ? `: ${voting.length}` : ""}`}>
+      <Collapsible title={`Voting: ${voting.length ? ` ${voting.length}` : ""}`}>
         <Section height={8} fill scrollable>
           {voting.map((voter) => {
             return <Box key={voter}>{voter}</Box>;
@@ -127,7 +145,7 @@ const ChoicesPanel = (props, context) => {
 
   return (
     <Stack.Item grow>
-      <Section fill scrollable title="Choices">
+      <Section fill scrollable title="Choose!">
         {choices.length !== 0 ? (
           <LabeledList>
             {choices.map((choice, i) => (
@@ -159,7 +177,7 @@ const ChoicesPanel = (props, context) => {
             ))}
           </LabeledList>
         ) : (
-          <NoticeBox>No choices available!</NoticeBox>
+          <NoticeBox>No Choice!</NoticeBox>
         )}
       </Section>
     </Stack.Item>
@@ -178,7 +196,7 @@ const TimePanel = (props, context) => {
     <Stack.Item mt={1}>
       <Section>
         <Stack justify="space-between">
-          <Box fontSize={1.5}>Time Remaining: {time_remaining || 0}s</Box>
+          <Box fontSize={1.5}>Time Left: {time_remaining || 0} seconds</Box>
           {!!lower_admin && (
             <Button
               color="red"

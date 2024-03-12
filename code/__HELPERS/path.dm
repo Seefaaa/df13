@@ -16,9 +16,8 @@
  * * id: An ID card representing what access we have and what doors we can open. Its location relative to the pathing atom is irrelevant
  * * simulated_only: Whether we consider turfs without atmos simulation (AKA do we want to ignore space)
  * * exclude: If we want to avoid a specific turf, like if we're a mulebot who already got blocked by some turf
- * * skip_first: Whether or not to delete the first item in the path. This would be done because the first item is the starting tile, which can break movement for some creatures.
  */
-/proc/get_path_to(caller, end, max_distance = 30, mintargetdist, id=null, simulated_only = TRUE, turf/exclude, skip_first=TRUE)
+/proc/get_path_to(caller, end, max_distance = 30, mintargetdist, id=null, simulated_only = TRUE, turf/exclude)
 	if(!caller || !get_turf(end))
 		return
 
@@ -35,8 +34,6 @@
 	SSpathfinder.mobs.found(l)
 	if(!path)
 		path = list()
-	if(length(path) > 0 && skip_first)
-		path.Cut(1,2)
 	return path
 
 /**
@@ -44,7 +41,7 @@
  * Note that this can only be used inside the [datum/pathfind][pathfind datum] since it uses variables from said datum.
  * If you really want to optimize things, optimize this, cuz this gets called a lot.
  */
-#define CAN_STEP(cur_turf, next) (next && !next.density && cur_turf.Adjacent(next) && !(simulated_only && SSpathfinder.space_type_cache[next.type]) && !cur_turf.LinkBlockedWithAccess(next,caller, id) && (next != avoid))
+#define CAN_STEP(cur_turf, next) (next && !next.density && cur_turf.Adjacent(next) && !(simulated_only && (SSpathfinder.openspace_type_cache[next.type])) && !cur_turf.LinkBlockedWithAccess(next,caller) && (next != avoid))
 /// Another helper macro for JPS, for telling when a node has forced neighbors that need expanding
 #define STEP_NOT_HERE_BUT_THERE(cur_turf, dirA, dirB) ((!CAN_STEP(cur_turf, get_step(cur_turf, dirA)) && CAN_STEP(cur_turf, get_step(cur_turf, dirB))))
 
@@ -126,7 +123,6 @@
 	end = get_turf(goal)
 	open = new /datum/heap(/proc/HeapPathWeightCompare)
 	sources = new()
-	src.id = id
 	src.max_distance = max_distance
 	src.mintargetdist = mintargetdist
 	src.simulated_only = simulated_only
@@ -334,23 +330,12 @@
  *
  * Arguments:
  * * caller: The movable, if one exists, being used for mobility checks to see what tiles it can reach
- * * ID: An ID card that decides if we can gain access to doors that would otherwise block a turf
  * * simulated_only: Do we only worry about turfs with simulated atmos, most notably things that aren't space?
 */
-/turf/proc/LinkBlockedWithAccess(turf/destination_turf, caller, ID)
-	var/actual_dir = get_dir(src, destination_turf)
-
-	for(var/obj/structure/window/iter_window in src)
-		if(!iter_window.CanAStarPass(ID, actual_dir))
-			return TRUE
-
-	for(var/obj/machinery/door/window/iter_windoor in src)
-		if(!iter_windoor.CanAStarPass(ID, actual_dir))
-			return TRUE
-
+/turf/proc/LinkBlockedWithAccess(turf/destination_turf, caller)
 	var/reverse_dir = get_dir(destination_turf, src)
 	for(var/obj/iter_object in destination_turf)
-		if(!iter_object.CanAStarPass(ID, reverse_dir, caller))
+		if(!iter_object.CanAStarPass(reverse_dir, caller))
 			return TRUE
 
 	return FALSE

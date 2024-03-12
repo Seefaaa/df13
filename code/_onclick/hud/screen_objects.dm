@@ -31,6 +31,7 @@
 	 * But for now, this works.
 	 */
 	var/del_on_map_removal = TRUE
+	var/last_word
 
 /atom/movable/screen/Destroy()
 	master = null
@@ -56,7 +57,7 @@
 
 /atom/movable/screen/swap_hand
 	plane = HUD_PLANE
-	name = "swap hand"
+	name = "swap hands"
 
 /atom/movable/screen/swap_hand/Click()
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
@@ -84,36 +85,24 @@
 		H.mind.print_levels(H)
 
 /atom/movable/screen/craft
-	name = "crafting menu"
+	name = "craft"
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "craft"
 	screen_loc = ui_crafting
 
-/atom/movable/screen/area_creator
-	name = "create new area"
-	icon = 'icons/hud/screen_midnight.dmi'
-	icon_state = "area_edit"
-	screen_loc = ui_building
+// /atom/movable/screen/language_menu
+// 	name = "languages"
+// 	icon = 'icons/hud/screen_midnight.dmi'
+// 	icon_state = "talk_wheel"
+// 	screen_loc = ui_language_menu
 
-/atom/movable/screen/area_creator/Click()
-	if(usr.incapacitated() || (isobserver(usr) && !isAdminGhostAI(usr)))
-		return TRUE
-	var/area/A = get_area(usr)
-	if(!A.outdoors)
-		to_chat(usr, span_warning("There is already a defined structure here."))
-		return TRUE
-	create_area(usr)
+// /atom/movable/screen/language_menu/Click()
+// 	var/mob/M = usr
+// 	var/datum/language_holder/H = M.get_language_holder()
+// 	H.open_language_menu(usr)
 
-/atom/movable/screen/language_menu
-	name = "language menu"
-	icon = 'icons/hud/screen_midnight.dmi'
-	icon_state = "talk_wheel"
-	screen_loc = ui_language_menu
-
-/atom/movable/screen/language_menu/Click()
-	var/mob/M = usr
-	var/datum/language_holder/H = M.get_language_holder()
-	H.open_language_menu(usr)
+// /atom/movable/screen/language_menu/ghost
+// 	screen_loc = ui_ghost_language_menu
 
 /atom/movable/screen/inventory
 	/// The identifier for the slot. It has nothing to do with ID cards.
@@ -132,9 +121,7 @@
 	if(world.time <= usr.next_move)
 		return TRUE
 
-	if(usr.incapacitated(IGNORE_STASIS))
-		return TRUE
-	if(ismecha(usr.loc)) // stops inventory actions in a mech
+	if(usr.incapacitated())
 		return TRUE
 
 	if(hud?.mymob && slot_id)
@@ -142,12 +129,12 @@
 		if(inv_item)
 			return inv_item.Click(location, control, params)
 
-	if(usr.attack_ui(slot_id, params))
+	if(usr.attack_ui(slot_id))
 		usr.update_inv_hands()
 	return TRUE
 
-/atom/movable/screen/inventory/MouseEntered(location, control, params)
-	. = ..()
+/atom/movable/screen/inventory/MouseEntered()
+	..()
 	add_overlays()
 
 /atom/movable/screen/inventory/MouseExited()
@@ -178,7 +165,7 @@
 	var/image/item_overlay = image(holding)
 	item_overlay.alpha = 92
 
-	if(!user.can_equip(holding, slot_id, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
+	if(!user.can_equip(holding, slot_id, TRUE))
 		item_overlay.color = "#FF0000"
 	else
 		item_overlay.color = "#00ff00"
@@ -225,8 +212,6 @@
 		return TRUE
 	if(user.incapacitated())
 		return TRUE
-	if (ismecha(user.loc)) // stops inventory actions in a mech
-		return TRUE
 
 	if(user.active_hand_index == held_index)
 		var/obj/item/I = user.get_active_held_item()
@@ -260,119 +245,43 @@
 	if(usr.stat == CONSCIOUS)
 		usr.dropItemToGround(usr.get_active_held_item())
 
-/atom/movable/screen/combattoggle
-	name = "toggle combat mode"
-	icon = 'icons/hud/screen_midnight.dmi'
-	icon_state = "combat_off"
-	screen_loc = ui_combat_toggle
+/atom/movable/screen/act_intent
+	name = "intents"
+	icon_state = "help"
+	screen_loc = ui_acti
 
-/atom/movable/screen/combattoggle/Initialize(mapload)
-	. = ..()
-	update_appearance()
+/atom/movable/screen/act_intent/Click(location, control, params)
+	usr.a_intent_change(INTENT_HOTKEY_RIGHT)
 
-/atom/movable/screen/combattoggle/Click()
-	if(isliving(usr))
-		var/mob/living/owner = usr
-		owner.set_combat_mode(!owner.combat_mode, FALSE)
-		update_appearance()
+/atom/movable/screen/act_intent/segmented/Click(location, control, params)
+	if(usr.client.prefs.toggles & INTENT_STYLE)
+		var/_x = text2num(params2list(params)["icon-x"])
+		var/_y = text2num(params2list(params)["icon-y"])
 
-/atom/movable/screen/combattoggle/update_icon_state()
-	var/mob/living/user = hud?.mymob
-	if(!istype(user) || !user.client)
+		if(_x<=16 && _y<=16)
+			usr.a_intent_change(INTENT_HARM)
+
+		else if(_x<=16 && _y>=17)
+			usr.a_intent_change(INTENT_HELP)
+
+		else if(_x>=17 && _y<=16)
+			usr.a_intent_change(INTENT_GRAB)
+
+		else if(_x>=17 && _y>=17)
+			usr.a_intent_change(INTENT_DISARM)
+	else
 		return ..()
-	icon_state = user.combat_mode ? "combat" : "combat_off" //Treats the combat_mode
-	return ..()
 
-//Version of the combat toggle with the flashy overlay
-/atom/movable/screen/combattoggle/flashy
-	///Mut appearance for flashy border
-	var/mutable_appearance/flashy
+/atom/movable/screen/act_intent/alien
+	icon = 'icons/hud/screen_alien.dmi'
+	screen_loc = ui_movi
 
-/atom/movable/screen/combattoggle/flashy/update_overlays()
-	. = ..()
-	var/mob/living/user = hud?.mymob
-	if(!istype(user) || !user.client)
-		return
-
-	if(!user.combat_mode)
-		return
-
-	if(!flashy)
-		flashy = mutable_appearance('icons/hud/screen_gen.dmi', "togglefull_flash")
-		flashy.color = "#C62727"
-	. += flashy
-
-/atom/movable/screen/combattoggle/robot
+/atom/movable/screen/act_intent/robot
 	icon = 'icons/hud/screen_cyborg.dmi'
 	screen_loc = ui_borg_intents
 
-/atom/movable/screen/internals
-	name = "toggle internals"
-	icon_state = "internal0"
-	screen_loc = ui_internal
-
-/atom/movable/screen/internals/Click()
-	if(!iscarbon(usr))
-		return
-	var/mob/living/carbon/C = usr
-	if(C.incapacitated())
-		return
-
-	if(C.internal)
-		C.internal = null
-		to_chat(C, span_notice("You are no longer running on internals."))
-		icon_state = "internal0"
-	else
-		if(!C.getorganslot(ORGAN_SLOT_BREATHING_TUBE))
-			if(!istype(C.wear_mask, /obj/item/clothing/mask))
-				to_chat(C, span_warning("You are not wearing an internals mask!"))
-				return 1
-			else
-				var/obj/item/clothing/mask/M = C.wear_mask
-				if(M.mask_adjusted) // if mask on face but pushed down
-					M.adjustmask(C) // adjust it back
-				if( !(M.clothing_flags & MASKINTERNALS) )
-					to_chat(C, span_warning("You are not wearing an internals mask!"))
-					return
-
-		var/obj/item/I = C.is_holding_item_of_type(/obj/item/tank)
-		if(I)
-			to_chat(C, span_notice("You are now running on internals from [I] in your [C.get_held_index_name(C.get_held_index_of_item(I))]."))
-			C.internal = I
-		else if(ishuman(C))
-			var/mob/living/carbon/human/H = C
-			if(istype(H.s_store, /obj/item/tank))
-				to_chat(H, span_notice("You are now running on internals from [H.s_store] on your [H.wear_suit.name]."))
-				H.internal = H.s_store
-			else if(istype(H.belt, /obj/item/tank))
-				to_chat(H, span_notice("You are now running on internals from [H.belt] on your belt."))
-				H.internal = H.belt
-			else if(istype(H.l_store, /obj/item/tank))
-				to_chat(H, span_notice("You are now running on internals from [H.l_store] in your left pocket."))
-				H.internal = H.l_store
-			else if(istype(H.r_store, /obj/item/tank))
-				to_chat(H, span_notice("You are now running on internals from [H.r_store] in your right pocket."))
-				H.internal = H.r_store
-
-		//Separate so CO2 jetpacks are a little less cumbersome.
-		if(!C.internal && istype(C.back, /obj/item/tank))
-			to_chat(C, span_notice("You are now running on internals from [C.back] on your back."))
-			C.internal = C.back
-
-		if(C.internal)
-			icon_state = "internal1"
-		else
-			to_chat(C, span_warning("You don't have an oxygen tank!"))
-			return
-	C.update_action_buttons_icon()
-
-/atom/movable/screen/spacesuit
-	name = "Space suit cell status"
-	icon_state = "spacesuit_0"
-	screen_loc = ui_spacesuit
-
 /atom/movable/screen/mov_intent
-	name = "run/walk toggle"
+	name = "run/walk"
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "running"
 
@@ -385,6 +294,8 @@
 			icon_state = "walking"
 		if(MOVE_INTENT_RUN)
 			icon_state = "running"
+		if(MOVE_INTENT_CRAWL)
+			icon_state = "crawling"
 	return ..()
 
 /atom/movable/screen/mov_intent/proc/toggle(mob/user)
@@ -419,7 +330,7 @@
 		L.resist()
 
 /atom/movable/screen/rest
-	name = "rest"
+	name = "lie down"
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "act_rest"
 	base_icon_state = "act_rest"
@@ -437,6 +348,7 @@
 	icon_state = "[base_icon_state][user.resting ? 0 : null]"
 	return ..()
 
+
 /atom/movable/screen/storage
 	name = "storage"
 	icon_state = "block"
@@ -451,8 +363,6 @@
 	if(world.time <= usr.next_move)
 		return TRUE
 	if(usr.incapacitated())
-		return TRUE
-	if (ismecha(usr.loc)) // stops inventory actions in a mech
 		return TRUE
 	if(master)
 		var/obj/item/I = usr.get_active_held_item()
@@ -471,7 +381,7 @@
 		C.toggle_throw_mode()
 
 /atom/movable/screen/zone_sel
-	name = "damage zone"
+	name = "zone selection"
 	icon_state = "zone_sel"
 	screen_loc = ui_zonesel
 	var/overlay_icon = 'icons/hud/screen_gen.dmi'
@@ -482,9 +392,9 @@
 	if(isobserver(usr))
 		return
 
-	var/list/modifiers = params2list(params)
-	var/icon_x = text2num(LAZYACCESS(modifiers, ICON_X))
-	var/icon_y = text2num(LAZYACCESS(modifiers, ICON_Y))
+	var/list/PL = params2list(params)
+	var/icon_x = text2num(PL["icon-x"])
+	var/icon_y = text2num(PL["icon-y"])
 	var/choice = get_zone_at(icon_x, icon_y)
 	if (!choice)
 		return 1
@@ -492,16 +402,15 @@
 	return set_selected_zone(choice, usr)
 
 /atom/movable/screen/zone_sel/MouseEntered(location, control, params)
-	. = ..()
 	MouseMove(location, control, params)
 
 /atom/movable/screen/zone_sel/MouseMove(location, control, params)
 	if(isobserver(usr))
 		return
 
-	var/list/modifiers = params2list(params)
-	var/icon_x = text2num(LAZYACCESS(modifiers, ICON_X))
-	var/icon_y = text2num(LAZYACCESS(modifiers, ICON_Y))
+	var/list/PL = params2list(params)
+	var/icon_x = text2num(PL["icon-x"])
+	var/icon_y = text2num(PL["icon-y"])
 	var/choice = get_zone_at(icon_x, icon_y)
 
 	if(hovering == choice)
@@ -572,8 +481,7 @@
 
 	if(choice != hud.mymob.zone_selected)
 		hud.mymob.zone_selected = choice
-		update_appearance()
-		SEND_SIGNAL(user, COMSIG_MOB_SELECTED_ZONE_SET, choice)
+		update_icon()
 
 	return TRUE
 
@@ -622,31 +530,37 @@
 	screen_loc = ui_borg_health
 
 /atom/movable/screen/healths/blob
-	name = "blob health"
+	name = "mass"
 	icon_state = "block"
 	screen_loc = ui_internal
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /atom/movable/screen/healths/blob/overmind
-	name = "overmind health"
+	name = "core"
 	icon = 'icons/hud/blob.dmi'
 	icon_state = "corehealth"
 	screen_loc = ui_blobbernaut_overmind_health
 
 /atom/movable/screen/healths/guardian
-	name = "summoner health"
+	name = "master"
 	icon = 'icons/mob/guardian.dmi'
 	icon_state = "base"
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /atom/movable/screen/healths/revenant
-	name = "essence"
+	name = "essense"
 	icon = 'icons/mob/actions/backgrounds.dmi'
 	icon_state = "bg_revenant"
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
+/atom/movable/screen/healths/construct
+	icon = 'icons/hud/screen_construct.dmi'
+	icon_state = "artificer_health0"
+	screen_loc = ui_construct_health
+	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+
 /atom/movable/screen/healthdoll
-	name = "health doll"
+	name = "body"
 	screen_loc = ui_healthdoll
 
 /atom/movable/screen/healthdoll/Click()
@@ -664,19 +578,14 @@
 	icon_state = "mood5"
 	screen_loc = ui_mood
 
-/atom/movable/screen/mood/attack_tk()
-	return
-
 /atom/movable/screen/splash
-	icon = 'icons/blanks/blank_title.png'
+	icon = 'icons/blank_title.png'
 	icon_state = ""
 	screen_loc = "1,1"
 	plane = SPLASHSCREEN_PLANE
 	var/client/holder
 
-INITIALIZE_IMMEDIATE(/atom/movable/screen/splash)
-
-/atom/movable/screen/splash/Initialize(mapload, client/C, visible, use_previous_title)
+/atom/movable/screen/splash/New(client/C, visible, use_previous_title) //TODO: Make this use INITIALIZE_IMMEDIATE, except its not easy
 	. = ..()
 	if(!istype(C))
 		return
@@ -686,13 +595,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/splash)
 	if(!visible)
 		alpha = 0
 
-	if(!use_previous_title)
-		if(SStitle.icon)
-			icon = SStitle.icon
-	else
-		if(!SStitle.previous_icon)
-			return INITIALIZE_HINT_QDEL
-		icon = SStitle.previous_icon
+	icon = 'icons/end.png'
 
 	holder.screen += src
 
@@ -725,36 +628,62 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen/splash)
 	if(parent)
 		parent.component_click(src, params)
 
-/atom/movable/screen/combo
-	icon_state = ""
+/atom/movable/screen/cooldown_overlay
+	name = ""
+	icon_state = "cooldown"
+	pixel_y = 4
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
-	screen_loc = ui_combo
-	plane = ABOVE_HUD_PLANE
-	var/timerid
+	appearance_flags = RESET_COLOR | PIXEL_SCALE | RESET_TRANSFORM | KEEP_TOGETHER | RESET_ALPHA
+	vis_flags = VIS_INHERIT_ID
+	var/end_time = 0
+	var/atom/movable/screen/parent_button
+	var/datum/callback/callback
+	var/timer
 
-/atom/movable/screen/combo/proc/clear_streak()
-	animate(src, alpha = 0, 2 SECONDS, SINE_EASING)
-	timerid = addtimer(CALLBACK(src, .proc/reset_icons), 2 SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
+/atom/movable/screen/cooldown_overlay/Initialize(mapload, button)
+	. = ..(mapload)
+	parent_button = button
 
-/atom/movable/screen/combo/proc/reset_icons()
-	cut_overlays()
-	icon_state = ""
-
-/atom/movable/screen/combo/update_icon_state(streak = "", time = 2 SECONDS)
-	reset_icons()
-	if(timerid)
-		deltimer(timerid)
-	alpha = 255
-	if(!streak)
-		return ..()
-	timerid = addtimer(CALLBACK(src, .proc/clear_streak), time, TIMER_UNIQUE | TIMER_STOPPABLE)
-	icon_state = "combo"
-	for(var/i = 1; i <= length(streak); ++i)
-		var/intent_text = copytext(streak, i, i + 1)
-		var/image/intent_icon = image(icon,src,"combo_[intent_text]")
-		intent_icon.pixel_x = 16 * (i - 1) - 8 * length(streak)
-		add_overlay(intent_icon)
+/atom/movable/screen/cooldown_overlay/Destroy()
+	stop_cooldown()
+	deltimer(timer)
 	return ..()
+
+/atom/movable/screen/cooldown_overlay/proc/start_cooldown(end_time, need_timer = TRUE)
+	parent_button.color = "#8000007c"
+	parent_button.vis_contents += src
+	src.end_time = end_time
+	set_maptext("[round((end_time - world.time) / 10, 1)]")
+	if(need_timer)
+		timer = addtimer(CALLBACK(src, .proc/tick), 1 SECONDS, TIMER_STOPPABLE)
+
+/atom/movable/screen/cooldown_overlay/proc/tick()
+	if(world.time >= end_time)
+		stop_cooldown()
+		return
+	set_maptext("[round((end_time - world.time) / 10, 1)]")
+	if(timer)
+		timer = addtimer(CALLBACK(src, .proc/tick), 1 SECONDS, TIMER_STOPPABLE)
+
+/atom/movable/screen/cooldown_overlay/proc/stop_cooldown()
+	parent_button.color = "#ffffffff"
+	parent_button.vis_contents -= src
+	if(callback)
+		callback.Invoke()
+
+/atom/movable/screen/cooldown_overlay/proc/set_maptext(time)
+	maptext = "<div style=\"font-size:6pt;font:'Arial Black';text-align:center;\">[time]</div>"
+
+/proc/start_cooldown(atom/movable/screen/cooldown_overlay/button, time, datum/callback/callback)
+	if(!time)
+		return
+	var/atom/movable/screen/cooldown_overlay/cooldown = new(button, button)
+	if(callback)
+		cooldown.callback = callback
+		cooldown.start_cooldown(time)
+	else
+		cooldown.start_cooldown(time, FALSE)
+	return cooldown
 
 /atom/movable/screen/stamina
 	name = "stamina"

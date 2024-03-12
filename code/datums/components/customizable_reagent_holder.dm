@@ -8,6 +8,7 @@
  * the replacement type needs to also have the component. The ingredients will be copied over. Reagents are not
  * copied over since other components already take care of that.
  */
+/* Not used right now
 /datum/component/customizable_reagent_holder
 	can_transfer = TRUE
 	///List of item ingredients.
@@ -33,8 +34,7 @@
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 	var/atom/atom_parent = parent
-	// assume replacement is OK
-	if (!atom_parent.reagents && !replacement)
+	if (!atom_parent.reagents)
 		return COMPONENT_INCOMPATIBLE
 
 	src.replacement = replacement
@@ -71,6 +71,7 @@
 	))
 	REMOVE_TRAIT(parent, TRAIT_CUSTOMIZABLE_REAGENT_HOLDER, src)
 
+
 /datum/component/customizable_reagent_holder/PostTransfer()
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
@@ -94,9 +95,9 @@
 						ending = " and "
 				if (3 to INFINITY)
 					if (i == ingredients.len - 1)
-						ending = ", and "
-			ingredients_listed += "\a [ingredient.name][ending]"
-	examine_list += "It contains [LAZYLEN(ingredients) ? "[ingredients_listed]" : " no ingredients, "]making a [custom_adjective()]-sized [initial(atom_parent.name)]."
+						ending = ", "
+			ingredients_listed += "[ingredient?.name][ending]"
+	examine_list += "\nIt contains [LAZYLEN(ingredients) ? "[ingredients_listed]" : "no ingredients, "]making a [custom_adjective()]-sized [initial(atom_parent.name)]."
 
 
 ///Handles when the customizable food is attacked by something.
@@ -108,8 +109,6 @@
 	switch (ingredient_type)
 		if (CUSTOM_INGREDIENT_TYPE_EDIBLE)
 			valid_ingredient = IS_EDIBLE(ingredient)
-		if (CUSTOM_INGREDIENT_TYPE_DRYABLE)
-			valid_ingredient = HAS_TRAIT(ingredient, TRAIT_DRYABLE)
 
 	// only accept valid ingredients
 	if (!valid_ingredient || HAS_TRAIT(ingredient, TRAIT_CUSTOMIZABLE_REAGENT_HOLDER))
@@ -231,7 +230,7 @@
 	else
 		var/list/rgbcolor = list(0,0,0,0)
 		var/customcolor = GetColors(color)
-		var/ingcolor = GetColors(top_overlay.color)
+		var/ingcolor =  GetColors(top_overlay.color)
 		rgbcolor[1] = (customcolor[1]+ingcolor[1])/2
 		rgbcolor[2] = (customcolor[2]+ingcolor[2])/2
 		rgbcolor[3] = (customcolor[3]+ingcolor[3])/2
@@ -247,3 +246,4 @@
 	for (var/r in results)
 		var/atom/result = r
 		result.AddComponent(/datum/component/customizable_reagent_holder, null, fill_type, ingredient_type = ingredient_type, max_ingredients = max_ingredients, initial_ingredients = ingredients)
+*/

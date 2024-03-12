@@ -5,7 +5,7 @@
 /mob/proc/change_mob_type(new_type = null, turf/location = null, new_name = null as text, delete_old_mob = FALSE)
 
 	if(isnewplayer(src))
-		to_chat(usr, span_danger("Cannot convert players who have not entered yet."))
+		to_chat(usr, span_danger("Cannot transform players in lobby."))
 		return
 
 	if(!new_type)
@@ -19,7 +19,7 @@
 		return
 
 	if(ispath(new_type, /mob/dead/new_player))
-		to_chat(usr, span_danger("Cannot convert into a new_player mob type."))
+		to_chat(usr, span_danger("Cannot transform mob type new_player."))
 		return
 
 	var/mob/M
@@ -47,7 +47,7 @@
 		D.updateappearance(mutcolor_update=1, mutations_overlay_update=1)
 	else if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		client?.prefs.safe_transfer_prefs_to(H)
+		client.prefs.copy_to(H)
 		H.dna.update_dna_identity()
 
 	if(mind && isliving(M))

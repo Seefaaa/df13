@@ -32,7 +32,7 @@
 
 			// If the new name is something that would be restricted by IC chat filters,
 			// give the admin a warning but allow them to do it anyway if they want.
-			if(is_ic_filtered(new_name) || is_soft_ic_filtered(new_name) && tgui_alert(usr, "Your selected name contains words restricted by IC chat filters. Confirm this new name?", "IC Chat Filter Conflict", list("Confirm", "Cancel")) == "Cancel")
+			if(CHAT_FILTER_CHECK(new_name) && tgui_alert(usr, "Your selected name contains words restricted by IC chat filters. Confirm this new name?", "IC Chat Filter Conflict", list("Confirm", "Cancel")) == "Cancel")
 				return
 
 			if( !new_name || !M )
@@ -59,7 +59,6 @@
 					A.setDir(turn(A.dir, 45))
 			vv_update_display(A, "dir", dir2text(A.dir))
 
-
 		else if(href_list["adjustDamage"] && href_list["mobToDamage"])
 			if(!check_rights(NONE))
 				return
@@ -70,7 +69,7 @@
 
 			var/Text = href_list["adjustDamage"]
 
-			var/amount = input("Deal how much damage to mob? (Negative values here heal)","Adjust [Text]loss",0) as num|null
+			var/amount =  input("Deal how much damage to mob? (Negative values here heal)","Adjust [Text]loss",0) as num|null
 
 			if (isnull(amount))
 				return
@@ -96,9 +95,6 @@
 				if("brain")
 					L.adjustOrganLoss(ORGAN_SLOT_BRAIN, amount)
 					newamt = L.getOrganLoss(ORGAN_SLOT_BRAIN)
-				if("clone")
-					L.adjustCloneLoss(amount)
-					newamt = L.getCloneLoss()
 				if("stamina")
 					L.adjustStaminaLoss(amount)
 					newamt = L.getStaminaLoss()
@@ -110,7 +106,7 @@
 				var/log_msg = "[key_name(usr)] dealt [amount] amount of [Text] damage to [key_name(L)]"
 				message_admins("[key_name(usr)] dealt [amount] amount of [Text] damage to [ADMIN_LOOKUPFLW(L)]")
 				log_admin(log_msg)
-				admin_ticket_log(L, "<font color='blue'>[log_msg]</font>")
+				admin_ticket_log(L, span_blue("[log_msg]"))
 				vv_update_display(L, Text, "[newamt]")
 
 

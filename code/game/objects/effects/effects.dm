@@ -9,16 +9,6 @@
 	vis_flags = VIS_INHERIT_PLANE
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 
-/obj/effect/attackby(obj/item/weapon, mob/user, params)
-	if(SEND_SIGNAL(weapon, COMSIG_ITEM_ATTACK_EFFECT, src, user, params) & COMPONENT_NO_AFTERATTACK)
-		return TRUE
-
-	// I'm not sure why these are snowflaked to early return but they are
-	if(istype(weapon, /obj/item/mop) || istype(weapon, /obj/item/soap))
-		return
-
-	return ..()
-
 /obj/effect/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
 	return
 
@@ -28,32 +18,5 @@
 /obj/effect/acid_act()
 	return FALSE
 
-/obj/effect/blob_act(obj/structure/blob/B)
-	return
-
-/obj/effect/attack_hulk(mob/living/carbon/human/user)
-	return FALSE
-
-/obj/effect/experience_pressure_difference()
-	return
-
 /obj/effect/ex_act(severity, target)
-	return FALSE
-
-/obj/effect/singularity_act()
-	qdel(src)
-
-/obj/effect/abstract/singularity_pull()
-	return
-
-/obj/effect/abstract/singularity_act()
-	return
-
-/obj/effect/abstract/has_gravity(turf/T)
-	return FALSE
-
-/obj/effect/dummy/singularity_pull()
-	return
-
-/obj/effect/dummy/singularity_act()
 	return

@@ -35,7 +35,7 @@
 
 /obj/item/debug/omnitool/examine()
 	. = ..()
-	. += " The mode is: [tool_behaviour]"
+	. += "<hr>The mode is: [tool_behaviour]"
 
 /obj/item/debug/omnitool/proc/check_menu(mob/user)
 	if(!istype(user))
@@ -55,8 +55,8 @@
 		"Wrench" = image(icon = 'icons/obj/tools.dmi', icon_state = "wrench"),
 		"Welding Tool" = image(icon = 'icons/obj/tools.dmi', icon_state = "miniwelder"),
 		"Analyzer" = image(icon = 'icons/obj/device.dmi', icon_state = "analyzer"),
-		"Pickaxe" = image(icon = 'icons/obj/mining.dmi', icon_state = "minipick"),
-		"Shovel" = image(icon = 'icons/obj/mining.dmi', icon_state = "spade"),
+		"Pickaxe" = image(icon = 'icons/obj/mining.dmi', icon_state = "pickaxe"),
+		"Shovel" = image(icon = 'icons/obj/mining.dmi', icon_state = "shovel"),
 		"Retractor" = image(icon = 'icons/obj/surgery.dmi', icon_state = "retractor"),
 		"Hemostat" = image(icon = 'icons/obj/surgery.dmi', icon_state = "hemostat"),
 		"Cautery" = image(icon = 'icons/obj/surgery.dmi', icon_state = "cautery"),
@@ -66,8 +66,7 @@
 		"Bonesetter" = image(icon = 'icons/obj/surgery.dmi', icon_state = "bone setter"),
 		"Knife" = image(icon = 'icons/obj/kitchen.dmi', icon_state = "knife"),
 		"Blood Filter" = image(icon = 'icons/obj/surgery.dmi', icon_state = "bloodfilter"),
-		"Rolling Pin" = image(icon = 'icons/obj/kitchen.dmi', icon_state = "rolling_pin"),
-		"Wire Brush" = image(icon = 'icons/obj/tools.dmi', icon_state = "wirebrush"),
+		"Rolling Pin" = image(icon = 'icons/obj/kitchen.dmi', icon_state = "rolling_pin")
 		)
 	var/tool_result = show_radial_menu(user, src, tool_list, custom_check = CALLBACK(src, .proc/check_menu, user), require_near = TRUE, tooltips = TRUE)
 	if(!check_menu(user))
@@ -75,16 +74,10 @@
 	switch(tool_result)
 		if("Crowbar")
 			tool_behaviour = TOOL_CROWBAR
-		if("Multitool")
-			tool_behaviour = TOOL_MULTITOOL
 		if("Screwdriver")
 			tool_behaviour = TOOL_SCREWDRIVER
-		if("Wirecutters")
-			tool_behaviour = TOOL_WIRECUTTER
 		if("Wrench")
 			tool_behaviour = TOOL_WRENCH
-		if("Welding Tool")
-			tool_behaviour = TOOL_WELDER
 		if("Analyzer")
 			tool_behaviour = TOOL_ANALYZER
 		if("Pickaxe")
@@ -97,8 +90,6 @@
 			tool_behaviour = TOOL_HEMOSTAT
 		if("Cautery")
 			tool_behaviour = TOOL_CAUTERY
-		if("Drill")
-			tool_behaviour = TOOL_DRILL
 		if("Scalpel")
 			tool_behaviour = TOOL_SCALPEL
 		if("Saw")
@@ -111,5 +102,3 @@
 			tool_behaviour = TOOL_BLOODFILTER
 		if("Rolling Pin")
 			tool_behaviour = TOOL_ROLLINGPIN
-		if("Wire Brush")
-			tool_behaviour = TOOL_RUSTSCRAPER

@@ -10,21 +10,12 @@
 	datum_flags = DF_USE_TAG
 	density = TRUE
 	layer = MOB_LAYER
-	plane = GAME_PLANE_FOV_HIDDEN
 	animate_movement = SLIDE_STEPS
 	hud_possible = list(ANTAG_HUD)
-	pressure_resistance = 8
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 	throwforce = 10
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	pass_flags_self = PASSMOB
-	/// The current client inhabiting this mob. Managed by login/logout
-	/// This exists so we can do cleanup in logout for occasions where a client was transfere rather then destroyed
-	/// We need to do this because the mob on logout never actually has a reference to client
-	/// We also need to clear this var/do other cleanup in client/Destroy, since that happens before logout
-	/// HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
-	var/client/canon_client
-
 	var/shift_to_open_context_menu = TRUE
 
 	///when this be added to vis_contents of something it inherit something.plane, important for visualisation of mob in openspace.
@@ -35,15 +26,15 @@
 	var/static/next_mob_id = 0
 
 	/// List of movement speed modifiers applying to this mob
-	var/list/movespeed_modification //Lazy list, see mob_movespeed.dm
+	var/list/movespeed_modification				//Lazy list, see mob_movespeed.dm
 	/// List of movement speed modifiers ignored by this mob. List -> List (id) -> List (sources)
-	var/list/movespeed_mod_immunities //Lazy list, see mob_movespeed.dm
+	var/list/movespeed_mod_immunities			//Lazy list, see mob_movespeed.dm
 	/// The calculated mob speed slowdown based on the modifiers list
 	var/cached_multiplicative_slowdown
 	/// List of action speed modifiers applying to this mob
-	var/list/actionspeed_modification //Lazy list, see mob_movespeed.dm
+	var/list/actionspeed_modification				//Lazy list, see mob_movespeed.dm
 	/// List of action speed modifiers ignored by this mob. List -> List (id) -> List (sources)
-	var/list/actionspeed_mod_immunities //Lazy list, see mob_movespeed.dm
+	var/list/actionspeed_mod_immunities			//Lazy list, see mob_movespeed.dm
 	/// The calculated mob action speed slowdown based on the modifiers list
 	var/cached_multiplicative_actions_slowdown
 	/// List of action hud items the user has
@@ -52,9 +43,6 @@
 	var/list/datum/action/chameleon_item_actions
 	///Cursor icon used when holding shift over things
 	var/examine_cursor_icon = 'icons/effects/mouse_pointers/examine_pointer.dmi'
-
-	///Whether this mob has or is in the middle of committing suicide.
-	var/suiciding = FALSE
 
 	/// Whether a mob is alive or dead. TODO: Move this to living - Nodrak (2019, still here)
 	var/stat = CONSCIOUS
@@ -72,9 +60,6 @@
 	var/computer_id = null
 	var/list/logging = list()
 
-	/// The machine the mob is interacting with (this is very bad old code btw)
-	var/obj/machinery/machine = null
-
 	/// Tick time the mob can next move
 	var/next_move = null
 
@@ -84,12 +69,12 @@
 	  * Set when you're being turned into something else and also used in a bunch of places
 	  * it probably shouldn't really be
 	  */
-	var/notransform = null //Carbon
+	var/notransform = null	//Carbon
 
 	/// Is the mob blind
-	var/eye_blind = 0 //Carbon
+	var/eye_blind = 0		//Carbon
 	/// Does the mob have blurry sight
-	var/eye_blurry = 0 //Carbon
+	var/eye_blurry = 0		//Carbon
 	/// What is the mobs real name (name is overridden for disguises etc)
 	var/real_name = null
 
@@ -103,7 +88,7 @@
 	var/name_archive //For admin things like possession
 
 	/// Default body temperature
-	var/bodytemperature = BODYTEMP_NORMAL //310.15K / 98.6F
+	var/bodytemperature = 310.15	//310.15K / 98.6F
 	/// Drowsyness level of the mob
 	var/drowsyness = 0//Carbon
 	/// Dizziness level of the mob
@@ -112,12 +97,18 @@
 	var/jitteriness = 0//Carbon
 	/// Hunger level of the mob
 	var/nutrition = NUTRITION_LEVEL_START_MIN // randomised in Initialize
+	/// Hydration level of the mob
+	var/hydration = HYDRATION_LEVEL_START_MIN
 	/// Satiation level of the mob
 	var/satiety = 0//Carbon
 
 	/// How many ticks this mob has been over reating
-	var/overeatduration = 0 // How long this guy is overeating //Carbon
+	var/overeatduration = 0		// How long this guy is overeating //Carbon
 
+	/// The current intent of the mob
+	var/a_intent = INTENT_HELP//Living
+	/// List of possible intents a mob can have
+	var/list/possible_a_intents = null//Living
 	/// The movement intent of the mob (run/wal)
 	var/m_intent = MOVE_INTENT_RUN//Living
 
@@ -180,7 +171,7 @@
 	var/status_flags = CANSTUN|CANKNOCKDOWN|CANUNCONSCIOUS|CANPUSH
 
 	/// Can they interact with station electronics
-	var/has_unlimited_silicon_privilege = FALSE
+	var/has_unlimited_silicon_privilege = 0
 
 	///Used by admins to possess objects. All mobs should have this var
 	var/obj/control_object
@@ -202,7 +193,7 @@
 	var/list/observers = null
 
 	///List of progress bars this mob is currently seeing for actions
-	var/list/progressbars = null //for stacking do_after bars
+	var/list/progressbars = null	//for stacking do_after bars
 
 	///For storing what do_after's someone has, key = string, value = amount of interactions of that type happening.
 	var/list/do_afters
@@ -238,5 +229,3 @@
 
 	/// A mock client, provided by tests and friends
 	var/datum/client_interface/mock_client
-
-	var/interaction_range = 1 //how far a mob has to be to interact with something, defaulted to 1 tile

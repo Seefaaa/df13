@@ -1,7 +1,5 @@
 GLOBAL_LIST_INIT(creamable, typecacheof(list(
-	/mob/living/carbon/human,
-	/mob/living/simple_animal/pet/dog/corgi,
-	/mob/living/silicon/ai)))
+	/mob/living/carbon/human)))
 
 /**
  * Creamed component
@@ -19,8 +17,6 @@ GLOBAL_LIST_INIT(creamable, typecacheof(list(
 
 	SEND_SIGNAL(parent, COMSIG_MOB_CREAMED)
 
-	add_memory_in_range(parent, 7, MEMORY_CREAMPIED, list(DETAIL_PROTAGONIST = parent), story_value = STORY_VALUE_OKAY, memory_flags = MEMORY_CHECK_BLINDNESS, protagonist_memory_flags = NONE)
-
 	creamface = mutable_appearance('icons/effects/creampie.dmi')
 
 	if(ishuman(parent))
@@ -32,10 +28,6 @@ GLOBAL_LIST_INIT(creamable, typecacheof(list(
 		else
 			creamface.icon_state = "creampie_human"
 		SEND_SIGNAL(H, COMSIG_ADD_MOOD_EVENT, "creampie", /datum/mood_event/creampie)
-	else if(iscorgi(parent))
-		creamface.icon_state = "creampie_corgi"
-	else if(isAI(parent))
-		creamface.icon_state = "creampie_ai"
 
 	var/atom/A = parent
 	A.add_overlay(creamface)

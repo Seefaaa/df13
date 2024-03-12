@@ -28,7 +28,7 @@
 	var/pain_stam_pct
 	var/payload_type
 
-/datum/element/embed/Attach(datum/target, embed_chance, fall_chance, pain_chance, pain_mult, remove_pain_mult, impact_pain_mult, rip_time, ignore_throwspeed_threshold, jostle_chance, jostle_pain_mult, pain_stam_pct, projectile_payload=/obj/item/shard)
+/datum/element/embed/Attach(datum/target, embed_chance, fall_chance, pain_chance, pain_mult, remove_pain_mult, impact_pain_mult, rip_time, ignore_throwspeed_threshold, jostle_chance, jostle_pain_mult, pain_stam_pct, projectile_payload)
 	. = ..()
 
 	if(!isitem(target) && !isprojectile(target))
@@ -80,14 +80,16 @@
 
 	var/actual_chance = embed_chance
 	var/penetrative_behaviour = 1 //Keep this above 1, as it is a multiplier for the pen_mod for determining actual embed chance.
+	/*
 	if(weapon.weak_against_armour)
 		penetrative_behaviour = ARMOR_WEAKENED_MULTIPLIER
+	*/
 
 	if(throwingdatum?.speed > weapon.throw_speed)
 		actual_chance += (throwingdatum.speed - weapon.throw_speed) * EMBED_CHANCE_SPEED_BONUS
 
 	if(!weapon.isEmbedHarmless()) // all the armor in the world won't save you from a kick me sign
-		var/armor = max(victim.run_armor_check(hit_zone, BULLET, silent=TRUE), victim.run_armor_check(hit_zone, BOMB, silent=TRUE)) * 0.5 // we'll be nice and take the better of bullet and bomb armor, halved
+		var/armor = max(victim.run_armor_check(hit_zone, SHARP, silent=TRUE), victim.run_armor_check(hit_zone, BLUNT, silent=TRUE)) * 0.5 // we'll be nice and take the better of bullet and bomb armor, halved
 
 		if(armor) // we only care about armor penetration if there's actually armor to penetrate
 			var/pen_mod = -(armor * penetrative_behaviour) // if our shrapnel is weak into armor, then we restore our armor to the full value.
@@ -153,8 +155,6 @@
 		return // we don't care
 
 	var/obj/item/payload = new payload_type(get_turf(hit))
-	if(istype(payload, /obj/item/shrapnel/bullet))
-		payload.name = P.name
 	payload.embedding = P.embedding
 	payload.updateEmbedding()
 	var/mob/living/carbon/C = hit

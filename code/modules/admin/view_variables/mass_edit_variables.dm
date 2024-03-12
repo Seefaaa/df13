@@ -3,7 +3,7 @@
 	set name = "Mass Edit Variables"
 	set desc="(target) Edit all instances of a target item's variables"
 
-	var/method = 0 //0 means strict type detection while 1 means this type and all subtypes (IE: /obj/item with this set to 1 will set it to ALL items)
+	var/method = 0	//0 means strict type detection while 1 means this type and all subtypes (IE: /obj/item with this set to 1 will set it to ALL items)
 
 	if(tgui_alert(usr, "Are you sure you'd like to mass-modify every instance of the [var_name] variable? This can break everything if you do not know what you are doing.", "Slow down, chief!", list("Yes", "No"), 60 SECONDS) != "Yes")
 		return
@@ -197,8 +197,8 @@
 		to_chat(src, "[rejected] out of [count] objects rejected your edit", confidential = TRUE)
 
 	log_world("### MassVarEdit by [src]: [O.type] (A/R [accepted]/[rejected]) [variable]=[html_encode("[O.vars[variable]]")]([list2params(value)])")
-	log_admin("[key_name(src)] mass modified [original_name]'s [variable] to [O.vars[variable]] ([accepted] objects modified)")
-	message_admins("[key_name_admin(src)] mass modified [original_name]'s [variable] to [O.vars[variable]] ([accepted] objects modified)")
+	log_admin("[key_name(src)] mass modified [original_name] [variable] to [O.vars[variable]] ([accepted] objects modified)")
+	message_admins("[key_name_admin(src)] mass modified [original_name] [variable] to [O.vars[variable]] ([accepted] objects modified)")
 
 //not using global lists as vv is a debug function and debug functions should rely on as less things as possible.
 /proc/get_all_of_type(T, subtypes = TRUE)
@@ -209,18 +209,6 @@
 	. = list()
 	if (ispath(T, /mob))
 		for(var/mob/thing in world)
-			if (typecache[thing.type])
-				. += thing
-			CHECK_TICK
-
-	else if (ispath(T, /obj/machinery/door))
-		for(var/obj/machinery/door/thing in world)
-			if (typecache[thing.type])
-				. += thing
-			CHECK_TICK
-
-	else if (ispath(T, /obj/machinery))
-		for(var/obj/machinery/thing in world)
 			if (typecache[thing.type])
 				. += thing
 			CHECK_TICK

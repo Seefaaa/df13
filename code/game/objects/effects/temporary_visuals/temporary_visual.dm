@@ -1,9 +1,8 @@
-///temporary visual effects
+//temporary visual effects
 /obj/effect/temp_visual
 	icon_state = "nothing"
 	anchored = TRUE
 	layer = ABOVE_MOB_LAYER
-	plane = GAME_PLANE_UPPER
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 	///time, in deciseconds, that this object will exist
 	var/duration = 10
@@ -12,7 +11,7 @@
 	///id of the deletion timer
 	var/timerid
 
-/obj/effect/temp_visual/Initialize(mapload)
+/obj/effect/temp_visual/Initialize()
 	. = ..()
 	if(randomdir)
 		setDir(pick(GLOB.cardinals))
@@ -22,12 +21,6 @@
 /obj/effect/temp_visual/Destroy()
 	. = ..()
 	deltimer(timerid)
-
-/obj/effect/temp_visual/singularity_act()
-	return
-
-/obj/effect/temp_visual/singularity_pull()
-	return
 
 /obj/effect/temp_visual/dir_setting
 	randomdir = FALSE

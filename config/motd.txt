@@ -1,5 +1,19 @@
-<!-- Most valid html will work in here, excluding images. -->
-
-<h1>Welcome to Space Station 13!</h1>
-
-<i>This server is running a /tg/station 13 Git build.</i>
+<div id=motd-main>
+	<center>
+		<p id=motd-p><img style='max-width:100%' src='https://cdn.discordapp.com/attachments/943552946472353792/945043534589866065/dftest.png'></p>
+		<hr id=motd-hr>
+	</center>
+		<p id=motd-p>
+			<b style='margin-left: 16px;'>IMPORTANT:</b>
+			<ul>
+				<li>
+					<b>Fortress currently in early development!</b>
+				</li>
+			</ul>
+		</p>
+	<center>
+		<hr id=motd-hr>
+		<p id=motd-p>Current Server: <b id=motd-b>byond://164.132.200.138:1997</b></p>
+		<p id=motd-p><big><a id=motd-a href="https://discord.gg/rVK4VgEYmz">Discord</a></big></p>
+	</center>
+</div>

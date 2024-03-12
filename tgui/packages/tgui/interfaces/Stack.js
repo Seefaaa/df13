@@ -30,7 +30,7 @@ export const Stack = (props, context) => {
      }, {})
     || recipes;
 
-  const height = Math.max(94 + Object.keys(recipes).length * 26, 250);
+  const height = Math.max(94 + Object.keys(recipes).length * 28, 250);
 
   return (
     <Window
@@ -51,7 +51,7 @@ export const Stack = (props, context) => {
           )}>
           {items.length === 0 && (
             <NoticeBox>
-              No recipes found.
+              No recipes.
             </NoticeBox>
           ) || (
             <RecipeList recipes={items} />

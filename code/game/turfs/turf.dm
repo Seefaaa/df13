@@ -3,16 +3,11 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /// Any floor or wall. What makes up the station and the rest of the map.
 /turf
 	icon = 'icons/turf/floors.dmi'
-	vis_flags = VIS_INHERIT_ID | VIS_INHERIT_PLANE// Important for interaction with and visualization of openspace.
+	vis_flags = VIS_INHERIT_ID|VIS_INHERIT_PLANE // Important for interaction with and visualization of openspace.
 	luminosity = 1
-
 	/// Turf bitflags, see code/__DEFINES/flags.dm
 	var/turf_flags = NONE
-
-	/// If there's a tile over a basic floor that can be ripped out
-	var/overfloor_placed = FALSE
-	/// How accessible underfloor pieces such as wires, pipes, etc are on this turf. Can be HIDDEN, VISIBLE, or INTERACTABLE.
-	var/underfloor_accessibility = UNDERFLOOR_HIDDEN
+	var/intact = 1
 
 	// baseturfs can be either a list or a single turf type.
 	// In class definition like here it should always be a single type.
@@ -21,17 +16,12 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	// This shouldn't be modified directly, use the helper procs.
 	var/list/baseturfs = /turf/baseturf_bottom
 
-	var/temperature = T20C
-	var/to_be_destroyed = 0 //Used for fire, if a melting temperature was reached, it will be destroyed
-	var/max_fire_temperature_sustained = 0 //The max temperature of the fire which it was subjected to
-
-	var/blocks_air = FALSE
-
 	var/list/image/blueprint_data //for the station blueprints, images of objects eg: pipes
 
+	var/explosion_level = 0	//for preventing explosion dodging
+	var/explosion_id = 0
 	var/list/explosion_throw_details
 
-	var/requires_activation //add to air processing after initialize?
 	var/changing_turf = FALSE
 
 	var/bullet_bounce_sound = 'sound/weapons/gun/general/mag_bullet_remove.ogg' //sound played when a shell casing is ejected ontop of the turf.
@@ -65,13 +55,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	///Lazylist of movable atoms providing opacity sources.
 	var/list/atom/movable/opacity_sources
 
-	///the holodeck can load onto this turf if TRUE
-	var/holodeck_compatible = FALSE
-
-	/// If this turf contained an RCD'able object (or IS one, for walls)
-	/// but is now destroyed, this will preserve the value.
-	/// See __DEFINES/construction.dm for RCD_MEMORY_*.
-	var/rcd_memory
 
 /turf/vv_edit_var(var_name, new_value)
 	var/static/list/banned_edits = list("x", "y", "z")
@@ -112,17 +95,11 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if (smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
 		QUEUE_SMOOTH(src)
 
-	visibilityChanged()
+	for(var/atom/movable/AM in src)
+		Entered(AM)
 
-	for(var/atom/movable/content as anything in src)
-		Entered(content, null)
-
-	var/area/our_area = loc
-	if(our_area.area_has_base_lighting && always_lit) //Only provide your own lighting if the area doesn't for you
+	if(always_lit)
 		add_overlay(GLOB.fullbright_overlay)
-
-	if(requires_activation)
-		CALCULATE_ADJACENT_TURFS(src, KILL_EXCITED)
 
 	if (light_power && light_range)
 		update_light()
@@ -134,6 +111,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(T)
 		T.multiz_turf_new(src, UP)
 
+
 	if (opacity)
 		directional_opacity = ALL_CARDINALS
 
@@ -142,18 +120,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	ComponentInitialize()
 
-	if(uses_integrity)
-		atom_integrity = max_integrity
-
-		if (islist(armor))
-			armor = getArmor(arglist(armor))
-		else if (!armor)
-			armor = getArmor()
-
 	return INITIALIZE_HINT_NORMAL
-
-/turf/proc/Initalize_Atmos(times_fired)
-	CALCULATE_ADJACENT_TURFS(src, NORMAL_TURF)
 
 /turf/Destroy(force)
 	. = QDEL_HINT_IWILLGC
@@ -173,10 +140,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		for(var/A in B.contents)
 			qdel(A)
 		return
-	visibilityChanged()
 	QDEL_LIST(blueprint_data)
 	flags_1 &= ~INITIALIZED_1
-	requires_activation = FALSE
 	..()
 
 	vis_contents.Cut()
@@ -188,8 +153,10 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/clear_signal_refs()
 	return
 
-/turf/attack_hand(mob/user, list/modifiers)
+/turf/attack_hand(mob/user)
 	. = ..()
+	if(SEND_SIGNAL(user, COMSIG_MOB_ATTACK_HAND_TURF, src))
+		. = TRUE
 	if(.)
 		return
 	user.Move_Pulled(src)
@@ -262,10 +229,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /// Precipitates a movable (plus whatever buckled to it) to lower z levels if possible and then calls zImpact()
 /turf/proc/zFall(atom/movable/falling, levels = 1, force = FALSE, falling_from_move = FALSE)
-	var/direction = DOWN
-	if(falling.has_gravity() == NEGATIVE_GRAVITY)
-		direction = UP
-	var/turf/target = get_step_multiz(src, direction)
+	var/turf/target = get_step_multiz(src, DOWN)
 	if(!target)
 		return FALSE
 	var/isliving = isliving(falling)
@@ -278,7 +242,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			falling = falling_living.buckled
 	if(!falling_from_move && falling.currently_z_moving)
 		return
-	if(!force && !falling.can_z_move(direction, src, target, ZMOVE_FALL_FLAGS))
+	if(!force && !falling.can_z_move(DOWN, src, target, ZMOVE_FALL_FLAGS))
 		falling.set_currently_z_moving(FALSE, TRUE)
 		return FALSE
 
@@ -315,40 +279,13 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			falling_mov.pulledby.stop_pulling()
 	return TRUE
 
-/turf/proc/handleRCL(obj/item/rcl/C, mob/user)
-	if(C.loaded)
-		for(var/obj/structure/pipe_cleaner/LC in src)
-			if(!LC.d1 || !LC.d2)
-				LC.handlecable(C, user)
-				return
-		C.loaded.place_turf(src, user)
-		if(C.wiring_gui_menu)
-			C.wiringGuiUpdate(user)
-		C.is_empty(user)
-
 /turf/attackby(obj/item/C, mob/user, params)
 	if(..())
 		return TRUE
-	if(can_lay_cable() && istype(C, /obj/item/stack/cable_coil))
-		var/obj/item/stack/cable_coil/coil = C
-		coil.place_turf(src, user)
-		return TRUE
-	else if(can_have_cabling() && istype(C, /obj/item/stack/pipe_cleaner_coil))
-		var/obj/item/stack/pipe_cleaner_coil/coil = C
-		for(var/obj/structure/pipe_cleaner/LC in src)
-			if(!LC.d1 || !LC.d2)
-				LC.attackby(C, user)
-				return
-		coil.place_turf(src, user)
-		return TRUE
-
-	else if(istype(C, /obj/item/rcl))
-		handleRCL(C, user)
-
 	return FALSE
 
 //There's a lot of QDELETED() calls here if someone can figure out how to optimize this but not runtime when something gets deleted by a Bump/CanPass/Cross call, lemme know or go ahead and fix this mess - kevinz000
-/turf/Enter(atom/movable/mover)
+/turf/Enter(atom/movable/mover, atom/oldloc)
 	// Do not call ..()
 	// Byond's default turf/Enter() doesn't have the behaviour we want with Bump()
 	// By default byond will call Bump() on the first dense object in contents
@@ -356,13 +293,14 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/atom/firstbump
 	var/canPassSelf = CanPass(mover, get_dir(src, mover))
 	if(canPassSelf || (mover.movement_type & PHASING))
-		for(var/atom/movable/thing as anything in contents)
+		for(var/i in contents)
 			if(QDELETED(mover))
-				return FALSE //We were deleted, do not attempt to proceed with movement.
-			if(thing == mover || thing == mover.loc) // Multi tile objects and moving out of other objects
+				return FALSE		//We were deleted, do not attempt to proceed with movement.
+			if(i == mover || i == mover.loc) // Multi tile objects and moving out of other objects
 				continue
+			var/atom/movable/thing = i
 			if(!thing.Cross(mover))
-				if(QDELETED(mover)) //Mover deleted from Cross/CanPass, do not proceed.
+				if(QDELETED(mover))		//Mover deleted from Cross/CanPass, do not proceed.
 					return FALSE
 				if((mover.movement_type & PHASING))
 					mover.Bump(thing)
@@ -370,22 +308,24 @@ GLOBAL_LIST_EMPTY(station_turfs)
 				else
 					if(!firstbump || ((thing.layer > firstbump.layer || thing.flags_1 & ON_BORDER_1) && !(firstbump.flags_1 & ON_BORDER_1)))
 						firstbump = thing
-	if(QDELETED(mover)) //Mover deleted from Cross/CanPass/Bump, do not proceed.
+	if(QDELETED(mover))					//Mover deleted from Cross/CanPass/Bump, do not proceed.
 		return FALSE
-	if(!canPassSelf) //Even if mover is unstoppable they need to bump us.
+	if(!canPassSelf)	//Even if mover is unstoppable they need to bump us.
 		firstbump = src
 	if(firstbump)
 		mover.Bump(firstbump)
 		return (mover.movement_type & PHASING)
 	return TRUE
 
-/turf/open/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
+/turf/Exit(atom/movable/mover, atom/newloc)
 	. = ..()
-	//melting
-	if(isobj(arrived) && air && air.temperature > T0C)
-		var/obj/O = arrived
-		if(O.obj_flags & FROZEN)
-			O.make_unfrozen()
+	if(!. || QDELETED(mover))
+		return FALSE
+	for(var/i in contents)
+		if(i == mover)
+			continue
+		if(QDELETED(mover))
+			return FALSE		//We were deleted.
 
 // A proc in case it needs to be recreated or badmins want to change the baseturfs
 /turf/proc/assemble_baseturfs(turf/fake_baseturf_type)
@@ -439,17 +379,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/proc/levelupdate()
 	for(var/obj/O in src)
 		if(O.flags_1 & INITIALIZED_1)
-			SEND_SIGNAL(O, COMSIG_OBJ_HIDE, underfloor_accessibility < UNDERFLOOR_VISIBLE)
-
-// override for space turfs, since they should never hide anything
-/turf/open/space/levelupdate()
-	return
-
-// Removes all signs of lattice on the pos of the turf -Donkieyo
-/turf/proc/RemoveLattice()
-	var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
-	if(L && (L.flags_1 & INITIALIZED_1))
-		qdel(L)
+			SEND_SIGNAL(O, COMSIG_OBJ_HIDE, intact)
 
 /turf/proc/Bless()
 	new /obj/effect/blessing(src)
@@ -459,7 +389,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(.)
 		return
 	if(length(src_object.contents()))
-		to_chat(usr, span_notice("You start dumping out the contents..."))
+		user.balloon_alert(user, "You start dumping the contents...")
 		if(!do_after(usr,20,target=src_object.parent))
 			return FALSE
 
@@ -489,22 +419,11 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 ////////////////////////////////////////////////////
 
-/turf/singularity_act()
-	if(underfloor_accessibility < UNDERFLOOR_INTERACTABLE)
-		for(var/obj/O in contents) //this is for deleting things like wires contained in the turf
-			if(HAS_TRAIT(O, TRAIT_T_RAY_VISIBLE))
-				O.singularity_act()
-	ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
-	return(2)
-
 /turf/proc/can_have_cabling()
 	return TRUE
 
 /turf/proc/can_lay_cable()
-	return can_have_cabling() && underfloor_accessibility >= UNDERFLOOR_INTERACTABLE
-
-/turf/proc/visibilityChanged()
-	GLOB.cameranet.updateVisibility(src)
+	return can_have_cabling() & !intact
 
 /turf/proc/burn_tile()
 	return
@@ -517,6 +436,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		var/atom/movable/movable_thing = thing
 		if(QDELETED(movable_thing))
 			continue
+		if(!movable_thing.ex_check(explosion_id))
+			continue
 		switch(severity)
 			if(EXPLODE_DEVASTATE)
 				SSexplosions.high_mov_atom += movable_thing
@@ -524,16 +445,6 @@ GLOBAL_LIST_EMPTY(station_turfs)
 				SSexplosions.med_mov_atom += movable_thing
 			if(EXPLODE_LIGHT)
 				SSexplosions.low_mov_atom += movable_thing
-
-
-/turf/narsie_act(force, ignore_mobs, probability = 20)
-	. = (prob(probability) || force)
-	for(var/I in src)
-		var/atom/A = I
-		if(ignore_mobs && ismob(A))
-			continue
-		if(ismob(A) || .)
-			A.narsie_act()
 
 /turf/proc/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
 	underlay_appearance.icon = icon
@@ -553,8 +464,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	LAZYADD(blueprint_data, I)
 
 /turf/proc/add_blueprints_preround(atom/movable/AM)
-	if(!SSicon_smooth.initialized)
-		if(AM.layer == WIRE_LAYER) //wires connect to adjacent positions after its parent init, meaning we need to wait (in this case, until smoothing) to take its image
+	if(!SSticker.HasRoundStarted())
+		if(AM.layer == WIRE_LAYER)	//wires connect to adjacent positions after its parent init, meaning we need to wait (in this case, until smoothing) to take its image
 			SSicon_smooth.blueprint_queue += AM
 		else
 			add_blueprints(AM)
@@ -569,7 +480,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	AddComponent(/datum/component/acid, acidpwr, acid_volume)
 	for(var/obj/O in src)
-		if(underfloor_accessibility < UNDERFLOOR_INTERACTABLE && HAS_TRAIT(O, TRAIT_T_RAY_VISIBLE))
+		if(intact && HAS_TRAIT(O, TRAIT_T_RAY_VISIBLE))
 			continue
 
 		O.acid_act(acidpwr, acid_volume)
@@ -579,15 +490,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/proc/acid_melt()
 	return
 
-/turf/rust_heretic_act()
-	if(HAS_TRAIT(src, TRAIT_RUSTY))
-		return
-
-	AddElement(/datum/element/rust)
-
 /turf/handle_fall(mob/faller)
-	if(has_gravity(src))
-		playsound(src, "bodyfall", 50, TRUE)
+	playsound(src, "bodyfall", 50, TRUE)
 	faller.drop_all_held_items()
 
 /turf/proc/photograph(limit=20)
@@ -609,7 +513,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 /turf/proc/add_vomit_floor(mob/living/M, toxvomit = NONE, purge_ratio = 0.1)
 
-	var/obj/effect/decal/cleanable/vomit/V = new /obj/effect/decal/cleanable/vomit(src, M.get_static_viruses())
+	var/obj/effect/decal/cleanable/vomit/V = new /obj/effect/decal/cleanable/vomit(src)
+
 
 	//if the vomit combined, apply toxicity and reagents to the old vomit
 	if (QDELETED(V))
@@ -677,24 +582,26 @@ GLOBAL_LIST_EMPTY(station_turfs)
  * * caller: The movable, if one exists, being used for mobility checks to see what tiles it can reach
  * * ID: An ID card that decides if we can gain access to doors that would otherwise block a turf
  * * simulated_only: Do we only worry about turfs with simulated atmos, most notably things that aren't space?
+ * * check_density: WE CAN PASS OBJECTS, aren't we?
 */
-/turf/proc/reachableAdjacentTurfs(caller, ID, simulated_only)
-	var/static/space_type_cache = typecacheof(/turf/open/space)
+/turf/proc/reachableAdjacentTurfs(caller, ID, simulated_only, bypass_density = FALSE)
+	var/static/openspace_type_cache = typecacheof(/turf/open/openspace)
 	. = list()
 
 	for(var/iter_dir in GLOB.cardinals)
 		var/turf/turf_to_check = get_step(src,iter_dir)
-		if(!turf_to_check || (simulated_only && space_type_cache[turf_to_check.type]))
+		if(!turf_to_check || (simulated_only && openspace_type_cache[turf_to_check.type]))
 			continue
-		if(turf_to_check.density || LinkBlockedWithAccess(turf_to_check, caller, ID))
+		if(turf_to_check.density || (!bypass_density && LinkBlockedWithAccess(turf_to_check, caller, ID)))
 			continue
 		. += turf_to_check
 
-/turf/proc/GetHeatCapacity()
-	. = heat_capacity
-
-/turf/proc/GetTemperature()
-	. = temperature
-
-/turf/proc/TakeTemperature(temp)
-	temperature += temp
+/proc/valid_window_location(turf/dest_turf, test_dir, is_fulltile = FALSE)
+	if(!dest_turf)
+		return FALSE
+	for(var/obj/turf_content in dest_turf)
+		if(istype(turf_content, /obj/structure/railing))
+			var/obj/structure/railing/rail = turf_content
+			if(rail.dir == test_dir || is_fulltile)
+				return FALSE
+	return TRUE

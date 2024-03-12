@@ -1,4 +1,6 @@
 /mob/living/carbon/human/can_equip(obj/item/I, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE)
+	if(!dna || !istype(dna))
+		return
 	return dna.species.can_equip(I, slot, disable_warning, src, bypass_equip_delay_self)
 
 // Return the item currently in the slot ID
@@ -90,12 +92,6 @@
 				return
 			belt = I
 			update_inv_belt()
-		if(ITEM_SLOT_ID)
-			if(wear_id)
-				return
-			wear_id = I
-			sec_hud_set_ID()
-			update_inv_wear_id()
 		if(ITEM_SLOT_EARS)
 			if(ears)
 				return
@@ -133,7 +129,7 @@
 
 			if(I.flags_inv & HIDEJUMPSUIT)
 				update_inv_w_uniform()
-			if(wear_suit.breakouttime) //when equipping a straightjacket
+			if(wear_suit.breakoutchance) //when equipping a straightjacket
 				ADD_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
 				stop_pulling() //can't pull if restrained
 				update_action_buttons_icon() //certain action buttons will no longer be usable.
@@ -156,11 +152,11 @@
 			s_store = I
 			update_inv_s_store()
 		else
-			to_chat(src, span_danger("You are trying to equip this item to an unsupported inventory slot. Report this to a coder!"))
+			to_chat(src, span_danger("Attempted to equip this item to unsupported inventory slot. Report this to coders!"))
 
 	//Item is handled and in slot, valid to call callback, for this proc should always be true
 	if(!not_handled)
-		has_equipped(I, slot, initial)
+		I.equipped(src, slot, initial)
 
 		// Send a signal for when we equip an item that used to cover our feet/shoes. Used for bloody feet
 		if((I.body_parts_covered & FEET) || (I.flags_inv | I.transparent_protection) & HIDESHOES)
@@ -184,7 +180,7 @@
 	if(I == wear_suit)
 		if(s_store && invdrop)
 			dropItemToGround(s_store, TRUE) //It makes no sense for your suit storage to stay on you if you drop your suit.
-		if(wear_suit.breakouttime) //when unequipping a straightjacket
+		if(wear_suit.breakoutchance) //when unequipping a straightjacket
 			REMOVE_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
 			drop_all_held_items() //suit is restraining
 			update_action_buttons_icon() //certain action buttons may be usable again.
@@ -237,11 +233,6 @@
 		belt = null
 		if(!QDELETED(src))
 			update_inv_belt()
-	else if(I == wear_id)
-		wear_id = null
-		sec_hud_set_ID()
-		if(!QDELETED(src))
-			update_inv_wear_id()
 	else if(I == r_store)
 		r_store = null
 		if(!QDELETED(src))
@@ -263,12 +254,8 @@
 /mob/living/carbon/human/wear_mask_update(obj/item/I, toggle_off = 1)
 	if((I.flags_inv & (HIDEHAIR|HIDEFACIALHAIR)) || (initial(I.flags_inv) & (HIDEHAIR|HIDEFACIALHAIR)))
 		update_hair()
-	if(toggle_off && internal && !getorganslot(ORGAN_SLOT_BREATHING_TUBE))
-		update_internals_hud_icon(0)
-		internal = null
 	if(I.flags_inv & HIDEEYES)
 		update_inv_glasses()
-	sec_hud_set_security_status()
 	..()
 
 /mob/living/carbon/human/head_update(obj/item/I, forced)
@@ -282,7 +269,6 @@
 		update_inv_glasses()
 	if(I.flags_inv & HIDEEARS || forced)
 		update_body()
-	sec_hud_set_security_status()
 	..()
 
 /mob/living/carbon/human/proc/equipOutfit(outfit, visualsOnly = FALSE)
@@ -321,8 +307,7 @@
 		if(equip_to_slot_if_possible(thing, slot_type))
 			update_inv_hands()
 		return
-	var/datum/component/storage/storage = equipped_item.GetComponent(/datum/component/storage)
-	if(!storage)
+	if(!SEND_SIGNAL(equipped_item, COMSIG_CONTAINS_STORAGE)) // not a storage item
 		if(!thing)
 			equipped_item.attack_hand(src)
 		else
@@ -332,11 +317,10 @@
 		if(!SEND_SIGNAL(equipped_item, COMSIG_TRY_STORAGE_INSERT, thing, src))
 			to_chat(src, span_warning("You can't fit [thing] into your [equipped_item.name]!"))
 		return
-	var/atom/real_location = storage.real_location()
-	if(!real_location.contents.len) // nothing to take out
+	if(!equipped_item.contents.len) // nothing to take out
 		to_chat(src, span_warning("There's nothing in your [equipped_item.name] to take out!"))
 		return
-	var/obj/item/stored = real_location.contents[real_location.contents.len]
+	var/obj/item/stored = equipped_item.contents[equipped_item.contents.len]
 	if(!stored || stored.on_found(src))
 		return
 	stored.attack_hand(src) // take out thing from item in storage slot

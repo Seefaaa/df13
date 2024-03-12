@@ -1,22 +1,19 @@
 // This is a list of turf types we dont want to assign to baseturfs unless through initialization or explicitly
 GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
-	/turf/open/space,
 	/turf/baseturf_bottom,
 	)))
 
-/turf/proc/empty(turf_type=/turf/open/space, baseturf_type, list/ignore_typecache, flags)
+/turf/proc/empty(turf_type=/turf/open, baseturf_type, list/ignore_typecache, flags)
 	// Remove all atoms except observers, landmarks, docking ports
-	var/static/list/ignored_atoms = typecacheof(list(/mob/dead, /obj/effect/landmark, /obj/docking_port))
-	var/list/allowed_contents = typecache_filter_list_reverse(get_all_contents_ignoring(ignore_typecache), ignored_atoms)
+	var/static/list/ignored_atoms = typecacheof(list(/mob/dead, /obj/effect/landmark))
+	var/list/allowed_contents = typecache_filter_list_reverse(GetAllContentsIgnoring(ignore_typecache), ignored_atoms)
 	allowed_contents -= src
 	for(var/i in 1 to allowed_contents.len)
 		var/thing = allowed_contents[i]
 		qdel(thing, force=TRUE)
 
 	if(turf_type)
-		var/turf/newT = ChangeTurf(turf_type, baseturf_type, flags)
-		SSair.remove_from_active(newT)
-		CALCULATE_ADJACENT_TURFS(newT, KILL_EXCITED)
+		ChangeTurf(turf_type, baseturf_type, flags)
 
 /turf/proc/copyTurf(turf/T)
 	if(T.type != type)
@@ -39,9 +36,6 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		if(slip)
 			var/datum/component/wet_floor/WF = T.AddComponent(/datum/component/wet_floor)
 			WF.InheritComponent(slip)
-		if (copy_air)
-			var/turf/open/openTurf = T
-			openTurf.air.copy_from(air)
 
 //wrapper for ChangeTurf()s that you want to prevent/affect without overriding ChangeTurf() itself
 /turf/proc/TerraformTurf(path, new_baseturf, flags)
@@ -54,16 +48,12 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		if(null)
 			return
 		if(/turf/baseturf_bottom)
-			path = SSmapping.level_trait(z, ZTRAIT_BASETURF) || /turf/open/space
+			path = SSmapping.level_trait(z, ZTRAIT_BASETURF) || /turf/open
 			if (!ispath(path))
 				path = text2path(path)
 				if (!ispath(path))
 					warning("Z-level [z] has invalid baseturf '[SSmapping.level_trait(z, ZTRAIT_BASETURF)]'")
-					path = /turf/open/space
-		if(/turf/open/space/basic)
-			// basic doesn't initialize and this will cause issues
-			// no warning though because this can happen naturaly as a result of it being built on top of
-			path = /turf/open/space
+					path = /turf/open
 
 	if(!GLOB.use_preloader && path == type && !(flags & CHANGETURF_FORCEOP) && (baseturfs == new_baseturfs)) // Don't no-op if the map loader requires it to be reconstructed, or if this is a new set of baseturfs
 		return src
@@ -77,8 +67,9 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	var/old_lighting_corner_NW = lighting_corner_NW
 	var/old_directional_opacity = directional_opacity
 	var/old_dynamic_lumcount = dynamic_lumcount
-	var/old_rcd_memory = rcd_memory
 
+	var/old_exl = explosion_level
+	var/old_exi = explosion_id
 	var/old_bp = blueprint_data
 	blueprint_data = null
 
@@ -89,7 +80,8 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	SEND_SIGNAL(src, COMSIG_TURF_CHANGE, path, new_baseturfs, flags, post_change_callbacks)
 
 	changing_turf = TRUE
-	qdel(src) //Just get the side effects and call Destroy
+	qdel(src)	//Just get the side effects and call Destroy
+
 	//We do this here so anything that doesn't want to persist can clear itself
 	var/list/old_comp_lookup = comp_lookup?.Copy()
 	var/list/old_signal_procs = signal_procs?.Copy()
@@ -111,11 +103,13 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	else
 		W.baseturfs = baseturfs_string_list(old_baseturfs, W) //Just to be safe
 
+	W.explosion_id = old_exi
+	W.explosion_level = old_exl
+
 	if(!(flags & CHANGETURF_DEFER_CHANGE))
 		W.AfterChange(flags, old_type)
 
 	W.blueprint_data = old_bp
-	W.rcd_memory = old_rcd_memory
 
 	lighting_corner_NE = old_lighting_corner_NE
 	lighting_corner_SE = old_lighting_corner_SE
@@ -138,8 +132,8 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		if(lighting_object && !lighting_object.needs_update)
 			lighting_object.update()
 
-		for(var/turf/open/space/space_tile in RANGE_TURFS(1, src))
-			space_tile.update_starlight()
+	for(var/turf/open/lava/lava_tile in RANGE_TURFS(1, src))
+		lava_tile.update_lava_effect()
 
 	var/area/thisarea = get_area(W)
 	if(thisarea.lighting_effect)
@@ -149,32 +143,6 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	QUEUE_SMOOTH(src)
 
 	return W
-
-/turf/open/ChangeTurf(path, list/new_baseturfs, flags) //Resist the temptation to make this default to keeping air.
-	if ((flags & CHANGETURF_INHERIT_AIR) && ispath(path, /turf/open))
-		var/datum/gas_mixture/stashed_air = new()
-		stashed_air.copy_from(air)
-		var/stashed_state = excited
-		var/datum/excited_group/stashed_group = excited_group
-		. = ..() //If path == type this will return us, don't bank on making a new type
-		if (!.) // changeturf failed or didn't do anything
-			return
-		var/turf/open/newTurf = .
-		newTurf.air.copy_from(stashed_air)
-		newTurf.excited = stashed_state
-		newTurf.excited_group = stashed_group
-		#ifdef VISUALIZE_ACTIVE_TURFS
-		if(stashed_state)
-			newTurf.add_atom_colour(COLOR_VIBRANT_LIME, TEMPORARY_COLOUR_PRIORITY)
-		#endif
-		if(stashed_group)
-			if(stashed_group.should_display || SSair.display_all_groups)
-				stashed_group.display_turf(newTurf)
-	else
-		SSair.remove_from_active(src) //Clean up wall excitement, and refresh excited groups
-		if(ispath(path,/turf/closed) || ispath(path,/turf/cordon))
-			flags |= CHANGETURF_RECALC_ADJACENT
-		return ..()
 
 /// Take off the top layer turf and replace it with the next baseturf down
 /turf/proc/ScrapeAway(amount=1, flags)
@@ -279,7 +247,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	if(depth)
 		var/list/target_baseturfs
 		if(length(copytarget.baseturfs))
-			// with default inputs this would be Copy(clamp(2, -INFINITY, baseturfs.len))
+			// with default inputs this would be Copy(CLAMP(2, -INFINITY, baseturfs.len))
 			// Don't forget a lower index is lower in the baseturfs stack, the bottom is baseturfs[1]
 			target_baseturfs = copytarget.baseturfs.Copy(clamp(1 + ignore_bottom, 1 + copytarget.baseturfs.len - depth, copytarget.baseturfs.len))
 		else if(!ignore_bottom)
@@ -296,66 +264,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 //If you modify this function, ensure it works correctly with lateloaded map templates.
 /turf/proc/AfterChange(flags, oldType) //called after a turf has been replaced in ChangeTurf()
 	levelupdate()
-	if(flags & CHANGETURF_RECALC_ADJACENT)
-		immediate_calculate_adjacent_turfs()
-		if(ispath(oldType, /turf/closed) && istype(src, /turf/open))
-			SSair.add_to_active(src)
-	else //In effect, I want closed turfs to make their tile active when sheered, but we need to queue it since they have no adjacent turfs
-		CALCULATE_ADJACENT_TURFS(src, (!(ispath(oldType, /turf/closed) && istype(src, /turf/open)) ? NORMAL_TURF : MAKE_ACTIVE))
-	//update firedoor adjacency
-	var/list/turfs_to_check = get_adjacent_open_turfs(src) | src
-	for(var/I in turfs_to_check)
-		var/turf/T = I
-		for(var/obj/machinery/door/firedoor/FD in T)
-			FD.CalculateAffectingAreas()
-
 	HandleTurfChange(src)
 
 /turf/open/AfterChange(flags, oldType)
 	..()
-	RemoveLattice()
-	if(!(flags & (CHANGETURF_IGNORE_AIR | CHANGETURF_INHERIT_AIR)))
-		Assimilate_Air()
-
-//////Assimilate Air//////
-/turf/open/proc/Assimilate_Air()
-	var/turf_count = LAZYLEN(atmos_adjacent_turfs)
-	if(blocks_air || !turf_count) //if there weren't any open turfs, no need to update.
-		return
-
-	var/datum/gas_mixture/total = new//Holders to assimilate air from nearby turfs
-	var/list/total_gases = total.gases
-	//Stolen blatently from self_breakdown
-	var/list/turf_list = atmos_adjacent_turfs + src
-	var/turflen = turf_list.len
-	var/energy = 0
-	var/heat_cap = 0
-
-	for(var/t in turf_list)
-		var/turf/open/T = t
-		//Cache?
-		var/datum/gas_mixture/turf/mix = T.air
-		//"borrowing" this code from merge(), I need to play with the temp portion. Lets expand it out
-		//temperature = (giver.temperature * giver_heat_capacity + temperature * self_heat_capacity) / combined_heat_capacity
-		var/capacity = mix.heat_capacity()
-		energy += mix.temperature * capacity
-		heat_cap += capacity
-
-		var/list/giver_gases = mix.gases
-		for(var/giver_id in giver_gases)
-			ASSERT_GAS(giver_id, total)
-			total_gases[giver_id][MOLES] += giver_gases[giver_id][MOLES]
-
-	total.temperature = energy / heat_cap
-	for(var/id in total_gases)
-		total_gases[id][MOLES] /= turflen
-
-	for(var/t in turf_list)
-		var/turf/open/T = t
-		T.air.copy_from(total)
-		T.update_visuals()
-		SSair.add_to_active(T)
-
-/turf/proc/ReplaceWithLattice()
-	ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
-	new /obj/structure/lattice(locate(x, y, z))

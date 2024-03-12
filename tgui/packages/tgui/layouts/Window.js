@@ -6,10 +6,10 @@
 
 import { classes } from 'common/react';
 import { useDispatch } from 'common/redux';
-import { decodeHtmlEntities, toTitleCase } from 'common/string';
+import { capitalize, decodeHtmlEntities, toTitleCase } from 'common/string';
 import { Component } from 'inferno';
 import { backendSuspendStart, useBackend } from '../backend';
-import { Icon } from '../components';
+import { Icon, Flex } from '../components';
 import { UI_DISABLED, UI_INTERACTIVE, UI_UPDATE } from '../constants';
 import { useDebug } from '../debug';
 import { toggleKitchenSink } from '../debug/actions';
@@ -95,9 +95,7 @@ export class Window extends Component {
             logger.log('pressed close');
             dispatch(backendSuspendStart());
           }}
-          canClose={canClose}>
-          {buttons}
-        </TitleBar>
+          canClose={canClose} />
         <div
           className={classes([
             'Window__rest',
@@ -195,7 +193,7 @@ const TitleBar = (props, context) => {
       <div className="TitleBar__title">
         {typeof title === 'string'
           && title === title.toLowerCase()
-          && toTitleCase(title)
+          && capitalize(toTitleCase(title))
           || title}
         {!!children && (
           <div className="TitleBar__buttons">

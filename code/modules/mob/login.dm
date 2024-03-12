@@ -9,8 +9,7 @@
  * * tells the world to update it's status (for player count)
  * * create mob huds for the mob if needed
  * * reset next_move to 1
- * * Set statobj to our mob
- * * NOT the parent call. The only unique thing it does is a very obtuse move op, see the comment lower down
+ * * parent call
  * * if the client exists set the perspective to the mob loc
  * * call on_log on the loc (sigh)
  * * reload the huds for the mob
@@ -27,13 +26,12 @@
 /mob/Login()
 	if(!client)
 		return FALSE
-	canon_client = client
 	add_to_player_list()
-	lastKnownIP = client.address
-	computer_id = client.computer_id
+	lastKnownIP	= client.address
+	computer_id	= client.computer_id
 	log_access("Mob Login: [key_name(src)] was assigned to a [type]")
 	world.update_status()
-	client.screen = list() //remove hud items just in case
+	client.screen = list()				//remove hud items just in case
 	client.images = list()
 	client.set_right_click_menu_mode(shift_to_open_context_menu)
 
@@ -41,28 +39,17 @@
 		create_mob_hud()
 	if(hud_used)
 		hud_used.show_hud(hud_used.hud_version)
-		hud_used.update_ui_style(ui_style2icon(client.prefs?.read_preference(/datum/preference/choiced/ui_style)))
+		hud_used.update_ui_style(ui_style2icon(client.prefs.UI_style))
 
 	next_move = 1
 
-	client.statobj = src
-
-	// DO NOT CALL PARENT HERE
-	// BYOND's internal implementation of login does two things
-	// 1: Set statobj to the mob being logged into (We got this covered)
-	// 2: And I quote "If the mob has no location, place it near (1,1,1) if possible"
-	// See, near is doing an agressive amount of legwork there
-	// What it actually does is takes the area that (1,1,1) is in, and loops through all those turfs
-	// If you successfully move into one, it stops
-	// Because we want Move() to mean standard movements rather then just what byond treats it as (ALL moves)
-	// We don't allow moves from nullspace -> somewhere. This means the loop has to iterate all the turfs in (1,1,1)'s area
-	// For us, (1,1,1) is a space tile. This means roughly 200,000! calls to Move()
-	// You do not want this
+	..()
 
 	if(!client)
 		return FALSE
 
-	enable_client_mobs_in_contents(client)
+	//We do this here to prevent hanging refs from ghostize or whatever, since if we were in another mob before this'll take care of it
+	clear_client_in_contents()
 
 	SEND_SIGNAL(src, COMSIG_MOB_LOGIN)
 
@@ -95,7 +82,8 @@
 		if(client.view_size)
 			client.view_size.resetToDefault() // Resets the client.view in case it was changed.
 		else
-			client.change_view(getScreenSize(client.prefs.read_preference(/datum/preference/toggle/widescreen)))
+			client.change_view(getScreenSize(client.prefs.widescreenpref))
+			client.view = "[client.prefs.widescreenwidth]x15"
 
 		if(client.player_details.player_actions.len)
 			for(var/datum/action/A in client.player_details.player_actions)
@@ -108,11 +96,8 @@
 		auto_deadmin_on_login()
 
 	log_message("Client [key_name(src)] has taken ownership of mob [src]([src.type])", LOG_OWNERSHIP)
-	log_mob_tag("\[[tag]\] NEW OWNER: [key_name(src)]")
 	SEND_SIGNAL(src, COMSIG_MOB_CLIENT_LOGIN, client)
 	client.init_verbs()
-
-	AddElement(/datum/element/weather_listener, /datum/weather/ash_storm, ZTRAIT_ASHSTORM, GLOB.ash_storm_sounds)
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MOB_LOGGED_IN, src)
 
@@ -137,5 +122,3 @@
 		return client.holder.auto_deadmin()
 	if(mind.has_antag_datum(/datum/antagonist) && (CONFIG_GET(flag/auto_deadmin_antagonists) || client.prefs?.toggles & DEADMIN_ANTAGONIST))
 		return client.holder.auto_deadmin()
-	if(job)
-		return SSjob.handle_auto_deadmin_roles(client, job)

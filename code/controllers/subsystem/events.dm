@@ -3,25 +3,23 @@ SUBSYSTEM_DEF(events)
 	init_order = INIT_ORDER_EVENTS
 	runlevels = RUNLEVEL_GAME
 
-	var/list/control = list() //list of all datum/round_event_control. Used for selecting events based on weight and occurrences.
-	var/list/running = list() //list of all existing /datum/round_event
+	var/list/control = list()	//list of all datum/round_event_control. Used for selecting events based on weight and occurrences.
+	var/list/running = list()	//list of all existing /datum/round_event
 	var/list/currentrun = list()
 
-	var/scheduled = 0 //The next world.time that a naturally occuring random event can be selected.
-	var/frequency_lower = 1800 //3 minutes lower bound.
-	var/frequency_upper = 6000 //10 minutes upper bound. Basically an event will happen every 3 to 10 minutes.
+	var/scheduled = 0			//The next world.time that a naturally occuring random event can be selected.
+	var/frequency_lower = 1800	//3 minutes lower bound.
+	var/frequency_upper = 6000	//10 minutes upper bound. Basically an event will happen every 3 to 10 minutes.
 
-	var/list/holidays //List of all holidays occuring today or null if no holidays
 	var/wizardmode = FALSE
 
 /datum/controller/subsystem/events/Initialize(time, zlevel)
 	for(var/type in typesof(/datum/round_event_control))
 		var/datum/round_event_control/E = new type()
 		if(!E.typepath)
-			continue //don't want this one! leave it for the garbage collector
-		control += E //add it to the list of all events (controls)
+			continue				//don't want this one! leave it for the garbage collector
+		control += E				//add it to the list of all events (controls)
 	reschedule()
-	getHoliday()
 	return ..()
 
 
@@ -47,6 +45,7 @@ SUBSYSTEM_DEF(events)
 /datum/controller/subsystem/events/proc/checkEvent()
 	if(scheduled <= world.time)
 		spawnEvent()
+		adjust_frequency_by_time_passed()
 		reschedule()
 
 //decides which world.time we should select another random event at.
@@ -55,33 +54,34 @@ SUBSYSTEM_DEF(events)
 
 //selects a random event based on whether it can occur and it's 'weight'(probability)
 /datum/controller/subsystem/events/proc/spawnEvent()
-	set waitfor = FALSE //for the admin prompt
+	set waitfor = FALSE	//for the admin prompt
 	if(!CONFIG_GET(flag/allow_random_events))
 		return
 
+	var/gamemode = SSticker.mode.config_tag
 	var/players_amt = get_active_player_count(alive_check = 1, afk_check = 1, human_check = 1)
 	// Only alive, non-AFK human players count towards this.
 
 	var/sum_of_weights = 0
 	for(var/datum/round_event_control/E in control)
-		if(!E.canSpawnEvent(players_amt))
+		if(!E.canSpawnEvent(players_amt, gamemode))
 			continue
-		if(E.weight < 0) //for round-start events etc.
+		if(E.weight < 0)						//for round-start events etc.
 			var/res = TriggerEvent(E)
 			if(res == EVENT_INTERRUPTED)
-				continue //like it never happened
+				continue	//like it never happened
 			if(res == EVENT_CANT_RUN)
 				return
 		sum_of_weights += E.weight
 
-	sum_of_weights = rand(0,sum_of_weights) //reusing this variable. It now represents the 'weight' we want to select
+	sum_of_weights = rand(0,sum_of_weights)	//reusing this variable. It now represents the 'weight' we want to select
 
 	for(var/datum/round_event_control/E in control)
-		if(!E.canSpawnEvent(players_amt))
+		if(!E.canSpawnEvent(players_amt, gamemode))
 			continue
 		sum_of_weights -= E.weight
 
-		if(sum_of_weights <= 0) //we've hit our goal
+		if(sum_of_weights <= 0)				//we've hit our goal
 			if(TriggerEvent(E))
 				return
 
@@ -107,18 +107,18 @@ SUBSYSTEM_DEF(events)
 	holder.forceEvent()
 
 /datum/admins/proc/forceEvent()
-	var/dat = ""
-	var/normal = ""
-	var/magic = ""
+	var/dat 	= ""
+	var/normal 	= ""
+	var/magic 	= ""
 	var/holiday = ""
 	for(var/datum/round_event_control/E in SSevents.control)
 		dat = "<BR><A href='?src=[REF(src)];[HrefToken()];forceevent=[REF(E)]'>[E]</A>"
 		if(E.holidayID)
-			holiday += dat
+			holiday	+= dat
 		else if(E.wizardevent)
-			magic += dat
+			magic 	+= dat
 		else
-			normal += dat
+			normal 	+= dat
 
 	dat = normal + "<BR>" + magic + "<BR>" + holiday
 
@@ -148,35 +148,6 @@ SUBSYSTEM_DEF(events)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 */
 
-//sets up the holidays and holidays list
-/datum/controller/subsystem/events/proc/getHoliday()
-	if(!CONFIG_GET(flag/allow_holidays))
-		return // Holiday stuff was not enabled in the config!
-	for(var/H in subtypesof(/datum/holiday))
-		var/datum/holiday/holiday = new H()
-		var/delete_holiday = TRUE
-		for(var/timezone in holiday.timezones)
-			var/time_in_timezone = world.realtime + timezone HOURS
-
-			var/YYYY = text2num(time2text(time_in_timezone, "YYYY")) // get the current year
-			var/MM = text2num(time2text(time_in_timezone, "MM")) // get the current month
-			var/DD = text2num(time2text(time_in_timezone, "DD")) // get the current day
-			var/DDD = time2text(time_in_timezone, "DDD") // get the current weekday
-
-			if(holiday.shouldCelebrate(DD, MM, YYYY, DDD))
-				holiday.celebrate()
-				LAZYSET(holidays, holiday.name, holiday)
-				delete_holiday = FALSE
-				break
-		if(delete_holiday)
-			qdel(holiday)
-
-	if(holidays)
-		holidays = shuffle(holidays)
-		// regenerate station name because holiday prefixes.
-		set_station_name(new_station_name())
-		world.update_status()
-
 /datum/controller/subsystem/events/proc/toggleWizardmode()
 	wizardmode = !wizardmode
 	message_admins("Summon Events has been [wizardmode ? "enabled, events will occur every [SSevents.frequency_lower / 600] to [SSevents.frequency_upper / 600] minutes" : "disabled"]!")
@@ -186,3 +157,19 @@ SUBSYSTEM_DEF(events)
 /datum/controller/subsystem/events/proc/resetFrequency()
 	frequency_lower = initial(frequency_lower)
 	frequency_upper = initial(frequency_upper)
+
+/datum/controller/subsystem/events/proc/adjust_frequency_by_time_passed()
+	switch(world.time - SSticker.round_start_time)
+		if(1 HOURS to 2 HOURS)
+			frequency_lower = 1.5 MINUTES
+			frequency_upper = 5 MINUTES
+		if(2 HOURS to 3 HOURS)
+			frequency_lower = 1 MINUTES
+			frequency_upper = 4 MINUTES
+		if(3 HOURS to 4 HOURS)
+			frequency_lower = 0.5 MINUTES
+			frequency_upper = 2 MINUTES
+		if(5 HOURS to INFINITY)
+			frequency_lower = 15 SECONDS
+			frequency_upper = 30 SECONDS
+			wizardmode = TRUE

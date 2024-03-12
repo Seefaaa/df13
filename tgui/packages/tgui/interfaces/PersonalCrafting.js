@@ -51,7 +51,7 @@ export const PersonalCrafting = (props, context) => {
   const [tab, setTab] = useLocalState(context, 'tab', categories[0]?.name);
   const shownRecipes = recipes.filter((recipe) => recipe.category === tab);
   return (
-    <Window title="Crafting Menu" width={700} height={700}>
+    <Window title="Crafting" width={700} height={700}>
       <Window.Content>
         <Stack fill>
           <Stack.Item grow={1}>
@@ -75,7 +75,7 @@ export const PersonalCrafting = (props, context) => {
               </Tabs>
             </Section>
           </Stack.Item>
-          <Stack.Item grow={3}>
+          <Stack.Item grow={5}>
             <Section
               fill
               title="Recipes"
@@ -87,7 +87,7 @@ export const PersonalCrafting = (props, context) => {
                     onClick={() => act('toggle_compact')}
                   />
                   <Button.Checkbox
-                    content="Craftable Only"
+                    content="Only Available"
                     checked={display_craftable_only}
                     onClick={() => act('toggle_recipes')}
                   />
@@ -132,7 +132,7 @@ const CraftingList = (props, context) => {
               content="Craft"
               disabled={!craftability[craftable.ref]}
               tooltip={
-                craftable.tool_text && 'Tools needed: ' + craftable.tool_text
+                craftable.tool_text && 'Tools: ' + craftable.tool_text
               }
               tooltipPosition="left"
               onClick={() =>
