@@ -19,6 +19,9 @@
 	melee_damage_lower = 15
 	melee_damage_upper = 25
 	attack_vis_effect = ATTACK_EFFECT_CLAW
+	attack_verb_simple = "claw"
+	attack_verb_continuous = "claws"
+	attack_sound = 'sound/weapons/slice.ogg'
 	gold_core_spawnable = HOSTILE_SPAWN
 	a_intent = INTENT_HARM
 	stat_attack = HARD_CRIT
