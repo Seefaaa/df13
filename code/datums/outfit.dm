@@ -19,42 +19,68 @@
 
 	/// Type path of item to go in uniform slot
 	var/uniform = null
+	var/uniform_grade = 0
+	var/uniform_materials = null
 
 	/// Type path of item to go in suit slot
 	var/suit = null
+	var/suit_grade = 0
+	var/suit_materials = null
 
 	/// Type path of item to go in back slot
 	var/back = null
+	var/back_grade = 0
+	var/back_materials = null
 
 	/// Type path of item to go in belt slot
 	var/belt = null
+	var/belt_grade = 0
+	var/belt_materials = null
 
 	/// Type path of item to go in gloves slot
 	var/gloves = null
+	var/gloves_grade = 0
+	var/gloves_materials = null
 
 	/// Type path of item to go in shoes slot
 	var/shoes = null
+	var/shoes_grade = 0
+	var/shoes_materials = null
 
 	/// Type path of item to go in head slot
 	var/head = null
+	var/head_grade = 0
+	var/head_materials = null
 
 	/// Type path of item to go in mask slot
 	var/mask = null
+	var/mask_grade = 0
+	var/mask_materials = null
 
 	/// Type path of item to go in neck slot
 	var/neck = null
+	var/neck_grade = 0
+	var/neck_materials = null
 
 	/// Type path of item to go in ears slot
 	var/ears = null
+	var/ears_grade = 0
+	var/ears_materials = null
 
 	/// Type path of item to go in the glasses slot
 	var/glasses = null
+	var/glasses_grade = 0
+	var/glasses_materials = null
 
 	/// Type path of item for left pocket slot
 	var/l_pocket = null
+	var/l_pocket_grade = 0
+	var/l_pocket_materials = null
 
 	/// Type path of item for right pocket slot
 	var/r_pocket = null
+	var/r_pocket_grade = 0
+	var/r_pocket_materials = null
 
 	/**
 	  * Type path of item to go in suit storage slot
@@ -62,12 +88,18 @@
 	  * (make sure it's valid for that suit)
 	  */
 	var/suit_store = null
+	var/suit_store_grade = 0
+	var/suit_store_materials = null
 
 	///Type path of item to go in the right hand
 	var/r_hand = null
+	var/r_hand_grade = 0
+	var/r_hand_materials = null
 
 	//Type path of item to go in left hand
 	var/l_hand = null
+	var/l_hand_grade = 0
+	var/l_hand_materials = null
 
 	/// Should the toggle helmet proc be called on the helmet during equip
 	var/toggle_helmet = TRUE
@@ -99,6 +131,9 @@
 	  */
 	var/list/skillchips = null
 
+	/// List of skills to apply. Format: (typepath1=lvl1, typepath2=lvl2)
+	var/list/skills = null
+
 	/// Any undershirt. While on humans it is a string, here we use paths to stay consistent with the rest of the equips.
 	var/datum/sprite_accessory/undershirt = null
 
@@ -116,9 +151,6 @@
 	  * These are all added and returns in the list for get_chamelon_diguise_info proc
 	  */
 	var/list/chameleon_extras
-
-	/// Whether to apply grade to spawned items
-	var/apply_grade = FALSE
 
 /**
  * Called at the start of the equip proc
@@ -161,56 +193,95 @@
 /datum/outfit/proc/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	pre_equip(H, visualsOnly)
 
-	//special_equip(H)
+	if(skills)
+		for(var/skilltype in skills)
+			var/lvl = skills[skilltype]
+			H.adjust_experience(skilltype, SKILL_EXP_LIST[lvl], TRUE)
 
 	//Start with uniform,suit,backpack for additional slots
 	if(uniform)
 		var/obj/item/I = new uniform(H)
-		I.update_stats()
+		if(uniform_materials)
+			I.apply_material(uniform_materials)
+		if(uniform_grade)
+			I.update_stats(uniform_grade)
 		H.equip_to_slot_or_del(I,ITEM_SLOT_ICLOTHING, TRUE)
 	if(suit)
 		var/obj/item/I = new suit(H)
-		I.update_stats()
+		if(suit_materials)
+			I.apply_material(suit_materials)
+		if(suit_grade)
+			I.update_stats(suit_grade)
 		H.equip_to_slot_or_del(I,ITEM_SLOT_OCLOTHING, TRUE)
 	if(back)
 		var/obj/item/I = new back(H)
-		I.update_stats()
+		if(back_materials)
+			I.apply_material(back_materials)
+		if(back_grade)
+			I.update_stats(back_grade)
 		H.equip_to_slot_or_del(I,ITEM_SLOT_BACK, TRUE)
 	if(belt)
 		var/obj/item/I = new belt(H)
-		I.update_stats()
+		if(belt_materials)
+			I.apply_material(belt_materials)
+		if(belt_grade)
+			I.update_stats(belt_grade)
 		H.equip_to_slot_or_del(I,ITEM_SLOT_BELT, TRUE)
 	if(gloves)
 		var/obj/item/I = new gloves(H)
-		I.update_stats()
+		if(gloves_materials)
+			I.apply_material(gloves_materials)
+		if(gloves_grade)
+			I.update_stats(gloves_grade)
 		H.equip_to_slot_or_del(I,ITEM_SLOT_GLOVES, TRUE)
 	if(shoes)
 		var/obj/item/I = new shoes(H)
-		I.update_stats()
+		if(shoes_materials)
+			I.apply_material(shoes_materials)
+		if(shoes_grade)
+			I.update_stats(shoes_grade)
 		H.equip_to_slot_or_del(I,ITEM_SLOT_FEET, TRUE)
 	if(head)
 		var/obj/item/I = new head(H)
-		I.update_stats()
+		if(head_materials)
+			I.apply_material(head_materials)
+		if(head_grade)
+			I.update_stats(head_grade)
 		H.equip_to_slot_or_del(I,ITEM_SLOT_HEAD, TRUE)
 	if(mask)
 		var/obj/item/I = new mask(H)
-		I.update_stats()
+		if(mask_materials)
+			I.apply_material(mask_materials)
+		if(mask_grade)
+			I.update_stats(mask_grade)
 		H.equip_to_slot_or_del(I,ITEM_SLOT_MASK, TRUE)
 	if(neck)
 		var/obj/item/I = new neck(H)
-		I.update_stats()
+		if(neck_materials)
+			I.apply_material(neck_materials)
+		if(neck_grade)
+			I.update_stats(neck_grade)
 		H.equip_to_slot_or_del(I,ITEM_SLOT_NECK, TRUE)
 	if(ears)
 		var/obj/item/I = new ears(H)
-		I.update_stats()
+		if(ears_materials)
+			I.apply_material(ears_materials)
+		if(ears_grade)
+			I.update_stats(ears_grade)
 		H.equip_to_slot_or_del(I,ITEM_SLOT_EARS, TRUE)
 	if(glasses)
 		var/obj/item/I = new glasses(H)
-		I.update_stats()
+		if(glasses_materials)
+			I.apply_material(glasses_materials)
+		if(glasses_grade)
+			I.update_stats(glasses_grade)
 		H.equip_to_slot_or_del(I,ITEM_SLOT_EYES, TRUE)
 	if(suit_store)
 		var/obj/item/I = new suit_store(H)
-		I.update_stats()
+		if(suit_store_materials)
+			I.apply_material(suit_store_materials)
+		if(suit_store_grade)
+			I.update_stats(suit_store_grade)
 		H.equip_to_slot_or_del(I,ITEM_SLOT_SUITSTORE, TRUE)
 
 	if(undershirt)
@@ -225,21 +296,33 @@
 
 	if(l_hand)
 		var/obj/item/I = new l_hand(H)
-		I.update_stats()
+		if(l_hand_materials)
+			I.apply_material(l_hand_materials)
+		if(l_hand_grade)
+			I.update_stats(l_hand_grade)
 		H.put_in_l_hand(I)
 	if(r_hand)
 		var/obj/item/I = new r_hand(H)
-		I.update_stats()
+		if(r_hand_materials)
+			I.apply_material(r_hand_materials)
+		if(r_hand_grade)
+			I.update_stats(r_hand_grade)
 		H.put_in_r_hand(I)
 
 	if(!visualsOnly) // Items in pockets or backpack don't show up on mob's icon.
 		if(l_pocket)
 			var/obj/item/I = new l_pocket(H)
-			I.update_stats()
+			if(l_pocket_materials)
+				I.apply_material(l_pocket_materials)
+			if(l_pocket_grade)
+				I.update_stats(l_pocket_grade)
 			H.equip_to_slot_or_del(I,ITEM_SLOT_LPOCKET, TRUE)
 		if(r_pocket)
 			var/obj/item/I = new r_pocket(H)
-			I.update_stats()
+			if(r_pocket_materials)
+				I.apply_material(r_pocket_materials)
+			if(r_pocket_grade)
+				I.update_stats(r_pocket_grade)
 			H.equip_to_slot_or_del(I,ITEM_SLOT_RPOCKET, TRUE)
 
 		if(box)
@@ -255,7 +338,6 @@
 					number = 1
 				for(var/i in 1 to number)
 					var/obj/item/I = new path(H)
-					I.update_stats()
 					H.equip_to_slot_or_del(I,ITEM_SLOT_BACKPACK, TRUE)
 
 	post_equip(H, visualsOnly)
