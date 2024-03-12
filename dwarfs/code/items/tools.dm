@@ -160,8 +160,10 @@
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	inhand_icon_state = "tongs"
+	worn_icon_state = "tongs"
 	icon_state = "tongs_open"
 	w_class = WEIGHT_CLASS_SMALL
+	slot_flags = ITEM_SLOT_BELT
 	force = 4
 	atck_type = BLUNT
 	throwforce = 6
