@@ -107,7 +107,7 @@
 	if(src == attacker) // we don't parry ourselves
 		return FALSE
 	if(stat >= SOFT_CRIT)
-		return
+		return FALSE
 	var/obj/item/to_parry = get_active_held_item()
 	var/obj/item/offhand = get_inactive_held_item()
 	if(offhand && istype(offhand, /obj/item/shield))
