@@ -381,21 +381,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 				return
 			if (!error_level)
 				iteration++
-				error_level++
-				error_level++
-				CRASH("MC: SoftReset() failed, exiting loop()")
-
-			if (error_level < 2) //except for the first strike, stop incrmenting our iteration so failsafe enters defcon
-				iteration++
-			else
-				cached_runlevel = null //3 strikes, Lets reset the runlevel lists
 			error_level++
-				CRASH("MC: SoftReset() failed, exiting loop()")
-
-			if (error_level < 2) //except for the first strike, stop incrmenting our iteration so failsafe enters defcon
-				iteration++
-			else
-				cached_runlevel = null //3 strikes, Lets reset the runlevel lists
 			current_ticklimit = TICK_LIMIT_RUNNING
 			sleep(10)
 			continue
@@ -407,21 +393,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 					return
 				if (!error_level)
 					iteration++
-						error_level++
-						error_level++
-						CRASH("MC: SoftReset() failed, exiting loop()")
-
-					if (error_level <= 2) //after 3 strikes stop incrmenting our iteration so failsafe enters defcon
-						iteration++
-					else
-						cached_runlevel = null //3 strikes, Lets also reset the runlevel lists
 				error_level++
-						CRASH("MC: SoftReset() failed, exiting loop()")
-
-					if (error_level <= 2) //after 3 strikes stop incrmenting our iteration so failsafe enters defcon
-						iteration++
-					else
-						cached_runlevel = null //3 strikes, Lets also reset the runlevel lists
 				current_ticklimit = TICK_LIMIT_RUNNING
 				sleep(10)
 				continue
