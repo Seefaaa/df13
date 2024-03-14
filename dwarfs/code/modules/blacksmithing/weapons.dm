@@ -282,6 +282,8 @@
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_SUITSTORE
 	atck_type = SHARP
+	hitsound = 'sound/weapons/bladeslice.ogg'
+	usesound = 'dwarfs/sounds/tools/axe/axe_chop.ogg'
 	tool_behaviour = TOOL_AXE
 	toolspeed = 2
 	force = 20
