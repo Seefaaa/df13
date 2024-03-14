@@ -5,6 +5,7 @@
 #define PART_PLANKS "planks"
 #define PART_INGOT "ingot"
 #define PART_STONE "stone"
+#define PART_LEATHER "leather"
 
 #define MATERIAL_STONE "stone"
 #define MATERIAL_WOOD "wood"

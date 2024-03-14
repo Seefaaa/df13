@@ -590,5 +590,9 @@
 /datum/material/cloth/pig_tail_cotton
 	name = "pig tail cotton"
 
+/datum/material/leather
+	name = "leather"
+	// nothing else, it's just a cosmetic material
+
 #undef TOOLSPEED_MIN_VALUE
 #undef MELEE_CD_MIN_VALUE

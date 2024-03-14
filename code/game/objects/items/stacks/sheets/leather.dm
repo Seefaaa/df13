@@ -124,6 +124,8 @@
 	icon_state = "leather"
 	inhand_icon_state = "sheet-leather"
 	merge_type = /obj/item/stack/sheet/leather
+	materials = /datum/material/leather
+	part_name = PART_LEATHER
 
 //Step one - dehairing.
 
