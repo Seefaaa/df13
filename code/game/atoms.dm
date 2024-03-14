@@ -1701,10 +1701,11 @@
 		M.apply_stats(src)
 
 /atom/proc/get_material_icon(_file=null, state=null)
-	if(SSmaterials.material_icons[MATERIAL_ICON_KEY])
-		return SSmaterials.material_icons[MATERIAL_ICON_KEY]
+	var/icon_key = MATERIAL_ICON_KEY
+	if(SSmaterials.material_icons[icon_key])
+		return SSmaterials.material_icons[icon_key]
 	var/icon/I = build_material_icon(_file, state)
-	SSmaterials.material_icons[MATERIAL_ICON_KEY] = I
+	SSmaterials.material_icons[icon_key] = I
 	return I
 
 /// Apply materials to this atom's icon
