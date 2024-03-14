@@ -2,6 +2,7 @@
 	name = "Dwarf"
 	uniform = /obj/item/clothing/under/tunic/random
 	belt = /obj/item/flashlight/fueled/lantern
+	belt_materials = /datum/material/copper
 	shoes = /obj/item/clothing/shoes/boots
 
 
@@ -13,43 +14,54 @@ If you want them to actualy show up, go to code\modules\client\preferences.dm on
 	name = "Dwarf miner"
 	back = /obj/item/pickaxe
 	back_grade = 1
+	back_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
 	l_hand = /obj/item/shovel
 	l_hand_grade = 1
+	l_hand_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
 
 /datum/outfit/dwarf/farmer
 	name = "Dwarf farmer"
 	r_hand = /obj/item/hoe
 	r_hand_grade = 1
+	r_hand_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
 	head = /obj/item/reagent_containers/glass/bucket
+	head_materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/copper)
 
 /datum/outfit/dwarf/logger
 	name = "Dwarf logger"
 	back = /obj/item/axe
 	back_grade = 1
+	back_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
 
 /datum/outfit/dwarf/mason
 	name = "Dwarf mason"
-	l_pocket = /obj/item/chisel
-	l_pocket_grade = 1
+	l_hand = /obj/item/chisel
+	l_hand_grade = 1
+	l_hand_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
 
 /datum/outfit/dwarf/chef
 	name = "Dwarf chef"
 	r_hand = /obj/item/kitchen/knife
 	r_hand_grade = 1
+	r_hand_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
 	l_hand = /obj/item/kitchen/rollingpin
 	l_hand_grade = 1
+	l_hand_materials = /datum/material/wood/pine/treated
 
 /datum/outfit/dwarf/blacksmith
 	name = "Dwarf blacksmith"
 	r_hand = /obj/item/tongs
 	r_hand_grade = 1
+	r_hand_materials = /datum/material/copper
 	l_hand = /obj/item/smithing_hammer
 	l_hand_grade = 1
+	l_hand_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
 
 /datum/outfit/dwarf/builder
 	name = "Dwarf builder"
 	r_hand = /obj/item/builder_hammer
 	r_hand_grade = 1
+	r_hand_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
 
 /************************************************************************************************************************/
 /***********************************************Admin spawnable loadouts below*******************************************/
@@ -168,6 +180,7 @@ If you want them to actualy show up, go to code\modules\client\preferences.dm on
 	r_hand_materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/steel)
 	l_hand = /obj/item/shield
 	l_hand_grade = 4
+	l_hand_materials = list(PART_PLANKS=/datum/material/wood/treated, PART_HEAD=/datum/material/steel)
 	uniform = /obj/item/clothing/under/tunic/random
 	head = /obj/item/clothing/head/heavy_plate
 	head_grade = 4
