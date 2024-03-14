@@ -1,6 +1,7 @@
 /obj/item/growable/seeds
 	icon = 'dwarfs/icons/farming/seeds.dmi'
 	desc = "A bag of seeds."
+	icon_state = "seeds"
 	worn_icon_state = "seeds"
 	w_class = WEIGHT_CLASS_TINY
 	resistance_flags = FLAMMABLE
