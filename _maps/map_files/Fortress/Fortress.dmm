@@ -15,47 +15,43 @@
 /turf/open/floor/dirt/grass,
 /area/fortress/surface)
 "dG" = (
-/obj/structure/closet/crate/wooden,
-/obj/item/stack/sheet/stone,
-/obj/item/stack/sheet/stone,
-/obj/item/stack/sheet/stone,
-/obj/item/stack/sheet/stone,
-/obj/item/stack/sheet/stone,
-/obj/item/stack/sheet/stone,
-/obj/item/stack/sheet/stone,
-/obj/item/stack/sheet/stone,
-/obj/item/stack/sheet/stone,
-/obj/item/stack/sheet/stone,
-/obj/item/stack/sheet/stone,
-/obj/item/stack/sheet/planks,
-/obj/item/stack/sheet/planks,
-/obj/item/stack/sheet/planks,
-/obj/item/stack/sheet/planks,
-/obj/item/stack/sheet/planks,
-/obj/item/stack/sheet/planks,
-/obj/item/stack/sheet/planks,
-/obj/item/stack/sheet/planks,
-/obj/item/stack/sheet/bark,
-/obj/item/stack/sheet/bark,
-/obj/item/ingot,
-/obj/item/ingot,
+/obj/structure/closet/crate/wooden{
+	init_materials = 1
+	},
+/obj/item/ingot{
+	init_materials = 1;
+	materials = /datum/material/copper
+	},
+/obj/item/ingot{
+	init_materials = 1;
+	materials = /datum/material/copper
+	},
+/obj/item/ingot{
+	init_materials = 1;
+	materials = /datum/material/copper
+	},
+/obj/item/stack/sheet/planks{
+	init_materials = 1;
+	amount = 25
+	},
+/obj/item/stack/sheet/stone{
+	amount = 25;
+	init_materials = 1
+	},
+/obj/item/ingot{
+	init_materials = 1;
+	materials = /datum/material/tin
+	},
+/obj/item/ingot{
+	init_materials = 1;
+	materials = /datum/material/tin
+	},
 /turf/open/floor/dirt/grass,
 /area/fortress/surface)
 "el" = (
 /turf/open/water,
 /area/fortress/surface)
 "eq" = (
-/obj/structure/closet/crate/wooden,
-/obj/item/flashlight/fueled/lantern,
-/obj/item/flashlight/fueled/lantern,
-/obj/item/flashlight/fueled/lantern,
-/obj/item/flashlight/fueled/lantern,
-/obj/item/flashlight/fueled/lantern,
-/obj/item/flashlight/fueled/lantern,
-/obj/item/flashlight/fueled/lantern,
-/obj/item/flashlight/fueled/lantern,
-/obj/item/flashlight/fueled/lantern,
-/obj/item/flashlight/fueled/lantern,
 /obj/item/flashlight/fueled/torch,
 /obj/item/flashlight/fueled/torch,
 /obj/item/flashlight/fueled/torch,
@@ -64,10 +60,36 @@
 /obj/item/flashlight/fueled/candle,
 /obj/item/flashlight/fueled/candle,
 /obj/item/flashlight/fueled/candle,
+/obj/structure/closet/crate/wooden{
+	init_materials = 1
+	},
+/obj/item/flashlight/fueled/lantern{
+	init_materials = 1
+	},
+/obj/item/flashlight/fueled/lantern{
+	init_materials = 1
+	},
+/obj/item/flashlight/fueled/lantern{
+	init_materials = 1
+	},
+/obj/item/flashlight/fueled/lantern{
+	init_materials = 1
+	},
+/obj/item/flashlight/fueled/lantern{
+	init_materials = 1
+	},
+/obj/item/flashlight/fueled/lantern{
+	init_materials = 1
+	},
+/obj/item/flashlight/fueled/lantern{
+	init_materials = 1
+	},
+/obj/item/flashlight/fueled/lantern{
+	init_materials = 1
+	},
 /turf/open/floor/dirt/grass,
 /area/fortress/surface)
 "eu" = (
-/obj/structure/closet/crate/wooden,
 /obj/item/growable/seeds/cave_wheat,
 /obj/item/growable/seeds/cave_wheat,
 /obj/item/growable/seeds/cave_wheat,
@@ -83,62 +105,144 @@
 /obj/item/growable/seeds/turnip,
 /obj/item/growable/seeds/turnip,
 /obj/item/growable/seeds/turnip,
+/obj/structure/closet/crate/wooden{
+	init_materials = 1
+	},
 /turf/open/floor/dirt/grass,
 /area/fortress/surface)
 "eN" = (
-/obj/structure/closet/crate/wooden,
-/obj/item/food/dish/plump_skewer,
-/obj/item/food/dish/plump_skewer,
-/obj/item/food/dish/plump_skewer,
-/obj/item/food/dish/plump_skewer,
-/obj/item/food/dish/plump_skewer,
-/obj/item/food/dish/plump_skewer,
-/obj/item/food/dish/plump_skewer,
-/obj/item/food/dish/plump_skewer,
-/obj/item/food/dish/plump_skewer,
-/obj/item/food/dish/plump_skewer,
-/obj/item/food/dish/plump_skewer,
-/obj/item/food/dish/plump_skewer,
-/obj/item/food/dish/plump_skewer,
+/obj/structure/closet/crate/wooden{
+	init_materials = 1
+	},
+/obj/item/food/dish/plump_skewer{
+	init_materials = 1
+	},
+/obj/item/food/dish/plump_skewer{
+	init_materials = 1
+	},
+/obj/item/food/dish/meat_skewer{
+	init_materials = 1
+	},
+/obj/item/food/dish/meat_skewer{
+	init_materials = 1
+	},
+/obj/item/food/dish/meat_skewer{
+	init_materials = 1
+	},
+/obj/item/food/dish/meat_skewer{
+	init_materials = 1
+	},
+/obj/item/food/dish/meat_skewer{
+	init_materials = 1
+	},
+/obj/item/food/dish/plump_skewer{
+	init_materials = 1
+	},
+/obj/item/food/dish/plump_skewer{
+	init_materials = 1
+	},
+/obj/item/food/dish/plump_skewer{
+	init_materials = 1
+	},
+/obj/item/food/dish/balanced_skewer{
+	init_materials = 1
+	},
+/obj/item/food/dish/balanced_skewer{
+	init_materials = 1
+	},
+/obj/item/food/dish/balanced_skewer{
+	init_materials = 1
+	},
+/obj/item/food/dish/balanced_skewer{
+	init_materials = 1
+	},
+/obj/item/food/dish/balanced_skewer{
+	init_materials = 1
+	},
+/obj/item/food/dish/balanced_skewer{
+	init_materials = 1
+	},
 /turf/open/floor/dirt/grass,
 /area/fortress/surface)
 "eQ" = (
-/obj/structure/closet/crate/wooden,
+/obj/structure/closet/crate/wooden{
+	init_materials = 1
+	},
 /obj/item/axe{
-	init_grade = 1
-	},
-/obj/item/chisel{
-	init_grade = 1
-	},
-/obj/item/pickaxe{
-	init_grade = 1
-	},
-/obj/item/pickaxe{
-	init_grade = 1
-	},
-/obj/item/pickaxe{
-	init_grade = 1
-	},
-/obj/item/smithing_hammer{
-	init_grade = 1
-	},
-/obj/item/tongs{
-	init_grade = 1
-	},
-/obj/item/shovel{
-	init_grade = 1
-	},
-/obj/item/shovel{
-	init_grade = 1
+	init_grade = 1;
+	init_materials = 1
 	},
 /obj/item/builder_hammer{
-	init_grade = 1
+	init_grade = 1;
+	init_materials = 1
+	},
+/obj/item/builder_hammer{
+	init_grade = 1;
+	init_materials = 1
+	},
+/obj/item/axe{
+	init_grade = 1;
+	init_materials = 1
+	},
+/obj/item/chisel{
+	init_grade = 1;
+	init_materials = 1
+	},
+/obj/item/chisel{
+	init_grade = 1;
+	init_materials = 1
 	},
 /obj/item/hoe{
-	init_grade = 1
+	init_grade = 1;
+	init_materials = 1
 	},
-/obj/item/reagent_containers/glass/bucket,
-/obj/item/damaz,
+/obj/item/hoe{
+	init_grade = 1;
+	init_materials = 1
+	},
+/obj/item/kitchen/knife{
+	init_grade = 1;
+	init_materials = 1
+	},
+/obj/item/kitchen/rollingpin{
+	init_grade = 1;
+	init_materials = 1
+	},
+/obj/item/pickaxe{
+	init_grade = 1;
+	init_materials = 1
+	},
+/obj/item/pickaxe{
+	init_grade = 1;
+	init_materials = 1
+	},
+/obj/item/pickaxe{
+	init_grade = 1;
+	init_materials = 1
+	},
+/obj/item/pickaxe{
+	init_grade = 1;
+	init_materials = 1
+	},
+/obj/item/shovel{
+	init_grade = 1;
+	init_materials = 1
+	},
+/obj/item/shovel{
+	init_grade = 1;
+	init_materials = 1
+	},
+/obj/item/smithing_hammer{
+	init_grade = 1;
+	init_materials = 1
+	},
+/obj/item/tongs{
+	init_grade = 1;
+	init_materials = 1
+	},
+/obj/item/reagent_containers/glass/bucket{
+	init_materials = 1
+	},
 /turf/open/floor/dirt/grass,
 /area/fortress/surface)
 "eV" = (
