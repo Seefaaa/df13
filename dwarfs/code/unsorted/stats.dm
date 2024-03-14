@@ -1,4 +1,10 @@
-/obj/proc/update_stats(_grade=null)
+/atom/proc/update_stats(_grade=null)
+	reset_stats()
+	if(!SSatoms.initialized)
+		return
+	apply_material_stats()
+
+/obj/update_stats(_grade)
 	reset_stats()
 	if(!SSatoms.initialized)
 		return

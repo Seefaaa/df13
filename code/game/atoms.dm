@@ -138,7 +138,7 @@
 	///Materials this atom is made of
 	var/list/materials = null
 	///Whether to apply default material when spawned
-	var/init_materials = TRUE
+	var/init_materials = FALSE
 
 	///Collapse sound that is sometimes played in /collapse proc
 	var/collapse_sound = null
@@ -1056,6 +1056,7 @@
 			. += "<option value='?_src_=holder;[HrefToken()];adminplayerobservecoodjump=1;X=[curturf.x];Y=[curturf.y];Z=[curturf.z]'>Jump To</option>"
 	VV_DROPDOWN_OPTION(VV_HK_MODIFY_TRANSFORM, "Modify Transform")
 	VV_DROPDOWN_OPTION(VV_HK_UPDATE_APPEARANCE, "Update Appearance")
+	VV_DROPDOWN_OPTION(VV_HK_APPLY_MATERIAL, "Apply Material")
 	VV_DROPDOWN_OPTION(VV_HK_SHOW_HIDDENPRINTS, "Show Hiddenprint log")
 	VV_DROPDOWN_OPTION(VV_HK_ADD_REAGENT, "Add Reagent")
 	VV_DROPDOWN_OPTION(VV_HK_TRIGGER_EMP, "EMP Pulse")
@@ -1138,6 +1139,31 @@
 
 	if(href_list[VV_HK_UPDATE_APPEARANCE] && check_rights(R_VAREDIT))
 		update_appearance()
+
+	if(href_list[VV_HK_APPLY_MATERIAL] && check_rights(R_VAREDIT))
+		// assuming we have some default materials preset, should always be the case
+		if(!materials)
+			to_chat(usr, span_warning("This atom doesn't have a preset material, if this is not supposed to happen, contact the coders."))
+			return
+		// single material atom
+		if(!islist(materials))
+			var/answer = input(usr, "Select new material for [src.name]", "Material") as null|anything in SSmaterials.materials
+			if(!answer || !ispath(answer))
+				return
+			apply_material(answer)
+			update_stats()
+		else
+			var/list/new_materials = list()
+			for(var/part_name in materials)
+				if(part_name == PART_NONE)
+					to_chat(usr, span_warning("This atom has an invalid part name in its materials!"))
+					CRASH("Encountered invalid part name for [src] in materials list.")
+				var/answer = input(usr, "Select new material for part: [part_name].", "Material") as null|anything in SSmaterials.materials
+				if(!answer || !ispath(answer))
+					return
+				new_materials[part_name] = answer
+			apply_material(new_materials)
+			update_stats()
 
 	if(href_list[VV_HK_AUTO_RENAME] && check_rights(R_VAREDIT))
 		var/newname = input(usr, "What do you want to rename this to?", "Automatic Rename") as null|text

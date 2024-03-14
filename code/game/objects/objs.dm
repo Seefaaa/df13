@@ -35,7 +35,7 @@
 
 	var/grade = 1 // object grade value. Defaults to 1
 	var/init_grade = FALSE
-	var/part_name = "part"
+	var/part_name = PART_NONE
 
 /obj/vv_edit_var(vname, vval)
 	if(vname == NAMEOF(src, obj_flags))

@@ -8,6 +8,7 @@
 	icon_state = "light_plate"
 	inhand_icon_state = "light_plate"
 	allowed = TRUE
+	materials = /datum/material/iron
 
 /obj/item/clothing/suit/light_plate/build_material_icon(_file, state)
 	var/icon/I = ..()
@@ -26,6 +27,7 @@
 	icon = 'dwarfs/icons/items/clothing/suit.dmi'
 	icon_state = "heavy_plate"
 	inhand_icon_state = "heavy_plate"
+	materials = /datum/material/iron
 	var/footstep = 1
 	var/mob/listeningTo
 	var/list/random_step_sound = list('sound/effects/heavystep1.ogg'=1,\
@@ -82,6 +84,7 @@
 	icon = 'dwarfs/icons/items/clothing/under.dmi'
 	icon_state = "chainmail"
 	inhand_icon_state = "chainmail"
+	materials = /datum/material/iron
 
 /obj/item/clothing/under/chainmail/build_material_icon(_file, state)
 	var/icon/I = ..()
@@ -97,6 +100,7 @@
 	dynamic_hair_suffix = ""
 	flags_inv = HIDEMASK|HIDEEARS|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
+	materials = /datum/material/iron
 
 /obj/item/clothing/head/heavy_plate/build_material_icon(_file, state)
 	var/icon/I = ..()
@@ -110,6 +114,7 @@
 	icon_state = "helmet_light"
 	dynamic_hair_suffix = ""
 	flags_inv = HIDEHAIR
+	materials = /datum/material/iron
 
 /obj/item/clothing/head/light_plate/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
@@ -121,6 +126,7 @@
 	worn_icon_state = "plate_gloves"
 	icon = 'dwarfs/icons/items/clothing/gloves.dmi'
 	icon_state = "plate_gloves"
+	materials = /datum/material/iron
 
 /obj/item/clothing/gloves/plate_gloves/build_material_icon(_file, state)
 	var/icon/I = ..()
@@ -134,6 +140,7 @@
 	worn_icon_state = "sabatons"
 	icon = 'dwarfs/icons/items/clothing/feet.dmi'
 	icon_state = "plate_boots"
+	materials = /datum/material/iron
 
 /obj/item/clothing/shoes/build_material_icon(_file, state)
 	var/icon/I = ..()

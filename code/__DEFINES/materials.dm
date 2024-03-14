@@ -1,3 +1,4 @@
+#define PART_NONE "part_none"
 #define PART_ANY "any_part"
 #define PART_HANDLE "handle"
 #define PART_HEAD "head"
