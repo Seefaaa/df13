@@ -60,22 +60,25 @@
  * Argumens:
  * - O: The obj we are applying this material to.
  */
-/datum/material/proc/apply_stats(obj/O, part_name=null)
-	var/obj/item/I = isitem(O) ? O : null
+/datum/material/proc/apply_stats(atom/A, part_name=null)
+	var/obj/O = isobj(A) ? A : null
+	var/obj/item/I = isitem(A) ? A : null
 	switch(part_name)
 		if(PART_HANDLE)
-			O.obj_integrity *= integrity_mod_handle
-			O.max_integrity *= integrity_mod_handle
+			if(O)
+				O.obj_integrity *= integrity_mod_handle
+				O.max_integrity *= integrity_mod_handle
 			if(I)
 				I.toolspeed = max(I.toolspeed * toolspeed_mod_handle, TOOLSPEED_MIN_VALUE)
 				I.melee_cd = max(I.melee_cd * melee_cd_mod_handle, MELEE_CD_MIN_VALUE)
 				I.slowdown += slowdown_mod_handle
 		if(PART_HEAD)
-			O.force *= force_mod
-			if(O.atck_type == BLUNT)
-				O.force *= force_mod_blunt
-			O.obj_integrity *= integrity_mod
-			O.max_integrity *= integrity_mod
+			if(O)
+				O.force *= force_mod
+				if(O.atck_type == BLUNT)
+					O.force *= force_mod_blunt
+				O.obj_integrity *= integrity_mod
+				O.max_integrity *= integrity_mod
 			if(I)
 				if(I.armor_penetration)
 					I.armor_penetration.modify_rating(SHARP, armorpen_sharp_mod)
@@ -88,18 +91,19 @@
 				I.melee_cd = max(I.melee_cd * melee_cd_mod, MELEE_CD_MIN_VALUE)
 				I.slowdown += slowdown_mod
 		else
-			O.force *= force_mod
-			if(O.atck_type == BLUNT)
-				O.force *= force_mod_blunt
-			O.obj_integrity *= integrity_mod
-			O.max_integrity *= integrity_mod
-			if(O.armor)
-				O.armor.modify_rating(SHARP, armor_sharp_mod)
-				O.armor.modify_rating(PIERCE, armor_pierce_mod)
-				O.armor.modify_rating(BLUNT, armor_blunt_mod)
-				O.armor.modify_rating(FIRE, armor_fire_mod)
-				O.armor.modify_rating(ACID, armor_acid_mod)
-				O.armor.modify_rating(MAGIC, armor_magic_mod)
+			if(O)
+				O.force *= force_mod
+				if(O.atck_type == BLUNT)
+					O.force *= force_mod_blunt
+				O.obj_integrity *= integrity_mod
+				O.max_integrity *= integrity_mod
+				if(O.armor)
+					O.armor.modify_rating(SHARP, armor_sharp_mod)
+					O.armor.modify_rating(PIERCE, armor_pierce_mod)
+					O.armor.modify_rating(BLUNT, armor_blunt_mod)
+					O.armor.modify_rating(FIRE, armor_fire_mod)
+					O.armor.modify_rating(ACID, armor_acid_mod)
+					O.armor.modify_rating(MAGIC, armor_magic_mod)
 			if(I)
 				I.toolspeed = max(I.toolspeed * toolspeed_mod, TOOLSPEED_MIN_VALUE)
 				I.melee_cd = max(I.melee_cd * melee_cd_mod, MELEE_CD_MIN_VALUE)
