@@ -41,6 +41,9 @@
 	if(vname == NAMEOF(src, obj_flags))
 		if ((obj_flags & DANGEROUS_POSSESSION) && !(vval & DANGEROUS_POSSESSION))
 			return FALSE
+	switch(vname)
+		if("grade")
+			update_stats(vval)
 	return ..()
 
 /obj/Initialize(mapload)
