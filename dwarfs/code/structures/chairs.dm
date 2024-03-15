@@ -3,13 +3,16 @@
 	desc = "Not so comfy."
 	icon = 'dwarfs/icons/structures/chairs.dmi'
 	icon_state = "stonechair"
-	color = rgb(255,255,255)
 	resistance_flags = LAVA_PROOF
 	max_integrity = 150
+	materials = list(PART_STONE=/datum/material/stone)
 	buildstacktype = /obj/item/stack/sheet/stone
 
+/obj/structure/chair/stone/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
+
 /obj/structure/chair/stone/GetArmrest()
-	return mutable_appearance('dwarfs/icons/structures/chairs.dmi', "stonechair_armrest")
+	return mutable_appearance(icon, "stonechair_armrest")
 
 /obj/structure/chair/stone/attackby(obj/item/W, mob/user, params)
 	if(W.tool_behaviour == TOOL_WRENCH && !(flags_1&NODECONSTRUCT_1))

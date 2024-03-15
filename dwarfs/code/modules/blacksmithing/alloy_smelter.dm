@@ -1,5 +1,5 @@
 /obj/structure/alloy_smelter
-	name = "blast furnace"
+	name = "alloy smelter"
 	desc = "A furnace made to produce pig iron and other alloys."
 	icon = 'dwarfs/icons/structures/32x64.dmi'
 	icon_state = "bf_empty_bars"
@@ -8,7 +8,7 @@
 	layer = BELOW_OBJ_LAYER
 	light_range = 2
 	light_color = "#BB661E"
-	materials = list(PART_INGOT=/datum/material/iron)
+	materials = list(PART_INGOT=/datum/material/iron, PART_STONE=/datum/material/stone)
 	/// How much 'fuel' is inside
 	var/fuel = 0
 	/// How much fuel we consume per second
@@ -42,7 +42,11 @@
 	. = ..()
 
 /obj/structure/alloy_smelter/build_material_icon(_file, state)
-	return apply_palettes(..(), materials[PART_INGOT])
+	return apply_palettes(..(), list(materials[PART_INGOT], materials[PART_STONE]))
+
+/obj/structure/alloy_smelter/apply_material(list/_materials)
+	. = ..()
+	particle_source.icon = icon
 
 /obj/structure/alloy_smelter/examine(mob/user)
 	. = ..()

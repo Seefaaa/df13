@@ -8,10 +8,14 @@
 	layer = ABOVE_MOB_LAYER
 	density = TRUE
 	anchored = TRUE
+	materials = /datum/material/stone
 	particles = new/particles/smoke/forge
 	var/fuel = 0
 	var/fuel_consumption = 0.5 // consumes x fuel per second
 	var/working = FALSE
+
+/obj/structure/forge/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/structure/forge/update_icon_state()
 	. = ..()

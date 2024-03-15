@@ -8,7 +8,7 @@
 	layer = BELOW_OBJ_LAYER
 	light_range = 2
 	light_color = "#BB661E"
-	materials = /datum/material/stone
+	materials = list(PART_STONE=/datum/material/stone, PART_INGOT=/datum/material/pig_iron)
 	var/fuel = 0
 	var/fuel_consumption = 0.5
 	var/working = FALSE
@@ -19,8 +19,8 @@
 /obj/structure/oven/Initialize()
 	. = ..()
 	particle_source = new/obj(null)
-	particle_source.icon = src::icon
-	particle_source.icon_state = "oven_empty_upper"
+	particle_source.icon = src.icon
+	particle_source.icon_state = "oven_upper"
 	particle_source.vis_flags |= VIS_INHERIT_ID
 	particle_source.layer = ABOVE_MOB_LAYER
 	particle_source.particles = new/particles/smoke/oven
@@ -34,6 +34,13 @@
 	. = ..()
 	QDEL_NULL(particle_source)
 	STOP_PROCESSING(SSprocessing, src)
+
+/obj/structure/oven/build_material_icon(_file, state)
+	return apply_palettes(..(), list(materials[PART_INGOT], materials[PART_STONE]))
+
+/obj/structure/oven/apply_material(list/_materials)
+	. = ..()
+	particle_source.icon = icon
 
 /obj/structure/oven/update_icon_state()
 	. = ..()

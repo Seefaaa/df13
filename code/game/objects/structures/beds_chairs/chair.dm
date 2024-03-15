@@ -22,6 +22,11 @@
 	armrest.layer = ABOVE_MOB_LAYER
 	armrest.plane = ABOVE_GAME_PLANE
 
+/obj/structure/chair/apply_material(list/_materials)
+	. = ..()
+	if(armrest)
+		armrest.icon = icon
+
 /obj/structure/chair/Destroy()
 	. = ..()
 	QDEL_NULL(armrest)

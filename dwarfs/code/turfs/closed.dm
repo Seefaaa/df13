@@ -1,33 +1,8 @@
-/turf/closed/wall/stone
-	name = "stone wall"
-	desc = "Just a regular stone wall."
-	icon = 'dwarfs/icons/turf/walls_dwarven.dmi'
-	icon_state = "rich_wall-0"
-	base_icon_state = "rich_wall"
-	materials = /datum/material/stone
-	sheet_type = /obj/item/stack/sheet/stone
-	sheet_amount = 3
-	floor_type = /turf/open/floor/tiles
-	debris_type = /obj/structure/debris/brick/large
-
 /turf/closed/mineral/stone
 	baseturfs = /turf/open/floor/rock
 	floor_type = /turf/open/floor/rock
 	materials = /datum/material/stone
 	var/has_troll = FALSE
-
-/turf/closed/mineral/stone/attackby(obj/item/I, mob/user, params)
-	if(I.tool_behaviour == TOOL_CHISEL)
-		var/turf/T = src
-		var/time = 5 SECONDS * user.get_skill_modifier(/datum/skill/masonry, SKILL_SPEED_MODIFIER)
-		to_chat(user, span_notice("You start carving stone wall..."))
-		if(I.use_tool(src, user, time, volume=50))
-			to_chat(user, span_notice("You finish carving stone wall."))
-			user.adjust_experience(/datum/skill/masonry, rand(2,6))
-			var/turf/wall = T.PlaceOnTop(/turf/closed/wall/stone)
-			wall.apply_material(materials)
-	else
-		. = ..()
 
 /turf/closed/mineral/stone/gets_drilled(mob/user, give_exp)
 	if(prob(40))
@@ -67,12 +42,17 @@
 /turf/closed/wall/wooden/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
 
-/turf/closed/wall/sand
-	name = "sand wall"
-	icon = 'dwarfs/icons/turf/walls_sand.dmi'
-	base_icon_state = "sand_wall"
-	icon_state = "sand_wall-0"
-	floor_type = /turf/open/floor/bigtiles
-	sheet_type = /obj/item/stack/ore/smeltable/sand
-	materials = /datum/material/sandstone
+/turf/closed/wall/stone
+	name = "stone wall"
+	desc = "Just a regular stone wall."
+	icon = 'dwarfs/icons/turf/walls_stone.dmi'
+	icon_state = "rich_wall-0"
+	base_icon_state = "rich_wall"
+	materials = /datum/material/stone
+	sheet_type = /obj/item/stack/sheet/stone
+	sheet_amount = 3
+	floor_type = /turf/open/floor/tiles
 	debris_type = /obj/structure/debris/brick/large
+
+/turf/closed/wall/stone/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)

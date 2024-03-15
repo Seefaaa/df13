@@ -5,12 +5,12 @@
 	density = 1
 	layer = ABOVE_MOB_LAYER
 	icon = 'dwarfs/icons/structures/32x64.dmi'
-	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron)
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/iron, PART_STONE=/datum/material/stone)
 	light_range = 2
 	light_color = "#BB661E"
 
 /obj/structure/brewery/build_material_icon(_file, state)
-	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT]))
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT], materials[PART_STONE]))
 
 /obj/structure/brewery/spawner
 	icon = 'dwarfs/icons/structures/64x64.dmi'
@@ -20,13 +20,14 @@
 	. = ..()
 	var/turf/T = locate(x+1, y, z)
 	if(!istype(T, /turf/open))
-		qdel(src)
-		return
+		return INITIALIZE_HINT_QDEL
 	var/obj/structure/brewery/l/L = new(get_turf(src))
 	var/obj/structure/brewery/r/R = new (T)
+	L.apply_material(materials)
+	R.apply_material(materials)
 	L.right = R
 	R.left = L
-	qdel(src)
+	return INITIALIZE_HINT_QDEL
 
 /obj/structure/brewery/l
 	icon_state = "brewery_l_closed_empty"
@@ -48,6 +49,11 @@
 	START_PROCESSING(SSprocessing, src)
 	set_light_on(working)
 	update_light()
+
+/obj/structure/brewery/l/apply_material(list/_materials)
+	. = ..()
+	if(right && right.materials != materials)
+		right.apply_material(materials)
 
 /obj/structure/brewery/l/AltClick(mob/user)
 	if(!CanReach(user))
@@ -152,6 +158,11 @@
 	STOP_PROCESSING(SSprocessing, src)
 	if(left)
 		QDEL_NULL(left)
+
+/obj/structure/brewery/r/apply_material(list/_materials)
+	. = ..()
+	if(left && left.materials != materials)
+		left.apply_material(materials)
 
 /obj/structure/brewery/r/update_icon_state()
 	. = ..()

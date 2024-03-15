@@ -566,7 +566,7 @@
 	name = "stone"
 	palettes = list("soapstone")
 	mat = MATERIAL_STONE
-	resource = /obj/item/stack/ore/stone
+	resource = /obj/item/stack/ore/stone/stone
 	resource_refined = /obj/item/stack/sheet/stone
 	wall_type = /turf/closed/wall/stone
 	door_type = /obj/structure/mineral_door/material
@@ -575,9 +575,9 @@
 	name = "sandstone"
 	palettes = list("sand")
 	mat = MATERIAL_STONE
-	resource = /obj/item/stack/ore/smeltable/sand
-	resource_refined = /obj/item/stack/ore/smeltable/sand
-	wall_type = /turf/closed/wall/sand
+	resource = /obj/item/stack/ore/stone/sand
+	resource_refined = /obj/item/stack/glass
+	wall_type = /turf/closed/wall/stone
 	door_type = /obj/structure/mineral_door/material
 
 /datum/material/cloth

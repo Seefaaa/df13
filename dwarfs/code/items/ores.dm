@@ -1,15 +1,29 @@
 /obj/item/stack/ore/stone
 	name = "rock"
-	desc = "A rock. Can be chiseled into a brick or ground into flux."
 	icon = 'dwarfs/icons/items/ores_gems.dmi'
 	icon_state = "rock"
 	singular_name = "Rock piece"
 	max_amount = 1
-	merge_type = /obj/item/stack/ore/stone
 
-/obj/item/stack/ore/stone/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
+/obj/item/stack/ore/stone/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
+
+//double stone. base type is just a rock, no materials
+/obj/item/stack/ore/stone/stone
+	desc = "A rock. Can be chiseled into a brick or ground into flux."
+	materials = /datum/material/stone
+
+/obj/item/stack/ore/stone/stone/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
 	. = ..()
 	AddComponent(/datum/component/grindable, item_type=/obj/item/stack/sheet/flux)
+
+/obj/item/stack/ore/stone/sand
+	desc = "A rock. Can be chiseled into a brick or ground into sand."
+	materials = /datum/material/sandstone
+
+/obj/item/stack/ore/stone/sand/Initialize(mapload, new_amount, merge, list/mat_override, mat_amt)
+	. = ..()
+	AddComponent(/datum/component/grindable, item_type=/obj/item/stack/ore/smeltable/sand)
 
 /obj/item/stack/ore/stone/attackby(obj/item/I, mob/living/user, params)
 	if(I.tool_behaviour == TOOL_CHISEL)
@@ -18,7 +32,8 @@
 			if(prob(user.get_skill_modifier(/datum/skill/masonry, SKILL_PROBS_MODIFIER)))
 				to_chat(user, span_warning("You process \the [src]."))
 				return
-			new /obj/item/stack/sheet/stone(user.loc)
+			var/obj/O = new /obj/item/stack/sheet/stone(user.loc)
+			O.apply_material(materials)
 			user.adjust_experience(/datum/skill/masonry, rand(1,4))
 			to_chat(user, span_notice("You process \the [src]."))
 			use(1)
@@ -39,3 +54,6 @@
 	part_name = PART_STONE
 	merge_type = /obj/item/stack/sheet/stone
 	materials = /datum/material/stone
+
+/obj/item/stack/sheet/stone/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)

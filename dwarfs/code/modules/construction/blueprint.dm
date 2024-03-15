@@ -23,7 +23,6 @@
 	. = ..()
 	if(!display_structure)
 		display_structure = target_structure
-	name += " blueprint"
 
 /obj/structure/blueprint/spawn_debris()
 	return
@@ -64,11 +63,7 @@
 				QUEUE_SMOOTH_BORDERS(T)
 				QUEUE_SMOOTH_BORDERS_NEIGHBORS(T)
 			else
-				var/obj/O = new target_structure(spawn_turf)
-				O.dir = dir
-				O.apply_material(_materials)
-				on_built(O)
-				O.update_stats()
+				spawn_structure(spawn_turf, _materials)
 			contents.Cut()
 			qdel(src)
 	else
@@ -250,6 +245,13 @@
 /obj/structure/blueprint/proc/on_built(obj/structure/res)
 	return
 
+/obj/structure/blueprint/proc/spawn_structure(turf/spawn_turf, list/_materials)
+	var/obj/O = new target_structure(spawn_turf)
+	O.dir = dir
+	O.apply_material(_materials)
+	on_built(O)
+	O.update_stats()
+
 /obj/structure/blueprint/large //2x1 size
 	name = "large blueprint"
 	desc = "That's some real construction going on in here."
@@ -262,6 +264,15 @@
 	target_structure = /obj/structure/brewery/spawner
 	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/stack/sheet/stone=4 ,/obj/item/ingot=4)
 	cat = BLUEPRINT_CAT_FOOD_PROCESSING
+
+/obj/structure/blueprint/large/brewery/spawn_structure(turf/spawn_turf, list/_materials)
+	var/turf/T = locate(x+1, y, z)
+	var/obj/structure/brewery/l/L = new(spawn_turf)
+	var/obj/structure/brewery/r/R = new (T)
+	L.apply_material(_materials)
+	R.apply_material(_materials)
+	L.right = R
+	R.left = L
 
 /obj/structure/blueprint/large/workbench
 	name = "workbench blueprint"
@@ -284,7 +295,7 @@
 /obj/structure/blueprint/oven
 	name = "oven blueprint"
 	target_structure = /obj/structure/oven
-	reqs = list(/obj/item/stack/sheet/stone=15)
+	reqs = list(/obj/item/stack/sheet/stone=15, /obj/item/ingot=1)
 	cat = BLUEPRINT_CAT_FOOD_PROCESSING
 
 /obj/structure/blueprint/smelter
@@ -333,6 +344,7 @@
 	name = "altar blueprint"
 	target_structure = /obj/structure/dwarf_altar
 	reqs = list(/obj/item/stack/sheet/stone=25, /obj/item/flashlight/fueled/candle=6)
+	req_materials = list(/obj/item/stack/sheet/stone=/datum/material/stone)
 	cat = BLUEPRINT_CAT_DECORATION
 
 /obj/structure/blueprint/loom
@@ -357,7 +369,7 @@
 	name = "stone throne"
 	target_structure = /obj/structure/chair/stone/throne
 	reqs = list(/obj/item/ingot=2, /obj/item/stack/sheet/stone=15, /obj/item/stack/sheet/mineral/gem/diamond=3)
-	req_materials = list(/obj/item/ingot=/datum/material/gold)
+	req_materials = list(/obj/item/ingot=/datum/material/gold, /obj/item/stack/sheet/stone=/datum/material/stone)
 	cat = BLUEPRINT_CAT_DECORATION
 
 /obj/structure/blueprint/stone_chair
@@ -464,7 +476,8 @@
 
 /obj/structure/blueprint/floor/build_ui_resources(mob/user)
 	var/obj/O = /obj/item/stack/sheet/stone
-	var/icon_path = icon2path(initial(O.icon), user, initial(O.icon_state))
+	var/icon/I = create_material_icon(O, /obj/item/stack/sheet/stone::icon, /obj/item/stack/sheet/stone::icon_state, /obj/item/stack/sheet/stone::materials)
+	var/icon_path = icon2path(I, user)
 	return list(list("name"="Any Stony Material","amount"=material_required,"icon"=icon_path))
 
 /obj/structure/blueprint/floor/req_examine()
@@ -512,7 +525,8 @@
 
 /obj/structure/blueprint/wall/build_ui_resources(mob/user)
 	var/obj/O = /obj/item/stack/sheet/stone
-	var/icon_path = icon2path(initial(O.icon), user, initial(O.icon_state))
+	var/icon/I = create_material_icon(O, /obj/item/stack/sheet/stone::icon, /obj/item/stack/sheet/stone::icon_state, /obj/item/stack/sheet/stone::materials)
+	var/icon_path = icon2path(I, user)
 	return list(list("name"="Any Valid Material","amount"=material_required,"icon"=icon_path))
 
 /obj/structure/blueprint/wall/get_target_structure()

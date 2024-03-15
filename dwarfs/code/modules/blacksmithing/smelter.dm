@@ -7,6 +7,7 @@
 	anchored = TRUE
 	light_range = 3
 	light_color = "#BB661E"
+	materials = /datum/material/stone
 	particles = new/particles/smoke/smelter
 	var/working = FALSE
 	var/fuel = 0
@@ -24,6 +25,9 @@
 /obj/structure/smelter/Destroy()
 	. = ..()
 	STOP_PROCESSING(SSprocessing, src)
+
+/obj/structure/smelter/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/structure/smelter/examine(mob/user)
 	. = ..()

@@ -12,6 +12,7 @@
 	icon = 'dwarfs/icons/structures/stone_stairs.dmi'
 	icon_state = "stairs"
 	anchored = TRUE
+	materials = /datum/material/stone
 
 	var/force_open_above = FALSE // replaces the turf above this stair obj with /turf/open/openspace
 	var/terminator_mode = STAIR_TERMINATOR_AUTOMATIC
@@ -96,9 +97,8 @@
 		return FALSE
 	return ..()
 
-/obj/structure/stairs/update_icon_state()
-	icon_state = "stairs[isTerminator() ? "_t" : null]"
-	return ..()
+/obj/structure/stairs/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/structure/stairs/proc/stair_ascend(atom/movable/climber)
 	var/turf/checking = get_step_multiz(get_turf(src), UP)

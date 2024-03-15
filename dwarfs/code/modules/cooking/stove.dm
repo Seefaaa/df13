@@ -7,7 +7,7 @@
 	icon_state = "stove_closed_empty"
 	density = 1
 	anchored = 1
-	materials = /datum/material/iron
+	materials = list(PART_INGOT=/datum/material/iron, PART_STONE=/datum/material/stone)
 	light_range = 2
 	light_color = "#BB661E"
 	var/open = FALSE
@@ -32,7 +32,7 @@
 	STOP_PROCESSING(SSprocessing, src)
 
 /obj/structure/stove/build_material_icon(_file, state)
-	return apply_palettes(..(), materials)
+	return apply_palettes(..(), list(materials[PART_INGOT], materials[PART_STONE]))
 
 /obj/structure/stove/update_icon_state()
 	. = ..()

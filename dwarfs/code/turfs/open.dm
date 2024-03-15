@@ -45,14 +45,16 @@
 		if(digged_up)
 			to_chat(user, span_warning("Nice try mongoid."))
 			return
-		var/turf/T = src
+		var/obj/item/chisel/C = I
 		var/time = 5 SECONDS * user.get_skill_modifier(/datum/skill/masonry, SKILL_SPEED_MODIFIER)
+		var/floor_type = C.chisel_bigtiles ? /turf/open/floor/bigtiles : /turf/open/floor/tiles
 		to_chat(user, span_notice("You start carving stone floor..."))
 		if(I.use_tool(src, user, time, volume=50))
 			to_chat(user, span_notice("You finish carving stone floor."))
 			user.adjust_experience(/datum/skill/masonry, rand(3,6))
-			var/turf/floor = T.ChangeTurf(/turf/open/floor/tiles)
-			floor.apply_material(materials)
+			var/new_materials = materials
+			var/turf/floor = ChangeTurf(floor_type, baseturfs)
+			floor.apply_material(new_materials)
 	else
 		. = ..()
 

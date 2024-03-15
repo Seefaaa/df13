@@ -74,3 +74,11 @@
 	if(!M)
 		return "unknown material"
 	return M.name
+
+/proc/create_material_icon(type, _file, state, list/materials)
+	var/icon_key = MATERIAL_ICON_KEY
+	if(SSmaterials.material_icons[icon_key])
+		return SSmaterials.material_icons[icon_key]
+	var/icon/I = apply_palettes(icon(_file, state), materials)
+	SSmaterials.material_icons[icon_key] = I
+	return I

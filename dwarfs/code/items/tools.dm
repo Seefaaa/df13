@@ -149,6 +149,16 @@
 	throwforce = 12
 	throw_range = 7
 	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/copper)
+	/// Flag that controls whether we chisel big tiles frol rock floor or regular tiles
+	var/chisel_bigtiles = FALSE
+
+/obj/item/chisel/examine(mob/user)
+	. = ..()
+	. += "<br>It's set to chisel [chisel_bigtiles ? "big" : "regular"] tiles."
+
+/obj/item/chisel/attack_self(mob/user, modifiers)
+	chisel_bigtiles = !chisel_bigtiles
+	to_chat(user, span_notice("You will now chisel [chisel_bigtiles ? "big" : "regular"] tiles."))
 
 /obj/item/chisel/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))

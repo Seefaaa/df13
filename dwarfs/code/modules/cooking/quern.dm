@@ -5,7 +5,7 @@
 	icon_state = "millstone"
 	density = TRUE
 	anchored = TRUE
-	materials = list(PART_PLANKS=/datum/material/wood/pine/treated)
+	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_STONE=/datum/material/stone)
 	var/max_volume = 150
 	var/work_time = 3 SECONDS
 	var/open = FALSE
@@ -16,7 +16,7 @@
 	create_reagents(max_volume)
 
 /obj/structure/quern/build_material_icon(_file, state)
-	return apply_palettes(..(), materials[PART_PLANKS])
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_STONE]))
 
 /obj/structure/quern/examine(mob/user)
 	. = ..()

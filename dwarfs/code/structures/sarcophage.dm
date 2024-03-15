@@ -4,6 +4,10 @@
 	icon = 'dwarfs/icons/structures/sarcophagus.dmi'
 	icon_state = "sarcophagus"
 	drag_slowdown = 4
+	materials = /datum/material/stone
+
+/obj/structure/closet/crate/sarcophagus/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/structure/closet/crate/sarcophagus/close(mob/living/user)
 	. = ..()
