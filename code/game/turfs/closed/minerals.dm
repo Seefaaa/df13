@@ -96,6 +96,7 @@
 				to_chat(user, span_notice("You finish cutting into the rock."))
 				var/obj/structure/stairs/S = new(src)
 				S.dir = user.dir
+				S.apply_material(materials)
 				gets_drilled(user, TRUE)
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	else
