@@ -31,6 +31,9 @@
 	debris_type = /obj/structure/debris/rock
 	var/digged_up = FALSE
 
+/turf/open/floor/rock/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
+
 /turf/open/floor/rock/Initialize(mapload)
 	. = ..()
 	if(z > 0 && z <= SSmapping.map_generators.len)
@@ -73,6 +76,7 @@
 		else
 			for(var/i in 1 to rand(2, 5))
 				var/obj/item/S = new /obj/item/stack/ore/stone(src)
+				S.apply_material(materials)
 				S.pixel_x = rand(-8, 8)
 				S.pixel_y = rand(-8, 8)
 			digged_up = TRUE

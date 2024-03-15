@@ -10,7 +10,7 @@
 /turf/closed/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
 	return FALSE
 
-/turf/closed/ChangeTurf(path, list/new_baseturfs, flags)
+/turf/closed/ChangeTurf(path, list/new_baseturfs, list/new_baseturf_materials, flags, list/new_materials)
 	if(!ispath(path, /turf/closed))
 		for(var/d in GLOB.cardinals)
 			var/turf/T = get_step(src, d)

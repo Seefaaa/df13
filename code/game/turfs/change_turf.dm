@@ -13,7 +13,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		qdel(thing, force=TRUE)
 
 	if(turf_type)
-		ChangeTurf(turf_type, baseturf_type, flags)
+		ChangeTurf(turf_type, baseturf_type, null, flags)
 
 /turf/proc/copyTurf(turf/T)
 	if(T.type != type)
@@ -39,11 +39,11 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 //wrapper for ChangeTurf()s that you want to prevent/affect without overriding ChangeTurf() itself
 /turf/proc/TerraformTurf(path, new_baseturf, flags)
-	return ChangeTurf(path, new_baseturf, flags)
+	return ChangeTurf(path, new_baseturf, null, flags)
 
 // Creates a new turf
 // new_baseturfs can be either a single type or list of types, formated the same as baseturfs. see turf.dm
-/turf/proc/ChangeTurf(path, list/new_baseturfs, flags)
+/turf/proc/ChangeTurf(path, list/new_baseturfs, list/new_baseturf_materials, flags, list/new_materials)
 	switch(path)
 		if(null)
 			return
@@ -98,9 +98,9 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		callback.InvokeAsync(W)
 
 	if(new_baseturfs)
-		if(!islist(new_baseturfs))
-			new_baseturfs = list(new_baseturfs)
 		W.baseturfs = new_baseturfs
+	if(new_baseturf_materials)
+		W.baseturf_materials = new_baseturf_materials
 
 	W.explosion_id = old_exi
 	W.explosion_level = old_exl
@@ -138,6 +138,9 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	if(thisarea.lighting_effect)
 		W.add_overlay(thisarea.lighting_effect)
 
+	if(new_materials)
+		W.apply_material(new_materials)
+
 	if(flags_cavein & CAVEIN_AIR)
 		for(var/direction in list(NORTH, SOUTH, EAST, WEST))
 			var/turf/neighbor = get_step(src, direction)
@@ -165,17 +168,23 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	if(length(baseturfs))
 		var/list/new_baseturfs = baseturfs.Copy()
 		var/turf_type = new_baseturfs[max(1, new_baseturfs.len - amount + 1)]
+		var/list/new_materials = baseturf_materials[max(1, new_baseturfs.len - amount + 1)]
+		var/list/new_baseturf_materials = baseturf_materials.Copy()
 		while(ispath(turf_type, /turf/baseturf_skipover))
 			amount++
 			if(amount > new_baseturfs.len)
 				CRASH("The bottommost baseturf of a turf is a skipover [src]([type])")
 			turf_type = new_baseturfs[max(1, new_baseturfs.len - amount + 1)]
+			new_materials = baseturf_materials[max(1, new_baseturfs.len - amount + 1)]
 		new_baseturfs.len -= min(amount, new_baseturfs.len - 1) // No removing the very bottom
+		new_baseturf_materials.len -=  min(amount, new_baseturfs.len - 1)
 		if(new_baseturfs.len == 1)
 			new_baseturfs = new_baseturfs[1]
-		return ChangeTurf(turf_type, new_baseturfs, flags)
+			new_materials = baseturf_materials[1]
+			new_baseturf_materials = baseturf_materials[1]
+		return ChangeTurf(turf_type, new_baseturfs, new_baseturf_materials, flags, new_materials)
 
-	return ChangeTurf(change_type, baseturfs, flags) // The bottom baseturf will never go away
+	return ChangeTurf(change_type, baseturfs, null, flags, null) // The bottom baseturf will never go away
 
 // Make a new turf and put it on top
 // The args behave identical to PlaceOnBottom except they go on top
@@ -185,8 +194,12 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 	if(flags & CHANGETURF_SKIP) // We haven't been initialized
 		if(flags_1 & INITIALIZED_1)
 			stack_trace("CHANGETURF_SKIP was used in a PlaceOnTop call for a turf that's initialized. This is a mistake. [src]([type])")
+	if(!islist(baseturfs))
+		baseturfs = list(baseturfs)
+		baseturf_materials = list(baseturf_materials)
 	var/list/new_baseturfs = baseturfs + type
-	return ChangeTurf(change_type, new_baseturfs, flags)
+	var/list/new_baseturf_materials = baseturf_materials + list(materials)
+	return ChangeTurf(change_type, new_baseturfs, new_baseturf_materials, flags, null)
 
 // Copy an existing turf and put it on top
 // Returns the new turf

@@ -1,5 +1,5 @@
 /turf/closed/mineral/stone
-	baseturfs = /turf/open/floor/rock
+	baseturfs = list(/turf/open/floor/rock=/datum/material/stone)
 	floor_type = /turf/open/floor/rock
 	materials = /datum/material/stone
 	var/has_troll = FALSE
@@ -7,7 +7,8 @@
 /turf/closed/mineral/stone/gets_drilled(mob/user, give_exp)
 	if(prob(40))
 		for(var/i in 1 to rand(1, 4))
-			new /obj/item/stack/ore/stone(src)
+			var/obj/O = new /obj/item/stack/ore/stone(src)
+			O.apply_material(materials)
 	if(has_troll)
 		to_chat(user, span_userdanger("THIS ROCK APPEARS TO BE ESPECIALLY SOFT!"))
 		new /mob/living/simple_animal/hostile/troll(src)
@@ -15,8 +16,8 @@
 
 /turf/closed/mineral/sand
 	name = "sand"
-	baseturfs = /turf/open/floor/sand
-	floor_type = /turf/open/floor/sand
+	baseturfs = list(/turf/open/floor/rock=/datum/material/sandstone)
+	floor_type = /turf/open/floor/rock
 	smooth_icon = 'dwarfs/icons/turf/walls_sandstone.dmi'
 	base_icon_state = "rockwall"
 	icon = 'dwarfs/icons/turf/walls_sandstone.dmi'
@@ -24,8 +25,8 @@
 	materials = /datum/material/sandstone
 
 /turf/closed/mineral/sand/gets_drilled(user, give_exp)
-	if(prob(33))
-		new /obj/item/stack/ore/smeltable/sand(src)
+	for(var/i in 1 to rand(1, 4))
+		new /obj/item/stack/ore/stone/sand(src)
 	. = ..()
 
 /turf/closed/wall/wooden

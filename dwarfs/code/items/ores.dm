@@ -4,6 +4,7 @@
 	icon_state = "rock"
 	singular_name = "Rock piece"
 	max_amount = 1
+	init_materials = TRUE
 
 /obj/item/stack/ore/stone/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)

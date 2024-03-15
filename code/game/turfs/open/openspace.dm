@@ -34,7 +34,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	. = ..()
 	AddElement(/datum/element/turf_z_transparency, is_openspace = TRUE)
 
-/turf/open/openspace/ChangeTurf(path, list/new_baseturfs, flags)
+/turf/open/openspace/ChangeTurf(path, list/new_baseturfs, list/new_baseturf_materials, flags, list/new_materials)
 	UnregisterSignal(src, COMSIG_ATOM_CREATED)
 	return ..()
 

@@ -15,6 +15,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	// In the case of a list it is sorted from bottom layer to top.
 	// This shouldn't be modified directly, use the helper procs.
 	var/list/baseturfs = /turf/baseturf_bottom
+	var/list/baseturf_materials = null
 
 	var/list/image/blueprint_data //for the station blueprints, images of objects eg: pipes
 
@@ -336,16 +337,16 @@ GLOBAL_LIST_EMPTY(station_turfs)
 /turf/proc/assemble_baseturfs()
 	// we already have valid baseturfs
 	if(islist(baseturfs))
-		return
+		if(baseturfs[1] != /turf/open/openspace)
+			baseturfs.Insert(1, /turf/open/openspace)
 
-	var/baseturf_to_use = baseturfs
+	else
+		var/baseturf_to_use = baseturfs
 
-	if(ispath(baseturfs, /turf/baseturf_bottom))
-		baseturf_to_use = /turf/open/openspace
+		if(ispath(baseturfs, /turf/baseturf_bottom))
+			baseturf_to_use = /turf/open/openspace
 
-	baseturfs = list(baseturf_to_use)
-	if(baseturfs[1] != /turf/open/openspace)
-		baseturfs.Insert(1, /turf/open/openspace)
+		baseturfs = baseturf_to_use
 
 /turf/proc/levelupdate()
 	for(var/obj/O in src)
