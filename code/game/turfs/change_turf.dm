@@ -196,6 +196,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 			stack_trace("CHANGETURF_SKIP was used in a PlaceOnTop call for a turf that's initialized. This is a mistake. [src]([type])")
 	if(!islist(baseturfs))
 		baseturfs = list(baseturfs)
+	if(!islist(baseturf_materials))
 		baseturf_materials = list(baseturf_materials)
 	var/list/new_baseturfs = baseturfs + type
 	var/list/new_baseturf_materials = baseturf_materials + list(materials)

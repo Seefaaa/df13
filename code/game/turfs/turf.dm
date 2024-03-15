@@ -346,7 +346,14 @@ GLOBAL_LIST_EMPTY(station_turfs)
 		if(ispath(baseturfs, /turf/baseturf_bottom))
 			baseturf_to_use = /turf/open/openspace
 
-		baseturfs = baseturf_to_use
+		baseturfs = list(baseturf_to_use)
+		if(baseturfs[1] != /turf/open/openspace)
+			baseturfs.Insert(1, /turf/open/openspace)
+
+	if(!islist(baseturf_materials))
+		baseturf_materials = list(baseturf_materials)
+		for(var/i in 1 to baseturfs.len-1)
+			baseturf_materials += null
 
 /turf/proc/levelupdate()
 	for(var/obj/O in src)

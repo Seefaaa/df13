@@ -1,5 +1,6 @@
 /turf/closed/mineral/stone
-	baseturfs = list(/turf/open/floor/rock=/datum/material/stone)
+	baseturfs = /turf/open/floor/rock
+	baseturf_materials = /datum/material/stone
 	floor_type = /turf/open/floor/rock
 	materials = /datum/material/stone
 	var/has_troll = FALSE
@@ -16,7 +17,8 @@
 
 /turf/closed/mineral/sand
 	name = "sand"
-	baseturfs = list(/turf/open/floor/rock=/datum/material/sandstone)
+	baseturfs = /turf/open/floor/rock
+	baseturf_materials = /datum/material/sandstone
 	floor_type = /turf/open/floor/rock
 	smooth_icon = 'dwarfs/icons/turf/walls_sandstone.dmi'
 	base_icon_state = "rockwall"
