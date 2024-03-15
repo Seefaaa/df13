@@ -360,6 +360,7 @@ If you want them to actualy show up, go to code\modules\client\preferences.dm on
 	shoes_materials = /datum/material/iron
 
 /datum/outfit/goblin_warlord
+	name = "Goblin Warlord"
 	skills = list(/datum/skill/combat/longsword=11)
 	suit_store = /obj/item/zwei
 	suit_store_grade = 6
