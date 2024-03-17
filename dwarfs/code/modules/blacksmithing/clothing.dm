@@ -207,6 +207,7 @@
 	icon_state = "leather_vest"
 	icon = 'dwarfs/icons/items/clothing/suit.dmi'
 	body_parts_covered = CHEST | ARMS
+	allowed = TRUE
 
 /obj/item/clothing/head/leather_helmet
 	name = "leather_helmet"
