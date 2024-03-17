@@ -287,7 +287,7 @@
 			source.icon_state = initial(source.icon_state)
 		if(inhand_icon_wielded)
 			source.inhand_icon_state = initial(source.inhand_icon_state)
-	return COMSIG_ATOM_NO_UPDATE_ICON_STATE
+	return icon_wielded ? COMSIG_ATOM_NO_UPDATE_ICON_STATE : NONE
 
 /**
  * on_moved Triggers on item moved
