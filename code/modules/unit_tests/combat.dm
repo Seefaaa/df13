@@ -15,6 +15,9 @@
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human)
 	var/obj/item/kitchen/knife/knife = allocate(/obj/item/kitchen/knife)
 
+	knife.skill = /datum/skill/combat/dagger
+	tider.adjust_experience(/datum/skill/combat/dagger, SKILL_EXP_LEGEND)
+
 	tider.put_in_active_hand(knife, forced = TRUE)
 	tider.a_intent_change(INTENT_HARM)
 	victim.attackby(knife, tider)
@@ -53,8 +56,10 @@
 
 /datum/unit_test/disarm/Run()
 	var/mob/living/carbon/human/attacker = allocate(/mob/living/carbon/human)
-	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human)
+	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human, locate(attacker.x+2, attacker.y, attacker.z))
 	var/obj/item/kitchen/knife/knife = allocate(/obj/item/kitchen/knife)
+	var/turf/T = locate(run_loc_floor_bottom_left.x+3, run_loc_floor_bottom_left.y, run_loc_floor_bottom_left.z)
+	T.ChangeTurf(/turf/closed/indestructible)
 
 	victim.put_in_active_hand(knife, forced = TRUE)
 	attacker.a_intent_change(INTENT_DISARM)
@@ -73,5 +78,5 @@
 	victim.attack_hand(attacker)
 
 	TEST_ASSERT_EQUAL(victim.loc.x, run_loc_floor_bottom_left.x + 2, "Victim was moved after being pushed against a wall")
-	TEST_ASSERT(victim.has_status_effect(STATUS_EFFECT_KNOCKDOWN), "Victim was not knocked down after being pushed against a wall")
-	TEST_ASSERT_EQUAL(victim.get_active_held_item(), null, "Victim didn't drop knife after being pushed against a wall")
+	TEST_ASSERT(!victim.has_status_effect(STATUS_EFFECT_KNOCKDOWN), "Victim was knocked down after being pushed against a wall")
+	TEST_ASSERT_EQUAL(victim.get_active_held_item(), knife, "Victim dropped knife after being pushed against a wall")
