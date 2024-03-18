@@ -44,6 +44,10 @@
 	RegisterSignal(parent, COMSIG_MOUSEDROP_ONTO, PROC_REF(dragged))
 	RegisterSignal(parent, COMSIG_ATOM_UPDATE_APPEARANCE, PROC_REF(update_item))
 
+/datum/component/liftable/Destroy(force, silent)
+	QDEL_NULL(item)
+	. = ..()
+
 /datum/component/liftable/proc/dragged(atom/over, src_location, over_location, src_control, over_control, params, forced = FALSE)
 	if(src_location != over_location)
 		return
