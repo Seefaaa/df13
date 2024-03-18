@@ -40,7 +40,7 @@
 /obj/structure/brewery/l/Destroy()
 	. = ..()
 	STOP_PROCESSING(SSprocessing, src)
-	if(right)
+	if(right && !QDELETED(right))
 		QDEL_NULL(right)
 
 /obj/structure/brewery/l/Initialize()
@@ -156,7 +156,7 @@
 /obj/structure/brewery/r/Destroy()
 	. = ..()
 	STOP_PROCESSING(SSprocessing, src)
-	if(left)
+	if(left && !QDELETED(left))
 		QDEL_NULL(left)
 
 /obj/structure/brewery/r/apply_material(list/_materials)
