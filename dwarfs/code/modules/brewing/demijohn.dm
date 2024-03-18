@@ -21,8 +21,9 @@
 	return apply_palettes(..(), materials[PART_PLANKS])
 
 /obj/structure/demijohn/Destroy()
-	. = ..()
 	remove_timer()
+	UnregisterSignal(src, COSMIG_DEMIJOHN_STOP)
+	. = ..()
 
 /obj/structure/demijohn/proc/remove_timer()
 	if(active_timers)
