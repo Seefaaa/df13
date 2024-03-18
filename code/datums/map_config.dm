@@ -16,11 +16,7 @@
 	// Config actually from the JSON - should default to Meta
 	var/map_name = "Fortress"
 	var/map_path = "map_files/Fortress"
-#ifdef UNIT_TESTS
 	var/map_file = "Fortress_small.dmm"
-#else
-	var/map_file = "Fortress.dmm"
-#endif
 
 	var/traits = null
 

@@ -1,0 +1,55 @@
+{
+	"version": 1,
+    "map_name": "Fortress",
+    "map_path": "map_files/Fortress",
+    "map_file": "Fortress_small.dmm",
+	"traits": [
+		{
+			"Mining": true,
+			"Gravity": true,
+			"Linkage": null,
+			"Up": 1,
+			"Baseturf": "/turf/open/floor/rock"
+		},
+		{
+			"Mining": true,
+			"Gravity": true,
+			"Linkage": null,
+			"Up": 1,
+			"Down": -1,
+			"Baseturf": "/turf/open/openspace"
+		},
+		{
+			"Mining": true,
+			"Gravity": true,
+			"Linkage": null,
+			"Up": 1,
+			"Down": -1,
+			"Baseturf": "/turf/open/openspace"
+		},
+		{
+			"Mining": true,
+			"Gravity": true,
+			"Linkage": null,
+			"Up": 1,
+			"Down": -1,
+			"Baseturf": "/turf/open/openspace"
+		},
+		{
+			"Mining": true,
+			"Gravity": true,
+			"Linkage": null,
+			"Up": 1,
+			"Down": -1,
+			"Baseturf": "/turf/open/openspace"
+		},
+		{
+			"Mining": true,
+			"Gravity": true,
+			"Linkage": null,
+			"Down": -1,
+			"Baseturf": "/turf/open/openspace"
+		}
+
+	]
+}
