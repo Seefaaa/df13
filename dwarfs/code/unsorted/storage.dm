@@ -8,7 +8,7 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	component_type = /datum/component/storage/concrete/stack
 
-/obj/item/storage/ore/ComponentInitialize()
+/obj/item/storage/soil/ComponentInitialize()
 	. = ..()
 	var/datum/component/storage/concrete/stack/STR = GetComponent(/datum/component/storage/concrete/stack)
 	STR.max_w_class = WEIGHT_CLASS_HUGE
