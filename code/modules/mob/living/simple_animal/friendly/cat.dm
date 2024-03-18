@@ -75,9 +75,14 @@ GLOBAL_LIST_EMPTY(cats)
 	else
 		gender = pick(MALE, FEMALE)
 
-/mob/living/simple_animal/pet/cat/death(gibbed)
-	. = ..()
+/mob/living/simple_animal/pet/cat/Destroy()
+	remove_verb(src, /mob/living/proc/toggle_resting)
 	GLOB.cats.Remove(src)
+	. = ..()
+
+/mob/living/simple_animal/pet/cat/death(gibbed)
+	GLOB.cats.Remove(src)
+	. = ..()
 
 /mob/living/simple_animal/pet/cat/attackby(obj/item/O, mob/user, params)
 	if(istype(O, /obj/item/food/meat) || istype(O, /obj/item/food/slice/meat))
