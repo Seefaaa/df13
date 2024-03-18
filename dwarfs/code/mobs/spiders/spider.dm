@@ -53,6 +53,10 @@
 	lay_web = new
 	lay_web.Grant(src)
 
+/mob/living/simple_animal/hostile/giant_spider/Destroy()
+	QDEL_NULL(lay_web)
+	. = ..()
+
 //
 /mob/living/simple_animal/hostile/giant_spider/AttackingTarget()
 	. = ..()
