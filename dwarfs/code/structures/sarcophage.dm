@@ -35,3 +35,6 @@
 		return .
 	if(contents.len && (locate(/mob/living/carbon/human) in contents))
 		return FALSE
+
+/obj/structure/closet/crate/sarcophagus/ComponentInitialize()
+	return

@@ -17,3 +17,6 @@
 /obj/structure/closet/crate/Initialize()
 	. = ..()
 	AddComponent(/datum/component/liftable, inhand_icon_state="crate")
+
+/obj/structure/closet/crate/ComponentInitialize()
+	AddComponent(/datum/component/liftable, inhand_icon_state="crate")
