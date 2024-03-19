@@ -68,7 +68,7 @@
 
 /obj/structure/onZImpact(turf/impacted_turf, levels, message)
 	. = ..()
-	addtimer(CALLBACK(src, PROC_REF(spawn_debris)), 0.5 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(obj_destruction)), 0.5 SECONDS)
 
 /obj/structure/proc/spawn_debris()
 	var/obj/structure/debris/structure/debris = new(get_turf(src))
