@@ -1482,6 +1482,8 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 	var/list/askills = list()
 	for(var/skilltype in available_skills)
 		var/datum/skill/S = skilltype
+		if(!initial(S.obtainable_in_prefs))
+			continue
 		var/skillLevel = 1
 		if(S in prefs.skills)
 			skillLevel = prefs.skills[S]+1

@@ -8,9 +8,14 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
 	var/modifiers = list(SKILL_SPEED_MODIFIER = list(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)) //Dictionary of modifier type - list of modifiers (indexed by level). 11 entries in each list for all 11 skill levels.
 	///List associating different messages that appear on level up with different levels
 	var/list/levelUpMessages = list()
+	///Current skill level
 	var/level = 1
+	///Current skill experience
 	var/experience = 0
+	///Owner mob
 	var/mob/owner
+	///Whether it can be chosen in prefs. TRUE by default.
+	var/obtainable_in_prefs = TRUE
 
 /datum/skill/proc/get_skill_modifier(modifier, level)
 	return modifiers[modifier][level] //Levels range from 1 (None) to 11 (Legendary)
