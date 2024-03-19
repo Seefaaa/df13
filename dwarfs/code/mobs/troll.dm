@@ -34,6 +34,8 @@
 	if(target && rockfalling_last < world.time && prob(50) && z != GLOB.surface_z)
 		rockfalling_last = world.time + 60 SECONDS
 		for(var/turf/open/T in view(7, src))
+			if(T.is_blocked_turf() || isopenspace(T))
+				continue
 			if(prob(5))
 				new /obj/effect/temp_visual/rockfall(T)
 				spawn(rand(30, 60))
