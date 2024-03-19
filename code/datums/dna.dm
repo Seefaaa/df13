@@ -14,6 +14,7 @@
 		holder = new_holder
 
 /datum/dna/Destroy()
+	species.on_species_loss(holder)
 	if(iscarbon(holder))
 		var/mob/living/carbon/cholder = holder
 		if(cholder.dna == src)
