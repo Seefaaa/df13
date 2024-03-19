@@ -37,5 +37,9 @@
 #define QDESTROYING(X) (!X || X.gc_destroyed == GC_CURRENTLY_BEING_QDELETED)
 
 // Defines for the time left for an item to get its reference cleaned
+#ifdef UNIT_TESTS
+#define GC_FILTER_QUEUE 10 SECONDS
+#else
 #define GC_FILTER_QUEUE 5 MINUTES
+#endif
 #define GC_DEL_QUEUE 10 SECONDS
