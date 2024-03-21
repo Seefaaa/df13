@@ -29,6 +29,7 @@ GLOBAL_VAR(surface_z)
 			var/height = text2num(height_values[world.maxx * (y-1) + x])
 			var/temp = text2num(temp_values[world.maxx * (y-1) + x])
 			var/turf/turf_type
+			var/list/materials
 			switch(height)
 				if(-INFINITY to -0.7)
 					turf_type = /turf/open/water
@@ -40,9 +41,11 @@ GLOBAL_VAR(surface_z)
 				if(-0.45 to -0.3)
 					prob_queue(0.7, "mobs", list(x, y, T.z))
 					if(temp > 0)
-						turf_type = /turf/open/floor/sand
+						turf_type = /turf/open/floor/rock
+						materials = /datum/material/sandstone
 					else
 						turf_type = /turf/open/floor/rock
+						materials = /datum/material/stone
 				if(-0.3 to INFINITY)
 					prob_queue(1, "ore", list(x, y, T.z))
 					if(temp > 0)
@@ -50,7 +53,7 @@ GLOBAL_VAR(surface_z)
 					else
 						turf_type = /turf/closed/mineral/stone
 						prob_queue(troll_chance, "troll_rock", list(x, y, T.z))
-			T.ChangeTurf(turf_type)
+			T.ChangeTurf(turf_type, new_materials=materials)
 
 /datum/map_generator/caves/generate_rest()
 	for(var/list/data in post_queue["forest"])
