@@ -123,7 +123,7 @@
 			if (mineralType && (mineralAmt > 0))
 				H.adjust_experience(/datum/skill/mining, initial(mineralType.mine_experience) * to_spawn)
 			else
-				H.adjust_experience(/datum/skill/mining, 4)
+				H.adjust_experience(/datum/skill/mining, 0.8)
 
 	var/flags = NONE
 	if(defer_change) // TODO: make the defer change var a var for any changeturf flag

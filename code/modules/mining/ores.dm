@@ -44,7 +44,7 @@
 	name = "iron ore"
 	icon_state = "iron"
 	singular_name = "iron ore chunk"
-	mine_experience = 10
+	mine_experience = 15
 	merge_type = /obj/item/stack/ore/smeltable/iron
 	ore_icon = 'dwarfs/icons/turf/ores/iron.dmi'
 	ore_basename = "iron"
@@ -58,7 +58,7 @@
 	icon = 'dwarfs/icons/items/ores_gems.dmi'
 	icon_state = "coal"
 	singular_name = "coal chunk"
-	mine_experience = 2
+	mine_experience = 3
 	merge_type = /obj/item/stack/ore/coal
 	ore_icon = 'dwarfs/icons/turf/ores/coal.dmi'
 	ore_basename = "coal"
@@ -80,7 +80,7 @@
 	name = "gold ore"
 	icon_state = "gold"
 	singular_name = "gold ore chunk"
-	mine_experience = 12
+	mine_experience = 17
 	refined_type = /obj/item/ingot
 	ore_icon = 'dwarfs/icons/turf/ores/gold.dmi'
 	ore_basename = "gold"
@@ -105,7 +105,7 @@
 	icon_state = "silver"
 	inhand_icon_state = "silver_ore"
 	singular_name = "silver ore chunk"
-	mine_experience = 7
+	mine_experience = 10
 	refined_type = /obj/item/ingot
 	ore_icon = 'dwarfs/icons/turf/ores/silver.dmi'
 	ore_basename = "silver"
@@ -129,7 +129,7 @@
 	icon_state = "platinum"
 	inhand_icon_state = "platinum_ore"
 	singular_name = "platinum ore chunk"
-	mine_experience = 12
+	mine_experience = 17
 	refined_type = /obj/item/ingot
 	ore_icon = 'dwarfs/icons/turf/ores/platinum.dmi'
 	ore_basename = "platinum"
@@ -153,7 +153,7 @@
 	icon_state = "aluminum"
 	inhand_icon_state = "aluminum_ore"
 	singular_name = "aluminum ore chunk"
-	mine_experience = 11
+	mine_experience = 13
 	refined_type = /obj/item/ingot
 	ore_icon = 'dwarfs/icons/turf/ores/aluminum.dmi'
 	ore_basename = "aluminum"
@@ -165,7 +165,7 @@
 	icon_state = "adamantine"
 	inhand_icon_state = "adamantine_ore"
 	singular_name = "adamantine ore chunk"
-	mine_experience = 20
+	mine_experience = 23
 	refined_type = /obj/item/ingot
 	ore_icon = 'dwarfs/icons/turf/ores/adamantine.dmi'
 	ore_basename = "adamantine"
@@ -182,7 +182,7 @@
 	// inhand_icon_state = "Diamond ore"
 	singular_name = "uncut diamond"
 	cut_type = /obj/item/stack/sheet/mineral/gem/diamond
-	mine_experience = 10
+	mine_experience = 19
 	merge_type = /obj/item/stack/ore/gem/diamond
 	ore_icon = 'dwarfs/icons/turf/ores/diamond.dmi'
 	ore_basename = "diamond"
@@ -194,7 +194,7 @@
 	// inhand_icon_state = "Diamond ore"
 	singular_name = "uncut sapphire"
 	cut_type = /obj/item/stack/sheet/mineral/gem/sapphire
-	mine_experience = 10
+	mine_experience = 21
 	merge_type = /obj/item/stack/ore/gem/sapphire
 	ore_icon = 'dwarfs/icons/turf/ores/sapphire.dmi'
 	ore_basename = "sapphire"
@@ -206,7 +206,7 @@
 	// inhand_icon_state = "Diamond ore"
 	singular_name = "uncut ruby"
 	cut_type = /obj/item/stack/sheet/mineral/gem/ruby
-	mine_experience = 10
+	mine_experience = 18
 	merge_type = /obj/item/stack/ore/gem/ruby
 	ore_icon = 'dwarfs/icons/turf/ores/ruby.dmi'
 	ore_basename = "ruby"
