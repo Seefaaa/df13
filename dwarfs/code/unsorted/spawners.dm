@@ -6,12 +6,19 @@
 	var/turf/left = locate(center.x-1, center.y, center.z)
 	var/turf/right = locate(center.x+1, center.y, center.z)
 	var/turf/down = locate(center.x, center.y-1, center.z)
-	new /obj/structure/anvil(center)
+	var/obj/O
+	O = new /obj/structure/anvil(center)
+	O.apply_material(/datum/material/adamantine)
 	left.PlaceOnTop(/turf/open/lava)
 	right.PlaceOnTop(/turf/open/water)
-	new /obj/item/smithing_hammer(down)
-	new /obj/item/tongs(down)
-	new /obj/item/ingot(down)
+	O = new /obj/item/smithing_hammer(down)
+	O.apply_material(list(PART_HEAD=/datum/material/adamantine,PART_HANDLE=/datum/material/wood/treated))
+	O.update_stats(6)
+	O = new /obj/item/tongs(down)
+	O.apply_material(/datum/material/adamantine)
+	O.update_stats(6)
+	O = new /obj/item/ingot(down)
+	O.apply_material(/datum/material/iron)
 	return INITIALIZE_HINT_QDEL
 
 /obj/effect/spawner/metal_showcase/Initialize(mapload)
