@@ -151,7 +151,7 @@
 	SEND_SIGNAL(src, COSMIG_PLANT_EAT_TICK)
 	return
 
-/obj/structure/plant/update_icon(updates)
+/obj/structure/plant/update_icon_state()
 	. = ..()
 	if(dead)
 		icon_state = icon_dead
