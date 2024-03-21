@@ -79,6 +79,7 @@
 					O.force *= force_mod_blunt
 				O.obj_integrity *= integrity_mod
 				O.max_integrity *= integrity_mod
+				O.hardness = hardness
 			if(I)
 				if(I.armor_penetration)
 					I.armor_penetration.modify_rating(SHARP, armorpen_sharp_mod)
@@ -97,6 +98,7 @@
 					O.force *= force_mod_blunt
 				O.obj_integrity *= integrity_mod
 				O.max_integrity *= integrity_mod
+				O.hardness = max(O.hardness, hardness)
 				if(O.armor)
 					O.armor.modify_rating(SHARP, armor_sharp_mod)
 					O.armor.modify_rating(PIERCE, armor_pierce_mod)

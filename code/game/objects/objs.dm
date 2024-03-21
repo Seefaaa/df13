@@ -36,6 +36,8 @@
 	var/grade = 1 // object grade value. Defaults to 1
 	var/init_grade = FALSE
 	var/part_name = PART_NONE
+	/// Obj hardness, works with materials
+	var/hardness = 1
 
 /obj/vv_edit_var(vname, vval)
 	if(vname == NAMEOF(src, obj_flags))
