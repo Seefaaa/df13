@@ -180,7 +180,6 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 		new_baseturf_materials.len -=  min(amount, new_baseturfs.len - 1)
 		if(new_baseturfs.len == 1)
 			new_baseturfs = new_baseturfs[1]
-			new_materials = baseturf_materials[1]
 			new_baseturf_materials = baseturf_materials[1]
 		return ChangeTurf(turf_type, new_baseturfs, new_baseturf_materials, flags, new_materials)
 

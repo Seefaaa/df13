@@ -352,7 +352,9 @@ GLOBAL_LIST_EMPTY(station_turfs)
 
 	if(!islist(baseturf_materials))
 		baseturf_materials = list(baseturf_materials)
-		for(var/i in 1 to baseturfs.len-1)
+		if(baseturf_materials[1] != null)
+			baseturf_materials.Insert(1, null)
+		for(var/i in 1 to baseturfs.len-baseturf_materials.len)
 			baseturf_materials += null
 
 /turf/proc/levelupdate()
