@@ -64,6 +64,10 @@
 /obj/structure/plant/spawn_debris()
 	qdel(src)
 
+/obj/structure/plant/zMove(dir, turf/target, z_move_flags)
+	. = ..()
+	addtimer(CALLBACK(src, PROC_REF(obj_destruction)), 0.5 SECONDS)
+
 /obj/structure/plant/examine(mob/user)
 	. = ..()
 	var/healthtext = "<br>"
