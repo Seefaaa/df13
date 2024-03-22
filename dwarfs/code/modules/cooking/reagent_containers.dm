@@ -44,13 +44,6 @@
 	. = ..()
 	AddComponent(/datum/component/storage/concrete/cooking/pot)
 
-/obj/item/reagent_containers/glass/cooking_pot/update_overlays()
-	. = ..()
-	if(open && reagents.total_volume)
-		var/mutable_appearance/M = mutable_appearance("dwarfs/icons/items/kitchen.dmi", "cooking_pot_overlay")
-		M.color = mix_color_from_reagents(reagents.reagent_list)
-		. += M
-
 /obj/item/reagent_containers/glass/cooking_pot/update_icon_state()
 	. = ..()
 	if(open)
@@ -60,6 +53,10 @@
 
 /obj/item/reagent_containers/glass/cooking_pot/update_overlays()
 	. = ..()
+	if(open && reagents.total_volume)
+		var/mutable_appearance/M = mutable_appearance("dwarfs/icons/items/kitchen.dmi", "cooking_pot_overlay")
+		M.color = mix_color_from_reagents(reagents.reagent_list)
+		. += M
 	if(!contents.len || !open)
 		return
 	for(var/i=1;i<=min(contents.len,4);i++)
@@ -82,7 +79,7 @@
 				M.pixel_y += 13
 		M.transform *= 0.6
 		. += M
-	. += build_material_icon(initial(icon), "pot_overlay")
+	. += icon(icon, "pot_overlay")
 
 /obj/item/reagent_containers/glass/cooking_pot/attack_self_secondary(mob/user, modifiers)
 	open = !open
@@ -191,7 +188,7 @@
 				M.pixel_y += 8
 		M.transform *= 0.6
 		. += M
-	. += build_material_icon(icon, "wooden_bowl_overlay")
+	. += icon(icon, "wooden_bowl_overlay")
 
 /obj/item/reagent_containers/glass/plate/bowl/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/kitchen/knife))
@@ -328,7 +325,7 @@
 				M.pixel_y += 17
 		M.transform *= 0.6
 		. += M
-	. += build_material_icon(initial(icon), "cake_pan_overlay")
+	. += icon(icon, "cake_pan_overlay")
 
 /obj/item/reagent_containers/glass/baking_sheet
 	name = "baking sheet"
