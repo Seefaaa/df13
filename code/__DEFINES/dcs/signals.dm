@@ -816,6 +816,7 @@
 #define COMSIG_GRILL_COMPLETED "item_grill_completed"
 //Called when an item is squeezed in /obj/structure/press
 #define COSMIG_ITEM_SQUEEZED "item_squeezed"
+#define COMSIG_ITEM_CAN_SQUEEZE "item_can_squeeze"
 //Called when something is grinded in a quern
 #define COSMIG_ITEM_GRINDED "item_grinded"
 #define COSMIG_REAGENT_GRINDED "reagent_grinded"

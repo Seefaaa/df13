@@ -35,7 +35,7 @@
 /obj/structure/press/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/growable))
 		var/obj/item/growable/G = I
-		if(!G.GetComponent(/datum/component/pressable))
+		if(!SEND_SIGNAL(G, COMSIG_ITEM_CAN_SQUEEZE))
 			to_chat(user, span_warning("[G] cannot be juiced."))
 			return FALSE
 		if(length(contents) >= max_items)
@@ -63,10 +63,12 @@
 /obj/structure/press/attackby_secondary(obj/item/I, mob/user, params)
 	. = SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 	if(I.is_refillable())
+		var/obj/item/reagent_containers/C = I
 		for(var/datum/reagent/R in I.reagents.reagent_list)
-			if(R.GetComponent(/datum/component/pressable))
-				reagents.add_reagent(R.type, R.volume)
-				I.reagents.remove_reagent(R.type, R.volume)
+			if(SEND_SIGNAL(R, COMSIG_ITEM_CAN_SQUEEZE, C.amount_per_transfer_from_this))
+				reagents.add_reagent(R.type, C.amount_per_transfer_from_this)
+				I.reagents.remove_reagent(R.type, C.amount_per_transfer_from_this)
+				update_appearance()
 
 /obj/structure/press/proc/squeeze()
 	if(contents.len)
@@ -77,11 +79,14 @@
 				item_types.Add(I.type)
 				types_amount++
 		var/obj/item/growable/G = contents[contents.len]
+		if(!SEND_SIGNAL(G, COMSIG_ITEM_CAN_SQUEEZE))
+			return
 		SEND_SIGNAL(G, COSMIG_ITEM_SQUEEZED, src, types_amount)
 	else
 		for(var/datum/reagent/R in reagents.reagent_list)
-			if(R.GetComponent(/datum/component/pressable))
-				SEND_SIGNAL(R, COSMIG_ITEM_SQUEEZED, src, 1)
+			if(!SEND_SIGNAL(R, COMSIG_ITEM_CAN_SQUEEZE, R.volume))
+				return
+			SEND_SIGNAL(R, COSMIG_ITEM_SQUEEZED, src, 1)
 
 /obj/structure/press/update_overlays()
 	. = ..()
@@ -98,7 +103,7 @@
 				var/datum/reagent/R = pressable
 				M.color = R.color
 			. += M
-		if("press_open_item")
+		if("press_open_item", "press_open")
 			var/mutable_appearance/M = mutable_appearance('dwarfs/icons/structures/32x64.dmi', "item_overlay")
 			var/pressable = get_pressable()
 			if(isitem(pressable))
@@ -122,7 +127,7 @@
 		return contents[contents.len]
 	if(reagents.total_volume)
 		for(var/datum/reagent/R in reagents.reagent_list)
-			if(R.GetComponent(/datum/component/pressable))
+			if(SEND_SIGNAL(R, COMSIG_ITEM_CAN_SQUEEZE, R.volume))
 				return R
 
 /obj/structure/press/attack_hand(mob/user)

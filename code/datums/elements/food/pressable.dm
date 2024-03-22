@@ -3,12 +3,14 @@
 	var/datum/reagent/liquid_result = null
 	///How much of this liquid do we get?
 	var/liquid_amount = 0
+	///How much volume of liquid is required
+	var/min_liquid_amount = 10
 	///What atom do we get after pressing
 	var/atom_result = null
 	///How much of that do we get
 	var/atom_amount = 0
 
-/datum/component/pressable/Initialize(liquid_result=null, liquid_amount=10, atom_result=null, atom_amount=1)
+/datum/component/pressable/Initialize(liquid_result=null, liquid_amount=10, min_liquid_amount=10, atom_result=null, atom_amount=1)
 
 	src.liquid_result = liquid_result
 	src.liquid_amount = liquid_amount
@@ -16,6 +18,15 @@
 	src.atom_amount = atom_amount
 
 	RegisterSignal(parent, COSMIG_ITEM_SQUEEZED, PROC_REF(squeeze))
+	RegisterSignal(parent, COMSIG_ITEM_CAN_SQUEEZE, PROC_REF(can_press))
+
+/datum/component/pressable/proc/can_press(datum/target, amount=1)
+	SIGNAL_HANDLER
+	if(amount == 1 && isitem(target))
+		return TRUE
+	if(amount < min_liquid_amount)
+		return FALSE
+	return TRUE
 
 /datum/component/pressable/proc/squeeze(obj/item/growable/G, obj/structure/press/P, amt_types = 1)
 	SIGNAL_HANDLER
@@ -28,9 +39,9 @@
 		var/turf/T = get_turf(P)
 		for(var/i in 1 to atom_amount)
 			var/atom/movable/A = new atom_result(T)
-			A.forceMove()
+			A.forceMove(T)
 	if(isitem(parent))
 		qdel(parent)
 	else//reagent
 		var/datum/reagent/R = parent
-		P.reagents.remove_reagent(R.type, R.volume)
+		P.reagents.remove_reagent(R.type, min_liquid_amount)
