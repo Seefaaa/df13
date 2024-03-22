@@ -32,9 +32,9 @@
 /obj/structure/smelter/examine(mob/user)
 	. = ..()
 	if(contents.len)
-		. += "<br> \The [src] is smelting \a [contents[1]]."
+		. += "<br>\The [src] is smelting \a [contents[1]]."
 	else
-		. += "<br> \The [src] is empty!"
+		. += "<br>\The [src] is empty!"
 
 /obj/structure/smelter/update_icon_state()
 	. = ..()
@@ -73,6 +73,7 @@
 		var/obj/O = new S.refined_type(src)
 		if(S.materials)
 			O.apply_material(S.materials)
+		O.update_stats()
 	else if(I.get_temperature())
 		if(!fuel)
 			to_chat(user, span_warning("[src] has no fuel."))
