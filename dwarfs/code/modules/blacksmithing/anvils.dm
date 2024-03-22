@@ -26,13 +26,32 @@
 	. = ..()
 	if(.)
 		return .
-	if(!usr.is_holding_item_of_type(/obj/item/smithing_hammer)||!(usr in view(1, src)))
+	if(!usr.is_holding_tool(TOOL_SMITHING_HAMMER)||!(usr in view(1, src)))
+		usr<<browse(null, "window=Anvil")
+		return
+	var/obj/item/hammer = usr.is_holding_tool(TOOL_SMITHING_HAMMER)
+	if(!current_ingot)
+		to_chat(usr, span_warning("[src] doesn't have an ingot!"))
+		usr<<browse(null, "window=Anvil")
+		update_appearance()
+		return
+	if(current_ingot.heattemp <= 0)
+		to_chat(usr, span_warning("\The [current_ingot] is to cold too keep working."))
+		usr<<browse(null, "window=Anvil")
+		update_appearance()
+		return
+	if(current_ingot.hardness > hardness+1)
+		to_chat(usr, span_warning("\The [src] is too soft to work on [current_ingot]."))
+		usr<<browse(null, "window=Anvil")
+		return
+	if(current_ingot.hardness > hammer.hardness+1)
+		to_chat(usr, span_warning("\The [hammer] is too soft to work on [current_ingot]."))
 		usr<<browse(null, "window=Anvil")
 		return
 	if(href_list["hit"])
-		hit(usr)
+		hit(usr, hammer)
 	if(href_list["miss"])
-		miss(usr)
+		miss(usr, hammer)
 	if(href_list["switch_tab"])
 		var/selected_tab = href_list["switch_tab"]
 		var/i = SSmaterials.smithing_recipes.Find(selected_tab)
@@ -56,17 +75,7 @@
 		playsound(src, 'dwarfs/sounds/tools/anvil/anvil_hit.ogg', 70, TRUE)
 		to_chat(usr, span_notice("You begin to forge..."))
 
-/obj/structure/anvil/proc/hit(mob/user)
-	if(!current_ingot)
-		to_chat(user, span_warning("[src] doesn't have an ingot!"))
-		usr<<browse(null, "window=Anvil")
-		update_appearance()
-		return
-	if(current_ingot.heattemp <= 0)
-		update_appearance()
-		to_chat(user, span_warning("\The [current_ingot] is to cold too keep working."))
-		usr<<browse(null, "window=Anvil")
-		return
+/obj/structure/anvil/proc/hit(mob/user, obj/item/hammer)
 	var/mob/living/carbon/human/H = user
 	if(current_ingot.progress_current == current_ingot.progress_need)
 		current_ingot.progress_current++
@@ -82,17 +91,7 @@
 		H.adjustStaminaLoss(rand(0, max_stam_loss))
 		H.adjust_experience(/datum/skill/smithing, rand(1, 4) * current_ingot.grade)
 
-/obj/structure/anvil/proc/miss(mob/user)
-	if(!current_ingot)
-		to_chat(user, span_warning("[src] doesn't have an ingot!"))
-		usr<<browse(null, "window=Anvil")
-		update_appearance()
-		return
-	if(current_ingot.heattemp <= 0)
-		update_appearance()
-		to_chat(user, span_warning("\The [current_ingot] is to cold too keep working."))
-		usr<<browse(null, "window=Anvil")
-		return
+/obj/structure/anvil/proc/miss(mob/user, obj/item/hammer)
 	current_ingot.durability--
 	if(current_ingot.durability == 0)
 		to_chat(user, span_warning("the ingot crumbles into countless metal pieces..."))
@@ -124,7 +123,7 @@
 
 	var/mob/living/carbon/human/H = user
 
-	if(istype(I, /obj/item/smithing_hammer))
+	if(I.tool_behaviour == TOOL_SMITHING_HAMMER)
 		var/obj/item/smithing_hammer/hammer = I
 		if(current_ingot)
 			if(current_ingot.heattemp <= 0)

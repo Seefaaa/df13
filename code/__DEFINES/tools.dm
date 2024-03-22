@@ -9,6 +9,7 @@
 #define TOOL_AXE "axe"
 #define TOOL_HOE "hoe"
 #define TOOL_BUILDER_HAMMER "builder_hammer"
+#define TOOL_SMITHING_HAMMER "smithing_hammer"
 #define TOOL_RETRACTOR "retractor"
 #define TOOL_HEMOSTAT "hemostat"
 #define TOOL_CAUTERY "cautery"

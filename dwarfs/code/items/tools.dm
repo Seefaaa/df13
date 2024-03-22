@@ -91,6 +91,7 @@
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	icon_state = "smithing_hammer"
+	tool_behaviour = TOOL_SMITHING_HAMMER
 	w_class = WEIGHT_CLASS_NORMAL
 	slot_flags = ITEM_SLOT_BELT
 	force = 20
