@@ -25,6 +25,16 @@
 	UnregisterSignal(src, COSMIG_DEMIJOHN_STOP)
 	. = ..()
 
+/obj/structure/demijohn/examine(mob/user)
+	. = ..()
+	if(!reagents.total_volume)
+		. += "<br>\The [src] is empty."
+	else
+		var/list/r = list()
+		for(var/datum/reagent/R in reagents.reagent_list)
+			r += "[R.volume] [R.name]"
+		. += "<br>\The [src] contains [r.Join(", ")]"
+
 /obj/structure/demijohn/proc/remove_timer()
 	if(active_timers)
 		deltimer(timerid)
