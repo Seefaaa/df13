@@ -45,11 +45,6 @@
 	var/dynamic_hair_suffix = ""//head > mask for head hair
 	var/dynamic_fhair_suffix = ""//mask > head for facial hair
 
-	///These are armor values that protect the wearer, taken from the clothing's armor datum. List updates on examine because it's currently only used to print armor ratings to chat in Topic().
-	var/list/armor_list = list()
-	///These are armor values that protect the clothing, taken from its armor datum. List updates on examine because it's currently only used to print armor ratings to chat in Topic().
-	var/list/durability_list = list()
-
 	/// How much clothing damage has been dealt to each of the limbs of the clothing, assuming it covers more than one limb
 	var/list/damage_by_parts
 	/// How much integrity is in a specific limb before that limb is disabled (for use in [/obj/item/clothing/proc/take_damage_zone], and only if we cover multiple zones.) Set to 0 to disable shredding.
@@ -262,54 +257,31 @@
 		how_cool_are_your_threads += "</span>"
 		. += how_cool_are_your_threads.Join()
 
-/* Disable the ability to know clothing stats for now, will be tied to a skill later
-	if(LAZYLEN(armor_list))
-		armor_list.Cut()
-	if(armor.bio)
-		armor_list += list("TOXIN" = armor.bio)
-	if(armor.bomb)
-		armor_list += list("EXPLOSIVE" = armor.bomb)
-	if(armor.bullet)
-		armor_list += list("BULLET" = armor.bullet)
-	if(armor.energy)
-		armor_list += list("ENERGY" = armor.energy)
-	if(armor.laser)
-		armor_list += list("LASER" = armor.laser)
-	if(armor.magic)
-		armor_list += list("MAGIC" = armor.magic)
-	if(armor.melee)
-		armor_list += list("MELEE" = armor.melee)
-
-	if(LAZYLEN(durability_list))
-		durability_list.Cut()
-	if(armor.fire)
-		durability_list += list("FIRE" = armor.fire)
-	if(armor.acid)
-		durability_list += list("ACID" = armor.acid)
-
-	if(LAZYLEN(armor_list) || LAZYLEN(durability_list))
-		. += "<hr><span class='notice'>There is a <a href='?src=[REF(src)];list_armor=1'>label</a> with armor protective properties.</span>"
-
-*/
-
-/obj/item/clothing/Topic(href, href_list) // currently unused
+/obj/item/clothing/examine_more(mob/user)
 	. = ..()
 
-	if(href_list["list_armor"])
-		var/list/readout = list("<table class='examine_block'><tr><td><span class='notice'><u><b>PROTECTIVE LEVELS (I-X)</u></b></span></td></tr>")
-		if(LAZYLEN(armor_list))
-			readout += "<tr><td><b>ARMOR:</b></td></tr>"
-			for(var/dam_type in armor_list)
-				var/armor_amount = armor_list[dam_type]
-				readout += "<tr><td>\t[dam_type]</td><td>[armor_to_protection_class(armor_amount)]</td></tr>" //e.g. BOMB IV
-		if(LAZYLEN(durability_list))
-			readout += "<tr><td><b>DURABILITY:</b></td></tr>"
-			for(var/dam_type in durability_list)
-				var/durability_amount = durability_list[dam_type]
-				readout += "<tr><td>\t[dam_type]</td><td>[armor_to_protection_class(durability_amount)]</td></tr>" //e.g. FIRE II
-		readout += "</span></table>"
+	// re-check if conditions are met
+	if(get_dist(user, src) > 3 && !isobserver(user))
+		return // the getting closer message is already in ..()
 
-		to_chat(usr, "[readout.Join()]")
+	if(user.get_skill_level(/datum/skill/smithing) < 3)
+		return
+
+	var/list/armor_list = list()
+
+	armor_list += list("Sharp" = armor.sharp)
+	armor_list += list("Piercing" = armor.pierce)
+	armor_list += list("Bludgeoning" = armor.blunt)
+	armor_list += list("Magic" = armor.magic)
+	armor_list += list("Wound" = armor.wound)
+	armor_list += list("Fire" = armor.fire)
+	armor_list += list("Acid" = armor.acid)
+
+	var/list/readout = list("<br><b>Protective levels (0-X):</b>")
+	for(var/dam_type in armor_list)
+		var/armor_amount = armor_list[dam_type]
+		readout += "<br>\t[dam_type] – [armor_to_protection_class(armor_amount)]"
+	. += readout
 
 /**
  * Rounds armor_value to nearest 10, divides it by 10 and then expresses it in roman numerals up to 10
@@ -322,6 +294,8 @@
 /obj/item/clothing/proc/armor_to_protection_class(armor_value)
 	armor_value = round(armor_value,10) / 10
 	switch (armor_value)
+		if(0)
+			. = "0"
 		if (1)
 			. = "I"
 		if (2)

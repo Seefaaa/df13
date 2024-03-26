@@ -425,10 +425,12 @@
  * [this byond forum post](https://secure.byond.com/forum/?post=1326139&page=2#comment8198716)
  * for why this isn't atom/verb/examine()
  */
-/mob/verb/examinate(atom/A as mob|obj|turf in view()) //It used to be oview(12), but I can't really say why
+/mob/verb/_examinate(atom/A as mob|obj|turf in view()) //It used to be oview(12), but I can't really say why
 	set name = "Examine"
 	set category = null
+	examinate(A)
 
+/mob/proc/examinate(atom/A, force_examine_more=FALSE)
 	if(isturf(A) && !(sight & SEE_TURFS) && !(A in view(client ? client.view : world.view, src)))
 		// shift-click catcher may issue examinate() calls for out-of-sight turfs
 		return
@@ -440,14 +442,17 @@
 	var/list/result
 	if(client)
 		LAZYINITLIST(client.recent_examines)
-		if(isnull(client.recent_examines[A]) || client.recent_examines[A] < world.time)
+		if((isnull(client.recent_examines[A]) || client.recent_examines[A] < world.time) && !force_examine_more)
 			result = A.examine(src)
+			result += "<br><i><a href='?src=[REF(A)];examine_more=1'>Click for closer inspection.</a></i>"
 			client.recent_examines[A] = world.time + EXAMINE_MORE_TIME // set the value to when the examine cooldown ends
 			RegisterSignal(A, COMSIG_PARENT_QDELETING, PROC_REF(clear_from_recent_examines), override=TRUE) // to flush the value if deleted early
 			addtimer(CALLBACK(src, PROC_REF(clear_from_recent_examines), A), EXAMINE_MORE_TIME)
 			handle_eye_contact(A)
 		else
 			result = A.examine_more(src)
+			if(!LAZYLEN(result)) // lol ..length
+				result = list(span_notice("<i>You examine <b>[A]</b> closer, but find nothing of interest...</i>"))
 	else
 		result = A.examine(src) // if a tree is examined but no client is there to see it, did the tree ever really exist?
 

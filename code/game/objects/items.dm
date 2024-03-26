@@ -1072,3 +1072,49 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 		actions.Add(action)
 	else
 		actions = list(action)
+
+/// Stats to examine for players to know which shovel should be better to fight with.
+/obj/item/examine_more(mob/user)
+	. = ..()
+
+	if(get_dist(user, src) > 3 && !isobserver(user))
+		. += span_italics("<font color='grey'>You need to be closer to analyze [src]...</font>")
+		return
+
+	var/w_atcktype = "magical"
+	var/w_pentr = armor_penetration.GetRating(atck_type)
+
+	switch(atck_type)
+		if(BLUNT)
+			w_atcktype = "bludgeoning"
+		if(PIERCE)
+			w_atcktype = "piercing"
+		if(SHARP)
+			w_atcktype = "slashing"
+
+	. += "It's [statnumber_to_adj(force)] at [w_atcktype].<br>"
+	. += "It's [statnumber_to_adj(w_pentr)] at penetrating armor."
+
+/// Basicly number to quality. Used in /obj/item/examine_more.
+/obj/item/proc/statnumber_to_adj(stat)
+	switch(stat)
+		if(0 to 0)
+			return "useless"
+		if(0 to 5)
+			return "miserable"
+		if(5 to 10)
+			return "poor"
+		if(10 to 15)
+			return "decent"
+		if(15 to 20)
+			return "fine"
+		if(20 to 25)
+			return "superior"
+		if(25 to 30)
+			return "exceptional"
+		if(30 to 35)
+			return "masterful"
+		if(35 to INFINITY)
+			return "terrifying"
+		else
+			return "strange"

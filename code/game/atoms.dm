@@ -576,8 +576,6 @@
 /atom/proc/examine_more(mob/user)
 	. = list()
 	SEND_SIGNAL(src, COMSIG_PARENT_EXAMINE_MORE, user, .)
-	if(!LAZYLEN(.)) // lol ..length
-		return list(span_notice("<i>You examine <b>[src]</b> closer, but find nothing of interest...</i>"))
 
 /**
  * Updates the appearence of the icon
@@ -1597,6 +1595,8 @@
 		var/mouseparams = list2params(paramslist)
 		usr_client.Click(src, loc, null, mouseparams)
 		return TRUE
+	if(href_list["examine_more"])
+		usr.examinate(src, TRUE)
 
 /**
  * Recursive getter method to return a list of all ghosts orbitting this atom

@@ -889,3 +889,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		body.stop_sound_channel(CHANNEL_LOBBYMUSIC)
 		body = null
 		qdel(src)
+
+//to let observers pass all skill checks there might be (e.g. in examines)
+/mob/dead/observer/get_skill_level(skill)
+	return 11
