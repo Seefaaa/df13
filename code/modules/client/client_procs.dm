@@ -327,6 +327,22 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 	// send statbrowser assets before we show it
 	// very hacky but sending via asset transport doesn't work on first join
+	src << load_resource(
+		'html/statbrowser/status.png',
+		'html/statbrowser/ic.png',
+		'html/statbrowser/ooc.png',
+		'html/statbrowser/cog.png',
+		'html/statbrowser/obj.png',
+		'html/statbrowser/other.png',
+		'html/statbrowser/ghost.png',
+		'html/statbrowser/admin.png',
+		'html/statbrowser/debug.png',
+		'html/statbrowser/mc.png',
+		'html/statbrowser/tickets.png',
+		'html/statbrowser/mc.png',
+		'html/statbrowser/magic.png',
+		'html/statbrowser/other.png',
+		-1)
 	src << browse_rsc('html/statbrowser/status.png', "statbrowser-status.png")
 	src << browse_rsc('html/statbrowser/ic.png', "statbrowser-ic.png")
 	src << browse_rsc('html/statbrowser/ooc.png', "statbrowser-ooc.png")
