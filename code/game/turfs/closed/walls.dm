@@ -23,6 +23,9 @@
 
 	var/list/dent_decals
 
+	/// a list of tool behaviors and respective time how long will it take to mine src with said tool
+	var/list/digging_tools = null
+
 
 /turf/closed/wall/Initialize(mapload)
 	. = ..()
@@ -93,6 +96,21 @@
 		playsound(src, 'sound/effects/meteorimpact.ogg', 100, TRUE)
 		dismantle_wall(1)
 		return
+
+/turf/closed/wall/attackby(obj/item/C, mob/user, params)
+	if(digging_tools && (C.tool_behaviour in digging_tools))
+		try_mine(C, user)
+		return
+	. = ..()
+
+/turf/closed/wall/proc/try_mine(obj/item/I, mob/user)
+	var/dig_time = digging_tools[I.tool_behaviour]
+	to_chat(user, span_notice("You start mining [src]..."))
+	if(I.use_tool(src, user, dig_time, volume=50))
+		mine(user)
+
+/turf/closed/wall/proc/mine(mob/user)
+	ScrapeAway()
 
 /turf/closed/wall/proc/try_clean(obj/item/W, mob/user, turf/T)
 	if((user.a_intent != INTENT_HELP) || !LAZYLEN(dent_decals))

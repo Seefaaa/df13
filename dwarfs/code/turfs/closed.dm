@@ -41,6 +41,7 @@
 	sheet_type = /obj/item/stack/sheet/planks
 	materials = /datum/material/wood/pine/treated
 	debris_type = /obj/structure/debris/wood/large
+	digging_tools = list(TOOL_AXE=15 SECONDS)
 
 /turf/closed/wall/wooden/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
@@ -56,6 +57,7 @@
 	sheet_amount = 3
 	floor_type = /turf/open/floor/tiles
 	debris_type = /obj/structure/debris/brick/large
+	digging_tools = list(TOOL_PICKAXE=15 SECONDS)
 
 /turf/closed/wall/stone/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
