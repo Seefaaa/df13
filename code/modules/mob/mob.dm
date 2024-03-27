@@ -757,6 +757,7 @@
  * * handles the strip panel equip and unequip as well if "item" sent
  */
 /mob/Topic(href, href_list)
+	..()
 	var/mob/user = usr
 
 	if(href_list["mach_close"])
