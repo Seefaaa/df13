@@ -153,7 +153,7 @@
 	to_chat(user, span_danger("You try to remove [source]'s [item]..."))
 	user.log_message("[key_name(source)] is being stripped of [item] by [key_name(user)]", LOG_ATTACK, color="red")
 	source.log_message("[key_name(source)] is being stripped of [item] by [key_name(user)]", LOG_ATTACK, color="red", log_globally=FALSE)
-	item.add_fingerprint(src)
+	item.add_fingerprint(user)
 
 	/*
 	if(ishuman(source))
