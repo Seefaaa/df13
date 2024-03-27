@@ -444,7 +444,9 @@
 		LAZYINITLIST(client.recent_examines)
 		if((isnull(client.recent_examines[A]) || client.recent_examines[A] < world.time) && !force_examine_more)
 			result = A.examine(src)
-			result += "<br><i><a href='?src=[REF(A)];examine_more=1'>Click for closer inspection.</a></i>"
+			// very hacky but we don't want to show this in every examine
+			if(LAZYLEN(A.examine_more(src)))
+				result += "<br><i><a href='?src=[REF(A)];examine_more=1'>Click for closer inspection.</a></i>"
 			client.recent_examines[A] = world.time + EXAMINE_MORE_TIME // set the value to when the examine cooldown ends
 			RegisterSignal(A, COMSIG_PARENT_QDELETING, PROC_REF(clear_from_recent_examines), override=TRUE) // to flush the value if deleted early
 			addtimer(CALLBACK(src, PROC_REF(clear_from_recent_examines), A), EXAMINE_MORE_TIME)
