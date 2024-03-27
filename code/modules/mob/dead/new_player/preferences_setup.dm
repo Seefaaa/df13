@@ -63,6 +63,7 @@
 	// Set up the dummy for its photoshoot
 	var/mob/living/carbon/human/dummy/mannequin = generate_or_wait_for_human_dummy(DUMMY_HUMAN_SLOT_PREFERENCES)
 	copy_to(mannequin, 1, TRUE, TRUE)
+	mannequin.add_overlay(mutable_appearance('dwarfs/icons/turf/floors.dmi', "tiles_stone", -FLOAT_LAYER))
 
 	COMPILE_OVERLAYS(mannequin)
 	mannequin.appearance_flags &= ~KEEP_TOGETHER
