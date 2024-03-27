@@ -19,7 +19,8 @@
 	intact = TRUE
 	tiled_dirt = TRUE
 
-	var/list/digging_tools = list()
+	/// a list of tool behaviors and respective time how long will it take to mine src with said tool
+	var/list/digging_tools = null
 
 	var/broken = FALSE
 	var/burnt = FALSE
@@ -171,7 +172,7 @@
 	if(.)
 		return .
 
-	if(I.tool_behaviour in digging_tools)
+	if(digging_tools && (I.tool_behaviour in digging_tools))
 		try_digdown(I, user)
 		return
 	if(user.a_intent == INTENT_HARM && istype(I, /obj/item/stack/sheet))
