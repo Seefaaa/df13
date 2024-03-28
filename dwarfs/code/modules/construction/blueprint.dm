@@ -177,7 +177,7 @@
 			break
 		if(!added)
 			var/obj/O = new S.type(src, to_use)
-			O.materials = S.materials
+			O.apply_material(S.materials)
 	else
 		I.forceMove(src)
 	to_chat(user, span_notice("You add [I] to [src]."))
