@@ -18,6 +18,8 @@
 	var/list/dimensions = list(0,0)
 	///Blueprint category displayed in the ui
 	var/cat = BLUEPRINT_CAT_MISC
+	///How much exp the blueprint will award
+	var/build_exp
 
 /obj/structure/blueprint/Initialize()
 	. = ..()
@@ -51,7 +53,7 @@
 		var/speed_mod = user.get_skill_modifier(/datum/skill/construction, SKILL_SPEED_MODIFIER)
 		if(I.use_tool(src, user, build_time * speed_mod, volume=50))
 			to_chat(user, span_notice("You build [initial(target_structure.name)]."))
-			user.adjust_experience(/datum/skill/construction, rand(10, 50))
+			user.adjust_experience(/datum/skill/construction, rand((build_exp*0.9), (build_exp*1.1)))
 			var/turf/spawn_turf = get_turf(src)
 			target_structure = get_target_structure()
 			var/list/_materials = list()
@@ -264,6 +266,7 @@
 	target_structure = /obj/structure/brewery/spawner
 	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/stack/sheet/stone=4 ,/obj/item/ingot=4)
 	cat = BLUEPRINT_CAT_FOOD_PROCESSING
+	build_exp = 175
 
 /obj/structure/blueprint/large/brewery/spawn_structure(turf/spawn_turf, list/_materials)
 	var/turf/T = locate(x+1, y, z)
@@ -279,66 +282,77 @@
 	target_structure = /obj/structure/crafter/workbench
 	reqs = list(/obj/item/stack/sheet/planks=10, /obj/item/ingot=2)
 	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
+	build_exp = 135
 
 /obj/structure/blueprint/large/carpenters_table
 	name = "carpenter's table"
 	target_structure = /obj/structure/crafter/carpenter_table
 	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/ingot=1)
 	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
+	build_exp = 100
 
 /obj/structure/blueprint/stove
 	name = "stove blueprint"
 	target_structure = /obj/structure/stove
 	reqs = list(/obj/item/stack/sheet/stone=10, /obj/item/ingot=1)
 	cat = BLUEPRINT_CAT_FOOD_PROCESSING
+	build_exp = 125
 
 /obj/structure/blueprint/oven
 	name = "oven blueprint"
 	target_structure = /obj/structure/oven
 	reqs = list(/obj/item/stack/sheet/stone=15, /obj/item/ingot=1)
 	cat = BLUEPRINT_CAT_FOOD_PROCESSING
+	build_exp = 165
 
 /obj/structure/blueprint/smelter
 	name = "smelter blueprint"
 	target_structure = /obj/structure/smelter
 	reqs = list(/obj/item/stack/sheet/stone=15)
 	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
+	build_exp = 150
 
 /obj/structure/blueprint/forge
 	name = "forge blueprint"
 	target_structure = /obj/structure/forge
 	reqs = list(/obj/item/stack/sheet/stone=20)
 	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
+	build_exp = 175
 
 /obj/structure/blueprint/quern
 	name = "quern blueprint"
 	target_structure = /obj/structure/quern
 	reqs = list(/obj/item/stack/sheet/stone=8, /obj/item/stack/sheet/planks=2)
 	cat = BLUEPRINT_CAT_FOOD_PROCESSING
+	build_exp = 110
 
 /obj/structure/blueprint/well
 	name = "well blueprint"
 	target_structure = /obj/structure/well
 	reqs = list(/obj/item/stack/sheet/stone=10, /obj/item/stack/sheet/planks=4, /obj/item/ingot=1, /obj/item/stack/sheet/string=5)
 	cat = BLUEPRINT_CAT_UTILS
+	build_exp = 200
 
 /obj/structure/blueprint/anvil
 	name = "anvil blueprint"
 	target_structure = /obj/structure/anvil
 	reqs = list(/obj/item/ingot=5)
 	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
+	build_exp = 100
 
 /obj/structure/blueprint/barrel
 	name = "barrel blueprint"
 	target_structure = /obj/structure/barrel
 	reqs = list(/obj/item/ingot=1, /obj/item/stack/sheet/planks=6)
 	cat = BLUEPRINT_CAT_UTILS
+	build_exp = 95
 
 /obj/structure/blueprint/gemcutter
 	name = "gemstone grinder blueprint"
 	target_structure = /obj/structure/gemcutter
 	reqs = list(/obj/item/ingot=1, /obj/item/stack/sheet/planks=6, /obj/item/stack/glass=1)
 	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
+	build_exp = 90
 
 /obj/structure/blueprint/altar
 	name = "altar blueprint"
@@ -346,24 +360,28 @@
 	reqs = list(/obj/item/stack/sheet/stone=25, /obj/item/flashlight/fueled/candle=6)
 	req_materials = list(/obj/item/stack/sheet/stone=/datum/material/stone)
 	cat = BLUEPRINT_CAT_DECORATION
+	build_exp = 325
 
 /obj/structure/blueprint/loom
 	name = "loom blueprint"
 	target_structure = /obj/structure/loom
 	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/ingot=1)
 	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
+	build_exp = 165
 
 /obj/structure/blueprint/press
 	name = "press"
 	target_structure = /obj/structure/press
 	reqs = list(/obj/item/stack/sheet/planks=10, /obj/item/ingot=1)
 	cat = BLUEPRINT_CAT_FOOD_PROCESSING
+	build_exp = 200
 
 /obj/structure/blueprint/dryer
 	name = "tanning rack"
 	target_structure = /obj/structure/tanning_rack
 	reqs = list(/obj/item/stack/sheet/planks=7)
 	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
+	build_exp = 120
 
 /obj/structure/blueprint/throne
 	name = "stone throne"
@@ -371,36 +389,42 @@
 	reqs = list(/obj/item/ingot=2, /obj/item/stack/sheet/stone=15, /obj/item/stack/sheet/mineral/gem/diamond=3)
 	req_materials = list(/obj/item/ingot=/datum/material/gold, /obj/item/stack/sheet/stone=/datum/material/stone)
 	cat = BLUEPRINT_CAT_DECORATION
+	build_exp = 550
 
 /obj/structure/blueprint/stone_chair
 	name = "stone chair"
 	target_structure = /obj/structure/chair/stone
 	reqs = list(/obj/item/stack/sheet/stone=5)
 	cat = BLUEPRINT_CAT_DECORATION
+	build_exp = 75
 
 /obj/structure/blueprint/wood_chair
 	name = "wooden chair"
 	target_structure = /obj/structure/chair/wood
 	reqs = list(/obj/item/stack/sheet/planks=5)
 	cat = BLUEPRINT_CAT_DECORATION
+	build_exp = 75
 
 /obj/structure/blueprint/wood_table
 	name = "wooden table"
 	target_structure = /obj/structure/table/wood
 	reqs = list(/obj/item/stack/sheet/planks=6)
 	cat = BLUEPRINT_CAT_DECORATION
+	build_exp = 90
 
 /obj/structure/blueprint/stone_table
 	name = "stone table"
 	target_structure = /obj/structure/table/stone
 	reqs = list(/obj/item/stack/sheet/stone=6)
 	cat = BLUEPRINT_CAT_DECORATION
+	build_exp = 90
 
 /obj/structure/blueprint/floor
 	name = "floor"
 	cat = BLUEPRINT_CAT_CONSTRUCTION
 	var/material_required = 1
 	var/material_type
+	build_exp = 15
 
 /obj/structure/blueprint/floor/tiles
 	name = "tile floor"
@@ -490,6 +514,7 @@
 	cat = BLUEPRINT_CAT_CONSTRUCTION
 	var/material_required = 4
 	var/material_type
+	build_exp = 35
 
 /obj/structure/blueprint/wall/req_examine()
 	. = ..()
@@ -539,54 +564,63 @@
 	target_structure = /obj/structure/mineral_door/material
 	reqs = list(list(PART_PLANKS, PART_STONE)=3, PART_INGOT=1)
 	cat = BLUEPRINT_CAT_CONSTRUCTION
+	build_exp = 75
 
 /obj/structure/blueprint/stairs
 	name = "stairs"
 	target_structure = /obj/structure/stairs
 	reqs = list(/obj/item/stack/sheet/stone=3)
 	cat = BLUEPRINT_CAT_CONSTRUCTION
+	build_exp = 45
 
 /obj/structure/blueprint/sign
 	name = "sign"
 	target_structure = /obj/structure/sign
 	cat = BLUEPRINT_CAT_DECORATION
 	reqs = list(PART_ANY=3)
+	build_exp = 45
 
 /obj/structure/blueprint/sarcophagus
 	name = "sarcophagus"
 	target_structure = /obj/structure/closet/crate/sarcophagus
 	reqs = list(/obj/item/stack/sheet/stone=5)
 	cat = BLUEPRINT_CAT_DECORATION
+	build_exp = 55
 
 /obj/structure/blueprint/sapling_pot
 	name = "pot"
 	target_structure = /obj/structure/sapling_pot
 	reqs = list(/obj/item/stack/sheet/stone=5)
 	cat = BLUEPRINT_CAT_UTILS
+	build_exp = 55
 
 /obj/structure/blueprint/bed
 	name = "bed"
 	target_structure = /obj/structure/bed
 	reqs = list(/obj/item/stack/sheet/planks=8)
 	cat = BLUEPRINT_CAT_DECORATION
+	build_exp = 85
 
 /obj/structure/blueprint/crate
 	name = "wooden crate"
 	target_structure = /obj/structure/closet/crate/wooden
 	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/ingot=1)
 	cat = BLUEPRINT_CAT_UTILS
+	build_exp = 100
 
 /obj/structure/blueprint/demijohn
 	name = "demijohn"
 	target_structure = /obj/structure/demijohn
 	reqs = list(/obj/item/stack/glass=6, /obj/item/stack/sheet/planks=2)
 	cat = BLUEPRINT_CAT_FOOD_PROCESSING
+	build_exp = 45
 
 /obj/structure/blueprint/beacon
 	name = "beacon"
 	target_structure = /obj/structure/beacon
 	reqs = list(/obj/item/partial/magnet_core=1, PART_PLANKS=5)
 	cat = BLUEPRINT_CAT_UTILS
+	build_exp = 350
 
 /obj/structure/blueprint/beacon/on_built(obj/structure/res)
 	var/obj/item/core = (locate(/obj/item/partial/magnet_core) in contents)
@@ -599,9 +633,11 @@
 	target_structure = /obj/structure/alloy_smelter
 	reqs = list(PART_INGOT=2, /obj/item/stack/sheet/stone=20)
 	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
+	build_exp = 240
 
 /obj/structure/blueprint/tailor_table
 	name = "tailor's table"
 	target_structure = /obj/structure/crafter/tailor_table
 	reqs = list(PART_PLANKS=8, PART_INGOT=1)
 	cat = BLUEPRINT_CAT_CRAFTSMANSHIP
+	build_exp = 100
