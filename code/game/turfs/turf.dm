@@ -602,6 +602,8 @@ GLOBAL_LIST_EMPTY(station_turfs)
 			next -= T
 			for(var/direction in GLOB.cardinals)
 				var/turf/N = get_step(T, direction)
+				if(!N)
+					continue
 				if((N.flags_cavein & CAVEIN_IGNORE) || (N.flags_cavein & CAVEIN_QUEUED))
 					continue
 				if((N in next) || (N in connected))
