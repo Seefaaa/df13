@@ -44,6 +44,14 @@
 		I.forceMove(get_turf(src))
 	. = ..()
 
+/obj/structure/blueprint/attack_hand(mob/user)
+	if(user.a_intent == INTENT_HARM && (obj_flags & CAN_BE_HIT))
+		user.do_attack_animation(src)
+		play_attack_sound(1)
+		user.changeNext_move(CLICK_CD_MELEE)
+		qdel(src)
+	return ..()
+
 /obj/structure/blueprint/attackby(obj/item/I, mob/user, params)
 	if(user.a_intent == INTENT_HARM)
 		return ..()

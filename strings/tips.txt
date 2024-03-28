@@ -17,3 +17,4 @@ Being alone in the mine is dangerous, try to bring a friend along so you can kee
 The change of hitting a target with an weapon depends on the level you are in that weapon class.
 You can reforge iron bars to make them of higher quality, if you miss too much during the minigame the bar will dissapear. Misses carry over to the next stage.
 Spider bite's inject a potent venom. Do not fight them alone!
+You can climb down by clicking on an open space with empty hands and climb back up by clicking on a wall with empty hands.

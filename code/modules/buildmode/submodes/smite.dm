@@ -15,11 +15,13 @@
 /datum/buildmode_mode/smite/change_settings(client/user)
 	var/punishment = input(user, "Choose a punishment", "DIVINE SMITING") as null|anything in GLOB.smites
 	var/smite_path = GLOB.smites[punishment]
-	var/datum/smite/picking_smite = new smite_path
-	var/configuration_success = picking_smite.configure(user)
-	if (configuration_success == FALSE)
-		return
-	selected_smite = picking_smite
+	if(smite_path != null)
+		var/datum/smite/picking_smite = new smite_path
+		var/configuration_success = picking_smite.configure(user)
+		if (configuration_success == FALSE)
+			return
+		selected_smite = picking_smite
+	return FALSE
 
 /datum/buildmode_mode/smite/handle_click(client/user, params_string, object)
 	var/list/params = params2list(params_string)

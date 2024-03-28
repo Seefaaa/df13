@@ -65,7 +65,7 @@
 		if(last_act + time > world.time)//prevents message spam
 			return
 		last_act = world.time
-		to_chat(user, span_notice("You start picking..."))
+		to_chat(user, span_notice("You start picking [src]..."))
 
 		if(I.use_tool(src, user, time, volume=50))
 			if(ismineralturf(src))
@@ -86,7 +86,8 @@
 
 /turf/closed/mineral/attackby_secondary(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_PICKAXE)
-		var/time = 3 SECONDS * user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
+		var/hardness_mod = hardness / I.hardness
+		var/time = 3 SECONDS * user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) * hardness_mod
 		if(last_act + time > world.time)//prevents message spam
 			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 		last_act = world.time

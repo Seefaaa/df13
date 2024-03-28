@@ -52,7 +52,8 @@
 	if(I.tool_behaviour == TOOL_PICKAXE)
 		user.visible_message(span_notice("[user] starts deconstructing [src]."), span_notice("You start deconstructing [src]."))
 		if(I.use_tool(src, user, 5 SECONDS))
-			new /obj/item/stack/sheet/stone(get_turf(src), 2)
+			var/obj/item/stack/sheet/O = new /obj/item/stack/sheet/stone(get_turf(src), 2)
+			O.apply_material(materials)
 			qdel(src)
 			user.visible_message(span_notice("[user] deconstruct [src]."), span_notice("You deconstruct [src]."))
 
@@ -109,20 +110,24 @@
 			if(ishuman(climber))
 				var/mob/living/carbon/human/H = climber
 				var/obj/item/tool = H.is_holding_tool(TOOL_PICKAXE)
+				var/hardness_mod = hardness / tool.hardness
+				var/time = 3 SECONDS * H.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) * hardness_mod
 				if(!tool)
 					return
 				to_chat(climber, span_notice("You start mining your way up..."))
-				if(tool.use_tool(H, H, 10 SECONDS))
+				if(tool.use_tool(H, H, time))
 					var/turf/closed/mineral/M = checking
 					M.gets_drilled(H, TRUE)
 		else if(isfloorturf(checking))
 			if(ishuman(climber))
 				var/mob/living/carbon/human/H = climber
 				var/obj/item/tool = H.is_holding_tool(TOOL_PICKAXE)
+				var/hardness_mod = hardness / tool.hardness
+				var/time = 3 SECONDS * H.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) * hardness_mod
 				if(!tool)
 					return
 				to_chat(climber, span_notice("You start mining your way up..."))
-				if(tool.use_tool(H, H, 10 SECONDS))
+				if(tool.use_tool(H, H, time))
 					checking.ChangeTurf(/turf/open/openspace)
 		return
 	var/turf/target = get_step_multiz(get_turf(src), (dir|UP))
@@ -133,10 +138,12 @@
 				if(ishuman(climber))
 					var/mob/living/carbon/human/H = climber
 					var/obj/item/tool = H.is_holding_tool(TOOL_PICKAXE)
+					var/hardness_mod = hardness / tool.hardness
+					var/time = 3 SECONDS * H.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) * hardness_mod
 					if(!tool)
 						return
 					to_chat(climber, span_notice("You start mining your way up..."))
-					if(tool.use_tool(H, H, 10 SECONDS))
+					if(tool.use_tool(H, H, time))
 						M.gets_drilled(H, TRUE)
 			return
 		climber.zMove(target = target, z_move_flags = ZMOVE_STAIRS_FLAGS)
