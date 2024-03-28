@@ -580,7 +580,4 @@
 	race = /datum/species/human
 
 /mob/living/carbon/human/species/goblin/ai
-
-/mob/living/carbon/human/species/goblin/ai/Initialize()
-	. = ..()
-	ai_controller = new /datum/ai_controller/goblin(src)
+	ai_controller = /datum/ai_controller/goblin
