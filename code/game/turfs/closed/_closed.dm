@@ -50,6 +50,9 @@
 	bullet_bounce_sound = null
 	baseturfs = /turf/closed/indestructible/black
 
+/turf/closed/indestructible/black/attack_hand(mob/user)
+	return FALSE
+
 /turf/closed/indestructible/black/New()
 	return
 
