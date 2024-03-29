@@ -86,8 +86,27 @@
 			L.apply_material(materials)
 			L.setDir(pick(SOUTH, EAST))
 
+/obj/structure/plant/tree/attack_hand(mob/user)
+	if(user.a_intent == INTENT_HARM && (locate(/mob/living) in get_step(src, NORTH)) && user.CanReach(get_step(src, NORTH)))
+		var/list/possible_targets = list()
+		for(var/mob/living/L in get_step(src, NORTH))
+			possible_targets += L
+		var/mob/selected_target = pick(possible_targets)
+		//UnarmedAttack doesn't check for next_move
+		if(user.next_move > world.time)
+			return
+		user.changeNext_move(CLICK_CD_MELEE)
+		return user.UnarmedAttack(selected_target)
+	. = ..()
+
 /obj/structure/plant/tree/attackby(obj/item/I, mob/user, params)
-	if(I.tool_behaviour == TOOL_AXE)
+	if(user.a_intent == INTENT_HARM && (locate(/mob/living) in get_step(src, NORTH)) && user.CanReach(get_step(src, NORTH), I))
+		var/list/possible_targets = list()
+		for(var/mob/living/L in get_step(src, NORTH))
+			possible_targets += L
+		var/mob/selected_target = pick(possible_targets)
+		return I.melee_attack_chain(user, selected_target, params)
+	else if(I.tool_behaviour == TOOL_AXE)
 		try_chop(I, user)
 	else
 		. = ..()
