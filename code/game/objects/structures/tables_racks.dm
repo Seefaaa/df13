@@ -90,7 +90,7 @@
 		user.changeNext_move(CLICK_CD_MELEE)
 		user.visible_message(span_warning("[user] smashes \the [src]!") , span_warning("You smash \the [src]!") ,
 			span_danger("You hear a loud sound."))
-		playsound(src, bashsound, 80, TRUE)
+		playsound(src, bashsound, 45, TRUE)
 		if(ishuman(user))
 			var/mob/living/carbon/human/H = user
 			if(!H.get_item_by_slot(ITEM_SLOT_GLOVES) && prob(25))
