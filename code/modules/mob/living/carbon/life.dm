@@ -106,14 +106,9 @@
 	if(IsSleeping())
 		return
 	if((NOBLOOD in dna.species.species_traits) || HAS_TRAIT(src, TRAIT_NOBLEED) || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
-		hydration = HYDRATION_LEVEL_START_MIN
+		set_hydration(HYDRATION_LEVEL_HYDRATED)
 		return
-	hydration = max(hydration-HYDRATION_LOSS_PER_SECOND*delta_time, 0)
-
-// /mob/living/carbon/human/handle_hydration(delta_time, times_fired)
-// 	if(IsSleeping())
-// 		return
-// 	nutrition = max(nutrition-NUTRITION_LOSS_PER_SECOND*delta_time, 0)
+	adjust_hydration(HYDRATION_LOSS_PER_SECOND*delta_time)
 
 /mob/living/carbon/proc/handle_bodyparts(delta_time, times_fired)
 	var/stam_regen = FALSE

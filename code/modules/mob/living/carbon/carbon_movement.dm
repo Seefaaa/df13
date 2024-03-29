@@ -10,14 +10,14 @@
 	if(. && !(movement_type & FLOATING)) //floating is easy
 		if(HAS_TRAIT(src, TRAIT_NOHUNGER))
 			set_nutrition(NUTRITION_LEVEL_ALMOST_FULL)	//just less than feeling vigorous
-			hydration = HYDRATION_LEVEL_START_MIN
+			set_hydration(HYDRATION_LEVEL_HYDRATED)
 		else if(nutrition && stat != DEAD)
 			if(m_intent == MOVE_INTENT_RUN)
 				adjust_nutrition(-NUTRITION_LOSS_PER_MOVE*1.5)
-				hydration = max(0, hydration-HYDRATION_LOSS_PER_MOVE*1.5)
+				adjust_hydration(-HYDRATION_LOSS_PER_MOVE*1.5)
 			else
 				adjust_nutrition(-NUTRITION_LOSS_PER_MOVE)
-				hydration = max(0, hydration-HYDRATION_LOSS_PER_MOVE)
+				adjust_hydration(-HYDRATION_LOSS_PER_MOVE)
 
 
 

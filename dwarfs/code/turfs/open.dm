@@ -380,7 +380,7 @@
 		to_chat(user, span_notice("You start drinking from [src]..."))
 		if(do_after(user, 5 SECONDS, src))
 			playsound(user,'sound/items/drink.ogg', rand(10,50), TRUE)
-			user.hydration = clamp(user.hydration+rand(50,90), 0, HYDRATION_LEVEL_MAX)
+			user.adjust_hydration(rand(50,90))
 			to_chat(user, span_notice("You drink from [src]."))
 
 /turf/open/water/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)

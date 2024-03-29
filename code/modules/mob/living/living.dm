@@ -1632,9 +1632,10 @@
 /// Sets the mob's hunger levels to a safe overall level. Useful for TRAIT_NOHUNGER species changes.
 /mob/living/proc/set_safe_hunger_level()
 	// Nutrition reset and alert clearing.
-	nutrition = NUTRITION_LEVEL_FED
-	hydration = HYDRATION_LEVEL_NORMAL + 15
+	set_nutrition(NUTRITION_LEVEL_FED)
+	set_hydration(HYDRATION_LEVEL_HYDRATED)
 	clear_alert("nutrition")
+	clear_alert("thirsty")
 	satiety = 0
 
 	// Trait removal if obese

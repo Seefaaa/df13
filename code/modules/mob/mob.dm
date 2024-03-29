@@ -81,7 +81,7 @@
 		var/datum/atom_hud/alternate_appearance/AA = v
 		AA.onNewMob(src)
 	set_nutrition(rand(NUTRITION_LEVEL_START_MIN, NUTRITION_LEVEL_START_MAX))
-	hydration = rand(HYDRATION_LEVEL_START_MIN, HYDRATION_LEVEL_START_MAX)
+	set_hydration(rand(HYDRATION_LEVEL_START_MIN, HYDRATION_LEVEL_START_MAX))
 	. = ..()
 	update_config_movespeed()
 	initialize_actionspeed()
@@ -1177,6 +1177,12 @@
 ///Force set the mob nutrition
 /mob/proc/set_nutrition(change) //Seriously fuck you oldcoders.
 	nutrition = max(0, change)
+
+/mob/proc/adjust_hydration(change)
+	hydration = clamp(hydration + change, 0, HYDRATION_LEVEL_MAX)
+
+/mob/proc/set_hydration(amount)
+	hydration = clamp(amount, 0, HYDRATION_LEVEL_MAX)
 
 /mob/proc/update_equipment_speed_mods()
 	var/speedies = equipped_speed_mods()
