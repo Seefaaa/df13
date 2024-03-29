@@ -1,5 +1,6 @@
 #define TOOLSPEED_MIN_VALUE 0.1
 #define MELEE_CD_MIN_VALUE 0.1
+#define SLOWDOWN_MIN_RELATIVE_VALUE -0.1
 
 /datum/material
 	/// Material name. Displayed in examine etc.
@@ -71,7 +72,7 @@
 			if(I)
 				I.toolspeed = max(I.toolspeed * toolspeed_mod_handle, TOOLSPEED_MIN_VALUE)
 				I.melee_cd = max(I.melee_cd * melee_cd_mod_handle, MELEE_CD_MIN_VALUE)
-				I.slowdown += slowdown_mod_handle
+				I.slowdown = max(I.slowdown+slowdown_mod_handle, initial(I.slowdown)+SLOWDOWN_MIN_RELATIVE_VALUE)
 		if(PART_HEAD)
 			if(O)
 				O.force *= force_mod
@@ -90,7 +91,7 @@
 					I.armor_penetration.modify_rating(MAGIC, armorpen_magic_mod)
 				I.toolspeed = max(I.toolspeed * toolspeed_mod, TOOLSPEED_MIN_VALUE)
 				I.melee_cd = max(I.melee_cd * melee_cd_mod, MELEE_CD_MIN_VALUE)
-				I.slowdown += slowdown_mod
+				I.slowdown = max(I.slowdown+slowdown_mod, initial(I.slowdown)+SLOWDOWN_MIN_RELATIVE_VALUE)
 		else
 			if(O)
 				O.force *= force_mod
@@ -109,6 +110,7 @@
 			if(I)
 				I.toolspeed = max(I.toolspeed * toolspeed_mod, TOOLSPEED_MIN_VALUE)
 				I.melee_cd = max(I.melee_cd * melee_cd_mod, MELEE_CD_MIN_VALUE)
+				I.slowdown = max(I.slowdown+slowdown_mod, initial(I.slowdown)+SLOWDOWN_MIN_RELATIVE_VALUE)
 				if(I.armor_penetration)
 					I.armor_penetration.modify_rating(SHARP, armorpen_sharp_mod)
 					I.armor_penetration.modify_rating(PIERCE, armorpen_pierce_mod)
@@ -602,3 +604,4 @@
 
 #undef TOOLSPEED_MIN_VALUE
 #undef MELEE_CD_MIN_VALUE
+#undef SLOWDOWN_MIN_RELATIVE_VALUE
