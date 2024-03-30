@@ -171,3 +171,6 @@
 	var/native_fov = FOV_90_DEGREES
 	/// Lazy list of FOV traits that will apply a FOV view when handled.
 	var/list/fov_traits
+
+	/// Cooldown for chatter for not spamming
+	var/chatter_cd
