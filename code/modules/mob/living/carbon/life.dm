@@ -108,7 +108,7 @@
 	if((NOBLOOD in dna.species.species_traits) || HAS_TRAIT(src, TRAIT_NOBLEED) || (HAS_TRAIT(src, TRAIT_FAKEDEATH)))
 		set_hydration(HYDRATION_LEVEL_HYDRATED)
 		return
-	adjust_hydration(HYDRATION_LOSS_PER_SECOND*delta_time)
+	adjust_hydration(-HYDRATION_LOSS_PER_SECOND*delta_time)
 
 /mob/living/carbon/proc/handle_bodyparts(delta_time, times_fired)
 	var/stam_regen = FALSE
