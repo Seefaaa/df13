@@ -12,9 +12,10 @@
 			set_nutrition(NUTRITION_LEVEL_ALMOST_FULL)	//just less than feeling vigorous
 			set_hydration(HYDRATION_LEVEL_HYDRATED)
 		else if(nutrition && stat != DEAD)
+			//if-else cause run consumed 1.5x as much. Leaving it here in case we want to change it back
 			if(m_intent == MOVE_INTENT_RUN)
-				adjust_nutrition(-NUTRITION_LOSS_PER_MOVE*1.5)
-				adjust_hydration(-HYDRATION_LOSS_PER_MOVE*1.5)
+				adjust_nutrition(-NUTRITION_LOSS_PER_MOVE)
+				adjust_hydration(-HYDRATION_LOSS_PER_MOVE)
 			else
 				adjust_nutrition(-NUTRITION_LOSS_PER_MOVE)
 				adjust_hydration(-HYDRATION_LOSS_PER_MOVE)
