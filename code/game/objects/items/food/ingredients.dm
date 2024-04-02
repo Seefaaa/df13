@@ -7,7 +7,7 @@
 	mood_event_type = /datum/mood_event/ate_raw_food/mild
 	mood_gain = -2
 	mood_duration = 1 MINUTES
-	food_reagents = list(/datum/reagent/consumable/nutriment=15)
+	food_reagents = list(/datum/reagent/consumable/nutriment=1)
 
 /obj/item/food/slice/meat
 	name = "meat slice"
@@ -16,7 +16,7 @@
 	mood_event_type = /datum/mood_event/ate_raw_food/meat
 	mood_gain = -5
 	mood_duration = 5 MINUTES
-	food_reagents = list(/datum/reagent/consumable/nutriment=20)
+	food_reagents = list(/datum/reagent/consumable/nutriment=2)
 
 /obj/item/food/slice/meat/troll
 	name = "troll meat slice"
@@ -35,7 +35,7 @@
 	mood_event_type = /datum/mood_event/ate_raw_food/mild
 	mood_gain = -4
 	mood_duration = 1 MINUTES
-	food_reagents = list(/datum/reagent/consumable/nutriment=20)
+	food_reagents = list(/datum/reagent/consumable/nutriment=1)
 
 /obj/item/food/dough
 	name = "dough"
@@ -44,7 +44,7 @@
 	mood_event_type = /datum/mood_event/ate_raw_food/mild
 	mood_gain = -4
 	mood_duration = 1 MINUTES
-	food_reagents = list(/datum/reagent/consumable/nutriment=20)
+	food_reagents = list(/datum/reagent/consumable/nutriment=3)
 
 /obj/item/food/flat_dough
 	name = "flat dough"
@@ -53,7 +53,7 @@
 	mood_event_type = /datum/mood_event/ate_raw_food/mild
 	mood_gain = -4
 	mood_duration = 1 MINUTES
-	food_reagents = list(/datum/reagent/consumable/nutriment=20)
+	food_reagents = list(/datum/reagent/consumable/nutriment=3)
 
 /obj/item/food/dough/MakeProcessable()
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/slice/dough, 3, 2 SECONDS)
@@ -121,7 +121,7 @@
 	mood_event_type = /datum/mood_event/ate_raw_food/meat
 	mood_gain = -5
 	mood_duration = 5 MINUTES
-	food_reagents = list(/datum/reagent/consumable/nutriment=30)
+	food_reagents = list(/datum/reagent/consumable/nutriment=5)
 	var/extra_desc = "This sausage is made for beer wurst."
 
 /obj/item/food/sausage/examine(mob/user)
@@ -131,17 +131,17 @@
 		. += "<br>[extra_desc]"
 
 /obj/item/food/sausage/luxurious
-	food_reagents = list(/datum/reagent/consumable/nutriment=50)
+	food_reagents = list(/datum/reagent/consumable/nutriment=8)
 	extra_desc = "This sausage is made for allwurst."
 
 /obj/item/food/sausage/failed // bad sausage; gives poop when cooked
-	food_reagents = list(/datum/reagent/consumable/nutriment=10)
+	food_reagents = list(/datum/reagent/consumable/nutriment=3)
 	extra_desc = "This sausage is a failed sausage. It's useless."
 
 /obj/item/food/egg
 	name = "egg"
 	desc = "The fruit from an industrous creature."
-	food_reagents = list(/datum/reagent/consumable/nutriment=5, /datum/reagent/consumable/nutriment/protein = 3)
+	food_reagents = list(/datum/reagent/consumable/nutriment=2, /datum/reagent/consumable/nutriment/protein = 1)
 	icon = 'dwarfs/icons/mob/animals.dmi'
 	icon_state = "egg"
 	var/fertile = FALSE
@@ -169,7 +169,7 @@
 	mood_event_type = /datum/mood_event/ate_fertile_egg
 	mood_gain = -14
 	mood_duration = 5 MINUTES
-	food_reagents = list(/datum/reagent/consumable/nutriment=5, /datum/reagent/consumable/nutriment/protein/gib = 5 )
+	food_reagents = list(/datum/reagent/consumable/nutriment=2, /datum/reagent/consumable/nutriment/protein/gib = 2 )
 
 /obj/item/food/slice/cheese
 	name = "cheese slice"
@@ -178,4 +178,4 @@
 	mood_event_type = /datum/mood_event/ate_raw_food
 	mood_gain = -1
 	mood_duration = 1 MINUTES
-	food_reagents = list(/datum/reagent/consumable/nutriment=10)
+	food_reagents = list(/datum/reagent/consumable/nutriment=2)

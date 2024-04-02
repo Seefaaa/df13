@@ -1870,3 +1870,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			continue
 
 		current_part.change_bodypart(species_part)
+
+///Called on human/adjust_hydration
+/datum/species/proc/on_adjust_hydration(mob/living/carbon/human/C, change, reagent_type)
+	return

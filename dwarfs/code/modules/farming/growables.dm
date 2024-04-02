@@ -75,7 +75,7 @@
 	icon_state = "apple"
 	edible = TRUE
 	foodtypes = FRUIT
-	food_reagents = list(/datum/reagent/consumable/nutriment = 40)
+	food_reagents = list(/datum/reagent/consumable/nutriment = 4)
 	tastes = list("apple" = 1)
 
 /obj/item/growable/apple/MakePressable()
@@ -86,7 +86,7 @@
 	desc = "Grey wheat, growing in dark caves. Dwarfs favorirte beer component."
 	icon_state = "cave_wheat"
 	mood_gain = -3
-	food_reagents = list(/datum/reagent/consumable/nutriment=10)
+	food_reagents = list(/datum/reagent/consumable/nutriment=2)
 	food_flags = GRAIN
 
 /obj/item/growable/cave_wheat/MakeGrindable()
@@ -97,7 +97,7 @@
 	desc = "Grain growing on the surface, most common in the human cities."
 	icon_state = "barley"
 	mood_gain = -3
-	food_reagents = list(/datum/reagent/consumable/nutriment=10)
+	food_reagents = list(/datum/reagent/consumable/nutriment=2)
 	food_flags = GRAIN
 
 /obj/item/growable/barley/MakeGrindable()
@@ -109,7 +109,7 @@
 	icon_state = "turnip"
 	edible = TRUE
 	mood_gain = -1
-	food_reagents = list(/datum/reagent/consumable/nutriment=50)
+	food_reagents = list(/datum/reagent/consumable/nutriment=4)
 
 /obj/item/growable/carrot
 	name = "carrot"
@@ -117,7 +117,7 @@
 	icon_state = "carrot"
 	edible = TRUE
 	mood_gain = -1
-	food_reagents = list(/datum/reagent/consumable/nutriment=50)
+	food_reagents = list(/datum/reagent/consumable/nutriment=5)
 
 /obj/item/growable/cotton
 	name = "cotton"
@@ -138,7 +138,7 @@
 	icon_state = "sweet_pod"
 	edible = TRUE
 	mood_gain = -1
-	food_reagents = list(/datum/reagent/consumable/nutriment=50)
+	food_reagents = list(/datum/reagent/consumable/nutriment=5)
 
 /obj/item/growable/sweet_pod/MakePressable()
 	AddComponent(/datum/component/pressable, /datum/reagent/consumable/juice/sweet_pod, 10)
@@ -162,7 +162,7 @@
 	icon_state = "plump_helmet"
 	edible = TRUE
 	mood_gain = -2
-	food_reagents = list(/datum/reagent/consumable/nutriment=50)
+	food_reagents = list(/datum/reagent/consumable/nutriment=5)
 
 /obj/item/growable/plump_helmet/MakePressable()
 	AddComponent(/datum/component/pressable, /datum/reagent/consumable/juice/plump, 10)
@@ -176,7 +176,7 @@
 	icon_state = "potato"
 	edible = TRUE
 	mood_gain = -2
-	food_reagents = list(/datum/reagent/consumable/nutriment=40)
+	food_reagents = list(/datum/reagent/consumable/nutriment=4)
 
 /obj/item/growable/onion
 	name = "onion"
@@ -184,4 +184,4 @@
 	icon_state = "onion"
 	edible = TRUE
 	mood_gain = -3
-	food_reagents = list(/datum/reagent/consumable/nutriment=30)
+	food_reagents = list(/datum/reagent/consumable/nutriment=3)

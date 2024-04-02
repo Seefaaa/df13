@@ -18,14 +18,11 @@
 	var/glass_price
 
 /datum/reagent/consumable/on_mob_life(mob/living/carbon/M, delta_time, times_fired)
-	current_cycle++
+	. = ..()
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(!HAS_TRAIT(H, TRAIT_NOHUNGER))
-			H.adjust_nutrition(volume)
-	if(length(reagent_removal_skip_list))
-		return
-	holder.remove_reagent(type, volume)
+			H.adjust_nutrition(nutriment_factor * REM * delta_time)
 
 /datum/reagent/consumable/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
 	. = ..()

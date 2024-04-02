@@ -26,7 +26,7 @@
 	name = "baked potato"
 	desc = "Very basic meal for a quick snack."
 	icon_state = "baked_potato"
-	food_reagents = list(/datum/reagent/consumable/nutriment=30)
+	food_reagents = list(/datum/reagent/consumable/nutriment=10)
 	mood_event_type = /datum/mood_event/ate_meal
 	mood_gain = 2
 
@@ -34,7 +34,7 @@
 	name = "cooked egg"
 	desc = "Tender protein ball. Perfect for a snack."
 	icon_state = "cooked_egg"
-	food_reagents = list(/datum/reagent/consumable/nutriment=40)
+	food_reagents = list(/datum/reagent/consumable/nutriment=14)
 	mood_event_type = /datum/mood_event/ate_meal
 	mood_gain = 1
 
@@ -42,7 +42,7 @@
 	name = "bread"
 	desc = "A loaf of fresh bread. Classic staple food."
 	icon_state = "bread"
-	food_reagents = list(/datum/reagent/consumable/nutriment=40)
+	food_reagents = list(/datum/reagent/consumable/nutriment=18)
 	mood_event_type = /datum/mood_event/ate_meal
 	mood_gain = 5
 
@@ -51,7 +51,7 @@
 	desc = "A simple dish containing all essential vitamins for a dwarf."
 	icon_state = "plump_n_steak"
 	plate_type = /obj/item/reagent_containers/glass/plate/regular
-	food_reagents = list(/datum/reagent/consumable/nutriment=60)
+	food_reagents = list(/datum/reagent/consumable/nutriment=22)
 	mood_event_type = /datum/mood_event/ate_meal
 
 /obj/item/food/dish/plump_skewer
@@ -59,7 +59,7 @@
 	desc = "Quick snack, not really nutritious"
 	icon_state = "plump_skewer"
 	plate_type = /obj/item/stick
-	food_reagents = list(/datum/reagent/consumable/nutriment=55)
+	food_reagents = list(/datum/reagent/consumable/nutriment=10)
 	mood_event_type = /datum/mood_event/ate_meal
 	materials = /datum/material/wood/pine/treated
 
@@ -68,7 +68,7 @@
 	desc = "Quick snack, not really nutritious"
 	icon_state = "meat_skewer"
 	plate_type = /obj/item/stick
-	food_reagents = list(/datum/reagent/consumable/nutriment=65)
+	food_reagents = list(/datum/reagent/consumable/nutriment=15)
 	mood_event_type = /datum/mood_event/ate_meal
 	materials = /datum/material/wood/pine/treated
 
@@ -77,7 +77,7 @@
 	desc = "Quick snack, not really nutritious"
 	icon_state = "balanced_skewer"
 	plate_type = /obj/item/stick
-	food_reagents = list(/datum/reagent/consumable/nutriment=75)
+	food_reagents = list(/datum/reagent/consumable/nutriment=18)
 	mood_event_type = /datum/mood_event/ate_meal
 	materials = /datum/material/wood/pine/treated
 
@@ -86,7 +86,7 @@
 	desc = "Eat your veggies, son."
 	icon_state = "salad"
 	plate_type = /obj/item/reagent_containers/glass/plate/bowl
-	food_reagents = list(/datum/reagent/consumable/nutriment=60)
+	food_reagents = list(/datum/reagent/consumable/nutriment=20)
 	mood_event_type = /datum/mood_event/ate_meal
 
 /obj/item/food/dish/potato_salad
@@ -94,7 +94,7 @@
 	desc = "It's  a sour snack with sweet potatoes."
 	icon_state = "potato_salad"
 	plate_type = /obj/item/reagent_containers/glass/plate/bowl
-	food_reagents = list(/datum/reagent/consumable/nutriment=80)
+	food_reagents = list(/datum/reagent/consumable/nutriment=20)
 	mood_event_type = /datum/mood_event/ate_meal
 
 //**********************SECOND TIER DISHES*****************************//
@@ -104,7 +104,7 @@
 	desc = "Classic lunch meal. Desperately needs some veggies."
 	icon_state = "fried_egg_steak"
 	plate_type = /obj/item/reagent_containers/glass/plate/regular
-	food_reagents = list(/datum/reagent/consumable/nutriment=140)
+	food_reagents = list(/datum/reagent/consumable/nutriment=25)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
 /obj/item/food/dish/plump_pie
@@ -112,7 +112,7 @@
 	desc = "Mushroom pie. A bit weird combination, but dwarves like it."
 	icon_state = "plump_pie"
 	plate_type = /obj/item/reagent_containers/glass/plate/flat
-	food_reagents = list(/datum/reagent/consumable/nutriment=120)
+	food_reagents = list(/datum/reagent/consumable/nutriment=25)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
 /obj/item/food/dish/meat_pie
@@ -120,7 +120,7 @@
 	desc = "A pie full of juicy meat."
 	icon_state = "meat_pie"
 	plate_type = /obj/item/reagent_containers/glass/plate/flat
-	food_reagents = list(/datum/reagent/consumable/nutriment=150)
+	food_reagents = list(/datum/reagent/consumable/nutriment=28)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
 /obj/item/food/dish/apple_pie
@@ -128,7 +128,7 @@
 	desc = "Sweet delicacy with a sour aftertaste."
 	icon_state = "apple_pie"
 	plate_type = /obj/item/reagent_containers/glass/plate/flat
-	food_reagents = list(/datum/reagent/consumable/nutriment=120)
+	food_reagents = list(/datum/reagent/consumable/nutriment=25)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
 /obj/item/food/dish/roasted_beer_wurst
@@ -136,7 +136,7 @@
 	desc = "Ich liebe dich."
 	icon_state = "beer_wurst"
 	plate_type = /obj/item/reagent_containers/glass/plate/regular
-	food_reagents = list(/datum/reagent/consumable/nutriment=120)
+	food_reagents = list(/datum/reagent/consumable/nutriment=25)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
 /obj/item/food/dish/carrot_soup
@@ -144,7 +144,7 @@
 	desc = "Refreshing taste of carrots."
 	icon_state = "carrot_soup"
 	plate_type = /obj/item/reagent_containers/glass/plate/bowl
-	food_reagents = list(/datum/reagent/consumable/nutriment=140)
+	food_reagents = list(/datum/reagent/consumable/nutriment=26)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
 /obj/item/food/dish/potato_soup
@@ -152,7 +152,7 @@
 	desc = "Refreshing taste of potatoes."
 	icon_state = "potato_soup"
 	plate_type = /obj/item/reagent_containers/glass/plate/bowl
-	food_reagents = list(/datum/reagent/consumable/nutriment=150)
+	food_reagents = list(/datum/reagent/consumable/nutriment=27)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
 /obj/item/food/dish/plump_soup
@@ -160,7 +160,7 @@
 	desc = "Refreshing taste of plump helmets."
 	icon_state = "plump_soup"
 	plate_type = /obj/item/reagent_containers/glass/plate/bowl
-	food_reagents = list(/datum/reagent/consumable/nutriment=140)
+	food_reagents = list(/datum/reagent/consumable/nutriment=26)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
 //**********************THIRD TIER DISHES*****************************//
@@ -169,7 +169,7 @@
 	name = "balanced roll"
 	desc = "Coming from the eastern human cities, this dish became popular among dwarves."
 	icon_state = "gyros"
-	food_reagents = list(/datum/reagent/consumable/nutriment=240)
+	food_reagents = list(/datum/reagent/consumable/nutriment=30)
 	mood_event_type = /datum/mood_event/ate_meal/luxurious
 
 /obj/item/food/dish/troll_delight
@@ -177,7 +177,7 @@
 	desc = "Dish, for for a kings feast."
 	icon_state = "troll_delight"
 	plate_type = /obj/item/reagent_containers/glass/plate/flat
-	food_reagents = list(/datum/reagent/consumable/nutriment=240)
+	food_reagents = list(/datum/reagent/consumable/nutriment=32)
 	mood_event_type = /datum/mood_event/ate_meal/luxurious
 
 /obj/item/food/dish/allwurst
@@ -185,7 +185,7 @@
 	desc = "Not sure, whos wicked brain have made this recipe, but it seems not poisonous."
 	icon_state = "allwurst"
 	plate_type = /obj/item/reagent_containers/glass/plate/regular
-	food_reagents = list(/datum/reagent/consumable/nutriment=240)
+	food_reagents = list(/datum/reagent/consumable/nutriment=31)
 	mood_event_type = /datum/mood_event/ate_meal/luxurious
 
 /obj/item/food/dish/plump_quiche
@@ -193,7 +193,7 @@
 	desc = "A cheesy delicacy filled with sweet plumps."
 	icon_state = "plump_quiche"
 	plate_type = /obj/item/reagent_containers/glass/plate/flat
-	food_reagents = list(/datum/reagent/consumable/nutriment=260)
+	food_reagents = list(/datum/reagent/consumable/nutriment=34)
 	mood_event_type = /datum/mood_event/ate_meal/luxurious
 
 /obj/item/food/dish/meat_quiche
@@ -201,7 +201,7 @@
 	desc = "A cheesy delicacy filled with juicy meat."
 	icon_state = "meat_quiche"
 	plate_type = /obj/item/reagent_containers/glass/plate/flat
-	food_reagents = list(/datum/reagent/consumable/nutriment=280)
+	food_reagents = list(/datum/reagent/consumable/nutriment=36)
 	mood_event_type = /datum/mood_event/ate_meal/luxurious
 
 /obj/item/food/dish/plump_stew
@@ -209,7 +209,7 @@
 	desc = "Simple yet tasteful stew, dwarves would cook in their hold."
 	icon_state = "plump_stew"
 	plate_type = /obj/item/reagent_containers/glass/plate/bowl
-	food_reagents = list(/datum/reagent/consumable/nutriment=240)
+	food_reagents = list(/datum/reagent/consumable/nutriment=29)
 	mood_event_type = /datum/mood_event/ate_meal/decent
 
 /obj/item/food/dish/veggie_stew
@@ -217,5 +217,5 @@
 	desc = "Simple yet tasteful stew, dwarves would cook in their hold."
 	icon_state = "veggie_stew"
 	plate_type = /obj/item/reagent_containers/glass/plate/bowl
-	food_reagents = list(/datum/reagent/consumable/nutriment=220)
+	food_reagents = list(/datum/reagent/consumable/nutriment=27)
 	mood_event_type = /datum/mood_event/ate_meal/decent

@@ -10,6 +10,7 @@
 	if(. && !(movement_type & FLOATING)) //floating is easy
 		if(HAS_TRAIT(src, TRAIT_NOHUNGER))
 			set_nutrition(NUTRITION_LEVEL_ALMOST_FULL)	//just less than feeling vigorous
+		if(HAS_TRAIT(src, TRAIT_NOTHIRST))
 			set_hydration(HYDRATION_LEVEL_HYDRATED)
 		else if(nutrition && stat != DEAD)
 			//if-else cause run consumed 1.5x as much. Leaving it here in case we want to change it back

@@ -2,7 +2,7 @@
 	name = "meat"
 	desc = "Beat it."
 	mood_event_type = /datum/mood_event/ate_raw_food/meat
-	food_reagents = list(/datum/reagent/consumable/nutriment=50)
+	food_reagents = list(/datum/reagent/consumable/nutriment=8)
 
 /obj/item/food/meat/slab
 	desc = "A slab of meat."

@@ -379,7 +379,7 @@
 
 /datum/component/mood/proc/HandleHydration()
 	var/mob/living/L = parent
-	if(HAS_TRAIT(L, TRAIT_NOHUNGER))
+	if(HAS_TRAIT(L, TRAIT_NOTHIRST))
 		return FALSE
 	switch(L.hydration)
 		if(HYDRATION_LEVEL_OVERHYDRATED to INFINITY)

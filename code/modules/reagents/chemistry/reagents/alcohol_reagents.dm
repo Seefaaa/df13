@@ -42,7 +42,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	return ..()
 
 /datum/reagent/consumable/ethanol/on_mob_life(mob/living/carbon/C, delta_time, times_fired)
-	current_cycle++
+	. = ..()
 	if(C.drunkenness < volume * boozepwr * ALCOHOL_THRESHOLD_MODIFIER || boozepwr < 0)
 		var/booze_power = boozepwr
 		var/datum/species/S = C.dna.species
@@ -55,9 +55,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 			var/obj/item/organ/liver/L = C.getorganslot(ORGAN_SLOT_LIVER)
 			if (istype(L))
 				L.applyOrganDamage(((max(sqrt(volume) * (boozepwr ** ALCOHOL_EXPONENT) * L.alcohol_tolerance * delta_time, 0))/150))
-	if(length(reagent_removal_skip_list))
-		return
-	holder.remove_reagent(type, metabolization_rate * C.metabolism_efficiency * delta_time) //By default it slowly disappears.
 
 /datum/reagent/consumable/ethanol/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)//Splashing people with ethanol isn't quite as good as fuel.
 	. = ..()
