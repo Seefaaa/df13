@@ -26,3 +26,13 @@
 	description = "<span class='nicegreen'>Amazing taste!</span>\n"
 	mood_change = 50
 	timeout = 10 MINUTES
+
+/datum/mood_event/drank_no_booze
+	description = span_warning("I had to drink someting non-alcoholic.\n")
+	mood_change = -5
+	timeout = 5 MINUTES
+
+/datum/mood_event/drank_booze
+	description = span_nicegreen("I drank some booze.\n")
+	mood_change = 5
+	timeout = 5 MINUTES

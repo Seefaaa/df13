@@ -1,4 +1,3 @@
-// To make dwarven only jumpsuits, add this species' path to the clothing's species_exception list. By default jumpsuits don't fit dwarven since they're big boned
 /datum/species/dwarf
 	name = "Dwarf"
 	id = "dwarf"
@@ -31,6 +30,14 @@
 
 /datum/species/dwarf/random_name(gender,unique,lastname)
 	return dwarf_name()
+
+/datum/species/dwarf/on_adjust_hydration(mob/living/carbon/human/C, change, reagent_type)
+	if(!reagent_type)
+		return
+	if(ispath(reagent_type, /datum/reagent/consumable/ethanol))
+		SEND_SIGNAL(C, COMSIG_ADD_MOOD_EVENT, "drank_booze", /datum/mood_event/drank_booze)
+	else if(ispath(reagent_type, /datum/reagent/water)) //should be done somehow else
+		SEND_SIGNAL(C, COMSIG_ADD_MOOD_EVENT, "drank_no_booze", /datum/mood_event/drank_no_booze)
 
 // Dwarven tongue, they only know their language.
 /obj/item/organ/tongue/dwarven

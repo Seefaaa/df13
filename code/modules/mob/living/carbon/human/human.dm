@@ -544,6 +544,12 @@
 		return FALSE
 	return ..()
 
+/mob/living/carbon/human/adjust_hydration(change, reagent_type)
+	if(HAS_TRAIT(src, TRAIT_NOTHIRST))
+		return FALSE
+	. = ..()
+	dna.species.on_adjust_hydration(src, change, reagent_type)
+
 /mob/living/carbon/human/is_bleeding()
 	if(NOBLOOD in dna.species.species_traits)
 		return FALSE

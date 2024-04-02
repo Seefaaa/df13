@@ -1178,7 +1178,7 @@
 /mob/proc/set_nutrition(change) //Seriously fuck you oldcoders.
 	nutrition = max(0, change)
 
-/mob/proc/adjust_hydration(change)
+/mob/proc/adjust_hydration(change, reagent_type)
 	hydration = clamp(hydration + change, 0, HYDRATION_LEVEL_MAX)
 
 /mob/proc/set_hydration(amount)
