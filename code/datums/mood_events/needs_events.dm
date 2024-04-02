@@ -20,40 +20,40 @@
 	mood_change = -10
 
 /datum/mood_event/ate_raw_food
-	description = span_red("I ate raw food.")
+	description = span_warning("I ate raw food.\n")
 
 /datum/mood_event/ate_raw_food/severe
 
 /datum/mood_event/ate_raw_food/mild
 
 /datum/mood_event/ate_raw_food/meat
-	description = span_red("I ate raw meat!")
+	description = span_red("I ate raw meat!\n")
 	mood_change = -8
 	timeout = 5 MINUTES
 
 /datum/mood_event/ate_fertile_egg
-	description = span_red("What the fuck was in that egg...")
+	description = span_red("What the fuck was in that egg...\n")
 	mood_change = -14
 	timeout = 5 MINUTES
 
 
 /datum/mood_event/ate_meal
-	description = span_green("I ate a meal.")
+	description = span_green("I ate a meal.\n")
 	mood_change = 10
 	timeout = 4 MINUTES
 
 /datum/mood_event/ate_meal/decent
-	description = span_green("I ate a decent meal.")
+	description = span_green("I ate a decent meal.\n")
 	mood_change = 15
 	timeout = 10 MINUTES
 
 /datum/mood_event/ate_meal/luxurious
-	description = span_green("I ate a luxurious meal!")
+	description = span_green("I ate a luxurious meal!\n")
 	mood_change = 20
 	timeout = 20 MINUTES
 
 /datum/mood_event/ate_badfood
-	description = span_red("I ate a failed food!")
+	description = span_red("I ate a failed food!\n")
 	mood_change = -15
 	timeout = 4 MINUTES
 
