@@ -1266,6 +1266,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 	if(user!= target)
 		if(prob(user.get_skill_modifier(/datum/skill/combat/martial, SKILL_MISS_MODIFIER)))
+			user.do_attack_animation(target, no_effect=TRUE)
 			user.visible_message(span_warning("[user]'s attack misses [target]!") , \
 								span_userdanger("Your attack misses [target]!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
 			to_chat(target, span_warning("[user]'s attack misses you!"))
@@ -1274,6 +1275,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 		// Hand to hand combat have 2 times bigger chance to bee paired and can be paired with lower level
 		if(target.check_shields(user, user, used_case = PARRY_CASE_HAND))
+			user.do_attack_animation(target, user.dna.species.attack_effect)
+			target.do_damaged_animation(user)
 			target.visible_message(span_warning("[target] blocks [user]'s attack!") , \
 								span_userdanger("You block [user]'s attack!") , span_hear("You hear a swoosh!") , COMBAT_MESSAGE_RANGE, user)
 			to_chat(user, span_warning("Your attack at [target] was blocked!"))
