@@ -158,9 +158,6 @@
 
 /turf/open/floor/AfterChange(flags, oldType)
 	. = ..()
-	var/turf/closed/TD = SSmapping.get_turf_below(src)
-	if(isclosedturf(TD) && TD.floor_type)
-		apply_material(TD.materials)
 	var/obj/L = (locate(/obj/structure/lattice) in src)
 	if(L)
 		qdel(L)

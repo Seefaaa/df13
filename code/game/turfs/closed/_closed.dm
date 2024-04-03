@@ -36,7 +36,8 @@
 		if(!TU)
 			return
 		if(isopenspace(TU))
-			TU.PlaceOnTop(floor_type)
+			TU = TU.PlaceOnTop(floor_type)
+			TU.apply_material(materials)
 
 /turf/closed/indestructible
 	name = "wall"
