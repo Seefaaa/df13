@@ -7,19 +7,11 @@
 	if(!visualsOnly)
 		for(var/S in subtypesof(/datum/skill))
 			H.set_experience(S,SKILL_EXP_LEGEND, TRUE)
+			var/datum/skill/skill = H.get_skill(S)
+			skill.admin_spawned = TRUE
 
 /obj/item/storage/satchel/debug
 	name = "Satchel of holding"
-
-/obj/item/pickaxe/high_grade
-	grade = 6
-	init_grade = TRUE
-	materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/adamantine)
-
-/obj/item/axe/high_grade
-	grade = 6
-	init_grade = TRUE
-	materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/adamantine)
 
 /obj/item/storage/satchel/debug/ComponentInitialize()
 	. = ..()
@@ -32,20 +24,25 @@
 
 /obj/item/storage/satchel/debug/filled/PopulateContents()
 	. = ..()
-	new /obj/item/pickaxe/high_grade(src)
-	new /obj/item/shovel(src)
-	new /obj/item/builder_hammer(src)
-	new /obj/item/smithing_hammer(src)
-	new /obj/item/trowel(src)
-	new /obj/item/tongs(src)
-	new /obj/item/hoe(src)
-	new /obj/item/axe/high_grade(src)
-	new /obj/item/stack/sheet/stone/fifty(src)
-	new /obj/item/stack/sheet/planks/fifty(src)
-	new /obj/item/chisel(src)
-
-/obj/item/stack/sheet/stone/fifty
-	amount = 50
-
-/obj/item/stack/sheet/planks/fifty
-	amount = 50
+	var/obj/O
+	var/obj/item/stack/S
+	O = new /obj/item/pickaxe(src)
+	O.apply_material(list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/adamantine));O.update_stats(6)
+	O = new /obj/item/shovel(src)
+	O.apply_material(list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/adamantine));O.update_stats(6)
+	O = new /obj/item/builder_hammer(src)
+	O.apply_material(list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/adamantine));O.update_stats(6)
+	O = new /obj/item/smithing_hammer(src)
+	O.apply_material(list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/adamantine));O.update_stats(6)
+	O = new /obj/item/tongs(src)
+	O.apply_material(/datum/material/adamantine);O.update_stats(6)
+	O = new /obj/item/hoe(src)
+	O.apply_material(list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/adamantine));O.update_stats(6)
+	O = new /obj/item/axe(src)
+	O.apply_material(list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/adamantine));O.update_stats(6)
+	S = new /obj/item/stack/sheet/stone(src)
+	S.apply_material(/datum/material/stone);S.amount = 50
+	S = new /obj/item/stack/sheet/planks(src)
+	S.apply_material(/datum/material/wood/treated);S.amount = 50
+	O = new /obj/item/chisel(src)
+	O.apply_material(list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/adamantine));O.update_stats(6)

@@ -251,6 +251,8 @@
 		if(!M)
 			continue
 		for(var/datum/skill/skill in M.known_skills)
+			if(skill.admin_spawned)
+				continue
 			if(!(skill.name in skills))
 				skills[skill.name] = list("title"=skill.title)
 			if(!("mob" in skills[skill.name]))

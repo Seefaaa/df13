@@ -16,6 +16,8 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
 	var/mob/owner
 	///Whether it can be chosen in prefs. TRUE by default.
 	var/obtainable_in_prefs = TRUE
+	///Whether this skill counts in round-end report
+	var/admin_spawned = FALSE
 
 /datum/skill/proc/get_skill_modifier(modifier, level)
 	return modifiers[modifier][level] //Levels range from 1 (None) to 11 (Legendary)
