@@ -55,7 +55,8 @@
 			"Up": 1,
 			"Down": -1,
 			"Baseturf": "/turf/open/openspace",
-			"Generator": "/datum/map_generator/surface"
+			"Generator": "/datum/map_generator/surface",
+			"Surface": true
 		},
 		{
 			"Mining": true,

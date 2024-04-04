@@ -12,6 +12,7 @@ fuck jannies
 #define ZTRAIT_FORTRESS "Fortress"
 #define ZTRAIT_RESERVED "Transit/Reserved"
 #define ZTRAIT_AWAY "Away Mission"
+#define ZTRAIT_SURFACE "Surface"
 
 // boolean - weather types that occur on the level
 #define ZTRAIT_SNOWSTORM "Weather_Snowstorm"

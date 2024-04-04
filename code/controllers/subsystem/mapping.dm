@@ -71,6 +71,7 @@ SUBSYSTEM_DEF(mapping)
 	process_teleport_locs()			//Sets up the wizard teleport locations
 	preloadTemplates()
 	generate_station_area_list()
+	find_surface_z()
 	run_map_generation()
 
 	// Add the transit level
@@ -202,8 +203,6 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 /datum/controller/subsystem/mapping/proc/generate_station_area_list()
 	var/list/station_areas_blacklist = typecacheof(list())
 	for(var/area/A in world)
-		if(istype(A, /area/surface))
-			GLOB.surface_z = A.z
 		if (is_type_in_typecache(A, station_areas_blacklist))
 			continue
 		if (!A.contents.len || !(A.area_flags & UNIQUE_AREA))
@@ -389,3 +388,14 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 	for(var/B in areas)
 		var/area/A = B
 		A.reg_in_areas_in_z()
+
+/datum/controller/subsystem/mapping/proc/find_surface_z()
+	var/list/zlevels = levels_by_trait(ZTRAIT_SURFACE)
+	if(LAZYLEN(zlevels) > 1)
+		GLOB.surface_z = zlevels[1]
+		log_world("Found multiple z-levels with ZTRAIT_SURFACE!")
+		return
+	if(LAZYLEN(zlevels) < 1)
+		log_world("Found no z-level with ZTRAIT_SURFACE!")
+		return
+	GLOB.surface_z = zlevels[1]
