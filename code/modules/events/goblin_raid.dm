@@ -57,6 +57,7 @@
 		warrior.a_intent = INTENT_HARM
 		if(C)
 			warrior.key = C.key
+			warrior.throw_alert("goblinsense", /atom/movable/screen/alert/migrant/goblin)
 		else
 			warrior.ai_controller = new /datum/ai_controller/goblin(warrior)
 		// spawned_mobs += warrior // we want to announce goblin leader only
@@ -68,6 +69,7 @@
 	leader.equipOutfit(/datum/outfit/goblin_leader)
 	if(C)
 		leader.key = C.key
+		leader.throw_alert("goblinsense", /atom/movable/screen/alert/migrant/goblin)
 	else
 		leader.ai_controller = new /datum/ai_controller/goblin(leader)
 	leader.a_intent = INTENT_HARM

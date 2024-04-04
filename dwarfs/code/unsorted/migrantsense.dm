@@ -20,6 +20,9 @@ GLOBAL_VAR_INIT(fort_center, null)
 	var/angle = 0
 	var/sense_for = 3 MINUTES
 
+/atom/movable/screen/alert/migrant/goblin
+	name = "goblin sense"
+
 /atom/movable/screen/alert/migrant/Initialize(mapload)
 	. = ..()
 	START_PROCESSING(SSprocessing, src)
