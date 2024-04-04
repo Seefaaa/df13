@@ -453,6 +453,8 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_PLANT_WILDMUTATE "wildmutation"
 /// Properly wielded two handed item
 #define TRAIT_WIELDED "wielded"
+/// Property of items that can be wielded
+#define TRAIT_CAN_WIELD "can_wield"
 /// Buckling yourself to objects with this trait won't immobilize you
 #define TRAIT_NO_IMMOBILIZE "no_immobilize"
 

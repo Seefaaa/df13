@@ -88,6 +88,7 @@
 	// RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(on_moved))
 	RegisterSignal(parent, COMSIG_ITEM_SHARPEN_ACT, PROC_REF(on_sharpen))
 	RegisterSignal(parent, COMSIG_ITEM_CAN_PUT_IN_HAND, PROC_REF(can_wield))
+	ADD_TRAIT(parent, TRAIT_CAN_WIELD, src)
 
 // Remove all siginals registered to the parent item
 /datum/component/two_handed/UnregisterFromParent()
@@ -99,6 +100,7 @@
 								COMSIG_MOVABLE_MOVED,
 								COMSIG_ITEM_SHARPEN_ACT,
 								COMSIG_ITEM_CAN_PUT_IN_HAND))
+	REMOVE_TRAIT(parent, TRAIT_CAN_WIELD, src)
 
 /// Triggered on equip of the item containing the component
 /datum/component/two_handed/proc/on_equip(datum/source, mob/user, slot)
