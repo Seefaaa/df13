@@ -40,6 +40,9 @@ fuck jannies
 // string - type path of the z-level's baseturf (defaults to space)
 #define ZTRAIT_BASETURF "Baseturf"
 
+/// string - type path for a generator for select z-level
+#define ZTRAIT_GENERATOR "Generator"
+
 // default trait definitions, used by SSmapping
 #define ZTRAITS_MARX list(ZTRAIT_MARX = TRUE)
 #define ZTRAITS_FORTRESS list(ZTRAIT_LINKAGE = CROSSLINKED, ZTRAIT_FORTRESS = TRUE)

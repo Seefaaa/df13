@@ -38,15 +38,7 @@ SUBSYSTEM_DEF(mapping)
 	var/num_of_res_levels = 1
 
 	/// List of map generator datums associated to z levels.
-	/// Z1 - lobby; Z2 - surface; Z3 - upper level and so on till lowest level
 	var/list/map_generators = list(
-		null,//lobby
-		/datum/map_generator/caves/bottom,
-		/datum/map_generator/caves/middle_bottom,
-		/datum/map_generator/caves/middle,
-		/datum/map_generator/caves/middle_upper,
-		/datum/map_generator/caves/upper,
-		/datum/map_generator/surface,//surface
 	)
 
 	/// True when in the process of adding a new Z-level, global locking
@@ -224,12 +216,12 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 		log_world("ERROR: Station areas list failed to generate!")
 
 /datum/controller/subsystem/mapping/proc/run_map_generation()
-	for(var/zlevel in 1 to map_generators.len)
-		var/gen_type = map_generators[zlevel]
-		if(!gen_type)
-			continue
-		var/datum/map_generator/gen = new gen_type(zlevel)
-		map_generators[zlevel] = gen
+	for(var/z in SSmapping.levels_by_trait(ZTRAIT_GENERATOR))
+		var/generator_type = SSmapping.level_trait(z, ZTRAIT_GENERATOR)
+		if(!ispath(generator_type))
+			generator_type = text2path(generator_type)
+		var/datum/map_generator/gen = new generator_type(z)
+		map_generators["[z]"] = gen
 		gen.run_generation()
 
 /datum/controller/subsystem/mapping/proc/run_map_generation_in_z(desired_z_level)

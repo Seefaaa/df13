@@ -9,7 +9,8 @@
 			"Gravity": true,
 			"Linkage": null,
 			"Up": 1,
-			"Baseturf": "/turf/open/floor/rock"
+			"Baseturf": "/turf/open/floor/rock",
+			"Generator": "/datum/map_generator/caves/bottom"
 		},
 		{
 			"Mining": true,
@@ -17,7 +18,8 @@
 			"Linkage": null,
 			"Up": 1,
 			"Down": -1,
-			"Baseturf": "/turf/open/openspace"
+			"Baseturf": "/turf/open/openspace",
+			"Generator": "/datum/map_generator/caves/middle_bottom"
 		},
 		{
 			"Mining": true,
@@ -25,7 +27,8 @@
 			"Linkage": null,
 			"Up": 1,
 			"Down": -1,
-			"Baseturf": "/turf/open/openspace"
+			"Baseturf": "/turf/open/openspace",
+			"Generator": "/datum/map_generator/caves/middle"
 		},
 		{
 			"Mining": true,
@@ -33,7 +36,8 @@
 			"Linkage": null,
 			"Up": 1,
 			"Down": -1,
-			"Baseturf": "/turf/open/openspace"
+			"Baseturf": "/turf/open/openspace",
+			"Generator": "/datum/map_generator/caves/middle_upper"
 		},
 		{
 			"Mining": true,
@@ -41,7 +45,8 @@
 			"Linkage": null,
 			"Up": 1,
 			"Down": -1,
-			"Baseturf": "/turf/open/openspace"
+			"Baseturf": "/turf/open/openspace",
+			"Generator": "/datum/map_generator/caves/upper"
 		},
 		{
 			"Mining": true,
@@ -49,7 +54,8 @@
 			"Linkage": null,
 			"Up": 1,
 			"Down": -1,
-			"Baseturf": "/turf/open/openspace"
+			"Baseturf": "/turf/open/openspace",
+			"Generator": "/datum/map_generator/surface"
 		},
 		{
 			"Mining": true,

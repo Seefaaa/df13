@@ -37,7 +37,7 @@
 /turf/open/floor/rock/Initialize(mapload)
 	. = ..()
 	if(z > 0 && z <= SSmapping.map_generators.len)
-		var/datum/map_generator/generator = SSmapping.map_generators[z]
+		var/datum/map_generator/generator = SSmapping.map_generators["[z]"]
 		hardness = generator?.hardness_level ? generator?.hardness_level : src::hardness
 
 /turf/open/floor/rock/crowbar_act(mob/living/user, obj/item/I)
@@ -97,7 +97,7 @@
 /turf/open/floor/sand/Initialize(mapload)
 	. = ..()
 	if(z > 0 && z <= SSmapping.map_generators.len)
-		var/datum/map_generator/generator = SSmapping.map_generators[z]
+		var/datum/map_generator/generator = SSmapping.map_generators["[z]"]
 		hardness = generator?.hardness_level ? generator?.hardness_level : src::hardness
 
 /turf/open/floor/sand/try_digdown(obj/item/I, mob/user)
