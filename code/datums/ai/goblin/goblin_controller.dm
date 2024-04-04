@@ -7,7 +7,8 @@
 		BB_GOBLIN_DESTINATION_REACHED = FALSE,
 		BB_GOBLIN_ENEMIES = list(),
 		BB_FOLLOW_TARGET = null,
-		BB_VISION_RANGE = 10
+		BB_VISION_RANGE = 10,
+		BB_HAS_WEAPONS = TRUE,
 	)
 
 /datum/ai_controller/goblin/TryPossessPawn(atom/new_pawn)

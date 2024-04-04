@@ -237,6 +237,71 @@ If you want them to actualy show up, go to code\modules\client\preferences.dm on
 
 /*******************************************************GOBLIN OUTFITS***************************************************/
 
+/datum/outfit/goblin_raid_warrior
+	name = "Goblin Raid Warrior(Easy)"
+	skills = list(/datum/skill/combat/martial=2)
+	uniform = /obj/item/clothing/under/loincloth
+	r_hand = /obj/item/club
+	r_hand_grade = 1
+	r_hand_materials = /datum/material/wood/towercap/treated
+	back = /obj/item/pickaxe
+	back_grade = 1
+	back_materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/copper)
+
+/datum/outfit/goblin_raid_warrior/middle
+	name = "Goblin Raid Warrior(Middle)"
+	skills = list(/datum/skill/combat/martial=4)
+	head = /obj/item/clothing/head/leather_helmet
+	head_grade = 1
+	back_grade = 2
+
+/datum/outfit/goblin_raid_warrior/hard
+	name = "Goblin Raid Warrior(Hard)"
+	skills = list(/datum/skill/combat/martial=4, /datum/skill/combat/spear=4)
+	r_hand = /obj/item/spear
+	r_hand_grade = 3
+	r_hand_materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/bronze)
+	head = /obj/item/clothing/head/leather_helmet
+	head_grade = 2
+	back_materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/bronze)
+	back_grade = 3
+
+/datum/outfit/goblin_raid_leader
+	name = "Goblin Raid Leader(Easy)"
+	skills = list(/datum/skill/combat/martial=3, /datum/skill/combat/dagger=3)
+	uniform = /obj/item/clothing/under/loincloth
+	r_hand = /obj/item/dagger
+	r_hand_grade = 2
+	r_hand_materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/copper)
+	back = /obj/item/pickaxe
+	back_grade = 2
+	back_materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/copper)
+
+/datum/outfit/goblin_raid_leader/middle
+	name = "Goblin Raid Leader(Middle)"
+	skills = list(/datum/skill/combat/martial=4, /datum/skill/combat/dagger=4)
+	head = /obj/item/clothing/head/leather_helmet
+	head_grade = 1
+	shoes = /obj/item/clothing/shoes/leather_boots
+	shoes_grade = 1
+	back_grade = 3
+	back_materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/bronze)
+
+/datum/outfit/goblin_raid_leader/hard
+	name = "Goblin Raid Leader(Hard)"
+	skills = list(/datum/skill/combat/martial=6, /datum/skill/combat/sword=6)
+	uniform = /obj/item/clothing/under/chainmail
+	uniform_grade = 3
+	uniform_materials = /datum/material/bronze
+	r_hand = /obj/item/sword
+	r_hand_grade = 4
+	r_hand_materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
+	head = /obj/item/clothing/head/leather_helmet
+	head_grade = 3
+	shoes = /obj/item/clothing/shoes/leather_boots
+	shoes_grade = 3
+	back_grade = 4
+
 /datum/outfit/goblin_concript
 	name = "Goblin Conscript"
 	skills = list(/datum/skill/combat/dagger=3, /datum/skill/combat/martial=3)

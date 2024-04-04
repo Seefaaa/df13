@@ -118,6 +118,7 @@
 #define BB_FOLLOW_TARGET "BB_FOLLOW_TARGET"
 #define BB_ATTACK_TARGET "BB_ATTACK_TARGET"
 #define BB_VISION_RANGE "BB_VISION_RANGE"
+#define BB_HAS_WEAPONS "BB_HAS_WEAPONS"
 
 /// Basically, what is our vision/hearing range.
 #define BB_HOSTILE_VISION_RANGE 10

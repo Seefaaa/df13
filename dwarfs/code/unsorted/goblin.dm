@@ -96,15 +96,3 @@
 /datum/language_holder/goblin
 	understood_languages = list(/datum/language/goblin = list(LANGUAGE_ATOM))
 	spoken_languages = list(/datum/language/goblin = list(LANGUAGE_ATOM))
-
-/datum/outfit/goblin
-	name = "Goblin"
-	uniform = /obj/item/clothing/under/loincloth
-	r_hand = /obj/item/club
-	back = /obj/item/pickaxe
-
-/datum/outfit/goblin_leader
-	name = "Goblin Leader"
-	uniform = /obj/item/clothing/under/loincloth
-	r_hand = /obj/item/dagger
-	back = /obj/item/pickaxe

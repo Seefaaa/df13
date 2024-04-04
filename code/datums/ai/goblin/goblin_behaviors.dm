@@ -21,27 +21,44 @@
 	attack(controller, delta_time, target)
 
 /datum/ai_behavior/goblin_attack_mob/proc/attack(datum/ai_controller/controller, delta_time, mob/living/target)
-	var/mob/living/carbon/owner = controller.pawn
+	var/mob/living/carbon/human/owner = controller.pawn
 
 	if(owner.next_move > world.time)
 		return
 
-	var/obj/item/W //weapon we use
-	var/best_force = 0
-	for(var/obj/item/I in owner.held_items) //use the best item in hands
-		if(I.force > best_force)
-			best_force = I.force
-			W = I
+	var/obj/item/W = owner.get_active_held_item()
+	//occasionally re-check cause who knows if we somehow get a weapon
+	if((controller.blackboard[BB_HAS_WEAPONS] || prob(20)) && !W)
+		var/list/possible_items = list(owner.l_store, owner.r_store, owner.s_store, owner.back) + owner.held_items
+		var/best_force = 0
 
-	var/obj/item/I = owner.back
-	if(I && I.force > best_force) //check back slot which usually has a pickaxe
-		var/list/empty_hands = owner.get_empty_held_indexes()
-		if(empty_hands.len < 1)
-			owner.drop_all_held_items()
-		if(owner.put_in_hands(I))
-			owner.back = null
-			owner.update_inv_back()
-			W = I
+		//use the best item available
+		//this doesn't account for wielded items having 5 force when not wielded. TODO: fix that
+		for(var/obj/item/I in possible_items)
+			if(!I)
+				continue
+			if(I.force > best_force)
+				best_force = I.force
+				W = I
+
+		if(W && !owner.is_holding(W))
+			if(!LAZYLEN(owner.get_empty_held_indexes()))
+				owner.drop_all_held_items()
+
+			W.attack_hand(owner)
+
+			if(HAS_TRAIT(W, TRAIT_CAN_WIELD) && !HAS_TRAIT(W, TRAIT_WIELDED))
+				owner.activate_hand(owner.active_hand_index)
+
+		else if(owner.is_holding(W))
+			if(owner.get_active_held_item() != W)
+				owner.swap_hand(owner.get_inactive_hand_index())
+
+			if(HAS_TRAIT(W, TRAIT_CAN_WIELD) && !HAS_TRAIT(W, TRAIT_WIELDED))
+				owner.activate_hand(owner.active_hand_index)
+
+		if(!W)
+			controller.blackboard[BB_HAS_WEAPONS] = FALSE
 
 	owner.changeNext_move(W ? W.melee_cd : CLICK_CD_MELEE)
 	owner.face_atom(target)

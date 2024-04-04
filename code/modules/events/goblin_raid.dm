@@ -12,6 +12,8 @@
 	minimum_required = 1
 	role_name = "goblin raider"
 	var/spawns = 2
+	var/leader_outfit = /datum/outfit/goblin_raid_leader
+	var/warrior_outfit = /datum/outfit/goblin_raid_warrior
 
 /datum/round_event/ghost_role/goblin_raid/pre_start()
 	var/live_dwarves = 0
@@ -22,6 +24,16 @@
 			continue
 		live_dwarves++
 	spawns = 2 + round(live_dwarves / 8)
+	switch(control.occurrences)
+		if(0 to 5)
+			leader_outfit = /datum/outfit/goblin_raid_leader
+			warrior_outfit = /datum/outfit/goblin_raid_warrior
+		if(5 to 10)
+			leader_outfit = /datum/outfit/goblin_raid_leader/middle
+			warrior_outfit = /datum/outfit/goblin_raid_warrior/middle
+		if(10 to INFINITY)
+			leader_outfit = /datum/outfit/goblin_raid_leader/hard
+			warrior_outfit = /datum/outfit/goblin_raid_warrior/hard
 
 /datum/round_event/ghost_role/goblin_raid/proc/select_spawn(x, y, z)
 	var/turf/T = locate(x, y, z)
@@ -53,7 +65,7 @@
 	while(spawns > 1)
 		var/client/C = pick_n_take(candidates)
 		var/mob/living/carbon/human/species/goblin/warrior = new(select_spawn(x+rand(-5,5), y+rand(-5,5), z))
-		warrior.equipOutfit(/datum/outfit/goblin)
+		warrior.equipOutfit(warrior_outfit)
 		warrior.a_intent = INTENT_HARM
 		if(C)
 			warrior.key = C.key
@@ -66,7 +78,7 @@
 		spawns--
 	var/client/C = pick_n_take(candidates)
 	var/mob/living/carbon/human/species/goblin/leader = new(select_spawn(x+rand(-5,5), y+rand(-5,5), z))
-	leader.equipOutfit(/datum/outfit/goblin_leader)
+	leader.equipOutfit(leader_outfit)
 	if(C)
 		leader.key = C.key
 		leader.throw_alert("goblinsense", /atom/movable/screen/alert/migrant/goblin)
