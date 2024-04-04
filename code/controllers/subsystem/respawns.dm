@@ -29,6 +29,8 @@ SUBSYSTEM_DEF(respawns)
 			y = rand(10, world.maxx-10)
 			x = pick(10, world.maxy-10)
 		var/turf/T = locate(x, y, z)
+		if(!T)
+			continue
 		if(attempts > 100)//fuck it, we NUKE shit to make place
 			nuke_area(T)
 			new/obj/effect/landmark/start/map_edge(T)
