@@ -18,6 +18,7 @@ GLOBAL_LIST_EMPTY(generic_event_spawns)			//handles clockwork portal+eminence te
 GLOBAL_LIST_EMPTY(stationroom_landmarks)		//yogs - list of all spawns for stationrooms
 GLOBAL_LIST_EMPTY(latejoin_landmarks)
 GLOBAL_LIST_EMPTY(dwarf_starts)
+GLOBAL_LIST_EMPTY(start_landmarks_map_edge)
 
 GLOBAL_LIST_EMPTY(wizardstart)
 GLOBAL_LIST_EMPTY(nukeop_start)

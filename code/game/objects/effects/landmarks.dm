@@ -55,6 +55,19 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	GLOB.dwarf_starts.Remove(src)
 	. = ..()
 
+/obj/effect/landmark/start/map_edge
+	name = "Map Edge"
+
+/obj/effect/landmark/start/map_edge/Initialize(mapload)
+	GLOB.start_landmarks_map_edge.Add(src)
+	. = ..()
+
+/obj/effect/landmark/start/map_edge/Destroy()
+	GLOB.start_landmarks_map_edge.Remove(src)
+	. = ..()
+
+INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/map_edge)
+
 // Must be immediate because players will
 // join before SSatom initializes everything.
 INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)

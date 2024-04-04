@@ -113,24 +113,9 @@
 	return TRUE
 
 /proc/send_to_latejoin(mob/character, buckle=FALSE)
-	for(var/i in 1 to 15)
-		var/x
-		var/y
-		var/z = GLOB.surface_z
-		if(prob(50))//spawn on top/bottom
-			x = rand(10, world.maxx-10)
-			y = pick(10, world.maxy-10)
-		else//spawn on left/right side
-			y = rand(10, world.maxx-10)
-			x = pick(10, world.maxy-10)
-		var/turf/T = locate(x, y, z)
-		if(!isfloorturf(T) || T.is_blocked_turf())
-			continue
-		if((locate(/obj/structure/plant/tree) in oview(5, T)))
-			continue
-		character.forceMove(T)
-		return
-	character.forceMove(locate(5, 5, GLOB.surface_z)) //failsafe if we can't find a spot
+	var/obj/landmark = pick(GLOB.start_landmarks_map_edge)
+	var/turf/T = get_turf(landmark)
+	character.forceMove(T)
 
 /mob/dead/new_player/proc/AttemptLateSpawn()
 	mind.assigned_role = "Dwarf" // SSjob removed so we assing it manually
