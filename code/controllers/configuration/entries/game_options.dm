@@ -222,3 +222,5 @@
 	. = ..()
 	if(.)
 		config_entry_value *= 10 //convert it to seconds
+
+/datum/config_entry/flag/enable_chatter
