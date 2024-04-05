@@ -99,6 +99,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 	if(new_baseturfs)
 		W.baseturfs = new_baseturfs
+		W.assemble_baseturfs()
 	if(new_baseturf_materials)
 		W.baseturf_materials = new_baseturf_materials
 

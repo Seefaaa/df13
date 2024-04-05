@@ -343,7 +343,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	else
 		var/baseturf_to_use = baseturfs
 
-		if(ispath(baseturfs, /turf/baseturf_bottom))
+		if(ispath(baseturfs, /turf/baseturf_bottom) || ispath(baseturfs, /turf/baseturf_skipover))
 			baseturf_to_use = /turf/open/openspace
 
 		baseturfs = list(baseturf_to_use)
