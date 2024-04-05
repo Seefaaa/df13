@@ -50,7 +50,7 @@
 			if(HAS_TRAIT(W, TRAIT_CAN_WIELD) && !HAS_TRAIT(W, TRAIT_WIELDED))
 				owner.activate_hand(owner.active_hand_index)
 
-		else if(owner.is_holding(W))
+		else if(W && owner.is_holding(W))
 			if(owner.get_active_held_item() != W)
 				owner.swap_hand(owner.get_inactive_hand_index())
 
