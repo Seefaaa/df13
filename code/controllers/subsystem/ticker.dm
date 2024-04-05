@@ -357,6 +357,7 @@ SUBSYSTEM_DEF(ticker)
 				living.client.init_verbs()
 				SSrespawns.character_spawned(living, living.real_name)
 			livings += living
+			log_manifest(living.ckey, living.mind, living, FALSE)
 	if(livings.len)
 		addtimer(CALLBACK(src, PROC_REF(release_characters), livings), 30, TIMER_CLIENT_TIME)
 
