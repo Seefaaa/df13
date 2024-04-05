@@ -16,6 +16,8 @@ SUBSYSTEM_DEF(respawns)
 	. = ..()
 
 /datum/controller/subsystem/respawns/proc/generate_landmarks()
+	if(!GLOB.surface_z)
+		CRASH("Tried to spawn map edge landmarks with no surface_z set!")
 	var/attempts = 0
 	var/x
 	var/y
