@@ -1399,11 +1399,10 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		if("disarm")
 			disarm(M, H)
 
-/datum/species/proc/spec_attacked_by(obj/item/I, mob/living/user, obj/item/bodypart/affecting, intent, mob/living/carbon/human/H)
-	if(user != H)
-		if(H.check_shields(user, I, "[I.name]"))
-			return FALSE
+/datum/species/proc/spec_attackby(obj/item/I, mob/living/user, params, mob/living/carbon/human/H)
+	return FALSE
 
+/datum/species/proc/spec_attacked_by(obj/item/I, mob/living/user, obj/item/bodypart/affecting, intent, mob/living/carbon/human/H)
 	var/hit_area
 	if(!affecting) //Something went wrong. Maybe the limb is missing?
 		affecting = H.bodyparts[1]

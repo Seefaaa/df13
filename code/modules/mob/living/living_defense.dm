@@ -253,6 +253,9 @@
 				return TRUE
 	return FALSE
 
+/mob/living/proc/check_shields(mob/attacker, atom/AM, attack_text = null, chance_multiplier = 1, used_case = PARRY_CASE_WEAPON)
+	return FALSE
+
 /mob/living/ex_act(severity, target, origin)
 	if(origin)
 		return

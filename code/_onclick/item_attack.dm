@@ -196,6 +196,11 @@
 			playsound(src, misssound, 40, TRUE, -1)
 		return TRUE
 
+	if(M.check_shields(user, src, "[name]", used_case=PARRY_CASE_WEAPON))
+		user.do_attack_animation(M)
+		M.do_damaged_animation(user)
+		return TRUE
+
 	if(!force)
 		playsound(loc, 'sound/weapons/tap.ogg', get_clamped_volume(), TRUE, -1)
 	else if(hitsound)

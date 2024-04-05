@@ -101,7 +101,7 @@
 /mob/living/carbon/human/proc/get_parry_cooldown()
 	return dna.species ? dna.species.melee_parry_cooldown : 0.8 SECONDS
 
-/mob/living/carbon/human/proc/check_shields(mob/attacker, atom/AM, attack_text = null, chance_multiplier = 1, used_case = PARRY_CASE_WEAPON)
+/mob/living/carbon/human/check_shields(mob/attacker, atom/AM, attack_text = null, chance_multiplier = 1, used_case = PARRY_CASE_WEAPON)
 	if(world.time < src.next_parry)
 		return FALSE
 	if(src == attacker) // we don't parry ourselves
@@ -165,6 +165,11 @@
 		w_uniform.add_fingerprint(user)
 	..()
 
+/mob/living/carbon/human/attackby(obj/item/I, mob/user, params)
+	. = ..()
+	if(.)
+		return
+	return dna.species.spec_attackby(I, user, params, src)
 
 /mob/living/carbon/human/attacked_by(obj/item/I, mob/living/user)
 	if(!I || !user)

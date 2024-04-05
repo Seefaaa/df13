@@ -147,6 +147,9 @@
 	return FALSE
 
 
+/mob/living/carbon/check_shields(mob/attacker, atom/AM, attack_text = null, chance_multiplier = 1, used_case = PARRY_CASE_WEAPON)
+	return FALSE
+
 /mob/living/carbon/attack_paw(mob/living/carbon/human/M)
 	if(M.a_intent == INTENT_HELP)
 		help_shake_act(M)
