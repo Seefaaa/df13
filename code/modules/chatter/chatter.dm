@@ -1,4 +1,4 @@
-/proc/chatter(message, phomeme, atom/A)
+/proc/chatter(message, atom/A)
 	// We want to transform any message into a list of numbers
 	// and punctuation marks
 	// For example:
@@ -23,13 +23,26 @@
 		if(R.group[2])
 			letter_count += R.group[2]
 
+	var/arace = "human"
+	var/agender = "male"
 	if(iscarbon(A))
-		var/mob/living/carbon/D = A
+		var/mob/living/carbon/human/species/D = A
 		switch(D.gender)
-			if("male")
-				phomeme = "owl"
+			if("female")
+				agender = "female"
 			else
-				phomeme = "griffin"
+				agender = "male"
+		switch(D.race)
+			if(/datum/species/human)
+				arace = "human"
+			if(/datum/species/goblin)
+				arace = "goblin"
+			if(/datum/species/dwarf)
+				arace = "dwarf"
+//			if(/datum/species/elf)
+//				arace = "elf"
+			else
+				arace = "elf"
 
 	spawn(0)
 		for(var/item in letter_count)
@@ -41,32 +54,31 @@
 				if (item in list("!", "?"))
 					sleep(6)
 				if (item in list("."))
-					chatter_speak_word(A, phomeme, 1)
+					chatter_speak_word(A, arace, 1)
 					sleep(4)
 				continue
 
 			if(isnum(item))
 				var/length = min(item, 10)
-				chatter_speak_word(A, phomeme, length)
+				chatter_speak_word(A, arace, length, agender)
 				sleep(0.5)
 				if(chatter_timer < world.time)
 					break
 
-/proc/chatter_speak_word(atom/A, phomeme, length)
-	var/path = "sound/runtime/chatter/[phomeme]_1.ogg"
+/proc/chatter_speak_word(atom/A, arace, length, agender)
+	var/path = "sound/runtime/chatter/[arace]_[agender].ogg"
 	for(var/c in 1 to length)
-		playsound(A.loc, path, 25, rand(20000, 25000), -5, SOUND_DEFAULT_FALLOFF_DISTANCE)
-		sleep(2 * chatter_get_sleep_multiplier(phomeme))
+		playsound(A.loc, path, 100, rand(32000, 52000), -5, use_reverb = TRUE)
+		sleep(chatter_get_sleep_multiplier(arace))
 
-/proc/chatter_get_sleep_multiplier(phomeme)
-	// These values are tenths of seconds, so 0.5 == 0.05seconds
+/proc/chatter_get_sleep_multiplier(arace)
 	. = 1
-	switch(phomeme)
-		if("papyrus")
-			. = 0.5
-		if("griffin")
-			. = 0.5
-		if("sans")
-			. = 0.7
-		if("owl")
-			. = 0.7
+	switch(arace)
+		if("dwarf")
+			. = 1.75
+		if("elf")
+			. = 1
+		if("human")
+			. = 1.5
+		if("goblin")
+			. = 1.5
