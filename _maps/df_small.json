@@ -1,6 +1,6 @@
 {
 	"version": 1,
-    "map_name": "Fortress",
+    "map_name": "Small Fortress",
     "map_path": "map_files/Fortress",
     "map_file": "Fortress_small.dmm",
 	"traits": [
