@@ -15,8 +15,6 @@ GLOBAL_VAR(surface_z)
 	var/troll_chance = 0
 
 /datum/map_generator/caves/generate_turfs()
-	if(CONFIG_GET(flag/disable_generation))
-		return
 	if(!GLOB.temperature_seed)
 		GLOB.temperature_seed = rand(1, 2000)
 	var/list/height_values = fbm(world.maxx, world.maxy)
@@ -137,8 +135,6 @@ GLOBAL_VAR(surface_z)
 	keys = list("plants", "mobs", "forest")
 
 /datum/map_generator/surface/generate_turfs()
-	if(CONFIG_GET(flag/disable_generation))
-		return
 	var/list/some_values = fbm(world.maxx, world.maxy)
 	for(var/y in 1 to world.maxy)
 		for(var/x in 1 to world.maxx)

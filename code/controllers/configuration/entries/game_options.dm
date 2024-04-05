@@ -49,10 +49,6 @@
 
 /datum/config_entry/flag/protect_roles_from_antagonist	//If security and such can be traitor/cult/other
 
-/datum/config_entry/flag/protect_assistant_from_antagonist	//If assistants can be traitor/cult/other
-
-/datum/config_entry/flag/enforce_human_authority	//If non-human species are barred from joining as a head of staff
-
 /datum/config_entry/flag/allow_latejoin_antagonists	// If late-joining players can be traitor/changeling
 
 /datum/config_entry/flag/use_antag_rep // see game_options.txt for details
@@ -108,7 +104,7 @@
 
 /datum/config_entry/flag/emojis
 
-/datum/config_entry/flag/disable_generation
+/datum/config_entry/flag/enable_generation
 
 /datum/config_entry/keyed_list/multiplicative_movespeed
 	key_mode = KEY_MODE_TYPE
@@ -178,9 +174,6 @@
 
 /datum/config_entry/flag/near_death_experience //If carbons can hear ghosts when unconscious and very close to death
 
-/datum/config_entry/flag/starlight
-	config_entry_value = TRUE // valera jral
-
 /datum/config_entry/flag/allow_random_events	// Enables random events mid-round when set
 
 /datum/config_entry/number/events_min_time_mul	// Multipliers for random events minimal starting time and minimal players amounts
@@ -205,8 +198,6 @@
 		GLOB.MAX_EX_LIGHT_RANGE = config_entry_value
 		GLOB.MAX_EX_FLASH_RANGE = config_entry_value
 		GLOB.MAX_EX_FLAME_RANGE = config_entry_value
-
-/datum/config_entry/flag/randomize_shift_time
 
 /datum/config_entry/flag/shift_time_realtime
 

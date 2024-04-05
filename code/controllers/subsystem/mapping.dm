@@ -215,6 +215,8 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 		log_world("ERROR: Station areas list failed to generate!")
 
 /datum/controller/subsystem/mapping/proc/run_map_generation()
+	if(!CONFIG_GET(flag/enable_generation))
+		return
 	for(var/z in SSmapping.levels_by_trait(ZTRAIT_GENERATOR))
 		var/generator_type = SSmapping.level_trait(z, ZTRAIT_GENERATOR)
 		if(!ispath(generator_type))

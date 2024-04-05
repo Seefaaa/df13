@@ -216,8 +216,6 @@ GLOBAL_VAR(restart_counter)
 	log_world("World rebooted at [time_stamp()]")
 
 	shutdown_logging() // Past this point, no logging procs can be used, at risk of data loss.
-	if(CONFIG_GET(flag/this_shit_is_stable))
-		shelleo("curl -X POST http://localhost:3636/hard-reboot-dwarf")
 	..()
 
 

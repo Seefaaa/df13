@@ -107,9 +107,6 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	if(!ambigensounds)
 		ambigensounds = GLOB.ambience_assoc[ambience_index]
 
-	if(area_flags & AREA_USES_STARLIGHT)
-		static_lighting = CONFIG_GET(flag/starlight)
-
 	if(static_lighting)
 		luminosity = 0
 

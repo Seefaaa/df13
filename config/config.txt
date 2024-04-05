@@ -100,10 +100,6 @@ LOG_MANIFEST
 ## log all world.Topic() calls
 LOG_WORLD_TOPIC
 
-## enables use of the proc twitterize() that lets you take a large list of strings and turn it into a JSON file of tweet sized strings.
-## As an example of how this could be """useful""" look towards Poly (https://twitter.com/Poly_the_Parrot)
-# LOG_TWITTER
-
 ## Log all timers on timer auto reset
 # LOG_TIMERS_ON_BUCKET_RESET
 
@@ -144,7 +140,7 @@ VOTE_PERIOD 600
 DEFAULT_NO_VOTE
 
 ## disable abandon mob
-NORESPAWN
+#NORESPAWN
 
 ## Uncomment this to stop people connecting to your server without a registered ckey. (i.e. guest-* are all blocked from connecting)
 GUEST_BAN
@@ -174,38 +170,38 @@ CHECK_RANDOMIZER
 #WEBCLIENT_ONLY_BYOND_MEMBERS
 
 ## Set to prevent anyone but those ckeys listed in config/whitelist.txt and config/admins.txt from joining your server
-#USEWHITELIST
+USEWHITELIST
 
 ## set a server location for world reboot. Don't include the byond://, just give the address and port.
 ## Don't set this to the same server, BYOND will automatically restart players to the server when it has restarted.
 #SERVER 127.0.0.1:2023
 
 ## forum address
-FORUMURL https://discord.gg/rVK4VgEYmz
+#FORUMURL YOURURLHERE
 
 ## Wiki address
-WIKIURL https://github.com/Dwarf-Fortress-13/Dwarf-Fortress-13/wiki/FAQ
+#WIKIURL YOURURLHERE
 
 ## Rules address
-RULESURL https://discord.gg/rVK4VgEYmz
+#RULESURL YOURURLHERE
 
 ## Github address
-GITHUBURL https://github.com/Dwarf-Fortress-13/Dwarf-Fortress-13
+#GITHUBURL YOURURLHERE
 
 ## Round specific stats address
 ## Link to round specific parsed logs; IE statbus. It is appended with the RoundID automatically by ticker/Reboot()
 ## This will take priority over the game logs address during reboot.
 ## Example: https://atlantaned.space/statbus/round.php?round=
-# ROUNDSTATSURL
+# ROUNDSTATSURL YOURURLHERE
 
 ## Game Logs address
 ## Incase you don't have a fancy parsing system, but still want players to be able to find where you keep your server's logs.
 ## Example: https://tgstation13.org/parsed-logs/basil/data/logs/
-# GAMELOGURL
+# GAMELOGURL YOURURLHERE
 
 
 ## Ban appeals URL - usually for a forum or wherever people should go to contact your admins.
-# BANAPPEALS https://discord.gg/rVK4VgEYmz
+# BANAPPEALS YOURURLHERE
 
 ## System command that invokes youtube-dl, used by Play Internet Sound.
 ## You can install youtube-dl with
@@ -247,9 +243,9 @@ FPS 20
 
 ### Comment these two out to prevent notes fading out over time for admins.
 ## Notes older then this will start fading out.
-NOTE_FRESH_DAYS 91.31055
+#NOTE_FRESH_DAYS 91.31055
 ## Notes older then this will be completely faded out.
-NOTE_STALE_DAYS 365.2422
+#NOTE_STALE_DAYS 365.2422
 
 ##Note: all population caps can be used with each other if desired.
 
@@ -290,8 +286,6 @@ NOTIFY_NEW_PLAYER_ACCOUNT_AGE 1
 ##	Requires database
 #PANIC_BUNKER
 
-#PANIC_BUNKER_CAP 75
-
 ## Uncomment to enable the interview system for players who are below the living hour requirement instead of explicitly blocking them from the server
 ## Note this requires the PANIC_BUNKER to be enabled to do anything.
 #PANIC_BUNKER_INTERVIEW
@@ -305,10 +299,10 @@ PANIC_BUNKER_MESSAGE Sorry, but the server is currently not accepting connection
 
 ## If panic bunker is on and a player is rejected (see above), attempt to send them to this connected server (see below) instead.
 ##	You probably want this to be the same as CROSS_SERVER_ADDRESS
-PANIC_SERVER_ADDRESS byond://s1.station13.ru:1986
+#PANIC_SERVER_ADDRESS YOURADDRESSHERE
 
 ##Name of the place to send people rejected by the bunker
-PANIC_SERVER_NAME [Put the name here]
+#PANIC_SERVER_NAME [Put the name here]
 
 ## Uncomment to have the changelog file automatically open when a user connects and hasn't seen the latest changelog
 #AGGRESSIVE_CHANGELOG
@@ -363,9 +357,9 @@ CLIENT_ERROR_BUILD 1421
 ## Admins are exempt from these limits.
 ## Hitting the minute limit notifies admins.
 ## Set to 0 or comment out to disable.
-SECOND_TOPIC_LIMIT 10
+SECOND_TOPIC_LIMIT 20
 
-MINUTE_TOPIC_LIMIT 60
+MINUTE_TOPIC_LIMIT 300
 
 
 ## CLICK RATE LIMITING
@@ -376,7 +370,7 @@ MINUTE_TOPIC_LIMIT 60
 ## Set to 0 to disable.
 SECOND_CLICK_LIMIT 10
 
-MINUTE_CLICK_LIMIT 600
+MINUTE_CLICK_LIMIT 800
 
 ##Error handling related options
 ## The "cooldown" time for each occurence of a unique error
@@ -427,10 +421,6 @@ DISABLE_HIGH_POP_MC_MODE_AMOUNT 125
 ## Uncomment to prevent the world from sleeping while no players are connected after initializations
 #RESUME_AFTER_INITIALIZATIONS
 
-## Uncomment to set the number of /world/Reboot()s before the DreamDaemon restarts itself. 0 means restart every round. Requires tgstation server tools.
-#ROUNDS_UNTIL_HARD_RESTART 10
-
-
 ##Default view size, in tiles.
 ##	By default, this is 15x15, which gets simplified to 7 by byond
 ##  15x15 would be the standard square view. 21x15 is what goonstation uses for widescreen.
@@ -453,16 +443,6 @@ CENTCOM_BAN_DB https://centcom.melonmesa.com/ban/search
 ## Uncomment to enable source whitelisting, a comma-separated list (no spaces) of CentCom sources (sourceName).
 ## If enabled, only bans from these servers will be shown to admins using CentCom. The default sources list is an example.
 #CENTCOM_SOURCE_WHITELIST Beestation MRP,TGMC,FTL13
-
-## STABLE?
-
-# THIS_SHIT_IS_STABLE
-
-## How long in seconds after which a hard delete is treated as causing lag. This can be a float and supports a precision as low as nanoseconds.
-HARD_DELETES_OVERRUN_THRESHOLD 2
-
-## Once a typepath causes overrun from hard deletes this many times, stop hard deleting it on garbage collection failures. (set to 0 to disable)
-HARD_DELETES_OVERRUN_LIMIT 5
 
 ## The URL to the webhook for adminhelps to relay the urgent ahelp message to
 ## If not set, will disable urgent ahelps.

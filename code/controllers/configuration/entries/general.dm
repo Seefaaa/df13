@@ -66,8 +66,6 @@
 /datum/config_entry/flag/log_adminchat	// log admin chat messages
 	protection = CONFIG_ENTRY_LOCKED
 
-/datum/config_entry/flag/log_twitter	// log certain expliotable parrots and other such fun things in a JSON file of twitter valid phrases.
-
 /datum/config_entry/flag/log_world_topic	// log all world.Topic() calls
 
 /datum/config_entry/flag/log_manifest	// log crew manifest to seperate file
@@ -265,11 +263,6 @@
 	config_entry_value = null
 	min_val = 0
 
-
-/datum/config_entry/number/panic_bunker_cap
-	config_entry_value = 75
-	min_val = 0
-
 /datum/config_entry/number/soft_popcap
 	config_entry_value = null
 	min_val = 0
@@ -429,37 +422,17 @@
 	if(. && Master.current_runlevel)
 		world.sleep_offline = !config_entry_value
 
-/datum/config_entry/number/rounds_until_hard_restart
-	config_entry_value = -1
-	min_val = 0
-
 /datum/config_entry/string/default_view
 	config_entry_value = "15x15"
 
 /datum/config_entry/string/default_view_square
 	config_entry_value = "15x15"
 
-/datum/config_entry/flag/reopen_roundstart_suicide_roles
-
-/datum/config_entry/flag/reopen_roundstart_suicide_roles_command_positions
-
-/datum/config_entry/number/reopen_roundstart_suicide_roles_delay
-	min_val = 30
-
-/datum/config_entry/flag/reopen_roundstart_suicide_roles_command_report
-
 /datum/config_entry/flag/auto_profile
-
-/datum/config_entry/string/metacurrency_name
-	config_entry_value = "MetaCoin"
 
 /datum/config_entry/string/centcom_ban_db	// URL for the CentCom Galactic Ban DB API
 
 /datum/config_entry/string/centcom_source_whitelist
-
-/datum/config_entry/flag/this_shit_is_stable
-
-/datum/config_entry/flag/df_enabled
 
 /datum/config_entry/number/urgent_ahelp_cooldown
 	default = 300
