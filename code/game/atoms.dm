@@ -1143,26 +1143,8 @@
 		if(!materials)
 			to_chat(usr, span_warning("This atom doesn't have a preset material, if this is not supposed to happen, contact the coders."))
 			return
-		// single material atom
-		if(!islist(materials))
-			var/answer = input(usr, "Select new material for [src.name]", "Material") as null|anything in SSmaterials.materials
-			if(!answer || !ispath(answer))
-				return
-			apply_material(answer)
-			update_stats()
-		else
-			var/list/new_materials = list()
-			for(var/part_name in materials)
-				if(part_name == PART_NONE)
-					to_chat(usr, span_warning("This atom has an invalid part name in its materials!"))
-					CRASH("Encountered invalid part name for [src] in materials list.")
-				var/answer = input(usr, "Select new material for part: [part_name].", "Material") as null|anything in SSmaterials.materials
-				if(!answer || !ispath(answer))
-					return
-				new_materials[part_name] = answer
-			apply_material(new_materials)
-			update_stats()
-
+		var/datum/browser/modal/material_menu/popup = new(usr, "material_menu", "Material Menu", 500, 200, src, Timeout=0)
+		popup.open()
 	if(href_list[VV_HK_AUTO_RENAME] && check_rights(R_VAREDIT))
 		var/newname = input(usr, "What do you want to rename this to?", "Automatic Rename") as null|text
 		// Check the new name against the chat filter. If it triggers the IC chat filter, give an option to confirm.
