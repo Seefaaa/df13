@@ -41,6 +41,10 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
 	span_green("With immense effort I feel like I've reachen a new enlightment in [name]! I now consider myself a grand master [title]."),
 	span_green("Through incredible determination and effort, I've reached the peak of my [name] abiltities. I'm finally able to consider myself a legendary [title]!") )
 
+/datum/skill/Destroy(force, ...)
+	owner = null
+	. = ..()
+
 /**
  * level_gained: Gives skill levelup messages to the user
  *

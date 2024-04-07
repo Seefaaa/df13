@@ -30,6 +30,8 @@
 	remove_from_alive_mob_list()
 	remove_from_mob_suicide_list()
 	focus = null
+	for(var/datum/skill/s in known_skills)
+		qdel(s)
 	if(length(progressbars))
 		stack_trace("[src] destroyed with elements in its progressbars list")
 		progressbars = null
