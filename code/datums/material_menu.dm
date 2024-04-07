@@ -21,8 +21,9 @@
 		dat += "<br>"
 		dat += build_options(selected_material=parent.materials)
 	if(isobj(parent))
+		var/obj/O = parent
 		dat += "<br><label for='grade_input'>Grade(1-6):</label>"
-		dat += "<input type='number' min='1' max='6' name='grade_input' id='grade_input' class='grade_select' value='1'>"
+		dat += "<input type='number' min='1' max='6' name='grade_input' id='grade_input' class='grade_select' value='[O.grade]'>"
 	dat += "<br><center><button onclick='send_topic(\"\ref[src]\")'>Update</button></center>"
 	return dat.Join("")
 
