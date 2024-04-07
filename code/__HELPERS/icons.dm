@@ -1355,3 +1355,7 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 		filters -= filters[filter_index]
 	//else
 	//	filters = null
+
+/proc/icon_exists(file, state)
+	var/list/icon_states = icon_states(file)
+	return (state in icon_states)

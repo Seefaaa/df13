@@ -67,11 +67,20 @@
 							observers = null
 							break
 
-		var/icon_file = I.lefthand_file
-		if(get_held_index_of_item(I) % 2 == 0)
-			icon_file = I.righthand_file
+		var/righthand = get_held_index_of_item(I) % 2 == 0
+		var/icon_file = righthand ? I.righthand_file : I.lefthand_file
+		var/species_default_file = righthand ? /datum/species::righthand_icon : /datum/species::lefthand_icon
+		var/species_specific_file = righthand ? dna.species.righthand_icon : dna.species.lefthand_icon
+		var/used_icon = icon_file
 
-		hands += I.build_worn_icon(default_layer = HANDS_LAYER, default_icon_file = icon_file, isinhands = TRUE)
+		if(icon_exists(species_specific_file, I.inhand_icon_state || I.icon_state))
+			used_icon = species_specific_file
+		else if(icon_exists(species_default_file, I.inhand_icon_state || I.icon_state))
+			used_icon = species_default_file
+		else
+			used_icon = icon_file
+
+		hands += I.build_worn_icon(default_layer = HANDS_LAYER, default_icon_file = used_icon, isinhands = TRUE)
 
 	overlays_standing[HANDS_LAYER] = hands
 	apply_overlay(HANDS_LAYER)
@@ -121,7 +130,10 @@
 
 	if(wear_mask)
 		if(!(check_obscured_slots() & ITEM_SLOT_MASK))
-			overlays_standing[FACEMASK_LAYER] = wear_mask.build_worn_icon(default_layer = FACEMASK_LAYER, default_icon_file = 'dwarfs/icons/mob/clothing/mask.dmi')
+			var/used_icon = /datum/species::mask_icon
+			if(icon_exists(dna.species.mask_icon, wear_mask.worn_icon_state || wear_mask.icon_state))
+				used_icon = dna.species.mask_icon
+			overlays_standing[FACEMASK_LAYER] = wear_mask.build_worn_icon(default_layer = FACEMASK_LAYER, default_icon_file = used_icon)
 		update_hud_wear_mask(wear_mask)
 
 	apply_overlay(FACEMASK_LAYER)
@@ -135,7 +147,10 @@
 
 	if(wear_neck)
 		if(!(check_obscured_slots() & ITEM_SLOT_NECK))
-			overlays_standing[NECK_LAYER] = wear_neck.build_worn_icon(default_layer = NECK_LAYER, default_icon_file = 'dwarfs/icons/mob/clothing/neck.dmi')
+			var/used_icon = /datum/species::neck_icon
+			if(icon_exists(dna.species.neck_icon, wear_neck.worn_icon_state || wear_neck.icon_state))
+				used_icon = dna.species.neck_icon
+			overlays_standing[NECK_LAYER] = wear_neck.build_worn_icon(default_layer = NECK_LAYER, default_icon_file = used_icon)
 		update_hud_neck(wear_neck)
 
 	apply_overlay(NECK_LAYER)
@@ -148,7 +163,10 @@
 		inv.update_icon()
 
 	if(back)
-		overlays_standing[BACK_LAYER] = back.build_worn_icon(default_layer = BACK_LAYER, default_icon_file = 'dwarfs/icons/mob/clothing/back.dmi')
+		var/used_icon = /datum/species::back_icon
+		if(icon_exists(dna.species.back_icon, back.worn_icon_state || back.icon_state))
+			used_icon = dna.species.back_icon
+		overlays_standing[BACK_LAYER] = back.build_worn_icon(default_layer = BACK_LAYER, default_icon_file = used_icon)
 		update_hud_back(back)
 
 	apply_overlay(BACK_LAYER)
@@ -164,7 +182,10 @@
 		inv.update_icon()
 
 	if(head)
-		overlays_standing[HEAD_LAYER] = head.build_worn_icon(default_layer = HEAD_LAYER, default_icon_file = 'dwarfs/icons/mob/clothing/head.dmi')
+		var/used_icon = /datum/species::head_icon
+		if(icon_exists(dna.species.head_icon, head.worn_icon_state || head.icon_state))
+			used_icon = dna.species.head_icon
+		overlays_standing[HEAD_LAYER] = head.build_worn_icon(default_layer = HEAD_LAYER, default_icon_file = used_icon)
 		update_hud_head(head)
 
 	apply_overlay(HEAD_LAYER)
