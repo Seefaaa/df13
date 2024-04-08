@@ -1,4 +1,3 @@
-// To make dwarven only jumpsuits, add this species' path to the clothing's species_exception list. By default jumpsuits don't fit dwarven since they're big boned
 /datum/species/goblin
 	name = "Goblin"
 	id = "goblin"
@@ -20,6 +19,8 @@
 		BODY_ZONE_L_LEG = /obj/item/bodypart/l_leg/goblin,\
 		BODY_ZONE_R_LEG = /obj/item/bodypart/r_leg/goblin,\
 		BODY_ZONE_CHEST = /obj/item/bodypart/chest/goblin)
+
+	back_icon = 'dwarfs/icons/mob/clothing/back/goblin.dmi'
 
 
 /datum/species/goblin/check_roundstart_eligible()

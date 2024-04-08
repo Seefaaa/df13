@@ -35,7 +35,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	var/head_icon = 'dwarfs/icons/mob/clothing/head.dmi'
 	var/mask_icon = 'dwarfs/icons/mob/clothing/mask.dmi'
 	var/neck_icon = 'dwarfs/icons/mob/clothing/neck.dmi'
-	var/back_icon = 'dwarfs/icons/mob/clothing/back.dmi'
+	var/back_icon = 'dwarfs/icons/mob/clothing/back/back.dmi'
 	var/ears_icon = 'dwarfs/icons/mob/clothing/ears.dmi'
 	var/eyes_icon = 'dwarfs/icons/mob/clothing/eyes.dmi'
 	var/s_store_icon = 'dwarfs/icons/mob/clothing/suit_storage.dmi'

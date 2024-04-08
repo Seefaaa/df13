@@ -2,7 +2,6 @@
 	name = "satchel"
 	desc = "You wear this on your back and put items into it."
 	icon = 'dwarfs/icons/items/storage.dmi'
-	worn_icon = 'dwarfs/icons/mob/clothing/back.dmi'
 	icon_state = "satchel"
 	inhand_icon_state = "satchel"
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'

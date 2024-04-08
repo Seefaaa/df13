@@ -3,7 +3,6 @@
 	desc = "How does it work?"
 	icon = 'dwarfs/icons/items/storage.dmi'
 	icon_state = "soil_bag"
-	worn_icon = 'dwarfs/icons/mob/clothing/back.dmi'
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	component_type = /datum/component/storage/concrete/stack
