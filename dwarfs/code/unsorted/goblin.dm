@@ -1,7 +1,7 @@
 /datum/species/goblin
 	name = "Goblin"
 	id = "goblin"
-	species_traits = list(NO_UNDERWEAR)
+	species_traits = list(NO_UNDERWEAR, EYECOLOR)
 	mutant_bodyparts = list("mcolor" = "FFF", "wings" = "None")
 	use_skintones = 0
 	sexes = FALSE
