@@ -50,7 +50,8 @@
 #include "combat.dm"
 #include "component_tests.dm"
 #include "connect_loc.dm"
-#include "create_and_destroy.dm"
+// #include "create_and_destroy.dm"
+// Disabled due to being very inconsistent with random atoms getting false positives(?) Likely due to some kind of race conditions
 #include "emoting.dm"
 #include "keybinding_init.dm"
 #include "outfit_sanity.dm"
