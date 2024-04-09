@@ -29,9 +29,9 @@
 	loaded_projectile.firer = user
 	loaded_projectile.fired_from = fired_from
 
-	loaded_projectile.damage = initial(loaded_projectile.damage) + extra_damage
+	loaded_projectile.damage += extra_damage
 	if(isnum(extra_penetration))
-		loaded_projectile.armour_penetration = initial(loaded_projectile.armour_penetration) + extra_penetration
+		loaded_projectile.armour_penetration += extra_penetration
 
 	if (zone_override)
 		loaded_projectile.def_zone = zone_override
@@ -42,6 +42,8 @@
 		var/obj/item/gun/G = fired_from
 		loaded_projectile.damage *= G.projectile_damage_multiplier
 		loaded_projectile.stamina *= G.projectile_damage_multiplier
+		if(G.ranged_skill)
+			loaded_projectile.damage += user.get_skill_modifier(G.ranged_skill, SKILL_DAMAGE_MODIFIER)
 
 	if(reagents && loaded_projectile.reagents)
 		reagents.trans_to(loaded_projectile, reagents.total_volume, transfered_by = user) //For chemical darts/bullets

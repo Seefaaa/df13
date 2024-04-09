@@ -16,7 +16,7 @@
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human)
 	var/obj/item/kitchen/knife/knife = allocate(/obj/item/kitchen/knife)
 
-	knife.skill = /datum/skill/combat/dagger
+	knife.melee_skill = /datum/skill/combat/dagger
 	tider.adjust_experience(/datum/skill/combat/dagger, SKILL_EXP_LEGEND)
 
 	tider.put_in_active_hand(knife, forced = TRUE)
@@ -43,7 +43,7 @@
 	var/mob/living/carbon/human/victim = allocate(/mob/living/carbon/human)
 	var/obj/item/kitchen/knife/knife = allocate(/obj/item/kitchen/knife)
 
-	knife.skill = /datum/skill/combat/dagger
+	knife.melee_skill = /datum/skill/combat/dagger
 	attacker.adjust_experience(/datum/skill/combat/dagger, SKILL_EXP_LEGEND)
 
 	RegisterSignal(knife, COMSIG_ITEM_PRE_ATTACK, PROC_REF(pre_attack_hit))

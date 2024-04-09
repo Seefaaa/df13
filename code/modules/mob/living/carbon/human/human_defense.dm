@@ -79,9 +79,9 @@
 
 				return BULLET_ACT_FORCE_PIERCE // complete projectile permutation
 
-		if(check_shields(null, P, "[P.name]"))
+		if(check_shields(null, P, "[P.name]", used_case=PARRY_CASE_PROJECTILE))
 			P.on_hit(src, 100, def_zone, piercing_hit)
-			return BULLET_ACT_HIT
+			return BULLET_ACT_BLOCK
 
 	return ..()
 
@@ -113,10 +113,10 @@
 	if(offhand && istype(offhand, /obj/item/shield))
 		to_parry = offhand
 
-	if(to_parry && !to_parry?.skill) // we are blocking with something that isn't a weapon or a fist
+	if(to_parry && !to_parry?.melee_skill) // we are blocking with something that isn't a weapon or a fist
 		return FALSE
 
-	var/datum/skill/combat/used_skill = to_parry ? to_parry.skill : /datum/skill/combat/martial
+	var/datum/skill/combat/used_skill = to_parry ? to_parry.melee_skill : /datum/skill/combat/martial
 	var/skill_level = get_skill_level(used_skill)
 	var/parry_chance = get_skill_modifier(used_skill, SKILL_PARRY_MODIFIER) * chance_multiplier + (to_parry ? to_parry.block_chance : 0)
 	var/parry_sound = to_parry ? to_parry.parrysound : 'sound/effects/hit_punch.ogg'
@@ -129,6 +129,9 @@
 	else if(ismob(AM) && used_case == PARRY_CASE_HAND)
 		parry_chance *= initial(used_skill.hand_parry_modifier)
 		min_level = initial(used_skill.hand_parry_level)
+	else if(isprojectile(AM) && used_case == PARRY_CASE_PROJECTILE)
+		parry_chance *= initial(used_skill.projectile_parry_modifier)
+		min_level = initial(used_skill.projectile_parry_level)
 
 	// max out at 99% so we at least have a small chance at getting a hit in
 	parry_chance = min(parry_chance, 99)

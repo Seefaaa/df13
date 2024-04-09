@@ -17,7 +17,7 @@
 	max_integrity = 150
 	resistance_flags = FIRE_PROOF
 	reach = 2
-	skill = /datum/skill/combat/longsword
+	melee_skill = /datum/skill/combat/longsword
 	melee_cd = 2 SECONDS
 	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
@@ -46,7 +46,7 @@
 	block_chance = 0
 	max_integrity = 50
 	resistance_flags = FIRE_PROOF
-	skill = /datum/skill/combat/flail
+	melee_skill = /datum/skill/combat/flail
 	melee_cd = 1 SECONDS
 	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
@@ -69,7 +69,7 @@
 	atck_type = SHARP
 	max_integrity = 20
 	resistance_flags = FIRE_PROOF
-	skill = /datum/skill/combat/dagger
+	melee_skill = /datum/skill/combat/dagger
 	melee_cd = 0.6 SECONDS
 	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
@@ -104,7 +104,7 @@
 	atck_type = SHARP
 	max_integrity = 50
 	resistance_flags = FIRE_PROOF
-	skill = /datum/skill/combat/sword
+	melee_skill = /datum/skill/combat/sword
 	melee_cd = 1 SECONDS
 	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
@@ -128,7 +128,7 @@
 	reach = 2
 	atck_type = PIERCE
 	max_integrity = 50
-	skill = /datum/skill/combat/spear
+	melee_skill = /datum/skill/combat/spear
 	melee_cd = 1.2 SECONDS
 	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
@@ -151,7 +151,7 @@
 	atck_type = BLUNT
 	force = 20
 	reach = 2
-	skill = /datum/skill/combat/hammer
+	melee_skill = /datum/skill/combat/hammer
 	melee_cd = 1.5 SECONDS
 	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 
@@ -180,7 +180,7 @@
 	atck_type = PIERCE
 	max_integrity = 50
 	resistance_flags = FIRE_PROOF
-	skill = /datum/skill/combat/halberd
+	melee_skill = /datum/skill/combat/halberd
 	tool_behaviour = TOOL_AXE
 	melee_cd = 1.2 SECONDS
 	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
@@ -255,7 +255,7 @@
 	atck_type = BLUNT
 	w_class = WEIGHT_CLASS_BULKY
 	parrysound = 'dwarfs/sounds/weapons/shield/shield_parry.ogg'
-	skill = /datum/skill/combat/shield
+	melee_skill = /datum/skill/combat/shield
 	materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/iron)
 
 /obj/item/shield/build_material_icon(_file, state)
@@ -287,7 +287,7 @@
 	tool_behaviour = TOOL_AXE
 	toolspeed = 2
 	force = 20
-	skill = /datum/skill/combat/axe
+	melee_skill = /datum/skill/combat/axe
 	melee_cd = 1 SECONDS
 	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
 

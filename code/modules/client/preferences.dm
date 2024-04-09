@@ -1479,6 +1479,7 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 	var/list/data = list()
 	var/list/available_skills = subtypesof(/datum/skill)
 	available_skills.Remove(/datum/skill/combat)
+	available_skills.Remove(/datum/skill/ranged)
 	var/list/askills = list()
 	for(var/skilltype in available_skills)
 		var/datum/skill/S = skilltype

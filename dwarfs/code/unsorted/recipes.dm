@@ -190,6 +190,23 @@
 	max_resulting = 3
 	cat = SMITHING_RECIPE_MISC
 
+/datum/smithing_recipe/arrow_head
+	name = "\[part\] arrow"
+	result = /obj/item/partial/arrow_head
+	max_resulting = 6
+	cat = SMITHING_RECIPE_WEAPONS
+
+/datum/smithing_recipe/bolt_head
+	name = "\[part\] bolt"
+	result = /obj/item/partial/bolt_head
+	max_resulting = 6
+	cat = SMITHING_RECIPE_WEAPONS
+
+/datum/smithing_recipe/crossbow_parts
+	name = "\[part\] crossbow"
+	result = /obj/item/partial/crossbow
+	cat = SMITHING_RECIPE_WEAPONS
+
 // /datum/smithing_recipe/trowel
 // 	name = "trowel"
 // 	result = /obj/item/trowel
@@ -368,6 +385,26 @@
 	name = "large shield"
 	result = /obj/item/shield/large
 	reqs = list(/obj/item/stack/sheet/planks=8, /obj/item/partial/shield=1)
+
+/datum/crafter_recipe/workbench_recipe/arrow
+	name = "arrow"
+	result = /obj/item/ammo_casing/caseless/bow_arrow
+	reqs = list(/obj/item/stick=1, /obj/item/partial/arrow_head=1)
+
+/datum/crafter_recipe/workbench_recipe/bolt
+	name = "bolt"
+	result = /obj/item/ammo_casing/caseless/crossbow_arrow
+	reqs = list(/obj/item/stick=1, /obj/item/partial/bolt_head=1)
+
+/datum/crafter_recipe/workbench_recipe/bow
+	name = "bow"
+	result = /obj/item/gun/bow
+	reqs = list(/obj/item/stack/sheet/planks=2, /obj/item/stack/sheet/string=3)
+
+/datum/crafter_recipe/workbench_recipe/crossbow
+	name = "crossbow"
+	result = /obj/item/gun/crossbow
+	reqs = list(/obj/item/stack/sheet/planks=3, /obj/item/stack/sheet/string=2, /obj/item/partial/crossbow=1)
 
 /datum/crafter_recipe/carpenter_recipe
 	affecting_skill = /datum/skill/logging

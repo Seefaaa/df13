@@ -189,8 +189,10 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 	var/offensive_notes
 	/// Used in obj/item/examine to determines whether or not to detail an item's statistics even if it does not meet the force requirements
 	var/override_notes = FALSE
-	/// Used skill in combat; affects dodges and misses
-	var/datum/skill/combat/skill
+	/// Used skill in melee combat; affects dodges, damage, misses, etc.
+	var/datum/skill/combat/melee_skill
+	/// Ranged skill used by this gun
+	var/datum/skill/ranged/ranged_skill
 
 /obj/item/Initialize()
 	if(isnum(armor_penetration))

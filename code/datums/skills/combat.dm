@@ -14,6 +14,8 @@
 	var/weapon_parry_level = 1
 	var/hand_parry_modifier = 1
 	var/hand_parry_level = 1
+	var/projectile_parry_modifier = 1
+	var/projectile_parry_level = 1
 
 /datum/skill/combat/martial
 	name = "Martial Arts"
@@ -28,6 +30,8 @@
 	weapon_parry_modifier = 0.5
 	weapon_parry_level = 7
 	exp_per_parry = 28
+	projectile_parry_level = 9
+	projectile_parry_modifier = 0.25
 
 /datum/skill/combat/shield
 	name = "Shield Combat"
@@ -39,6 +43,8 @@
 			SKILL_DAMAGE_MODIFIER=list(0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 4))
 	exp_per_parry = 23
 	exp_per_attack = 2
+	projectile_parry_level = 1
+	projectile_parry_modifier = 1.2
 
 /datum/skill/combat/dagger
 	name = "Dagger Combat"
@@ -50,6 +56,8 @@
 			SKILL_DAMAGE_MODIFIER=list(0, 0, 0, 0, 0, 1, 1, 2, 2, 2, 3))
 	exp_per_parry = 7
 	exp_per_attack = 7
+	projectile_parry_level = 7
+	projectile_parry_modifier = 0.5
 
 /datum/skill/combat/sword
 	name = "Sword Combat"
@@ -61,6 +69,8 @@
 			SKILL_DAMAGE_MODIFIER=list(0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 4))
 	exp_per_parry = 20
 	exp_per_attack = 15
+	projectile_parry_level = 5
+	projectile_parry_modifier = 0.75
 
 /datum/skill/combat/longsword
 	name = "Greatsword Combat"
@@ -72,6 +82,8 @@
 			SKILL_DAMAGE_MODIFIER=list(0, 0, 1, 1, 2, 2, 2, 3, 3, 4, 4))
 	exp_per_parry = 20
 	exp_per_attack = 25
+	projectile_parry_level = 5
+	projectile_parry_modifier = 0.8
 
 /datum/skill/combat/hammer
 	name = "Greathammer Combat"
@@ -83,6 +95,8 @@
 			SKILL_DAMAGE_MODIFIER=list(0, 0, 1, 2, 2, 2, 3, 3, 3, 4, 4))
 	exp_per_parry = 20
 	exp_per_attack = 25
+	projectile_parry_level = 8
+	projectile_parry_modifier = 0.4
 
 /datum/skill/combat/flail
 	name = "Mace Combat"
@@ -94,6 +108,8 @@
 			SKILL_DAMAGE_MODIFIER=list(0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3))
 	exp_per_parry = 25
 	exp_per_attack = 20
+	projectile_parry_level = 8
+	projectile_parry_modifier = 0.3
 
 /datum/skill/combat/spear
 	name = "Spear Combat"
@@ -105,6 +121,8 @@
 			SKILL_DAMAGE_MODIFIER=list(0, 1, 1, 1, 1, 2, 2, 3, 3, 4, 5))
 	exp_per_parry = 15
 	exp_per_attack = 33
+	projectile_parry_level = 10
+	projectile_parry_modifier = 0.4
 
 /datum/skill/combat/halberd
 	name = "Halberd Combat"
@@ -116,6 +134,8 @@
 			SKILL_DAMAGE_MODIFIER=list(0, 0, 0, 1, 2, 2, 2, 3, 3, 4, 6))
 	exp_per_parry = 20
 	exp_per_attack = 35
+	projectile_parry_level = 10
+	projectile_parry_modifier = 0.4
 
 /datum/skill/combat/axe
 	name = "Battleaxe Combat"
@@ -127,3 +147,5 @@
 			SKILL_DAMAGE_MODIFIER=list(0, 0, 0, 1, 2, 2, 2, 3, 3, 4, 6))
 	exp_per_parry = 15
 	exp_per_attack = 20
+	projectile_parry_level = 8
+	projectile_parry_modifier = 0.5

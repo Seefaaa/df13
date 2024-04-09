@@ -122,3 +122,18 @@
 	name = "frying pan head"
 	icon_state = "pan_part"
 	part_name = PART_HEAD
+
+/obj/item/partial/arrow_head
+	name = "arrow head"
+	icon_state = "arrow_head"
+	part_name = PART_HEAD
+
+/obj/item/partial/bolt_head
+	name = "bolt head"
+	icon_state = "bolt_head"
+	part_name = PART_HEAD
+
+/obj/item/partial/crossbow
+	name = "crossbow parts"
+	icon_state = "crossbow_parts"
+	part_name = PART_HEAD

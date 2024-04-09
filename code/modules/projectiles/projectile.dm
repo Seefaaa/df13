@@ -223,6 +223,12 @@
 	if(isliving(target))
 		var/mob/living/L = target
 		hit_limb = L.check_limb_hit(def_zone)
+		if(isgun(fired_from) && ismob(firer))
+			var/obj/item/gun/G = fired_from
+			if(G.ranged_skill)
+				var/mob/F = firer
+				if(L.stat == CONSCIOUS)
+					F.adjust_experience(G.ranged_skill, initial(G.ranged_skill.exp_per_hit) * ((blocked == 100) ? 0.3 : 1))
 	SEND_SIGNAL(src, COMSIG_PROJECTILE_SELF_ON_HIT, firer, target, Angle, hit_limb)
 
 	if(QDELETED(src)) // in case one of the above signals deleted the projectile for whatever reason
@@ -650,6 +656,11 @@
 		AddElement(/datum/element/embed, projectile_payload = shrapnel_type)
 	if(!log_override && firer && original)
 		log_combat(firer, original, "fired at", src, "from [get_area_name(src, TRUE)]")
+	if(isgun(fired_from) && ismob(firer))
+		var/obj/item/gun/G = fired_from
+		if(G.ranged_skill)
+			var/mob/F = firer
+			F.adjust_experience(G.ranged_skill, initial(G.ranged_skill.exp_per_shot))
 	if(direct_target && (get_dist(direct_target, get_turf(src)) <= 1)) // point blank shots
 		process_hit(get_turf(direct_target), direct_target)
 		if(QDELETED(src))

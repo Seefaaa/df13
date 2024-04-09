@@ -23,5 +23,6 @@
 				if(!iswallturf(W))
 					T = W
 					break
-		new ammo_type(T)
+		var/obj/A = new ammo_type(T)
+		A.apply_material(materials)
 		dropped = TRUE

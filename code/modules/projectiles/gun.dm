@@ -126,7 +126,8 @@
 
 /obj/item/gun/proc/shoot_with_empty_chamber(mob/living/user as mob|obj)
 	to_chat(user, span_danger("[src] is not loaded!"))
-	playsound(src, dry_fire_sound, 30, TRUE)
+	if(dry_fire_sound)
+		playsound(src, dry_fire_sound, 30, TRUE)
 
 
 /obj/item/gun/proc/shoot_live_shot(mob/living/user, pointblank = 0, atom/pbtarget = null, message = 1)

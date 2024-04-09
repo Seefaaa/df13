@@ -40,6 +40,8 @@
 	. = ..()
 	if(projectile_type)
 		loaded_projectile = new projectile_type(src)
+		loaded_projectile.apply_material(materials)
+		loaded_projectile.update_stats(grade)
 	pixel_x = base_pixel_x + rand(-10, 10)
 	pixel_y = base_pixel_y + rand(-10, 10)
 	setDir(pick(GLOB.alldirs))
