@@ -9,7 +9,6 @@
 	inhand_icon_state = "crossbow"
 	worn_icon_state = "crossbow"
 	materials = list(PART_PLANKS=/datum/material/wood/treated, PART_HEAD=/datum/material/iron, PART_CLOTH=/datum/material/cloth/pig_tail_cotton)
-	init_materials = 1
 	dry_fire_sound = null
 	fire_sound = 'dwarfs/sounds/tools/crossbow/shot.wav'
 	ranged_skill = /datum/skill/ranged/crossbow
@@ -67,7 +66,6 @@
 	icon_state = "crossbow_arrow"
 	projectile_type = /obj/projectile/bullet/reusable/crossbow_arrow
 	materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/iron)
-	init_materials = 1
 	caliber = CALIBER_CROSSBOW
 
 /obj/item/ammo_casing/caseless/crossbow_arrow/build_material_icon(_file, state)
@@ -115,7 +113,6 @@
 	inhand_icon_state = "bow"
 	worn_icon_state = "bow"
 	materials = list(PART_PLANKS=/datum/material/wood/treated, PART_CLOTH=/datum/material/cloth/pig_tail_cotton)
-	init_materials = 1
 	dry_fire_sound = null
 	fire_sound = 'dwarfs/sounds/tools/bow/shot.wav'
 	ranged_skill = /datum/skill/ranged/bow
@@ -188,7 +185,6 @@
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	projectile_type = /obj/projectile/bullet/reusable/bow_arrow
 	materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/iron)
-	init_materials = 1
 	caliber = CALIBER_ARROW
 
 /obj/item/ammo_casing/caseless/bow_arrow/build_material_icon(_file, state)

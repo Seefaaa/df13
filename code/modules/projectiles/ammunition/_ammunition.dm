@@ -74,6 +74,12 @@
 	icon_state = "[initial(icon_state)][loaded_projectile ? "-live" : ""]"
 	desc = "[initial(desc)][loaded_projectile ? null : " This one is spent."]"
 
+/obj/item/ammo_casing/apply_material(list/_materials)
+	. = ..()
+	if(loaded_projectile)
+		loaded_projectile.apply_material(_materials)
+		loaded_projectile.update_stats()
+
 /*
  * On accidental consumption, 'spend' the ammo, and add in some gunpowder
  */

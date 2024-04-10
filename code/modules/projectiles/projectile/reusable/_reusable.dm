@@ -25,4 +25,5 @@
 					break
 		var/obj/A = new ammo_type(T)
 		A.apply_material(materials)
+		A.update_stats(grade)
 		dropped = TRUE
