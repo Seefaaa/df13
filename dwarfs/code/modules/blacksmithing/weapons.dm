@@ -33,14 +33,15 @@
 	name = "flail"
 	desc = "Flail to crush your enemies. Lies comfy in one hand."
 	icon = 'dwarfs/icons/items/weapons.dmi'
-	icon_state = "cep"
+	icon_state = "flail"
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
-	inhand_icon_state = "cep"
+	inhand_icon_state = "flail"
 	force = 20
 	atck_type = BLUNT
 	throwforce = 25
 	w_class = WEIGHT_CLASS_BULKY
+	slot_flags = ITEM_SLOT_BACK | ITEM_SLOT_SUITSTORE
 	attack_verb_simple = list("hit")
 	attack_verb_continuous = list("hits")
 	block_chance = 0
