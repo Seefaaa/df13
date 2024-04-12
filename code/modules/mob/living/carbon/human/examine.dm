@@ -360,11 +360,11 @@
 		if(-INFINITY to 25)
 			age_text = "very young"
 		if(26 to 35)
-			age_text = "young"
+			age_text = "of adult age"
 		if(36 to 55)
 			age_text = "middle-aged"
 		if(56 to 75)
-			age_text = "old enough"
+			age_text = "rather old"
 		if(76 to 100)
 			age_text = "an elderly "
 			if(gender == FEMALE)
