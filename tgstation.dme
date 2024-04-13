@@ -1246,6 +1246,8 @@
 #include "dwarfs\code\modules\tailoring\cloth.dm"
 #include "dwarfs\code\modules\tailoring\loom.dm"
 #include "dwarfs\code\modules\tailoring\tailor_table.dm"
+#include "dwarfs\code\modules\wandofmagic\magicstaffs.dm"
+#include "dwarfs\code\modules\wandofmagic\undeads.dm"
 #include "dwarfs\code\structures\altar.dm"
 #include "dwarfs\code\structures\basecrafter.dm"
 #include "dwarfs\code\structures\beacon.dm"
