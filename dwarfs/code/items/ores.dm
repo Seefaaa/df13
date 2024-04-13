@@ -42,7 +42,7 @@
 	 . = ..()
 
 /obj/item/stack/sheet/stone
-	name = "stone"
+	name = "brick"
 	desc = "Used in building."
 	singular_name = "Brick"
 	icon = 'dwarfs/icons/items/components.dmi'
