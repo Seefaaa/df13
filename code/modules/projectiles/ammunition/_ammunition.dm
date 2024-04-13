@@ -80,6 +80,11 @@
 		loaded_projectile.apply_material(_materials)
 		loaded_projectile.update_stats()
 
+/obj/item/ammo_casing/update_stats(_grade)
+	. = ..()
+	if(loaded_projectile)
+		loaded_projectile.update_stats(_grade)
+
 /*
  * On accidental consumption, 'spend' the ammo, and add in some gunpowder
  */

@@ -66,7 +66,7 @@
 	for(var/i in 1 to 15)//15 max item count defined above
 		var/obj/O = new /obj/item/ammo_casing/caseless/bow_arrow(src)
 		O.apply_material(arrow_materials)
-		O.apply_grade(arrow_grade)
+		O.update_stats(arrow_grade)
 
 /obj/item/storage/quiver/arrows/full/copper
 	arrow_materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/copper)
@@ -94,7 +94,7 @@
 	for(var/i in 1 to 15)//15 max item count defined above
 		var/obj/O = new /obj/item/ammo_casing/caseless/crossbow_arrow(src)
 		O.apply_material(arrow_materials)
-		O.apply_grade(arrow_grade)
+		O.update_stats(arrow_grade)
 
 /obj/item/storage/quiver/bolts/full/iron
 	arrow_materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/iron)

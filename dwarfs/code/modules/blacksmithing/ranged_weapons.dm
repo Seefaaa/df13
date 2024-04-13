@@ -71,10 +71,6 @@
 /obj/item/ammo_casing/caseless/crossbow_arrow/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
-/obj/item/ammo_casing/caseless/crossbow_arrow/update_stats(_grade)
-	. = ..()
-	loaded_projectile.update_stats(_grade)
-
 /obj/projectile/bullet/reusable/crossbow_arrow
 	name = "bolt"
 	icon_state = "crossbow_arrow"
@@ -189,10 +185,6 @@
 
 /obj/item/ammo_casing/caseless/bow_arrow/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
-
-/obj/item/ammo_casing/caseless/bow_arrow/update_stats(_grade)
-	. = ..()
-	loaded_projectile.update_stats(_grade)
 
 /obj/projectile/bullet/reusable/bow_arrow
 	name = "arrow"
