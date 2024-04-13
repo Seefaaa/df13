@@ -27,13 +27,13 @@
 	spawns = 2 + round(live_dwarves / 8)
 
 	switch(control.occurrences)
-		if(0 to 5)
+		if(0 to 2)
 			leader_outfit = /datum/outfit/goblin_raid_leader
 			warrior_outfit = /datum/outfit/goblin_raid_warrior
-		if(5 to 10)
+		if(2 to 4)
 			leader_outfit = /datum/outfit/goblin_raid_leader/middle
 			warrior_outfit = /datum/outfit/goblin_raid_warrior/middle
-		if(10 to INFINITY)
+		if(4 to INFINITY)
 			leader_outfit = /datum/outfit/goblin_raid_leader/hard
 			warrior_outfit = /datum/outfit/goblin_raid_warrior/hard
 
