@@ -68,6 +68,8 @@
 
 /obj/structure/onZImpact(turf/impacted_turf, levels, message)
 	. = ..()
+	if(QDELETED(src))
+		return
 	addtimer(CALLBACK(src, PROC_REF(obj_destruction)), 0.5 SECONDS)
 
 /obj/structure/proc/spawn_debris()
@@ -78,5 +80,7 @@
 	debris.materials = materials
 
 /obj/structure/obj_destruction(damage_flag)
+	if(QDELETED(src))
+		return
 	spawn_debris()
 	qdel(src)

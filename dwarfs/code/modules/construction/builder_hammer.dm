@@ -70,3 +70,26 @@
 	to_chat(usr, span_notice("Selected [initial(B.name)] for building."))
 	selected_blueprint = B
 	ui.close()
+
+/obj/item/builder_hammer/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
+	. = ..()
+	if(isopenturf(target) && proximity_flag)
+		var/turf/O = target
+		if(isopenspace(O) && !(locate(/obj/structure/lattice) in O))
+			return
+		if(!selected_blueprint)
+			to_chat(user, span_warning("[src] doesn't have a blueprint selected!"))
+			return
+		var/obj/structure/blueprint/B = new selected_blueprint
+		var/target_structure = B.target_structure
+		var/list/dimensions = B.dimensions
+		qdel(B)
+		if(!ispath(target_structure, /turf/open))
+			var/list/turfs = RECT_TURFS(dimensions[1], dimensions[2], O)
+			for(var/turf/T in turfs)
+				if(T.is_blocked_turf())
+					to_chat(user, span_warning("You have to free the space required to place the blueprint first!"))
+					return
+		var/obj/structure/blueprint/new_blueprint = new selected_blueprint(O)
+		new_blueprint.dir = user.dir
+		new_blueprint.update_appearance()

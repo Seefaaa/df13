@@ -175,24 +175,6 @@
 	if(user.a_intent == INTENT_HARM && istype(I, /obj/item/stack/sheet))
 		var/obj/item/stack/sheet/sheets = I
 		return sheets.on_attack_floor(user, params)
-	if(I.tool_behaviour == TOOL_BUILDER_HAMMER)
-		var/obj/item/builder_hammer/H = I
-		if(!H.selected_blueprint)
-			to_chat(user, span_warning("[H] doesn't have a blueprint selected!"))
-			return
-		var/obj/structure/blueprint/B = new H.selected_blueprint
-		var/target_structure = B.target_structure
-		var/list/dimensions = B.dimensions
-		qdel(B)
-		if(!ispath(target_structure, /turf/open))
-			var/list/turfs = RECT_TURFS(dimensions[1], dimensions[2], src)
-			for(var/turf/T in turfs)
-				if(T.is_blocked_turf())
-					to_chat(user, span_warning("You have to free the space required to place the blueprint first!"))
-					return
-		var/obj/structure/blueprint/new_blueprint = new H.selected_blueprint(src)
-		new_blueprint.dir = user.dir
-		new_blueprint.update_appearance()
 	else if(istype(I, /obj/item/sapling))
 		var/obj/item/offhand = user.get_inactive_held_item()
 		if(!offhand || offhand?.tool_behaviour != TOOL_SHOVEL)
