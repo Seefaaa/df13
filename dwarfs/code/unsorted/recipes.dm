@@ -519,3 +519,13 @@
 	name = "rag"
 	result = /obj/item/reagent_containers/glass/rag
 	reqs = list(/obj/item/stack/sheet/string=3)
+
+/datum/crafter_recipe/tailor_recipe/arrow_quiver
+	name = "arrow quiver"
+	result = /obj/item/storage/quiver/arrows
+	reqs = list(/obj/item/stack/sheet/leather=4)
+
+/datum/crafter_recipe/tailor_recipe/bolt_quiver
+	name = "bolt quiver"
+	result = /obj/item/storage/quiver/bolts
+	reqs = list(/obj/item/stack/sheet/leather=4)
