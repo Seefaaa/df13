@@ -26,23 +26,15 @@
 	var/arace = "human"
 	var/agender = "male"
 	if(iscarbon(A))
-		var/mob/living/carbon/human/species/D = A
+		var/mob/living/carbon/human/D = A
+
 		switch(D.gender)
 			if("female")
 				agender = "female"
 			else
 				agender = "male"
-		switch(D.race)
-			if(/datum/species/human)
-				arace = "human"
-			if(/datum/species/goblin)
-				arace = "goblin"
-			if(/datum/species/dwarf)
-				arace = "dwarf"
-//			if(/datum/species/elf)
-//				arace = "elf"
-			else
-				arace = "elf"
+
+		arace = D.dna.species.id || "elf"
 
 	spawn(0)
 		for(var/item in letter_count)
