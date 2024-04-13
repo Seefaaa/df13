@@ -6,7 +6,7 @@
 	health = 30
 	maxHealth = 30
 
-/mob/living/simple_animal/hostile/kobold/Initialize()
+/mob/living/simple_animal/hostile/retaliate/kobold/Initialize()
 	. = ..()
 	icon_state = pick("kobold", "kobold2")
 	icon_dead = icon_state + "_dead"
