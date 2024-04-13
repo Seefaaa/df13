@@ -27,10 +27,13 @@
 			return
 		playsound(src, 'dwarfs/sounds/tools/crossbow/reload.wav', 80, TRUE)
 		to_chat(user, span_notice("You start arming [src]..."))
-		var/time = 1.5 SECONDS
+		var/time = 1.5 SECONDS * toolspeed
+		var/action_flags = NONE
 		if(ranged_skill)
 			time *= user.get_skill_modifier(ranged_skill, SKILL_SPEED_MODIFIER)
-		if(do_after(user, time, src))
+		if(user.get_skill_level(ranged_skill) >= 5)
+			action_flags = IGNORE_USER_LOC_CHANGE
+		if(do_after(user, time, src, action_flags))
 			AC.forceMove(src)
 			chambered = AC
 			update_appearance()
@@ -60,6 +63,34 @@
 	else
 		icon_state = "crossbow"
 
+/obj/item/gun/crossbow/apply_grade(_grade)
+	. = ..()
+	switch(grade)
+		if(1)
+			toolspeed = 2
+			extra_damage = -1
+			extra_penetration = 0
+		if(2)
+			toolspeed = 1.1
+			extra_damage = 1
+			extra_penetration = 1
+		if(3)
+			toolspeed = 1
+			extra_damage = 3
+			extra_penetration = 3
+		if(4)
+			toolspeed = 0.9
+			extra_damage = 4
+			extra_penetration = 4
+		if(5)
+			toolspeed = 0.8
+			extra_damage = 6
+			extra_penetration = 6
+		if(6)
+			toolspeed = 0.6
+			extra_damage = 9
+			extra_penetration = 9
+
 /obj/item/ammo_casing/caseless/crossbow_arrow
 	name = "bolt"
 	desc = "Used as ammunition for a crossbow."
@@ -80,22 +111,22 @@
 	. = ..()
 	switch(grade)
 		if(1)
-			damage = 8
+			damage = 14
 			armour_penetration = 0
 		if(2)
-			damage = 10
+			damage = 16
 			armour_penetration = 2
 		if(3)
-			damage = 12
+			damage = 18
 			armour_penetration = 5
 		if(4)
-			damage = 16
+			damage = 20
 			armour_penetration = 10
 		if(5)
 			damage = 22
 			armour_penetration = 15
 		if(6)
-			damage = 26
+			damage = 25
 			armour_penetration = 20
 
 /obj/item/gun/bow
@@ -131,9 +162,12 @@
 		playsound(src, 'dwarfs/sounds/tools/bow/draw.wav', 80, TRUE)
 		to_chat(user, span_notice("You start arming [src]..."))
 		var/time = 1.5 SECONDS
+		var/action_flags = NONE
 		if(ranged_skill)
 			time *= user.get_skill_modifier(ranged_skill, SKILL_SPEED_MODIFIER)
-		if(do_after(user, time, src))
+		if(user.get_skill_level(ranged_skill) >= 5)
+			action_flags = IGNORE_USER_LOC_CHANGE
+		if(do_after(user, time, src, action_flags))
 			AC.forceMove(src)
 			chambered = AC
 			update_appearance()
@@ -195,20 +229,20 @@
 	. = ..()
 	switch(grade)
 		if(1)
-			damage = 6
+			damage = 10
 			armour_penetration = 0
 		if(2)
-			damage = 8
+			damage = 13
 			armour_penetration = 1
 		if(3)
-			damage = 10
+			damage = 15
 			armour_penetration = 3
 		if(4)
-			damage = 14
+			damage = 18
 			armour_penetration = 6
 		if(5)
-			damage = 18
+			damage = 20
 			armour_penetration = 10
 		if(6)
-			damage = 22
+			damage = 23
 			armour_penetration = 15
