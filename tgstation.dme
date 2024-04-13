@@ -870,6 +870,8 @@
 #include "code\modules\buildmode\submodes\smite.dm"
 #include "code\modules\buildmode\submodes\spawnandthrow.dm"
 #include "code\modules\buildmode\submodes\throwing.dm"
+#include "dwarfs\code\modules\wandofmagic\magicstaffs.dm"
+#include "dwarfs\code\modules\wandofmagic\undeads.dm"
 #include "code\modules\buildmode\submodes\variable_edit.dm"
 #include "code\modules\chatter\chatter.dm"
 #include "code\modules\client\client_colour.dm"
