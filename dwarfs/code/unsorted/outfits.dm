@@ -369,9 +369,10 @@ If you want them to actualy show up, go to code\modules\client\preferences.dm on
 	skills = list(/datum/skill/combat/flail=5, /datum/skill/combat/shield=5)
 	l_hand = /obj/item/shield
 	l_hand_grade = 2
+	l_hand_materials = list(PART_PLANKS=/datum/material/wood/treated, PART_HEAD=/datum/material/iron)
 	r_hand = /obj/item/flail
 	r_hand_grade = 2
-	r_hand_materials = /datum/material/iron
+	r_hand_materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/iron)
 	suit = /obj/item/clothing/suit/light_plate
 	suit_grade = 2
 	suit_materials = /datum/material/copper
@@ -428,6 +429,7 @@ If you want them to actualy show up, go to code\modules\client\preferences.dm on
 	r_hand_materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/steel)
 	l_hand = /obj/item/shield
 	l_hand_grade = 4
+	l_hand_materials = list(PART_PLANKS=/datum/material/wood/treated, PART_HEAD=/datum/material/iron)
 	uniform = /obj/item/clothing/under/loincloth
 	head = /obj/item/clothing/head/heavy_plate
 	head_grade = 4
@@ -437,7 +439,7 @@ If you want them to actualy show up, go to code\modules\client\preferences.dm on
 	suit_materials = /datum/material/iron
 	gloves = /obj/item/clothing/gloves/plate_gloves
 	gloves_grade = 4
-	gloves_grade = /datum/material/iron
+	gloves_materials = /datum/material/iron
 	shoes = /obj/item/clothing/shoes/plate_boots
 	shoes_grade = 4
 	shoes_materials = /datum/material/iron
