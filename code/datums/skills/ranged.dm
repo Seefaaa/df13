@@ -13,10 +13,12 @@
 /datum/skill/ranged/bow
 	name = "Bow Combat"
 	title = "Archer"
+	desc = "The art of shooting a bow"
 	exp_per_shot = 2
 	exp_per_hit = 22
 
 /datum/skill/ranged/crossbow
 	name = "Crossbow Combat"
 	title = "Crossbowman"
+	desc = "The art of shooting a crossbow"
 	exp_per_hit = 19
