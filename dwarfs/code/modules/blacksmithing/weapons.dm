@@ -163,6 +163,26 @@
 /obj/item/warhammer/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
+/obj/item/warhammer/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
+	. = ..()
+	if(iswallturf(target) && proximity_flag)
+		user.changeNext_move(melee_cd)
+		var/turf/closed/wall/W = target
+		var/chance = (W.hardness * 0.5)
+		if(chance < 10)
+			return FALSE
+		user.visible_message(span_danger("<b>[user]</b> hits the <b>[W]</b> with [src]!") , null, COMBAT_MESSAGE_RANGE)
+		user.do_attack_animation(W)
+
+		if(prob(chance))
+			playsound(src, 'sound/effects/meteorimpact.ogg', 100, 1)
+			W.dismantle_wall(TRUE)
+
+		else
+			playsound(src, 'sound/effects/bang.ogg', 50, 1)
+			W.add_dent(WALL_DENT_HIT)
+	return TRUE
+
 /obj/item/halberd
 	name = "halberd"
 	desc = "Pointy stick with bladee. Robustester."

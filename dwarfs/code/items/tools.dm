@@ -100,25 +100,6 @@
 	atck_type = BLUNT
 	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/copper)
 
-/obj/item/smithing_hammer/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	..()
-	if(iswallturf(target) && proximity_flag)
-		user.changeNext_move(CLICK_CD_MELEE)
-		var/turf/closed/wall/W = target
-		var/chance = (W.hardness * 0.5)
-		if(chance < 10)
-			return FALSE
-
-		if(prob(chance))
-			playsound(src, 'sound/effects/meteorimpact.ogg', 100, 1)
-			W.dismantle_wall(TRUE)
-
-		else
-			playsound(src, 'sound/effects/bang.ogg', 50, 1)
-			W.add_dent(WALL_DENT_HIT)
-			visible_message(span_danger("<b>[user]</b> hits the <b>[W]</b> with [src]!") , null, COMBAT_MESSAGE_RANGE)
-	return TRUE
-
 /obj/item/smithing_hammer/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
