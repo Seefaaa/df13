@@ -58,6 +58,24 @@
 	var/datum/component/storage/concrete/STR = GetComponent(/datum/component/storage/concrete)
 	STR.set_holdable(list(/obj/item/ammo_casing/caseless/bow_arrow))
 
+/obj/item/storage/quiver/arrows/full
+	var/arrow_materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/adamantine)
+	var/arrow_grade = 6
+
+/obj/item/storage/quiver/arrows/full/PopulateContents()
+	for(var/i in 1 to 15)//15 max item count defined above
+		var/obj/O = new /obj/item/ammo_casing/caseless/bow_arrow(src)
+		O.apply_material(arrow_materials)
+		O.apply_grade(arrow_grade)
+
+/obj/item/storage/quiver/arrows/full/copper
+	arrow_materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/copper)
+	arrow_grade = 3
+
+/obj/item/storage/quiver/arrows/full/steel
+	arrow_materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/steel)
+	arrow_grade = 4
+
 /obj/item/storage/quiver/bolts
 	name = "bolt quiver"
 	desc = "A place to store all your bolts."
@@ -67,3 +85,21 @@
 	. = ..()
 	var/datum/component/storage/concrete/STR = GetComponent(/datum/component/storage/concrete)
 	STR.set_holdable(list(/obj/item/ammo_casing/caseless/crossbow_arrow))
+
+/obj/item/storage/quiver/bolts/full
+	var/arrow_materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/adamantine)
+	var/arrow_grade = 6
+
+/obj/item/storage/quiver/bolts/full/PopulateContents()
+	for(var/i in 1 to 15)//15 max item count defined above
+		var/obj/O = new /obj/item/ammo_casing/caseless/crossbow_arrow(src)
+		O.apply_material(arrow_materials)
+		O.apply_grade(arrow_grade)
+
+/obj/item/storage/quiver/bolts/full/iron
+	arrow_materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/iron)
+	arrow_grade = 3
+
+/obj/item/storage/quiver/bolts/full/steel
+	arrow_materials = list(PART_HANDLE=/datum/material/wood/treated, PART_HEAD=/datum/material/steel)
+	arrow_grade = 4

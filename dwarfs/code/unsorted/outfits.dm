@@ -235,6 +235,44 @@ If you want them to actualy show up, go to code\modules\client\preferences.dm on
 	shoes_grade = 5
 	shoes_materials = /datum/material/steel
 
+/datum/outfit/dwarf_ranger
+	name = "Dwarf Ranger"
+	skills = list(/datum/skill/combat/martial=4, /datum/skill/ranged/crossbow=5)
+	r_hand = /obj/item/gun/crossbow
+	r_hand_grade = 3
+	r_hand_materials = list(PART_PLANKS=/datum/material/wood/treated, PART_HEAD=/datum/material/bronze, PART_CLOTH=/datum/material/cloth/pig_tail_cotton)
+	uniform = /obj/item/clothing/under/tunic/random
+	head = /obj/item/clothing/head/light_plate
+	head_grade = 3
+	head_materials = /datum/material/bronze
+	suit = /obj/item/clothing/suit/light_plate
+	suit_grade = 3
+	suit_materials = /datum/material/bronze
+	shoes = /obj/item/clothing/shoes/leather_boots
+	shoes_grade = 3
+	gloves = /obj/item/clothing/gloves/leather
+	gloves_grade = 3
+	back = /obj/item/storage/quiver/bolts/full/iron
+
+/datum/outfit/dwarf_marksman
+	name = "Dwarf Elite Marksman"
+	skills = list(/datum/skill/combat/martial=7, /datum/skill/ranged/crossbow=9)
+	r_hand = /obj/item/gun/crossbow
+	r_hand_grade = 4
+	r_hand_materials = list(PART_PLANKS=/datum/material/wood/treated, PART_HEAD=/datum/material/steel, PART_CLOTH=/datum/material/cloth/pig_tail_cotton)
+	uniform = /obj/item/clothing/under/tunic/random
+	head = /obj/item/clothing/head/light_plate
+	head_grade = 4
+	head_materials = /datum/material/steel
+	suit = /obj/item/clothing/suit/light_plate
+	suit_grade = 4
+	suit_materials = /datum/material/steel
+	shoes = /obj/item/clothing/shoes/leather_boots
+	shoes_grade = 4
+	gloves = /obj/item/clothing/gloves/leather
+	gloves_grade = 4
+	back = /obj/item/storage/quiver/bolts/full/steel
+
 /*******************************************************GOBLIN OUTFITS***************************************************/
 
 /datum/outfit/goblin_raid_warrior
@@ -443,3 +481,60 @@ If you want them to actualy show up, go to code\modules\client\preferences.dm on
 	shoes = /obj/item/clothing/shoes/plate_boots
 	shoes_grade = 5
 	shoes_materials = /datum/material/steel
+
+/datum/outfit/goblin_archer
+	name = "Goblin Archer"
+	skills = list(/datum/skill/combat/dagger=5, /datum/skill/ranged/bow=5)
+	r_hand = /obj/item/dagger
+	r_hand_grade = 3
+	r_hand_materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/copper)
+	l_hand = /obj/item/gun/bow
+	l_hand_grade = 3
+	l_hand_materials = list(PART_PLANKS=/datum/material/wood/treated, PART_CLOTH=/datum/material/cloth/pig_tail_cotton)
+	head = /obj/item/clothing/head/light_plate
+	head_grade = 3
+	head_materials = /datum/material/copper
+	uniform = /obj/item/clothing/under/loincloth
+	shoes = /obj/item/clothing/shoes/leather_boots
+	shoes_grade = 3
+	back = /obj/item/storage/quiver/arrows/full/copper
+
+/datum/outfit/goblin_sapper
+	name = "Goblin Sapper"
+	skills = list(/datum/skill/mining=5, /datum/skill/logging=5)
+	back = /obj/item/pickaxe
+	back_grade = 3
+	back_materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
+	head = /obj/item/clothing/head/light_plate
+	head_grade = 3
+	head_materials = /datum/material/copper
+	uniform = /obj/item/clothing/under/loincloth
+	shoes = /obj/item/clothing/shoes/leather_boots
+	shoes_grade = 3
+	suit = /obj/item/clothing/suit/leather_vest
+	suit_grade = 3
+	suit_store = /obj/item/axe
+	suit_store_grade = 3
+	suit_store_materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/iron)
+
+/datum/outfit/goblin_bowmaster
+	name = "Goblin Bowmaster"
+	skills = list(/datum/skill/combat/dagger=8, /datum/skill/ranged/bow=8)
+	r_hand = /obj/item/dagger
+	r_hand_grade = 5
+	r_hand_materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/steel)
+	l_hand = /obj/item/gun/bow
+	l_hand_grade = 5
+	l_hand_materials = list(PART_PLANKS=/datum/material/wood/treated, PART_CLOTH=/datum/material/cloth/pig_tail_cotton)
+	head = /obj/item/clothing/head/light_plate
+	head_grade = 4
+	head_materials = /datum/material/iron
+	uniform = /obj/item/clothing/under/loincloth
+	shoes = /obj/item/clothing/shoes/leather_boots
+	shoes_grade = 4
+	gloves = /obj/item/clothing/gloves/leather
+	gloves_grade = 4
+	suit = /obj/item/clothing/suit/light_plate
+	suit_grade = 4
+	suit_materials = /datum/material/iron
+	back = /obj/item/storage/quiver/arrows/full/steel
