@@ -7,8 +7,9 @@ function send_topic(src) {
 		href += ";" + "materials=" + sel.value;
 	}
 	let grade_input = document.getElementById("grade_input");
-	if(grade_input)
+	if(grade_input) {
 		grade_input.value = Math.min(6, Math.max(1, grade_input.value))
 		href += ";" + "grade=" + grade_input.value;
+	}
 	window.location = (href);
 }
