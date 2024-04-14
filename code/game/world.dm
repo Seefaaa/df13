@@ -280,3 +280,28 @@ GLOBAL_VAR(restart_counter)
 	SStimer?.reset_buckets()
 
 /world/proc/refresh_atmos_grid()
+
+// TGS Integration
+
+TGS_DEFINE_AND_SET_GLOBAL(client_count, 0)
+
+/world/New()
+	..()
+	TgsNew()
+	TgsInitializationComplete()
+
+/world/Reboot(reason = 0, fast_track = FALSE)
+	TgsReboot()
+	..()
+
+/world/Topic(T, addr, master, key)
+	TGS_TOPIC
+	..()
+
+/client/New(TopicData)
+	..()
+	++TGS_CLIENT_COUNT
+
+/client/Del()
+	..()
+	--TGS_CLIENT_COUNT
