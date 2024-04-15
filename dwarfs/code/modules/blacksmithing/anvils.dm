@@ -79,6 +79,7 @@
 	var/mob/living/carbon/human/H = user
 	if(current_ingot.progress_current == current_ingot.progress_need)
 		current_ingot.progress_current++
+		current_ingot.update_stats()
 		playsound(src, 'dwarfs/sounds/tools/anvil/anvil_hit.ogg', 70, TRUE)
 		to_chat(user, span_notice("[current_ingot] is ready. Hit it again to keep smithing or cool it down."))
 		user<<browse(null, "window=Anvil")

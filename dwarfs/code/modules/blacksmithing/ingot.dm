@@ -6,7 +6,6 @@
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
-	obj_flags = IGNORES_GRADES
 	force = 2
 	throwforce = 5
 	throw_range = 7
@@ -25,7 +24,8 @@
 
 /obj/item/ingot/update_stats(_grade)
 	. = ..()
-	name = "[get_material_name(materials)] ingot"
+	var/grd = grade_name(grade)
+	name = "[grd][get_material_name(materials)] ingot[grd]"
 
 /obj/item/ingot/build_material_icon(_file, state)
 	var/icon/I = ..()
