@@ -14,7 +14,7 @@
 /obj/item/liftable/dropped(mob/user, silent)
 	. = ..()
 	parent.forceMove(get_turf(user))
-	moveToNullspace(null)
+	moveToNullspace()
 
 /obj/item/liftable/examine(mob/user)
 	return parent.examine(user)
@@ -64,7 +64,7 @@
 		return
 	to_chat(H, span_notice("You lift \the [over]."))
 	var/obj/P = over
-	P.moveToNullspace(null)
+	P.forceMove(item)
 
 
 /datum/component/liftable/proc/update_item()
