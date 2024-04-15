@@ -76,7 +76,7 @@
 
 /obj/structure/plant/garden/crop/carrot
 	name = "carrot"
-	desc = "White flowering plant with orange eadible root."
+	desc = "White flowering plant with orange edible root."
 	species = "carrot"
 	health = 45
 	maxhealth = 45
