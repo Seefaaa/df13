@@ -140,7 +140,7 @@
 	mood_change = 4
 
 /datum/mood_event/thirsty
-	description = "<span class='warning'>I feel thirs.</span>\n"
+	description = "<span class='warning'>I feel thirst.</span>\n"
 	mood_change = -4
 
 /datum/mood_event/dehydrated
