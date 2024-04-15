@@ -177,8 +177,10 @@
 		visible_message(span_danger("[src] falls on [impacted_turf]!"))
 	if(impact_damage)
 		for(var/atom/hurt_atom as anything in impacted_turf.contents)
+			if(hurt_atom == src)
+				continue
 			// damage is impact damage +- 20%
-			var/damage_taken = impact_damage + rand(-1, 1) * impact_damage * 0.2
+			var/damage_taken = levels * impact_damage + rand(-1, 1) * impact_damage * 0.2
 			if(isobj(hurt_atom))
 				var/obj/hurt_obj = hurt_atom
 				hurt_obj.take_damage(damage_taken)
