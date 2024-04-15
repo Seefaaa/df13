@@ -44,9 +44,11 @@
 		else
 			ct = "cold"
 
-	. += "<hr>The [src] is [ct]."
+	. += "<br>The [src] is [ct]."
 	if(recipe)
-		. += "<hr> The [src] is being smithed into [recipe.name]."
+		. += "<br>The [src] is being smithed into <b>[recipe.name]</b>."
+		if(progress_current == progress_need + 1)
+			. += "<br>The [src] is ready to be quenched."
 
 /obj/item/ingot/Initialize()
 	. = ..()
