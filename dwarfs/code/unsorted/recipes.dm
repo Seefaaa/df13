@@ -5,6 +5,8 @@
 	var/result
 	/// If we want to force a resulting material
 	var/list/result_material
+	/// Forced result grade
+	var/result_grade = 0
 	/// How much of that item is being made
 	var/max_resulting = 1
 	/// Whitelisted materials for this recipe
@@ -19,6 +21,7 @@
 	result = /obj/item/ingot
 	whitelisted_materials = list(/datum/material/pig_iron)
 	result_material = /datum/material/steel
+	result_grade = 1
 	cat = SMITHING_RECIPE_MISC
 
 /datum/smithing_recipe/zwei
