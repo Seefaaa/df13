@@ -9,6 +9,7 @@
 	var/obj/O
 	O = new /obj/structure/anvil(center)
 	O.apply_material(/datum/material/adamantine)
+	O.update_stats()
 	left.PlaceOnTop(/turf/open/lava)
 	right.PlaceOnTop(/turf/open/water)
 	O = new /obj/item/smithing_hammer(down)
@@ -19,6 +20,7 @@
 	O.update_stats(6)
 	O = new /obj/item/ingot(down)
 	O.apply_material(/datum/material/iron)
+	O.update_stats()
 	return INITIALIZE_HINT_QDEL
 
 /obj/effect/spawner/metal_showcase/Initialize(mapload)
