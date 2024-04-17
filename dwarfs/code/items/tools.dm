@@ -19,9 +19,7 @@
 	materials = list(PART_HANDLE=/datum/material/wood/towercap/treated, PART_HEAD=/datum/material/copper)
 
 /obj/item/pickaxe/build_material_icon(_file, state)
-	var/icon/I = ..()
-	I = apply_palettes(I, list(materials[PART_HANDLE], materials[PART_HEAD]))
-	return I
+	return apply_palettes(..(), list(materials[PART_HANDLE], materials[PART_HEAD]))
 
 /obj/item/pickaxe/suicide_act(mob/living/user)
 	user.visible_message(span_suicide("[user] begins digging into [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -151,9 +149,7 @@
 	materials = /datum/material/copper
 
 /obj/item/tongs/build_material_icon(_file, state)
-	var/icon/I = ..()
-	var/datum/material/M = get_material(materials)
-	return M.apply2icon_default(I)
+	return apply_palettes(..(), materials)
 
 /obj/item/tongs/tool_use_check(mob/living/user, amount)
 	return contents.len

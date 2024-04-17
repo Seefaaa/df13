@@ -28,8 +28,7 @@
 	name = "[grd][get_material_name(materials)] ingot[grd]"
 
 /obj/item/ingot/build_material_icon(_file, state)
-	var/icon/I = ..()
-	return apply_palettes(I, list(materials))
+	return apply_palettes(..(), materials)
 
 /obj/item/ingot/examine(mob/user)
 	. = ..()

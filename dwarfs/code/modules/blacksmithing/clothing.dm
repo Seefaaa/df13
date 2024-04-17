@@ -11,9 +11,7 @@
 	materials = /datum/material/iron
 
 /obj/item/clothing/suit/light_plate/build_material_icon(_file, state)
-	var/icon/I = ..()
-	var/datum/material/M = get_material(materials)
-	return M.apply2icon_default(I)
+	return apply_palettes(..(), materials)
 
 /obj/item/clothing/suit/heavy_plate
 	name = "plate armor"
@@ -39,9 +37,7 @@
 									  'sound/effects/heavystep7.ogg'=1)
 
 /obj/item/clothing/suit/heavy_plate/build_material_icon(_file, state)
-	var/icon/I = ..()
-	var/datum/material/M = get_material(materials)
-	return M.apply2icon_default(I)
+	return apply_palettes(..(), materials)
 
 /obj/item/clothing/suit/heavy_plate/proc/on_mob_move()
 	SIGNAL_HANDLER
@@ -87,9 +83,7 @@
 	materials = /datum/material/iron
 
 /obj/item/clothing/under/chainmail/build_material_icon(_file, state)
-	var/icon/I = ..()
-	var/datum/material/M = get_material(materials)
-	return M.apply2icon_default(I)
+	return apply_palettes(..(), materials)
 
 /obj/item/clothing/head/heavy_plate
 	name = "heavy plate helmet"
@@ -103,9 +97,7 @@
 	materials = /datum/material/iron
 
 /obj/item/clothing/head/heavy_plate/build_material_icon(_file, state)
-	var/icon/I = ..()
-	var/datum/material/M = get_material(materials)
-	return M.apply2icon_default(I)
+	return apply_palettes(..(), materials)
 
 /obj/item/clothing/head/light_plate
 	name = "light plate helmet"
@@ -129,9 +121,7 @@
 	materials = /datum/material/iron
 
 /obj/item/clothing/gloves/plate_gloves/build_material_icon(_file, state)
-	var/icon/I = ..()
-	var/datum/material/M = get_material(materials)
-	return M.apply2icon_default(I)
+	return apply_palettes(..(), materials)
 
 /obj/item/clothing/shoes/plate_boots
 	name = "plate boots"
@@ -142,11 +132,8 @@
 	icon_state = "plate_boots"
 	materials = /datum/material/iron
 
-/obj/item/clothing/shoes/build_material_icon(_file, state)
-	var/icon/I = ..()
-	var/datum/material/M = get_material(materials)
-	return M.apply2icon_default(I)
-
+/obj/item/clothing/shoes/plate_boots/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/item/clothing/shoes/boots
 	name = "boots"

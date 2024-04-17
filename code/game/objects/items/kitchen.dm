@@ -60,9 +60,7 @@
 	materials = /datum/material/wood/pine/treated
 
 /obj/item/kitchen/rollingpin/build_material_icon(_file, state)
-	var/icon/I = ..()
-	var/datum/material/M = get_material(materials)
-	return M.apply2icon_default(I)
+	return apply_palettes(..(), materials)
 
 /obj/item/kitchen/rollingpin/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins flattening [user.p_their()] head with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))

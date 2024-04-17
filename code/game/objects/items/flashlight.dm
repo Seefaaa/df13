@@ -284,9 +284,7 @@
 	materials = /datum/material/iron
 
 /obj/item/flashlight/fueled/lantern/build_material_icon(_file, state)
-	var/icon/I = ..()
-	var/datum/material/M = get_material(materials)
-	return M.apply2icon_default(I)
+	return apply_palettes(..(), materials)
 
 /obj/item/flashlight/fueled/lantern/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/flashlight/fueled/candle))
