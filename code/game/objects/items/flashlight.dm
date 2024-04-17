@@ -147,7 +147,6 @@
 	actions_types = list()
 	/// How many seconds of fuel we have left
 	var/fuel = 0
-	var/on_damage = 7
 	var/icon_state_burned
 	heat = 1000
 	light_color = LIGHT_COLOR_ORANGE
@@ -178,7 +177,6 @@
 
 /obj/item/flashlight/fueled/proc/turn_off()
 	on = FALSE
-	force = initial(src.force)
 	damtype = initial(src.damtype)
 	if(ismob(loc))
 		var/mob/U = loc
@@ -208,7 +206,6 @@
 	// All good, turn it on.
 	if(.)
 		user.visible_message(span_notice("[user] ignites [src].") , span_notice("You ignite [src]!"))
-		force = on_damage
 		damtype = BURN
 		START_PROCESSING(SSobj, src)
 
@@ -227,7 +224,6 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	light_color = LIGHT_COLOR_ORANGE
 	light_system = MOVABLE_LIGHT
-	on_damage = 10
 
 /obj/item/flashlight/fueled/torch/Initialize()
 	. = ..()
@@ -265,7 +261,6 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	light_color = LIGHT_COLOR_YELLOW
 	light_system = MOVABLE_LIGHT
-	on_damage = 4
 
 /obj/item/flashlight/fueled/candle/turn_off()
 	qdel(src) // candle disappears once it's burned out
