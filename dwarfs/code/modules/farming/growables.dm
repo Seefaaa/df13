@@ -110,6 +110,7 @@
 	edible = TRUE
 	mood_gain = -1
 	food_reagents = list(/datum/reagent/consumable/nutriment=4)
+	tastes = list("turnip" = 1)
 
 /obj/item/growable/carrot
 	name = "carrot"
@@ -118,6 +119,7 @@
 	edible = TRUE
 	mood_gain = -1
 	food_reagents = list(/datum/reagent/consumable/nutriment=5)
+	tastes = list("carrot" = 1)
 
 /obj/item/growable/cotton
 	name = "cotton"
@@ -139,6 +141,7 @@
 	edible = TRUE
 	mood_gain = -1
 	food_reagents = list(/datum/reagent/consumable/nutriment=5)
+	tastes = list("sugar" = 1)
 
 /obj/item/growable/sweet_pod/MakePressable()
 	AddComponent(/datum/component/pressable, /datum/reagent/consumable/juice/sweet_pod, 10)
@@ -163,6 +166,7 @@
 	edible = TRUE
 	mood_gain = -2
 	food_reagents = list(/datum/reagent/consumable/nutriment=5)
+	tastes = list("mushroom" = 1)
 
 /obj/item/growable/plump_helmet/MakePressable()
 	AddComponent(/datum/component/pressable, /datum/reagent/consumable/juice/plump, 10)
@@ -177,6 +181,7 @@
 	edible = TRUE
 	mood_gain = -2
 	food_reagents = list(/datum/reagent/consumable/nutriment=4)
+	tastes = list("potato" = 1)
 
 /obj/item/growable/onion
 	name = "onion"
@@ -185,3 +190,4 @@
 	edible = TRUE
 	mood_gain = -3
 	food_reagents = list(/datum/reagent/consumable/nutriment=3)
+	tastes = list("onion" = 1)

@@ -88,6 +88,7 @@
 	name = "burned recipe"
 	desc = "You've failed it. Try again."
 	icon_state = "food_ruined"
+	tastes = list("ashes" = 1)
 	mood_event_type = /datum/mood_event/ate_badfood
 	food_reagents = list(/datum/reagent/consumable/nutriment = 1)
 
