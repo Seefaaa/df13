@@ -90,11 +90,13 @@
 		var/list/_materials = list()
 		var/obj/O
 		for(var/obj/I in contents)
+			if(!I.materials)
+				continue
 			_materials[I.part_name] = I.materials
 		// if we have only one component, we just use that material, no need for a part list
-		if(selected_recipe.reqs.len == 1)
-			var/obj/I = (locate(/obj) in contents)
-			_materials = I.materials
+		if(_materials.len == 1)
+			var/part_name = _materials[1]
+			_materials = _materials[part_name]
 		for(var/i in 1 to selected_recipe.result_amount)
 			O = new selected_recipe.result(loc)
 			O.apply_material(_materials)
