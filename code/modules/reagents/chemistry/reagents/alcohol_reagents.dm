@@ -11,7 +11,7 @@
 	description = "A well-known alcohol with a variety of applications."
 	color = "#404030" // rgb: 64, 64, 48
 	nutriment_factor = 0
-	hydration_factor = DRINK_HYDRATION_FACTOR_VERY_LOW
+	hydration_factor = DRINK_HYDRATION_FACTOR_MEDIUM
 	taste_description = "alcohol"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 	burning_temperature = 2193//ethanol burns at 1970C (at it's peak)
