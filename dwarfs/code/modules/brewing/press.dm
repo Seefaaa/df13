@@ -92,8 +92,10 @@
 	. = ..()
 	switch(icon_state)
 		if("press_working")
-			var/mutable_appearance/M = mutable_appearance('dwarfs/icons/structures/32x64.dmi', "working_overlay")
 			var/pressable = get_pressable()
+			if(!pressable)
+				return
+			var/mutable_appearance/M = mutable_appearance('dwarfs/icons/structures/32x64.dmi', "working_overlay")
 			if(isitem(pressable))
 				var/obj/item/growable/G = contents[length(contents)]
 				var/datum/component/pressable/C = G.GetComponent(/datum/component/pressable)
@@ -104,8 +106,10 @@
 				M.color = R.color
 			. += M
 		if("press_open_item", "press_open")
-			var/mutable_appearance/M = mutable_appearance('dwarfs/icons/structures/32x64.dmi', "item_overlay")
 			var/pressable = get_pressable()
+			if(!pressable)
+				return
+			var/mutable_appearance/M = mutable_appearance('dwarfs/icons/structures/32x64.dmi', "item_overlay")
 			if(isitem(pressable))
 				var/obj/item/growable/G = contents[length(contents)]
 				var/datum/component/pressable/C = G.GetComponent(/datum/component/pressable)
