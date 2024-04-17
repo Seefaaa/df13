@@ -58,8 +58,7 @@
 	if(I.tool_behaviour == TOOL_BUILDER_HAMMER)
 		if(!can_build(user))
 			return
-		var/speed_mod = user.get_skill_modifier(/datum/skill/construction, SKILL_SPEED_MODIFIER)
-		if(I.use_tool(src, user, build_time * speed_mod, volume=50))
+		if(I.use_tool(src, user, build_time, volume=50, used_skill=/datum/skill/construction))
 			to_chat(user, span_notice("You build [initial(target_structure.name)]."))
 			user.adjust_experience(/datum/skill/construction, rand((build_exp*0.9), (build_exp*1.1)))
 			var/turf/spawn_turf = get_turf(src)

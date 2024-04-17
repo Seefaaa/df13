@@ -28,8 +28,7 @@
 
 /obj/item/stack/ore/stone/attackby(obj/item/I, mob/living/user, params)
 	if(I.tool_behaviour == TOOL_CHISEL)
-		var/speed_mod = user.get_skill_modifier(/datum/skill/masonry, SKILL_SPEED_MODIFIER)
-		if(I.use_tool(src, user, 1 SECONDS * speed_mod, volume=50))
+		if(I.use_tool(src, user, 1 SECONDS, volume=50, used_skill=/datum/skill/masonry))
 			if(prob(user.get_skill_modifier(/datum/skill/masonry, SKILL_PROBS_MODIFIER)))
 				to_chat(user, span_warning("You process \the [src]."))
 				return

@@ -23,8 +23,7 @@
 /obj/item/log/attackby(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_AXE)
 		to_chat(user, span_notice("You start cutting [src] into planks..."))
-		var/cutting_time = 10 SECONDS * user.get_skill_modifier(/datum/skill/logging, SKILL_SPEED_MODIFIER)
-		if(!I.use_tool(src, user, cutting_time, volume=50))
+		if(!I.use_tool(src, user, 10 SECONDS, volume=50, used_skill=/datum/skill/logging))
 			return
 		var/my_turf = get_turf(src)
 		user.adjust_experience(/datum/skill/logging, 12)
@@ -68,8 +67,7 @@
 /obj/item/log/large/attackby(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_AXE)
 		to_chat(user, span_notice("You start cutting [src] into pieces..."))
-		var/cutting_time = 10 SECONDS * user.get_skill_modifier(/datum/skill/logging, SKILL_SPEED_MODIFIER)
-		if(!I.use_tool(src, user, cutting_time, volume=50))
+		if(!I.use_tool(src, user, 10 SECONDS, volume=50, used_skill=/datum/skill/logging))
 			return
 		var/my_turf = get_turf(src)
 		user.adjust_experience(/datum/skill/logging, 12)

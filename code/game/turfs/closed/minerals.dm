@@ -61,21 +61,20 @@
 		// if(hardness_mod >= 2)
 		// 	to_chat(user, span_warning("\The [pick] is too soft to mine [src]."))
 		// 	return
-		var/time = 3 SECONDS * user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) * hardness_mod
+		var/time = 3 SECONDS * hardness_mod
 		if(last_act + time > world.time)//prevents message spam
 			return
 		last_act = world.time
 		to_chat(user, span_notice("You start picking [src]..."))
 
-		if(I.use_tool(src, user, time, volume=50))
+		if(I.use_tool(src, user, time, volume=50, used_skill=/datum/skill/mining))
 			if(ismineralturf(src))
 				to_chat(user, span_notice("You finish cutting into the rock."))
 				gets_drilled(user, TRUE)
 				SSblackbox.record_feedback("tally", "pick_used_mining", 1, I.type)
 	else if(I.tool_behaviour == TOOL_CHISEL)
-		var/time = 5 SECONDS * user.get_skill_modifier(/datum/skill/masonry, SKILL_SPEED_MODIFIER)
 		to_chat(user, span_notice("You start carving stone wall..."))
-		if(I.use_tool(src, user, time, volume=50))
+		if(I.use_tool(src, user, 5 SECONDS, volume=50, used_skill=/datum/skill/masonry))
 			to_chat(user, span_notice("You finish carving stone wall."))
 			user.adjust_experience(/datum/skill/masonry, rand(2,6))
 			var/new_materials = materials
@@ -87,12 +86,12 @@
 /turf/closed/mineral/attackby_secondary(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_PICKAXE)
 		var/hardness_mod = hardness / I.hardness
-		var/time = 3 SECONDS * user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) * hardness_mod
+		var/time = 3 SECONDS * hardness_mod
 		if(last_act + time > world.time)//prevents message spam
 			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 		last_act = world.time
 		to_chat(user, span_notice("You start carving stairs out of [src]..."))
-		if(I.use_tool(src, user, time, volume=50))
+		if(I.use_tool(src, user, time, volume=50, used_skill=/datum/skill/mining))
 			if(ismineralturf(src))
 				to_chat(user, span_notice("You finish cutting into the rock."))
 				var/obj/structure/stairs/S = new(src)

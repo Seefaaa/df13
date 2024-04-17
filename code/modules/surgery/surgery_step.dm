@@ -72,9 +72,6 @@
 	if(tool)
 		speed_mod = tool.toolspeed
 
-	// if(user.mind)
-		// speed_mod = speed_mod * user.mind.get_skill_modifier(/datum/skill/surgery, SKILL_SPEED_MODIFIER)
-
 	var/implement_speed_mod = 1
 	if(implement_type)	//this means it isn't a require hand or any item step.
 		implement_speed_mod = implements[implement_type] / 100.0

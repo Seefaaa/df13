@@ -49,10 +49,9 @@
 			to_chat(user, span_warning("Nice try mongoid."))
 			return
 		var/obj/item/chisel/C = I
-		var/time = 5 SECONDS * user.get_skill_modifier(/datum/skill/masonry, SKILL_SPEED_MODIFIER)
 		var/floor_type = C.chisel_bigtiles ? /turf/open/floor/bigtiles : /turf/open/floor/tiles
 		to_chat(user, span_notice("You start carving stone floor..."))
-		if(I.use_tool(src, user, time, volume=50))
+		if(I.use_tool(src, user, 5 SECONDS, volume=50, used_skill=/datum/skill/masonry))
 			to_chat(user, span_notice("You finish carving stone floor."))
 			user.adjust_experience(/datum/skill/masonry, rand(3,6))
 			var/new_materials = materials
@@ -67,9 +66,9 @@
 	// if(hardness_mod >= 2)
 	// 	to_chat(user, span_warning("\The [pick] is too soft to mine [src]."))
 	// 	return
-	var/time = 3 SECONDS * user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) * hardness_mod
+	var/time = 3 SECONDS * hardness_mod
 	to_chat(user, span_notice("You start digging [src]..."))
-	if(I.use_tool(src, user, time, volume=50))
+	if(I.use_tool(src, user, time, volume=50, used_skill=/datum/skill/mining))
 		if(QDELETED(src))
 			return
 		if(digged_up)
@@ -103,11 +102,10 @@
 /turf/open/floor/sand/try_digdown(obj/item/I, mob/user)
 	to_chat(user, span_notice("You start digging [src]..."))
 	var/hardness_mod = 1
-	var/skill_mod = user.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER)
 	var/obj/item/pickaxe/pick = I
 	hardness_mod = hardness / pick.hardness
 	var/dig_time = I.tool_behaviour == TOOL_SHOVEL ? 3 SECONDS : 10 SECONDS
-	if(I.use_tool(src, user, dig_time * hardness_mod * skill_mod, volume=50))
+	if(I.use_tool(src, user, dig_time * hardness_mod, volume=50, used_skill=/datum/skill/mining))
 		if(QDELETED(src))
 			return
 		if(digged_up)

@@ -111,11 +111,11 @@
 				var/mob/living/carbon/human/H = climber
 				var/obj/item/tool = H.is_holding_tool(TOOL_PICKAXE)
 				var/hardness_mod = hardness / tool.hardness
-				var/time = 3 SECONDS * H.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) * hardness_mod
+				var/time = 3 SECONDS * hardness_mod
 				if(!tool)
 					return
 				to_chat(climber, span_notice("You start mining your way up..."))
-				if(tool.use_tool(H, H, time))
+				if(tool.use_tool(H, H, time, used_skill=/datum/skill/mining))
 					var/turf/closed/mineral/M = checking
 					M.gets_drilled(H, TRUE)
 		else if(isfloorturf(checking))
@@ -123,11 +123,11 @@
 				var/mob/living/carbon/human/H = climber
 				var/obj/item/tool = H.is_holding_tool(TOOL_PICKAXE)
 				var/hardness_mod = hardness / tool.hardness
-				var/time = 3 SECONDS * H.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) * hardness_mod
+				var/time = 3 SECONDS * hardness_mod
 				if(!tool)
 					return
 				to_chat(climber, span_notice("You start mining your way up..."))
-				if(tool.use_tool(H, H, time))
+				if(tool.use_tool(H, H, time, used_skill=/datum/skill/mining))
 					checking.ChangeTurf(/turf/open/openspace)
 		return
 	var/turf/target = get_step_multiz(get_turf(src), (dir|UP))
@@ -139,11 +139,11 @@
 					var/mob/living/carbon/human/H = climber
 					var/obj/item/tool = H.is_holding_tool(TOOL_PICKAXE)
 					var/hardness_mod = hardness / tool.hardness
-					var/time = 3 SECONDS * H.get_skill_modifier(/datum/skill/mining, SKILL_SPEED_MODIFIER) * hardness_mod
+					var/time = 3 SECONDS * hardness_mod
 					if(!tool)
 						return
 					to_chat(climber, span_notice("You start mining your way up..."))
-					if(tool.use_tool(H, H, time))
+					if(tool.use_tool(H, H, time, used_skill=/datum/skill/mining))
 						M.gets_drilled(H, TRUE)
 			return
 		climber.zMove(target = target, z_move_flags = ZMOVE_STAIRS_FLAGS)
