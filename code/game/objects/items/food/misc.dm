@@ -36,13 +36,17 @@
 			return
 		var/mob/living/carbon/human/H = user
 		var/held_index = H.is_holding(src)
+		var/old_materials = materials
+		var/obj/item/C
 		if(held_index)
 			qdel(src)
-			var/obj/item/C = new original_container
+			C = new original_container
 			H.put_in_hand(C, held_index)
 		else
-			new original_container(loc)
+			C = new original_container(loc)
 			qdel(src)
+		C.apply_material(old_materials)
+		C.update_stats()
 	else
 		. = ..()
 
@@ -56,13 +60,18 @@
 		I.pixel_y += rand(-8, 8)
 	var/mob/living/carbon/human/H = user
 	var/held_index = H.is_holding(src)
+	var/old_materials = materials
+	var/obj/item/C
 	if(held_index)
 		qdel(src)
-		var/obj/item/C = new original_container
+		C = new original_container
+
 		H.put_in_hand(C, held_index)
 	else
-		new original_container(loc)
+		C = new original_container(loc)
 		qdel(src)
+	C.apply_material(old_materials)
+	C.update_stats()
 
 /obj/item/transfer_food/examine(mob/user)
 	. = ..()
