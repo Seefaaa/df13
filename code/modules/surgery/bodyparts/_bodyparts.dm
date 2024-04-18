@@ -213,7 +213,7 @@
 	var/wounding_dmg = max(brute, burn)
 
 	// now we have our wounding_type and are ready to carry on with wounds and dealing the actual damage
-	if(owner && wounding_dmg >= WOUND_MINIMUM_DAMAGE && wound_bonus != CANT_WOUND)
+	if(owner && wounding_dmg >= WOUND_MINIMUM_DAMAGE && wound_bonus != CANT_WOUND && blocked < 40)
 		check_wounding(wounding_type, wounding_dmg, wound_bonus, bare_wound_bonus, attack_direction, attack_type)
 
 	/*
@@ -270,6 +270,10 @@
  */
 /obj/item/bodypart/proc/check_wounding(woundtype, damage, wound_bonus, bare_wound_bonus, attack_direction, attack_type)
 	if(HAS_TRAIT(owner, TRAIT_NEVER_WOUNDED))
+		return
+
+	// don't dismember non-damaged bodyparts
+	if(get_damage() == 0)
 		return
 
 	// note that these are fed into an exponent, so these are magnified
