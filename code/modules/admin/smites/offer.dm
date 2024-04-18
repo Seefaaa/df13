@@ -4,6 +4,8 @@
 /datum/smite/offer_mob/effect(client/user, mob/living/target)
 	. = ..()
 	var/list/mob/ghosts = poll_ghost_candidates("Do you wish to play as [target]?")
-	if(ghosts)
+	if(ghosts.len)
 		var/mob/chosen = pick(ghosts)
-		chosen?.mind.transfer_to(target)
+		target.ghostize(FALSE)
+		target.key = chosen.key
+		target.client?.init_verbs()
