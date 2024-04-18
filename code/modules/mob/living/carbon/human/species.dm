@@ -1457,17 +1457,14 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 		switch(affecting.body_zone)
 			if(BODY_ZONE_HEAD)
-				if(!I.get_sharpness() && armor_block < 40)
-					if(prob(I.force * 2))
-						H.adjustOrganLoss(ORGAN_SLOT_BRAIN, I.force * 0.5)
+				if(user.get_skill_level(I.melee_skill) >= 5 && I.atck_type == BLUNT && armor_block < 25)
+					if(prob(I.force))
 						if(H.stat == CONSCIOUS)
 							H.visible_message(span_danger("[H] is knocked senseless!") , \
 											span_userdanger("You're knocked senseless!"))
 							H.set_confusion(max(H.get_confusion(), 20))
 							H.adjust_blurriness(I.force)
 							H.dizziness += (I.force)
-					else
-						H.adjustOrganLoss(ORGAN_SLOT_BRAIN, I.force * 0.2)
 
 				if(bloody)	//Apply blood
 					if(H.wear_mask)
@@ -1481,7 +1478,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 						H.update_inv_glasses()
 
 			if(BODY_ZONE_CHEST)
-				if(H.stat == CONSCIOUS && !I.get_sharpness() && armor_block < 50)
+				if(user.get_skill_level(I.melee_skill) >= 7 && H.stat == CONSCIOUS && I.atck_type == BLUNT && armor_block < 40)
 					if(prob(I.force))
 						H.visible_message(span_danger("[H] is knocked down!") , \
 									span_userdanger("You are knocked down!"))
