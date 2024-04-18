@@ -11,6 +11,13 @@
 	apply_grade(_grade)
 	apply_material_stats()
 
+/obj/item/update_stats(_grade)
+	. = ..()
+	// two-handed weapons when unwielded should usually have low force
+	// 5 is just what is used most of the time for force_unwielded
+	if(HAS_TRAIT(src, TRAIT_CAN_WIELD) && !HAS_TRAIT(src, TRAIT_WIELDED))
+		force = 5
+
 /atom/proc/reset_stats()
 	return
 

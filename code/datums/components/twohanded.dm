@@ -52,6 +52,10 @@
 	if(require_twohands)
 		ADD_TRAIT(parent, TRAIT_NEEDS_TWO_HANDS, ABSTRACT_ITEM_TRAIT)
 
+	if(src.force_unwielded)
+		var/obj/item/P = parent
+		P.force = src.force_unwielded
+
 // Inherit the new values passed to the component
 /datum/component/two_handed/InheritComponent(datum/component/two_handed/new_comp, original, require_twohands, wieldsound, unwieldsound, \
 											force_multiplier, force_wielded, force_unwielded, icon_wielded, use_grades, inhand_icon_wielded)
