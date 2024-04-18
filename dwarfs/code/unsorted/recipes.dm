@@ -244,15 +244,18 @@
 	result = /obj/item/partial/hoe
 	cat = SMITHING_RECIPE_TOOLS
 
-/datum/smithing_recipe/lock_key
-	name = "lock and key"
-	result = /obj/effect/key_lock
+/datum/smithing_recipe/locks
+	name = "locks"
+	result = /obj/item/lock
+	min_resulting = 2
+	max_resulting = 4
 	cat = SMITHING_RECIPE_MISC
 
 /datum/smithing_recipe/keys
 	name = "keys"
 	result = /obj/item/key
-	max_resulting = 3
+	min_resulting = 2
+	max_resulting = 4
 	cat = SMITHING_RECIPE_MISC
 
 /datum/crafter_recipe

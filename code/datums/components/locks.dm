@@ -8,27 +8,25 @@ If you want to implement a lock, you need a few things.
 */
 
 /datum/component/lock
-	var/datum/key/key
+	var/lock_id
 	var/locked = FALSE
 	var/static/list/attachable_to = typecacheof(list(/obj/structure/mineral_door,/obj/structure/closet))
 
-
-/datum/component/lock/Initialize(datum/key/locks_key)
+/datum/component/lock/Initialize(lock_id)
 	if(attachable_to && !(src.parent.type in attachable_to))
 		return COMPONENT_INCOMPATIBLE
-	key = locks_key
+	src.lock_id = lock_id
 	RegisterSignal(parent, COMSIG_KEY_USE, PROC_REF(try_toggle_lock))
 	RegisterSignal(parent, COMSIG_TRY_LOCKED_ACTION, PROC_REF(try_locked_action))
 	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
-
 
 /datum/component/lock/proc/try_attach(obj/I)
 	return
 
 ///Locking and unlocking action
-/datum/component/lock/proc/try_toggle_lock(atom/source, datum/key/K, mob/user)
+/datum/component/lock/proc/try_toggle_lock(atom/source, key_id, mob/user)
 	SIGNAL_HANDLER
-	if(K == key || !key)
+	if(!lock_id || lock_id == key_id)
 		toggle_lock()
 		user.visible_message(span_notice("<b>[user]</b> [locked ? "" : "un"]locks \the [parent].") , null, COMBAT_MESSAGE_RANGE)
 		playsound(get_turf(source), 'sound/effects/stonelock.ogg', 65, vary = TRUE)
@@ -52,8 +50,6 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 /datum/component/lock/proc/on_examine(source, atom/user, list/examine_text)
 	examine_text += "<br>It appears to be [locked ? span_warning("locked") : span_notice("unlocked")]"
 
-/datum/key
-
 /obj/item/lock
 	name = "lock"
 	desc = "a lock you can attach to a door"
@@ -62,15 +58,31 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	icon_state = "lock"
 	materials = /datum/material/iron
-	var/datum/key/key_form = new()
+	var/lock_id
+
+/obj/item/lock/Initialize()
+	. = ..()
+	if(!lock_id)
+		lock_id = sha1("[materials]-[rand(1, 1000000000)]-[world.time]")
 
 /obj/item/lock/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
 
 /obj/item/lock/attack_obj(obj/O, mob/living/user, params)
 	. = ..()
-	if(O._AddComponent(list(/datum/component/lock, key_form)))
+	if(O._AddComponent(list(/datum/component/lock, lock_id)))
 		qdel(src)
+
+/obj/item/lock/attackby(obj/item/I, mob/user, params)
+	if(I.tool_behaviour == TOOL_SMITHING_HAMMER)
+		if(istype(user.get_inactive_held_item(), /obj/item/lock))
+			var/obj/item/lock/L = user.get_inactive_held_item()
+			var/answer = tgui_alert(user, "Do you want to copy this lock to [L]?", "Assign Key", list("Yes", "No"))
+			if(answer != "Yes")
+				return
+			src.lock_id = L.lock_id
+	else
+		. = ..()
 
 /obj/item/key
 	name = "key"
@@ -84,32 +96,42 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 	materials = /datum/material/iron
 	w_class = WEIGHT_CLASS_SMALL
 	var/prefix = ""
-	var/datum/key/key_form
+	var/key_id
+
+/obj/item/key/Initialize()
+	. = ..()
+	if(!key_id)
+		key_id = sha1("[materials]-[rand(1, 1000000000)]-[world.time]")
 
 /obj/item/key/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
 
 /obj/item/key/attack_obj(obj/O, mob/living/user, params)
 	. = ..()
-	SEND_SIGNAL(O, COMSIG_KEY_USE, key_form, user)
+	SEND_SIGNAL(O, COMSIG_KEY_USE, key_id, user)
 
 /obj/item/key/attackby(obj/item/I, mob/living/user)
-	if(istype(I,/obj/item/chisel))
+	if(I.tool_behaviour == TOOL_CHISEL)
 		var/prefix = tgui_input_text(user,"What will be the tag of the key?", "Key tag", "", 30)
 		name = prefix + " " + initial(name)
 		update_name()
-		return
-	if(istype(I,/obj/item/smithing_hammer))
+	else if(I.tool_behaviour == TOOL_SMITHING_HAMMER)
 		if(istype(user.get_inactive_held_item(), /obj/item/key))
 			var/obj/item/key/K = user.get_inactive_held_item()
-			if(!key_form && K.key_form)
-				switch(tgui_alert(user, "Do you want to copy the key from [K]?","Key prompt", list("Yes", "No")))
-					if("Yes")
-						src.key_form = K.key_form
-						src.name = K.name
-						update_name()
+			var/answer = tgui_alert(user, "Do you want to copy the key from [K]?","Key prompt", list("Yes", "No"))
+			if(answer != "Yes")
 				return
-	. = ..()
+			src.key_id = K.key_id
+			src.name = K.name
+			update_name()
+		else if(istype(user.get_inactive_held_item(), /obj/item/lock))
+			var/obj/item/lock/L = user.get_inactive_held_item()
+			var/answer = tgui_alert(user, "Do you want to assign this key to [L]?", "Assign Key", list("Yes", "No"))
+			if(answer != "Yes")
+				return
+			src.key_id = L.lock_id
+	else
+		. = ..()
 
 /obj/item/keyring
 	name = "key ring"
@@ -128,7 +150,7 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 /obj/item/keyring/attack_obj(obj/O, mob/living/user, params)
 	. = ..()
 	for(var/obj/item/key/key in keys)
-		SEND_SIGNAL(O, COMSIG_KEY_USE, key.key_form, user)
+		SEND_SIGNAL(O, COMSIG_KEY_USE, key.key_id, user)
 
 /obj/item/keyring/attackby(obj/item/attacking_item, mob/user, params)
 	if(istype(attacking_item,/obj/item/key))
@@ -167,11 +189,3 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 		. += mutable_appearance(keys[2].get_material_icon(keys[2].icon,"keyring-2"))
 	if(LAZYLEN(keys) >= 1)
 		. += mutable_appearance(keys[1].get_material_icon(keys[1].icon,"keyring-1"))
-
-
-/obj/effect/key_lock/Initialize()
-	. = ..()
-	var/obj/item/lock/L = new(loc)
-	var/obj/item/key/K = new(loc)
-	K.key_form = L.key_form
-	qdel(src)
