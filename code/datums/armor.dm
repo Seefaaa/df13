@@ -32,14 +32,13 @@
 	return getArmor(sharp+modifier, pierce+modifier, blunt+modifier, fire+modifier, acid+modifier, magic+modifier, wound+modifier)
 
 /datum/armor/proc/setRating(sharp, pierce, blunt, fire, acid, magic, wound)
-	return getArmor(\
-		(src.sharp = isnull(sharp) ? src.sharp : sharp),\
-		(src.pierce = isnull(pierce) ? src.pierce : pierce),\
-		(src.blunt = isnull(blunt) ? src.blunt : blunt),\
-		(src.fire = isnull(fire) ? src.fire : fire),\
-		(src.acid = isnull(acid) ? src.acid : acid),\
-		(src.magic = isnull(magic) ? src.magic : magic),\
-		(src.wound = isnull(wound) ? src.wound : wound))
+	return getArmor((isnull(sharp) ? src.sharp : sharp),\
+		(isnull(pierce) ? src.pierce : pierce),\
+		(isnull(blunt) ? src.blunt : blunt),\
+		(isnull(fire) ? src.fire : fire),\
+		(isnull(acid) ? src.acid : acid),\
+		(isnull(magic) ? src.magic : magic),\
+		(isnull(wound) ? src.wound : wound))
 
 /datum/armor/proc/getRating(rating)
 	return vars[rating]
@@ -59,8 +58,13 @@
 	. = ..()
 	tag = ARMORID // update tag in case armor values were edited
 
-/datum/armor/proc/modify_rating(rating, mod, max_rating=90)
-	vars[rating] = min(vars[rating] * mod, max_rating)
-	tag = ARMORID
+/datum/armor/proc/modify_rating(sharp, pierce, blunt, fire, acid, magic, wound)
+	return getArmor((src.sharp * sharp),\
+		(src.pierce * pierce),\
+		(src.blunt * blunt),\
+		(src.fire * fire),\
+		(src.acid * acid),\
+		(src.magic * magic),\
+		(src.wound * wound))
 
 #undef ARMORID

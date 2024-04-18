@@ -101,12 +101,7 @@
 				O.max_integrity *= integrity_mod
 				O.hardness = max(O.hardness, hardness)
 				if(O.armor)
-					O.armor.modify_rating(SHARP, armor_sharp_mod)
-					O.armor.modify_rating(PIERCE, armor_pierce_mod)
-					O.armor.modify_rating(BLUNT, armor_blunt_mod)
-					O.armor.modify_rating(FIRE, armor_fire_mod)
-					O.armor.modify_rating(ACID, armor_acid_mod)
-					O.armor.modify_rating(MAGIC, armor_magic_mod)
+					O.armor = O.armor.modify_rating(armor_sharp_mod, armor_pierce_mod, armor_blunt_mod, armor_fire_mod, armor_acid_mod, armor_magic_mod, armor_wound_mod)
 			if(I)
 				I.toolspeed = max(I.toolspeed * toolspeed_mod, TOOLSPEED_MIN_VALUE)
 				I.melee_cd = max(I.melee_cd * melee_cd_mod, MELEE_CD_MIN_VALUE)
