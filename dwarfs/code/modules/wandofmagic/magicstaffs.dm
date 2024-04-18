@@ -139,13 +139,14 @@
 	. = ..()
 	if(conjuring)
 		to_chat(user, span_revenminor("You're already trying to summon the dead!"))
-	else if(cooldown < world.time && user.stat < SOFT_CRIT)
-		risedead(user, get_turf(src))
-		return TRUE
+		return FALSE
 	else if(controlled.len > 0)
 		to_chat(user, span_revenbignotice("This staff already maintains undead somewhere!"))
 		destroy_controlled(user)
-		return
+		return FALSE
+	else if(cooldown < world.time && user.stat < SOFT_CRIT)
+		risedead(user, get_turf(src))
+		return TRUE
 	else
 		feed_action(user)
 		return FALSE
@@ -165,6 +166,8 @@
 	turfs -= get_turf(center)
 	for(var/turf/closed/Ci in turfs)
 		turfs -= Ci
+	for(var/turf/open/openspace/Cu in turfs)
+		turfs -= Cu
 	if(turfs)
 		if(do_after(user, 10 SECONDS, user))
 			for(var/c in 1 to 3)
