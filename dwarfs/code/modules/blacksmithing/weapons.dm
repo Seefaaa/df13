@@ -198,7 +198,7 @@
 	w_class = WEIGHT_CLASS_BULKY
 	hitsound = 'sound/weapons/pierce_slow.ogg'
 	block_chance = 15
-	atck_type = PIERCE
+	atck_type = SHARP
 	max_integrity = 50
 	resistance_flags = FIRE_PROOF
 	melee_skill = /datum/skill/combat/halberd
