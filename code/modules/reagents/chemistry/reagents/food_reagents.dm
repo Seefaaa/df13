@@ -197,7 +197,7 @@
 	else if(istype(exposed_obj, /obj/item/ingot))
 		var/obj/item/ingot/ingot = exposed_obj
 		if(ingot.progress_current == ingot.progress_need + 1)
-			for(var/i in 1 to rand(1, ingot.recipe.max_resulting))
+			for(var/i in 1 to rand(ingot.recipe.min_resulting, ingot.recipe.max_resulting))
 				if(ingot.grade >= 5)
 					ingot.grade = 5
 					if(prob(10))

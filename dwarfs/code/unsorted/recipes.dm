@@ -8,6 +8,7 @@
 	/// Forced result grade
 	var/result_grade = 0
 	/// How much of that item is being made
+	var/min_resulting = 1
 	var/max_resulting = 1
 	/// Whitelisted materials for this recipe
 	var/list/whitelisted_materials
@@ -179,7 +180,8 @@
 /datum/smithing_recipe/torch_fixture
 	name = "torch fixture"
 	result = /obj/item/sconce
-	max_resulting = 5
+	min_resulting = 3
+	max_resulting = 7
 	cat = SMITHING_RECIPE_MISC
 
 /datum/smithing_recipe/shield_parts
@@ -196,13 +198,15 @@
 /datum/smithing_recipe/arrow_head
 	name = "\[part\] arrow"
 	result = /obj/item/partial/arrow_head
-	max_resulting = 6
+	min_resulting = 4
+	max_resulting = 8
 	cat = SMITHING_RECIPE_WEAPONS
 
 /datum/smithing_recipe/bolt_head
 	name = "\[part\] bolt"
 	result = /obj/item/partial/bolt_head
-	max_resulting = 6
+	min_resulting = 4
+	max_resulting = 8
 	cat = SMITHING_RECIPE_WEAPONS
 
 /datum/smithing_recipe/crossbow_parts
