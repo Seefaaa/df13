@@ -28,7 +28,7 @@
 
 	var/obj/item/W = owner.get_active_held_item()
 	//occasionally re-check cause who knows if we somehow get a weapon
-	if((controller.blackboard[BB_HAS_WEAPONS] || prob(20)) && !W)
+	if((controller.blackboard[BB_HAS_WEAPONS] || prob(20)) || !W)
 		var/list/possible_items = list(owner.l_store, owner.r_store, owner.s_store, owner.back) + owner.held_items
 		var/best_dps = 0
 
