@@ -9,6 +9,8 @@
 	var/working = FALSE
 	//IMPORTANT: work_time should be somewhat the same as "well_working" animation duration otherwise it will look crappy
 	var/work_time = 3.9 SECONDS
+	/// What reagent does well add to the bucket. Var for admemes
+	var/datum/reagent/used_reagent = /datum/reagent/water
 
 /obj/structure/well/build_material_icon(_file, state)
 	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_INGOT], materials[PART_STONE]))
@@ -42,7 +44,7 @@
 		to_chat(user, span_notice("You start working at [src]..."))
 		flick("well_working", src)
 		if(do_after(user, work_time, src))
-			B.reagents.add_reagent(/datum/reagent/water, B.volume - B.reagents.total_volume)
+			B.reagents.add_reagent(used_reagent, B.volume - B.reagents.total_volume)
 		working = FALSE
 		update_appearance()
 
