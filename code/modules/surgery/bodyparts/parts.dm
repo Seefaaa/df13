@@ -77,6 +77,7 @@
 	px_x = -6
 	px_y = 0
 	can_be_disabled = TRUE
+	disable_threshold = 1
 
 
 /obj/item/bodypart/l_arm/set_owner(new_owner)
@@ -171,6 +172,7 @@
 	px_y = 0
 	max_stamina_damage = 50
 	can_be_disabled = TRUE
+	disable_threshold = 1
 
 
 /obj/item/bodypart/r_arm/set_owner(new_owner)
@@ -268,6 +270,7 @@
 	px_y = 12
 	max_stamina_damage = 50
 	can_be_disabled = TRUE
+	disable_threshold = 1
 
 
 /obj/item/bodypart/l_leg/set_owner(new_owner)
@@ -363,6 +366,7 @@
 	px_y = 12
 	max_stamina_damage = 50
 	can_be_disabled = TRUE
+	disable_threshold = 1
 
 
 /obj/item/bodypart/r_leg/set_owner(new_owner)
