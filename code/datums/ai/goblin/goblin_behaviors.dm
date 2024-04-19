@@ -30,15 +30,15 @@
 	//occasionally re-check cause who knows if we somehow get a weapon
 	if((controller.blackboard[BB_HAS_WEAPONS] || prob(20)) && !W)
 		var/list/possible_items = list(owner.l_store, owner.r_store, owner.s_store, owner.back) + owner.held_items
-		var/best_force = 0
+		var/best_dps = 0
 
 		//use the best item available
-		//this doesn't account for wielded items having 5 force when not wielded. TODO: fix that
 		for(var/obj/item/I in possible_items)
 			if(!I)
 				continue
-			if(I.force > best_force)
-				best_force = I.force
+			var/dps = (I.force / I.melee_cd) * 10
+			if(dps > best_dps)
+				best_dps = I.force
 				W = I
 
 		if(W && !owner.is_holding(W))
