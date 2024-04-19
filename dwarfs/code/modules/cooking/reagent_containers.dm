@@ -259,6 +259,7 @@
 	name = "cup"
 	desc = "A trusty companion for a thirst-quenching break."
 	icon = 'dwarfs/icons/items/containers.dmi'
+	volume = 20
 
 /obj/item/reagent_containers/glass/cup/update_overlays()
 	. = ..()
