@@ -1,13 +1,12 @@
 /datum/ai_planning_subtree/goblin_tree/SelectBehaviors(datum/ai_controller/goblin/controller, delta_time)
 	var/mob/living/living_pawn = controller.pawn
 
-	if(IS_DEAD_OR_INCAP(living_pawn))
-		controller.set_ai_status(AI_STATUS_OFF)
-		return SUBTREE_RETURN_FINISH_PLANNING
-
 	if(SHOULD_RESIST(living_pawn))
 		controller.queue_behavior(/datum/ai_behavior/resist) //BRO IM ON FUCKING FIRE BRO
 		return SUBTREE_RETURN_FINISH_PLANNING //IM NOT DOING ANYTHING ELSE BUT EXTUINGISH MYSELF, GOOD GOD HAVE MERCY.
+
+	if(IS_DEAD_OR_INCAP(living_pawn))
+		return SUBTREE_RETURN_FINISH_PLANNING
 
 	if(HAS_TRAIT(controller.pawn, TRAIT_PACIFISM)) //Not a pacifist? lets try some combat behavior.
 		return
