@@ -45,6 +45,9 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 	var/see_chat_non_mob = TRUE
 	///Whether emotes will be displayed on runechat. Requires chat_on_map to have effect. Boolean.
 	var/see_rc_emotes = TRUE
+	///Toggle messages to sounds. Chatter
+	var/chatter_enabled = TRUE
+	var/chatter_volume = 100
 
 	// Custom Keybindings
 	var/list/key_bindings = list()
@@ -337,6 +340,8 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 			dat += SETUP_NODE_INPUT("Max lenght", "max_chat_length", max_chat_length)
 			dat += SETUP_NODE_SWITCH("See above mobs only", "see_chat_non_mob", see_chat_non_mob ? "On" : "Off")
 			dat += SETUP_NODE_SWITCH("Emotes above head", "see_rc_emotes", see_rc_emotes ? "On" : "Off")
+			dat += SETUP_NODE_SWITCH("Chatter sounds", "chatter_enabled", chatter_enabled ? "On" : "Off")
+			dat += SETUP_NODE_INPUT("Chatter volume", "chatter_volume", chatter_volume)
 			dat += "</div><div class='csetup_content'><div class='csetup_header'>Controls</div>"
 			dat += SETUP_NODE_SWITCH("Action buttons", "action_buttons", buttons_locked ? "Locked" : "Movable")
 			dat += SETUP_NODE_SWITCH("Hotkey mode", "hotkeys", hotkeys ? "Hotkeys" : "Retro")
@@ -979,6 +984,10 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 					var/desiredlength = input(user, "Choose the max character length of shown Runechat messages. Valid range is 1 to [CHAT_MESSAGE_MAX_LENGTH] (default: [initial(max_chat_length)]))", "Character Preference", max_chat_length)  as null|num
 					if (!isnull(desiredlength))
 						max_chat_length = clamp(desiredlength, 1, CHAT_MESSAGE_MAX_LENGTH)
+				if ("chatter_volume")
+					var/setchattervolume = input(user, "Choose the chatter volume. (1-100)", "Character Preference", chatter_volume)  as null|num
+					if(!isnull(setchattervolume))
+						chatter_volume = clamp(setchattervolume, 1, 100)
 				if("tunic_color")
 					var/picked_color = input(user, "Choose new tunic color.", "Tunic Color", "white") as null|anything in list("brown","red","yellow","green","aqua","blue","purple","white","gray","black")
 					if(!picked_color)
@@ -1087,6 +1096,8 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 					see_chat_non_mob = !see_chat_non_mob
 				if("see_rc_emotes")
 					see_rc_emotes = !see_rc_emotes
+				if("chatter_enabled")
+					chatter_enabled = !chatter_enabled
 
 				if("action_buttons")
 					buttons_locked = !buttons_locked

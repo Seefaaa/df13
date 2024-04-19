@@ -270,7 +270,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 
 	show_message(message, MSG_AUDIBLE, deaf_message, deaf_type, avoid_highlighting = speaker == src)
 
-	if(CONFIG_GET(flag/enable_chatter) && can_hear())
+	if(client?.prefs.chatter_enabled && CONFIG_GET(flag/enable_chatter) && can_hear())
 		chatter(raw_message, speaker)
 
 	return message

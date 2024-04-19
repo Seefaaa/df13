@@ -172,5 +172,5 @@
 	/// Lazy list of FOV traits that will apply a FOV view when handled.
 	var/list/fov_traits
 
-	/// Cooldown for chatter for not spamming
+	/// Cooldown for chatter to avoid spamming
 	var/chatter_cd
