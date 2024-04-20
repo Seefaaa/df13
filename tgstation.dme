@@ -1077,6 +1077,7 @@
 #include "code\modules\movespeed\modifiers\mobs.dm"
 #include "code\modules\movespeed\modifiers\reagent.dm"
 #include "code\modules\movespeed\modifiers\status_effects.dm"
+#include "code\modules\playtime\playtime.dm"
 #include "code\modules\procedural_mapping\mapGenerator.dm"
 #include "code\modules\procedural_mapping\mapGeneratorModule.dm"
 #include "code\modules\procedural_mapping\mapGeneratorObj.dm"
