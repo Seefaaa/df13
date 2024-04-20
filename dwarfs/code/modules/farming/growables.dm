@@ -129,9 +129,8 @@
 /obj/item/growable/cotton/attack_self(mob/user, modifiers)
 	var/obj/item/stack/sheet/string/S = new(null, 2)
 	S.apply_material(/datum/material/cloth/cotton)
-	var/held_index = user.is_holding(src)
 	qdel(src)
-	user.put_in_hand(S, held_index)
+	user.put_in_hands(S)
 	to_chat(user, span_notice("You weave [src] into a string."))
 
 /obj/item/growable/sweet_pod
@@ -154,9 +153,8 @@
 /obj/item/growable/pig_tail/attack_self(mob/user, modifiers)
 	var/obj/item/stack/sheet/string/S = new()
 	S.apply_material(/datum/material/cloth/pig_tail_cotton)
-	var/held_index = user.is_holding(src)
 	qdel(src)
-	user.put_in_hand(S, held_index)
+	user.put_in_hands(S)
 	to_chat(user, span_notice("You weave [src] into a string."))
 
 /obj/item/growable/plump_helmet

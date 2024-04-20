@@ -83,23 +83,8 @@
 	to_chat(user, span_notice("You start tying up \the [src]..."))
 	if(!do_after(user, 10 SECONDS, src))
 		return
-	var/datum/cooking_recipe/R = find_recipe(subtypesof(/datum/cooking_recipe/sausage), contents)
+	var/datum/cooking_recipe/R = find_recipe(subtypesof(/datum/cooking_recipe/sausage), contents, failed_recipe=/datum/cooking_recipe/ruined_sausage)
 	var/mob/living/carbon/human/H = user
-	if(!R)
-		var/held_index = H.is_holding(src)
-		var/obj/item/food/sausage/failed/S = new
-		S.desc += "\n\The [S] contains "
-		for(var/i in 1 to contents.len)
-			var/obj/item/item = contents[i]
-			if(i != 1)
-				S.desc += ", \a [item]"
-			else
-				S.desc += "\a [item]"
-		qdel(src)
-		H.put_in_hand(S, held_index)
-		user.adjust_experience(/datum/skill/cooking, 2)
-		return
-
 	var/obj/item/food/F = new R.result
 	F.desc += "\n\The [F] contains "
 	for(var/i in 1 to contents.len)
@@ -108,10 +93,9 @@
 			F.desc += ", \a [item]"
 		else
 			F.desc += "\a [item]"
-	user.adjust_experience(/datum/skill/cooking, rand(5, 12))
-	var/held_index = H.is_holding(src)
+	user.adjust_experience(/datum/skill/cooking, R.exp_gain)
 	qdel(src)
-	H.put_in_hand(F, held_index)
+	H.put_in_hands(F)
 	to_chat(user, span_notice("You finish tying up \the [src]..."))
 
 /obj/item/food/sausage

@@ -48,36 +48,20 @@
 			return
 		var/mob/living/carbon/human/H = user
 		var/obj/item/flashlight/fueled/torch/T = new()
-		var/held_index = H.is_holding(src)
-		if(held_index)
-			qdel(src)
-			H.put_in_hand(T, held_index)
-		else
-			T.forceMove(loc)
-			qdel(src)
+		qdel(src)
 		qdel(I)
+		H.put_in_hands(T)
 	else if(I.get_temperature())
 		var/datum/cooking_recipe/R = find_recipe(subtypesof(/datum/cooking_recipe/stick), contents)
 		var/mob/living/carbon/human/H = user
-		if(!R)
-			contents.Cut()
-			update_appearance()
-			var/obj/item/food/badrecipe/S = new
-			if(!H.put_in_hands(S))
-				S.forceMove(get_turf(src))
-			user.adjust_experience(/datum/skill/cooking, 2)
-			return
-
+		QDEL_LAZYLIST(contents)
+		update_appearance()
 		var/obj/item/food/dish/F = new R.result
 		F.apply_material(materials)
-		user.adjust_experience(/datum/skill/cooking, rand(5, 15))
-		var/held_index = H.is_holding(src)
-		if(held_index)
+		user.adjust_experience(/datum/skill/cooking, R.exp_gain)
+		if(R.consume_container)
 			qdel(src)
-			H.put_in_hand(F, held_index)
-		else
-			F.forceMove(loc)
-			qdel(src)
+		H.put_in_hands(F)
 	else
 		. = ..()
 		update_appearance()

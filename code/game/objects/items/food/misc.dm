@@ -35,18 +35,11 @@
 		if(charges)
 			return
 		var/mob/living/carbon/human/H = user
-		var/held_index = H.is_holding(src)
-		var/old_materials = materials
-		var/obj/item/C
-		if(held_index)
-			qdel(src)
-			C = new original_container
-			H.put_in_hand(C, held_index)
-		else
-			C = new original_container(loc)
-			qdel(src)
-		C.apply_material(old_materials)
+		var/obj/item/C = new original_container
+		C.apply_material(materials)
 		C.update_stats()
+		qdel(src)
+		H.put_in_hands(C)
 	else
 		. = ..()
 
@@ -59,19 +52,11 @@
 		I.pixel_x += rand(-8, 8)
 		I.pixel_y += rand(-8, 8)
 	var/mob/living/carbon/human/H = user
-	var/held_index = H.is_holding(src)
-	var/old_materials = materials
-	var/obj/item/C
-	if(held_index)
-		qdel(src)
-		C = new original_container
-
-		H.put_in_hand(C, held_index)
-	else
-		C = new original_container(loc)
-		qdel(src)
-	C.apply_material(old_materials)
+	var/obj/item/C = new original_container
+	C.apply_material(materials)
 	C.update_stats()
+	qdel(src)
+	H.put_in_hands(C)
 
 /obj/item/transfer_food/examine(mob/user)
 	. = ..()

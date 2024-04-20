@@ -194,24 +194,14 @@
 	if(istype(I, /obj/item/kitchen/knife))
 		var/datum/cooking_recipe/R = find_recipe(subtypesof(/datum/cooking_recipe/bowl), contents, reagents.reagent_list)
 		var/mob/living/carbon/human/H = user
-		if(!R)
-			reagents.clear_reagents()
-			contents.Cut()
-			var/obj/item/food/badrecipe/S = new
-			if(!H.put_in_hands(S))
-				S.forceMove(get_turf(src))
-			user.adjust_experience(/datum/skill/cooking, 2)
-			return
+		reagents.clear_reagents()
+		contents.Cut()
 		var/obj/item/food/F = new R.result
 		F.apply_material(materials)
-		user.adjust_experience(/datum/skill/cooking, rand(10, 30))
-		var/held_index = H.is_holding(src)
-		if(held_index)
+		user.adjust_experience(/datum/skill/cooking, R.exp_gain)
+		if(R.consume_container)
 			qdel(src)
-			H.put_in_hand(F, held_index)
-		else
-			F.forceMove(loc)
-			qdel(src)
+		H.put_in_hands(F)
 	else
 		. = ..()
 

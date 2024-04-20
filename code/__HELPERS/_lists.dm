@@ -30,7 +30,7 @@
 #define LAZYADDASSOCLIST(L, K, V) if(!L) { L = list(); } L[K] += list(V);
 #define LAZYREMOVEASSOC(L, K, V) if(L) { if(L[K]) { L[K] -= V; if(!length(L[K])) L -= K; } if(!length(L)) L = null; }
 #define LAZYACCESSASSOC(L, I, K) L ? L[I] ? L[I][K] ? L[I][K] : null : null : null
-#define QDEL_LAZYLIST(L) for(var/I in L) qdel(I); L = null;
+#define QDEL_LAZYLIST(L) for(var/II in L) qdel(II); L = null;
 //These methods don't null the list
 #define LAZYCOPY(L) (L ? L.Copy() : list() ) //Use LAZYLISTDUPLICATE instead if you want it to null with no entries
 #define LAZYCLEARLIST(L) if(L) L.Cut() // Consider LAZYNULL instead

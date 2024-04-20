@@ -7,15 +7,11 @@
 	. = ..()
 	if(plate_type)
 		var/mob/living/carbon/human/H = feeder
-		var/held_index = H.is_holding(src)
 		var/obj/item/I = new plate_type
 		if(materials) //apply stored materials back to our place if we actually saved any
 			I.apply_material(materials)
 		qdel(src)
-		if(held_index)
-			H.put_in_hand(I, held_index)
-		else
-			I.forceMove(get_turf(feeder))
+		H.put_in_hands(I)
 
 /obj/item/food/dish/build_material_icon(_file, state)
 	return materials ? apply_palettes(..(), materials) : ..()
