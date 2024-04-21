@@ -360,3 +360,27 @@
 				M.pixel_y += 16
 		M.transform *= 0.6
 		. += M
+
+/obj/item/reagent_containers/glass/flask
+	name = "flask"
+	desc = "Metal container to bring a drink with yourself"
+	icon = 'dwarfs/icons/items/containers.dmi'
+	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
+	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
+	icon_state = "flask"
+	materials = /datum/material/iron
+	volume = 50
+	w_class = WEIGHT_CLASS_SMALL
+
+/obj/item/reagent_containers/glass/flask/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
+
+/obj/item/reagent_containers/glass/waterskin
+	name = "waterskin"
+	desc = "Leather container to bring a drink with yourself"
+	icon = 'dwarfs/icons/items/containers.dmi'
+	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
+	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
+	icon_state = "waterskin"
+	volume = 80
+	w_class = WEIGHT_CLASS_NORMAL

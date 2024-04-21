@@ -258,6 +258,13 @@
 	max_resulting = 4
 	cat = SMITHING_RECIPE_MISC
 
+/datum/smithing_recipe/flask
+	name = "flask"
+	result = /obj/item/reagent_containers/glass/flask
+	min_resulting = 2
+	max_resulting = 4
+	cat = SMITHING_RECIPE_MISC
+
 /datum/crafter_recipe
 	/// Displayed name for the recipe
 	var/name = "some recipe"
@@ -505,6 +512,12 @@
 	name = "leather helmet"
 	reqs = list(/obj/item/stack/sheet/leather=4)
 	result = /obj/item/clothing/head/leather_helmet
+	affecting_skill = /datum/skill/skinning
+
+/datum/crafter_recipe/tailor_recipe/waterskin
+	name = "waterskin"
+	reqs = list(/obj/item/stack/sheet/leather=3, /obj/item/stack/sheet/string=1)
+	result = /obj/item/reagent_containers/glass/waterskin
 	affecting_skill = /datum/skill/skinning
 
 /datum/crafter_recipe/tailor_recipe/leather_vest
