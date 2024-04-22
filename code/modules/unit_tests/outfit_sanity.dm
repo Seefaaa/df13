@@ -15,6 +15,10 @@
 			qdel(I)
 
 		var/datum/outfit/outfit = new outfit_type
+
+		if(outfit.name == "Naked" && outfit_type != /datum/outfit)
+			Fail("[outfit_type] doesn't have a name set.")
+
 		outfit.pre_equip(H, TRUE)
 
 		CHECK_OUTFIT_SLOT(uniform, ITEM_SLOT_ICLOTHING)
