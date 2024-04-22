@@ -129,6 +129,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	READ_FILE(S["see_rc_emotes"] , see_rc_emotes)
 	READ_FILE(S["chatter_enabled"] , chatter_enabled)
 	READ_FILE(S["chatter_volume"] , chatter_volume)
+	READ_FILE(S["see_doafters"], see_doafters)
 	READ_FILE(S["broadcast_login_logout"] , broadcast_login_logout)
 
 	READ_FILE(S["tgui_fancy"], tgui_fancy)
@@ -265,6 +266,7 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	WRITE_FILE(S["see_rc_emotes"], see_rc_emotes)
 	WRITE_FILE(S["chatter_enabled"], chatter_enabled)
 	WRITE_FILE(S["chatter_volume"], chatter_volume)
+	WRITE_FILE(S["see_doafters"], see_doafters)
 	WRITE_FILE(S["broadcast_login_logout"], broadcast_login_logout)
 	WRITE_FILE(S["tgui_fancy"], tgui_fancy)
 	WRITE_FILE(S["tgui_lock"], tgui_lock)

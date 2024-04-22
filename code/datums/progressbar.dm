@@ -1,9 +1,12 @@
 #define PROGRESSBAR_HEIGHT 4
+#define PROGRESSBAR_COG_HEIGHT 5
 #define PROGRESSBAR_ANIMATION_TIME 5
 
 /datum/progressbar
 	///The progress bar visual element.
 	var/image/bar
+	///The progress bar cog visual shown to every other client.
+	var/image/cog
 	///The target where this progress bar is applied and where it is shown.
 	var/atom/bar_loc
 	///The mob whose client sees the progress bar.
@@ -35,8 +38,10 @@
 	bar = image('icons/hud/progressbar.dmi', bar_loc, "prog_bar_0")
 	bar.plane = ABOVE_HUD_PLANE
 	bar.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+	cog = image('icons/hud/progressbar.dmi', User, "cog")
 	var/icon/I = icon(target.icon) //keeping this here in case something doesn't work after all
 	bar.pixel_x = (I.Width() - world.icon_size) / 2
+	cog.pixel_x = (I.Width() - world.icon_size) / 2
 	user = User
 
 	LAZYADDASSOCLIST(user.progressbars, bar_loc, src)
@@ -46,6 +51,7 @@
 	if(user.client)
 		user_client = user.client
 		add_prog_bar_image_to_client()
+		add_cog_to_clients()
 
 	RegisterSignal(user, COMSIG_PARENT_QDELETING, PROC_REF(on_user_delete))
 	RegisterSignal(user, COMSIG_MOB_LOGOUT, PROC_REF(clean_user_client))
@@ -75,6 +81,9 @@
 	if(bar)
 		QDEL_NULL(bar)
 
+	if(cog)
+		QDEL_NULL(cog)
+
 	return ..()
 
 
@@ -90,6 +99,10 @@
 ///Removes the progress bar image from the user_client and nulls the variable, if it exists.
 /datum/progressbar/proc/clean_user_client(datum/source)
 	SIGNAL_HANDLER
+
+	for(var/client/to_remove in GLOB.clients - user_client)
+		if(to_remove.prefs.see_doafters)
+			to_remove.images -= cog
 
 	if(!user_client) //Disconnected, already gone.
 		return
@@ -109,6 +122,7 @@
 		return
 	user_client = user.client
 	add_prog_bar_image_to_client()
+	add_cog_to_clients()
 
 
 ///Adds a smoothly-appearing progress bar image to the player's screen.
@@ -118,6 +132,13 @@
 	user_client.images += bar
 	animate(bar, pixel_y = 32 + (PROGRESSBAR_HEIGHT * (listindex - 1)), alpha = 255, time = PROGRESSBAR_ANIMATION_TIME, easing = SINE_EASING)
 
+/datum/progressbar/proc/add_cog_to_clients()
+	cog.pixel_y = 32-PROGRESSBAR_COG_HEIGHT
+	cog.alpha = 0
+	for(var/client/to_add in GLOB.clients - user_client)
+		if(to_add.prefs.see_doafters)
+			to_add.images += cog
+	animate(cog, alpha=255, time=PROGRESSBAR_ANIMATION_TIME, easing=SINE_EASING)
 
 ///Updates the progress bar image visually.
 /datum/progressbar/proc/update(progress)
@@ -134,9 +155,11 @@
 		bar.icon_state = "[bar.icon_state]_fail"
 
 	animate(bar, alpha = 0, time = PROGRESSBAR_ANIMATION_TIME)
+	animate(cog, alpha=0, time=PROGRESSBAR_ANIMATION_TIME)
 
 	QDEL_IN(src, PROGRESSBAR_ANIMATION_TIME)
 
 
 #undef PROGRESSBAR_ANIMATION_TIME
 #undef PROGRESSBAR_HEIGHT
+#undef PROGRESSBAR_COG_HEIGHT

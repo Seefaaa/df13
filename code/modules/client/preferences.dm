@@ -155,6 +155,8 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 	var/broadcast_login_logout = TRUE
 	///picked loadout
 	var/loadout = /datum/outfit/dwarf/miner
+	///Whether client sees small cog icon when somebody performs a do_after
+	var/see_doafters = TRUE
 
 /datum/preferences/New(client/C)
 	parent = C
@@ -335,6 +337,7 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 			dat += SETUP_NODE_INPUT("Style", "ui", UI_style)
 			dat += SETUP_NODE_SWITCH("Windows in TGUI", "tgui_lock", tgui_lock ? "Minimal" : "All")
 			dat += SETUP_NODE_SWITCH("TGUI Style", "tgui_fancy", tgui_fancy ? "Fancy" : "Minimal")
+			dat += SETUP_NODE_SWITCH("See other player's actions", "see_doafters", see_doafters ? "On" : "Off")
 			dat += "</div><div class='csetup_content'><div class='csetup_header'>Runechat</div>"
 			dat += SETUP_NODE_SWITCH("Text above head", "chat_on_map", chat_on_map ? "On" : "Off")
 			dat += SETUP_NODE_INPUT("Max lenght", "max_chat_length", max_chat_length)
@@ -1103,6 +1106,8 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 					buttons_locked = !buttons_locked
 				if("tgui_fancy")
 					tgui_fancy = !tgui_fancy
+				if("see_doafters")
+					see_doafters = !see_doafters
 				if("tgui_lock")
 					tgui_lock = !tgui_lock
 				if("winflash")
