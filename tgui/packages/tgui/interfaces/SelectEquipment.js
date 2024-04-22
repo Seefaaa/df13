@@ -1,3 +1,4 @@
+import { auto } from '@popperjs/core';
 import { filter, map, sortBy, uniq } from 'common/collections';
 import { flow } from 'common/fp';
 import { createSearch } from 'common/string';
@@ -140,7 +141,7 @@ const OutfitDisplay = (props, context) => {
   const { current_outfit } = data;
   const { entries, currentTab } = props;
   return (
-    <Section fill scrollable>
+    <Section fill scrollable width={20}>
       {entries.map(entry => (
         <Button
           key={getOutfitKey(entry)}
