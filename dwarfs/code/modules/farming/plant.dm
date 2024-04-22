@@ -6,6 +6,7 @@
 	anchored = TRUE
 	layer = OBJ_LAYER
 	impact_damage = 5
+	max_integrity = 30
 	/// Used for icons and to whitelist plants in plots
 	var/species = "plant"
 	/// What seeds does the plant have

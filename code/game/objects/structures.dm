@@ -1,7 +1,7 @@
 /// Inert structures, such as girders, machine frames, and crates/lockers.
 /obj/structure
 	icon = 'icons/obj/structures.dmi'
-	max_integrity = 300
+	max_integrity = 150
 	interaction_flags_atom = INTERACT_ATOM_ATTACK_HAND | INTERACT_ATOM_UI_INTERACT
 	obj_flags = parent_type::obj_flags | IGNORES_GRADES
 	layer = BELOW_OBJ_LAYER

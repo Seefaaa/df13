@@ -10,6 +10,7 @@
 	spread_y = 3
 	growthstages = 7
 	impact_damage = 6
+	max_integrity = 200
 	var/small_log_type = /obj/item/log
 	var/large_log_type = /obj/item/log/large
 	/// a list of small logs with amount corresponding to the growthstage
