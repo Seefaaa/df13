@@ -39,8 +39,6 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	var/ears_icon = 'dwarfs/icons/mob/clothing/ears.dmi'
 	var/eyes_icon = 'dwarfs/icons/mob/clothing/eyes.dmi'
 	var/s_store_icon = 'dwarfs/icons/mob/clothing/suit_storage.dmi'
-	var/lefthand_icon = 'dwarfs/icons/mob/inhand/lefthand.dmi'
-	var/righthand_icon = 'dwarfs/icons/mob/inhand/righthand.dmi'
 
 	///This allows races to have specific hair colors. If null, it uses the H's hair/facial hair colors. If "mutcolor", it uses the H's mutant_color. If "fixedmutcolor", it uses fixedmutcolor
 	var/hair_color

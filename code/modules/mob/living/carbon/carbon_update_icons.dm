@@ -67,20 +67,13 @@
 							observers = null
 							break
 
-		var/righthand = get_held_index_of_item(I) % 2 == 0
-		var/icon_file = righthand ? I.righthand_file : I.lefthand_file
-		var/species_default_file = righthand ? /datum/species::righthand_icon : /datum/species::lefthand_icon
-		var/species_specific_file = righthand ? dna.species.righthand_icon : dna.species.lefthand_icon
-		var/used_icon = icon_file
+		var/icon_file = (get_held_index_of_item(I) % 2 == 0) ? I.righthand_file : I.lefthand_file
+		var/used_icon_state = I.inhand_icon_state ? I.inhand_icon_state : icon_state
 
-		if(icon_exists(species_specific_file, I.inhand_icon_state || I.icon_state))
-			used_icon = species_specific_file
-		else if(icon_exists(species_default_file, I.inhand_icon_state || I.icon_state))
-			used_icon = species_default_file
-		else
-			used_icon = icon_file
+		if(icon_exists(icon_file, "[used_icon_state]_[dna.species.id]"))
+			used_icon_state = "[used_icon_state]_[dna.species.id]"
 
-		hands += I.build_worn_icon(default_layer = HANDS_LAYER, default_icon_file = used_icon, isinhands = TRUE)
+		hands += I.build_worn_icon(default_layer = HANDS_LAYER, default_icon_file = icon_file, isinhands = TRUE, override_state=used_icon_state)
 
 	overlays_standing[HANDS_LAYER] = hands
 	apply_overlay(HANDS_LAYER)
