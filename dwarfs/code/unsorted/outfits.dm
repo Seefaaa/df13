@@ -11,7 +11,7 @@ Below here are selectable loadouts via prefernces.
 If you want them to actualy show up, go to code\modules\client\preferences.dm on line 2 and add them to the list
 */
 /datum/outfit/dwarf/miner
-	name = "Dwarf miner"
+	name = "Loadout Miner"
 	back = /obj/item/pickaxe
 	back_grade = 1
 	back_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
@@ -20,7 +20,7 @@ If you want them to actualy show up, go to code\modules\client\preferences.dm on
 	l_hand_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
 
 /datum/outfit/dwarf/farmer
-	name = "Dwarf farmer"
+	name = "Loadout Farmer"
 	r_hand = /obj/item/hoe
 	r_hand_grade = 1
 	r_hand_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
@@ -28,19 +28,19 @@ If you want them to actualy show up, go to code\modules\client\preferences.dm on
 	head_materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_INGOT=/datum/material/copper)
 
 /datum/outfit/dwarf/logger
-	name = "Dwarf logger"
+	name = "Loadout Logger"
 	back = /obj/item/axe
 	back_grade = 1
 	back_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
 
 /datum/outfit/dwarf/mason
-	name = "Dwarf mason"
+	name = "Loadout Mason"
 	l_hand = /obj/item/chisel
 	l_hand_grade = 1
 	l_hand_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
 
 /datum/outfit/dwarf/chef
-	name = "Dwarf chef"
+	name = "Loadout Chef"
 	r_hand = /obj/item/kitchen/knife
 	r_hand_grade = 1
 	r_hand_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
@@ -49,7 +49,7 @@ If you want them to actualy show up, go to code\modules\client\preferences.dm on
 	l_hand_materials = /datum/material/wood/pine/treated
 
 /datum/outfit/dwarf/blacksmith
-	name = "Dwarf blacksmith"
+	name = "Loadout Blacksmith"
 	r_hand = /obj/item/tongs
 	r_hand_grade = 1
 	r_hand_materials = /datum/material/copper
@@ -58,10 +58,64 @@ If you want them to actualy show up, go to code\modules\client\preferences.dm on
 	l_hand_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
 
 /datum/outfit/dwarf/builder
-	name = "Dwarf builder"
+	name = "Loadout Builder"
 	r_hand = /obj/item/builder_hammer
 	r_hand_grade = 1
 	r_hand_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
+
+
+/************************************************************************************************************************/
+/************************************************COMBAT LOADOUTS*********************************************************/
+/************************************************************************************************************************/
+
+
+/datum/outfit/dwarf/swordsdwarf
+	name = "Loadout Swordsdwarf"
+	suit_store = /obj/item/sword
+	suit_store_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
+	suit_store_grade = 1
+	suit = /obj/item/clothing/suit/leather_vest
+	suit_grade = 1
+
+/datum/outfit/dwarf/speardwarf
+	name = "Loadout Speardwarf"
+	suit_store = /obj/item/spear
+	suit_store_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
+	suit_store_grade = 1
+	suit = /obj/item/clothing/suit/leather_vest
+	suit_grade = 1
+
+/datum/outfit/dwarf/gusarmier
+	name = "Loadout Gusarmier"
+	suit_store = /obj/item/halberd
+	suit_store_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
+	suit_store_grade = 1
+	suit = /obj/item/clothing/suit/leather_vest
+	suit_grade = 1
+
+/datum/outfit/dwarf/macedwarf
+	name = "Loadout Macedwarf"
+	suit_store = /obj/item/flail
+	suit_store_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
+	suit_store_grade = 1
+	suit = /obj/item/clothing/suit/leather_vest
+	suit_grade = 1
+
+/datum/outfit/dwarf/hammerdwarf
+	name = "Loadout Hammerdwarf"
+	suit_store = /obj/item/warhammer
+	suit_store_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
+	suit_store_grade = 1
+	suit = /obj/item/clothing/suit/leather_vest
+	suit_grade = 1
+
+/datum/outfit/dwarf/axedwarf
+	name = "Loadout Axedwarf"
+	suit_store = /obj/item/battleaxe
+	suit_store_materials = list(PART_HANDLE=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
+	suit_store_grade = 1
+	suit = /obj/item/clothing/suit/leather_vest
+	suit_grade = 1
 
 /************************************************************************************************************************/
 /***********************************************Admin spawnable loadouts below*******************************************/
@@ -273,7 +327,9 @@ If you want them to actualy show up, go to code\modules\client\preferences.dm on
 	gloves_grade = 4
 	back = /obj/item/storage/quiver/bolts/full/steel
 
+/************************************************************************************************************************/
 /*******************************************************GOBLIN OUTFITS***************************************************/
+/************************************************************************************************************************/
 
 /datum/outfit/goblin_raid_warrior
 	name = "Goblin Raid Warrior(Easy)"

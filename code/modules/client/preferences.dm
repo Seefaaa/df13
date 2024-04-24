@@ -1,12 +1,24 @@
 GLOBAL_LIST_EMPTY(preferences_datums)
 //If you create a new outfit for the loadout system add them to here aswel
-GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
-										"Miner" = /datum/outfit/dwarf/miner,
-										"Logger" = /datum/outfit/dwarf/logger,
-										"Farmer" = /datum/outfit/dwarf/farmer,
-										"Chef" = /datum/outfit/dwarf/chef,
-										"Blacksmith" = /datum/outfit/dwarf/blacksmith,
-										"Builder" = /datum/outfit/dwarf/builder))
+GLOBAL_LIST_INIT(crafting_loadout_choices, list(
+	"Mason" = /datum/outfit/dwarf/mason,
+	"Miner" = /datum/outfit/dwarf/miner,
+	"Logger" = /datum/outfit/dwarf/logger,
+	"Farmer" = /datum/outfit/dwarf/farmer,
+	"Chef" = /datum/outfit/dwarf/chef,
+	"Blacksmith" = /datum/outfit/dwarf/blacksmith,
+	"Builder" = /datum/outfit/dwarf/builder
+	))
+
+GLOBAL_LIST_INIT(combat_loadout_choices, list(
+	"Swordsdwarf" = /datum/outfit/dwarf/swordsdwarf,
+	"Speardwarf" = /datum/outfit/dwarf/speardwarf,
+	"Guisarmier" = /datum/outfit/dwarf/gusarmier,
+	"Macedwarf" = /datum/outfit/dwarf/macedwarf,
+	"Hammerdwarf" = /datum/outfit/dwarf/hammerdwarf,
+	"Axedwarf" = /datum/outfit/dwarf/axedwarf
+))
+
 /datum/preferences
 	var/client/parent
 	//doohickeys for savefiles
@@ -1313,9 +1325,13 @@ GLOBAL_LIST_INIT(loadout_choices, list("Mason" = /datum/outfit/dwarf/mason,
 					show_skill_panel(user)
 					return
 				if("loadout")
-					var/chosen = input(user,"What will be your loadout?") as null | anything in GLOB.loadout_choices
+					var/list/choices = GLOB.crafting_loadout_choices.Copy()
+					// if more than 10 hrs as living, allow combat loadouts
+					if((parent.get_exp_living(TRUE) > (60 * 10)) || parent.holder)
+						choices += GLOB.combat_loadout_choices
+					var/chosen = input(user,"What will be your loadout?") as null | anything in choices
 					if(chosen)
-						loadout = GLOB.loadout_choices[chosen]
+						loadout = choices[chosen]
 						to_chat(user, span_notice("You have selected the [chosen]"))
 					return
 
