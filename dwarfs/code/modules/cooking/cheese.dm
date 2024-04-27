@@ -12,6 +12,9 @@
 /obj/item/cheese/proc/age()
 	if(QDELETED(src))
 		return
+	// if aged via proccall etc..
+	if(aged)
+		return
 	desc = "Aged cheese wheel bursting with flavor."
 	icon_state = "cheese"
 	aged = TRUE
