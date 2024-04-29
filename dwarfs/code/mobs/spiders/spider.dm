@@ -11,7 +11,7 @@
 	icon_state = "spider"
 	icon_living = "spider"
 	icon_dead = "spider_dead"
-	mob_biotypes = list(MOB_ORGANIC, MOB_BUG)
+	mob_biotypes = MOB_ORGANIC | MOB_BUG
 	speak_emote = list("chitters")
 	emote_hear = list("chitters")
 	speak_chance = 5
