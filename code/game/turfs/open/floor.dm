@@ -94,15 +94,12 @@
 		if(2)
 			switch(pick(1,2;75,3))
 				if(1)
-					if(!length(baseturfs) || !ispath(baseturfs[baseturfs.len-1], /turf/open/floor))
-						ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
-					else
-						ScrapeAway(2, flags = CHANGETURF_INHERIT_AIR)
+					ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 				if(2)
 					ScrapeAway(2, flags = CHANGETURF_INHERIT_AIR)
 				if(3)
 					if(prob(80))
-						ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
+						ScrapeAway(3, flags = CHANGETURF_INHERIT_AIR)
 					else
 						break_tile()
 		if(3)
