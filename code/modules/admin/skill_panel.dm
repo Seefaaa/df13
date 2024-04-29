@@ -54,7 +54,9 @@
 			var/skill = text2path(params["skill"])
 			var/datum/skill/S = target.get_skill(skill)
 			target.known_skills.Remove(S)
-			qdel(S)
+			// you can spam delete button to cause bad del runtimes before the panel updates
+			if(!QDELETED(S))
+				qdel(S)
 		if ("adj_exp")
 			var/skill = text2path(params["skill"])
 			var/number = input("Please insert the amount of experience you'd like to add/subtract:") as num|null
