@@ -110,10 +110,10 @@
 			if(ishuman(climber))
 				var/mob/living/carbon/human/H = climber
 				var/obj/item/tool = H.is_holding_tool(TOOL_PICKAXE)
-				var/hardness_mod = hardness / tool.hardness
-				var/time = 3 SECONDS * hardness_mod
 				if(!tool)
 					return
+				var/hardness_mod = hardness / tool.hardness
+				var/time = 3 SECONDS * hardness_mod
 				to_chat(climber, span_notice("You start mining your way up..."))
 				if(tool.use_tool(H, H, time, used_skill=/datum/skill/mining))
 					var/turf/closed/mineral/M = checking
@@ -122,10 +122,10 @@
 			if(ishuman(climber))
 				var/mob/living/carbon/human/H = climber
 				var/obj/item/tool = H.is_holding_tool(TOOL_PICKAXE)
-				var/hardness_mod = hardness / tool.hardness
-				var/time = 3 SECONDS * hardness_mod
 				if(!tool)
 					return
+				var/hardness_mod = hardness / tool.hardness
+				var/time = 3 SECONDS * hardness_mod
 				to_chat(climber, span_notice("You start mining your way up..."))
 				if(tool.use_tool(H, H, time, used_skill=/datum/skill/mining))
 					checking.ChangeTurf(/turf/open/openspace)
@@ -138,10 +138,10 @@
 				if(ishuman(climber))
 					var/mob/living/carbon/human/H = climber
 					var/obj/item/tool = H.is_holding_tool(TOOL_PICKAXE)
-					var/hardness_mod = hardness / tool.hardness
-					var/time = 3 SECONDS * hardness_mod
 					if(!tool)
 						return
+					var/hardness_mod = hardness / tool.hardness
+					var/time = 3 SECONDS * hardness_mod
 					to_chat(climber, span_notice("You start mining your way up..."))
 					if(tool.use_tool(H, H, time, used_skill=/datum/skill/mining))
 						M.gets_drilled(H, TRUE)
