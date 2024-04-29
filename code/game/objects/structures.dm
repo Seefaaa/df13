@@ -11,6 +11,7 @@
 	blocks_emissive = EMISSIVE_BLOCK_GENERIC
 	impact_damage = 30
 	var/broken = 0 //similar to machinery's stat BROKEN
+	var/del_on_zimpact = TRUE
 	hit_sound = 'dwarfs/sounds/structures/generic_hit.ogg'
 
 /obj/structure/Initialize()
@@ -70,7 +71,8 @@
 	. = ..()
 	if(QDELETED(src))
 		return
-	addtimer(CALLBACK(src, PROC_REF(obj_destruction)), 0.5 SECONDS)
+	if(del_on_zimpact)
+		addtimer(CALLBACK(src, PROC_REF(obj_destruction)), 0.5 SECONDS)
 
 /obj/structure/proc/spawn_debris()
 	var/obj/structure/debris/structure/debris = new(get_turf(src))

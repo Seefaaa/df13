@@ -4,6 +4,7 @@
 	anchored = TRUE
 	icon = 'dwarfs/icons/structures/debris.dmi'
 	icon_state = "empty"
+	del_on_zimpact = FALSE
 	///How can we clean up the debris? null = hands, otherwise uses TOOL_X
 	var/cleaning_tool = null
 
