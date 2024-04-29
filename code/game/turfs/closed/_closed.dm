@@ -23,10 +23,11 @@
 					if(sconce.torch)
 						sconce.torch.forceMove(sconce.loc)
 					qdel(sconce)
-		var/turf/TU = SSmapping.get_turf_above(src)
-		if(TU && TU.type == floor_type)
-			spawn(1) //spawn cause we need to wait for src to actually change to a floor to be able to drop existing movables on newly spawned openspace
-				TU.ChangeTurf(/turf/open/openspace)
+		// disabled replacing of floors above cause players find it annoying/unintuitive TODO: maybe make a compromise solution like player_build bitflag
+		// var/turf/TU = SSmapping.get_turf_above(src)
+		// if(TU && TU.type == floor_type)
+		// 	spawn(1) //spawn cause we need to wait for src to actually change to a floor to be able to drop existing movables on newly spawned openspace
+		// 		TU.ChangeTurf(/turf/open/openspace)
 	. = ..()
 
 /turf/closed/AfterChange(flags, oldType)
