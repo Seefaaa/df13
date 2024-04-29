@@ -21,6 +21,12 @@
 	O = new /obj/item/ingot(down)
 	O.apply_material(/datum/material/iron)
 	O.update_stats()
+	right = locate(right.x+1, right.y, right.z)
+	O = new /obj/structure/barrel(right)
+	O.apply_material(O.materials)
+	O.update_stats()
+	O.reagents.add_reagent(/datum/reagent/water, 300)
+	O.update_appearance()
 	return INITIALIZE_HINT_QDEL
 
 /obj/effect/spawner/metal_showcase/Initialize(mapload)
