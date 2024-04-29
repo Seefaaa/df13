@@ -257,6 +257,10 @@
 #define COMSIG_REAGENTS_DEL_REAGENT "reagents_del_reagent"
 ///from base of [/datum/reagents/proc/remove_reagent]: (/datum/reagent, amount)
 #define COMSIG_REAGENTS_REM_REAGENT "reagents_rem_reagent"
+///from base of [/datum/reagents/proc/trans_to]: (/obj/target, amount, /mob/transfered_by, show_message)
+#define COMSIG_REAGENTS_TRANS_REAGENTS_TO "reagents_transfer_to"
+///from base of [/datum/reagents/proc/trans_to]: (/obj/target, amount, /mob/transfered_by, show_message)
+#define COMSIG_REAGENTS_TRANS_REAGENTS_FROM "reagents_transfer_from"
 ///from base of [/datum/reagents/proc/clear_reagents]: ()
 #define COMSIG_REAGENTS_CLEAR_REAGENTS "reagents_clear_reagents"
 ///from base of [/datum/reagents/proc/set_temperature]: (new_temp, old_temp)

@@ -19,7 +19,7 @@
 
 	if(!reagents || !reagents.total_volume)
 		to_chat(user, span_warning("[capitalize(src.name)] is empty!"))
-		return
+		return TRUE
 
 	if(istype(M))
 		if(user.a_intent == INTENT_HARM)
@@ -41,11 +41,11 @@
 				if(M.hydration >= HYDRATION_LEVEL_OVERHYDRATED)
 					M.visible_message(span_danger("[user] cannot force any more of [src]'s contents down [M]'s throat."), \
 					span_userdanger("[user] cannot force any more of [src]'s contents down your throat."))
-					return
+					return TRUE
 				M.visible_message(span_danger("[user] attempts to feed [M] something from [src].") , \
 							span_userdanger("[user] attempts to feed you something from [src]."))
 				if(!do_mob(user, M))
-					return
+					return TRUE
 				if(!reagents || !reagents.total_volume)
 					return // The drink might be empty after the delay, such as by spam-feeding
 				M.visible_message(span_danger("[user] feeds [M] something from [src].") , \
@@ -54,7 +54,7 @@
 			else
 				if(user.hydration >= HYDRATION_LEVEL_OVERHYDRATED)
 					to_chat(M, span_warning("You cannot force any more of [src]'s contents down your throat!"))
-					return
+					return TRUE
 				to_chat(user, span_notice("You swallow a gulp from [src]."))
 
 			for(var/datum/reagent/R in reagents.reagent_list)
@@ -68,39 +68,43 @@
 			addtimer(CALLBACK(reagents, TYPE_PROC_REF(/datum/reagents, trans_to), M, 5, TRUE, TRUE, FALSE, user, FALSE, INGEST), 5)
 			playsound(M.loc,'sound/items/drink.ogg', rand(10,50), TRUE)
 
-/obj/item/reagent_containers/glass/afterattack(obj/target, mob/user, proximity)
-	. = ..()
-	if((!proximity) || !check_allowed_items(target,target_self=1))
-		return
+/obj/item/reagent_containers/glass/attack_obj(obj/target, mob/living/user, params)
+	if((!user.CanReach(target)) || !check_allowed_items(target, target_self=1))
+		return TRUE
 
 	if(!spillable)
 		return
 
-	if(target.is_refillable()) //Something like a glass. Player probably wants to transfer TO it.
+	var/is_right_clicking = LAZYACCESS(params2list(params), RIGHT_CLICK)
+
+	//Something like a glass. Player probably wants to transfer TO it.
+	if(target.is_refillable() && !is_right_clicking)
 		if(!reagents.total_volume)
 			to_chat(user, span_warning("[capitalize(src.name)] is empty!"))
-			return
+			return TRUE
 
 		if(target.reagents.holder_full())
 			to_chat(user, span_warning("[target] is full."))
-			return
+			return TRUE
 
 		var/trans = reagents.trans_to(target, amount_per_transfer_from_this, transfered_by = user)
 		to_chat(user, span_notice("You transfer [trans] unit\s of the contents to [target]."))
-
+		target.update_appearance()
+		return TRUE
 
 	else if(target.is_drainable()) //A dispenser. Transfer FROM it TO us.
 		if(!target.reagents.total_volume)
 			to_chat(user, span_warning("[target] is empty and cannot be refilled!"))
-			return
+			return TRUE
 
 		if(reagents.holder_full())
 			to_chat(user, span_warning("[capitalize(src.name)] is full."))
-			return
+			return TRUE
 
 		var/trans = target.reagents.trans_to(src, amount_per_transfer_from_this, transfered_by = user)
 		to_chat(user, span_notice("You fill [src] with [trans] units from [target]."))
-
+		target.update_appearance()
+		return TRUE
 
 	else if(reagents.total_volume)
 		if(user.a_intent == INTENT_HARM)
@@ -108,13 +112,19 @@
 								span_notice("You splash [src]'s contents on [target]."))
 			reagents.expose(target, TOUCH)
 			reagents.clear_reagents()
+			target.update_appearance()
+		return TRUE
+
+	else
+		. = ..()
 
 /obj/item/reagent_containers/glass/attackby(obj/item/I, mob/user, params)
 	var/hotness = I.get_temperature()
 	if(hotness && reagents)
 		reagents.expose_temperature(hotness)
 		to_chat(user, span_notice("You heat [name] with [I]!"))
-	..()
+		return TRUE
+	. = ..()
 
 /*
  * On accidental consumption, make sure the container is partially glass, and continue to the reagent_container proc

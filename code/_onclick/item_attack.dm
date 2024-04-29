@@ -233,12 +233,12 @@
 /// The equivalent of the standard version of [/obj/item/proc/attack] but for object targets.
 /obj/item/proc/attack_obj(obj/O, mob/living/user, params)
 	if(SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_OBJ, O, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
-		return
+		return TRUE
 	if(item_flags & NOBLUDGEON)
-		return
+		return TRUE
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(O)
-	O.attacked_by(src, user)
+	return O.attacked_by(src, user)
 
 /// Called from [/obj/item/proc/attack_obj] and [/obj/item/proc/attack] if the attack succeeds
 /atom/movable/proc/attacked_by()

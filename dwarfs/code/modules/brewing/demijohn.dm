@@ -6,7 +6,7 @@
 	layer = ABOVE_MOB_LAYER
 	icon = 'dwarfs/icons/structures/workshops.dmi'
 	icon_state = "demijohn"
-	materials = list(PART_PLANKS=/datum/material/wood/pine/treated)
+	materials = list(PART_NONE=null, PART_PLANKS=/datum/material/wood/pine/treated)
 	var/max_volume = 300
 	var/timerid
 	var/wait_before_start = 1 MINUTES // amount of time to wait before starting the work; also wait before starting to convert a converted product (juice->wine->vinegar)
@@ -14,8 +14,10 @@
 /obj/structure/demijohn/Initialize()
 	. = ..()
 	AddComponent(/datum/component/liftable, slowdown = 5, worn_icon='dwarfs/icons/mob/inhand/righthand.dmi', inhand_icon_state="demijohn")
-	create_reagents(max_volume)
+	create_reagents(max_volume, OPENCONTAINER)
 	RegisterSignal(src, COSMIG_DEMIJOHN_STOP, PROC_REF(restart_fermentation))
+	RegisterSignal(reagents, COMSIG_REAGENTS_TRANS_REAGENTS_TO, PROC_REF(handle_reagent_transfer))
+	RegisterSignal(reagents, COMSIG_REAGENTS_TRANS_REAGENTS_FROM, PROC_REF(handle_reagent_transfer))
 
 /obj/structure/demijohn/build_material_icon(_file, state)
 	return apply_palettes(..(), materials[PART_PLANKS])
@@ -25,72 +27,9 @@
 	UnregisterSignal(src, COSMIG_DEMIJOHN_STOP)
 	. = ..()
 
-/obj/structure/demijohn/examine(mob/user)
-	. = ..()
-	if(!reagents.total_volume)
-		. += "<br>\The [src] is empty."
-	else
-		var/list/r = list()
-		for(var/datum/reagent/R in reagents.reagent_list)
-			r += "[R.volume] [R.name]"
-		. += "<br>\The [src] contains [r.Join(", ")]"
-
 /obj/structure/demijohn/proc/remove_timer()
 	if(active_timers)
 		deltimer(timerid)
-
-/obj/structure/demijohn/attackby(obj/item/I, mob/user, params) // /obj/item/liftable then use parent for interaction and update appearance
-	if(istype(I, /obj/item/reagent_containers))
-		var/obj/item/reagent_containers/C = I
-		var/transfered = C.reagents.trans_to(src, C.amount_per_transfer_from_this, transfered_by=user)
-		if(!transfered)
-			return FALSE
-		stop_fermentation()
-		timerid = addtimer(CALLBACK(src, PROC_REF(start_fermentation)), wait_before_start, TIMER_STOPPABLE)
-		to_chat(user, span_notice("You transfer [transfered]u to [src]."))
-		update_appearance()
-	else if(istype(I, /obj/item/liftable))
-		var/obj/item/liftable/L = I
-		if(!L.parent.reagents)
-			return
-		var/transfered = L.parent.reagents.trans_to(src, 10, transfered_by=user)
-		if(!transfered)
-			return FALSE
-		stop_fermentation()
-		timerid = addtimer(CALLBACK(src, PROC_REF(start_fermentation)), wait_before_start, TIMER_STOPPABLE)
-		to_chat(user, span_notice("You transfer [transfered]u to [src]."))
-		L.parent.update_appearance()
-		update_appearance()
-	else
-		return ..()
-
-/obj/structure/demijohn/attackby_secondary(obj/item/weapon, mob/user, params)
-	. = SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-	if(istype(weapon, /obj/item/reagent_containers))
-		var/obj/item/reagent_containers/C = weapon
-		var/transfered = reagents.trans_to(C, 10, transfered_by=user)
-		if(!transfered)
-			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-		stop_fermentation()
-		if(reagents.total_volume)
-			timerid = addtimer(CALLBACK(src, PROC_REF(start_fermentation)), wait_before_start, TIMER_STOPPABLE)
-		to_chat(user, span_notice("You take [transfered]u from [src]."))
-		update_appearance()
-	else if(istype(weapon, /obj/item/liftable))
-		var/obj/item/liftable/L = weapon
-		if(!L.parent.reagents)
-			return
-		var/transfered = reagents.trans_to(L.parent, 10, transfered_by=user)
-		if(!transfered)
-			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-		stop_fermentation()
-		if(reagents.total_volume)
-			timerid = addtimer(CALLBACK(src, PROC_REF(start_fermentation)), wait_before_start, TIMER_STOPPABLE)
-		to_chat(user, span_notice("You take [transfered]u from [src]."))
-		L.parent.update_appearance()
-		update_appearance()
-	else
-		return ..()
 
 /obj/structure/demijohn/update_overlays()
 	. = ..()
@@ -114,3 +53,8 @@
 	stop_fermentation()
 	if(reagents.total_volume)
 		timerid = addtimer(CALLBACK(src, PROC_REF(start_fermentation)), wait_before_start, TIMER_STOPPABLE)
+
+/obj/structure/demijohn/proc/handle_reagent_transfer(datum/reagents/holder, obj/target, amount, mob/transfered_by, show_message)
+	SIGNAL_HANDLER
+	if(transfered_by)
+		restart_fermentation()

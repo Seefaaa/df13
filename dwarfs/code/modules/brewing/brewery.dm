@@ -45,7 +45,7 @@
 
 /obj/structure/brewery/l/Initialize()
 	. = ..()
-	create_reagents(300)
+	create_reagents(1000, REFILLABLE | DRAINABLE)
 	START_PROCESSING(SSprocessing, src)
 	set_light_on(working)
 	update_light()
@@ -75,12 +75,6 @@
 		user.visible_message(span_notice("[user] throws [I] into [src]."), span_notice("You throw [I] into [src]."))
 		qdel(I)
 		update_appearance()
-	else if(istype(I, /obj/item/reagent_containers))
-		var/obj/item/reagent_containers/C = I
-		var/vol = C.reagents.trans_to(src, C.amount_per_transfer_from_this, transfered_by=user)
-		if(!vol)
-			return TRUE
-		to_chat(user, span_notice("You transfer [vol]u from [C]."))
 	else if(I.get_temperature())
 		if(!fuel)
 			to_chat(user, span_warning("[src] has no fuel."))
@@ -99,15 +93,6 @@
 		playsound(src, 'dwarfs/sounds/effects/ignite.ogg', 50, TRUE)
 	else
 		return ..()
-
-/obj/structure/brewery/l/attackby_secondary(obj/item/I, mob/user, params)
-	. = SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-	if(istype(I, /obj/item/reagent_containers))
-		var/obj/item/reagent_containers/C = I
-		var/vol = reagents.trans_to(C, C.amount_per_transfer_from_this, transfered_by=user)
-		if(!vol)
-			return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-		to_chat(user, span_notice("You transfer [vol]u from [src]."))
 
 /obj/structure/brewery/l/update_icon_state()
 	. = ..()
@@ -150,7 +135,7 @@
 
 /obj/structure/brewery/r/Initialize()
 	. = ..()
-	create_reagents(300)
+	create_reagents(1000)
 	START_PROCESSING(SSprocessing, src)
 
 /obj/structure/brewery/r/Destroy()
@@ -186,7 +171,7 @@
 			return
 		if(contents.len)
 			to_chat(user, span_warning("There is aready a barrel here."))
-			return
+			return TRUE
 		var/mob/living/carbon/human/H = user
 		H.dropItemToGround(I)
 		L.parent.forceMove(src)

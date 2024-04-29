@@ -302,15 +302,18 @@
 /obj/examine(mob/user)
 	. = ..()
 	if(materials)
+		var/line_break = "<br>"
+		if(.[LAZYLEN(.)] == "<hr>")
+			line_break = ""
 		if(islist(materials) && materials.len)
 			var/list/l = list()
 			for(var/m in materials)
 				if(istext(m)) // m is a part key
 					m = materials[m]
 				l.Add(get_material_name(m))
-			. += "<br>It's made out of [l.Join(", ")]."
+			. += "[line_break]It's made out of [l.Join(", ")]."
 		else if(!islist(materials)) // re-check if this is not an emtpy list
-			. += "<br>It's made out of [get_material_name(materials)]."
+			. += "[line_break]It's made out of [get_material_name(materials)]."
 	if(grade && (obj_flags & USES_GRADES) && !(obj_flags & IGNORES_GRADES))
 		var/qualtity_text
 		switch(grade)

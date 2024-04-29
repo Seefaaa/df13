@@ -537,6 +537,8 @@
 
 	update_total()
 	R.update_total()
+	SEND_SIGNAL(src, COMSIG_REAGENTS_TRANS_REAGENTS_TO, target, amount, transfered_by, show_message)
+	SEND_SIGNAL(R, COMSIG_REAGENTS_TRANS_REAGENTS_FROM, target, amount, transfered_by, show_message)
 	if(!no_react)
 		R.handle_reactions()
 		src.handle_reactions()

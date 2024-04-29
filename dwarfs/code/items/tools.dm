@@ -196,6 +196,11 @@
 		O.forceMove(drop_location())
 		update_appearance()
 
+/obj/item/tongs/expose_reagents(list/reagents, datum/reagents/source, methods, volume_modifier, show_message)
+	. = ..()
+	if(LAZYLEN(contents))
+		return contents[1].expose_reagents(reagents, source, methods, volume_modifier, show_message)
+
 /obj/item/trowel
 	name = "trowel"
 	desc = "Used for building purposes."

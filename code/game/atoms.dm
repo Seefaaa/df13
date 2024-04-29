@@ -545,12 +545,10 @@
 						. += "\n[round(R.volume, 0.01)] units [R.name]"
 					if(reagents.is_reacting)
 						. += "\n<span class='warning'>Is reacting!</span>"
-					. += "\n<span class='notice'>its temperature is [reagents.chem_temp]K.</span>"
+					// don't show the temperature
+					// . += "\n<span class='notice'>its temperature is [reagents.chem_temp]K.</span>"
 				else //Otherwise, just show the total volume
-					var/total_volume = 0
-					for(var/datum/reagent/R in reagents.reagent_list)
-						total_volume += R.volume
-					. += "[total_volume] units various reagents."
+					. += "[reagents.total_volume] units various reagents."
 			else
 				. += "Nothing."
 		else if(reagents.flags & AMOUNT_VISIBLE)

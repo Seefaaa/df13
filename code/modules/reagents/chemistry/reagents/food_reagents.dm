@@ -193,7 +193,7 @@
 		var/obj/item/stack/sheet/wethide/W = new(get_turf(HH), HH.amount)
 		W.leather_amount = HH.leather_amount
 		qdel(HH)
-
+		return TRUE
 	else if(istype(exposed_obj, /obj/item/ingot))
 		var/obj/item/ingot/ingot = exposed_obj
 		if(ingot.progress_current == ingot.progress_need + 1)
@@ -216,6 +216,7 @@
 				T.update_appearance()
 			playsound(holder.my_atom, 'sound/effects/vaper.ogg', 100)
 			holder.remove_reagent(type, rand(2, 12))
+			return TRUE
 	else if(istype(exposed_obj, /obj/item/stack/sheet/bark))
 		var/obj/item/stack/B = exposed_obj
 		B.use(1)
@@ -224,6 +225,7 @@
 		h.remove_reagent(src.type, vol)
 		h.add_reagent(/datum/reagent/tannin, vol)
 		h.my_atom.visible_message(span_notice("The water in [h.my_atom] turns into tannin!"))
+		return TRUE
 
 /*
  * Water reaction to a mob
