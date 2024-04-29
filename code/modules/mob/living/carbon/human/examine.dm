@@ -17,7 +17,7 @@
 
 	. = list("")
 
-	. += "<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"]</EM>[is_face_visible() ? ", a [dna.species.name]" : ""]!<hr>"
+	. += "<span class='info'>This is <EM>[!obscure_name ? name : "Unknown"]</EM>[is_face_visible() ? ", a [dna?.species?.name || "What!?"]" : ""]!<hr>"
 
 	if(user?.stat == CONSCIOUS && ishuman(user))
 		user.visible_message(span_small("<b>[user]</b> looks at <b>[!obscure_name ? name : "Unknown"]</b>.") , span_small("You look at <b>[!obscure_name ? name : "Unknown"]</b>.") , null, COMBAT_MESSAGE_RANGE)
