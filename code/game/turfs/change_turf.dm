@@ -147,11 +147,13 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 			var/turf/neighbor = get_step(src, direction)
 			if(neighbor)
 				QUEUE_CAVEIN(neighbor)
+		for(var/atom/movable/A in src)
+			A.collapse()
+	// kinda crutchy but whatever
+	if(ispath(path, /turf/open))
 		var/turf/U = SSmapping.get_turf_above(src)
 		if(U)
 			QUEUE_CAVEIN(U)
-		for(var/atom/movable/A in src)
-			A.collapse()
 
 	QUEUE_SMOOTH_NEIGHBORS(src)
 	QUEUE_SMOOTH(src)
