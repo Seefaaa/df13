@@ -117,6 +117,14 @@ If you want them to actualy show up, go to code\modules\client\preferences.dm on
 	suit = /obj/item/clothing/suit/leather_vest
 	suit_grade = 1
 
+/datum/outfit/dwarf/shielddwarf
+	name = "Loadout Shielddwarf"
+	back = /obj/item/shield/large
+	back_materials = list(PART_PLANKS=/datum/material/wood/pine/treated, PART_HEAD=/datum/material/copper)
+	back_grade = 1
+	suit = /obj/item/clothing/suit/leather_vest
+	suit_grade = 1
+
 /************************************************************************************************************************/
 /***********************************************Admin spawnable loadouts below*******************************************/
 /************************************************************************************************************************/

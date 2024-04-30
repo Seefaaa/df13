@@ -16,7 +16,8 @@ GLOBAL_LIST_INIT(combat_loadout_choices, list(
 	"Guisarmier" = /datum/outfit/dwarf/gusarmier,
 	"Macedwarf" = /datum/outfit/dwarf/macedwarf,
 	"Hammerdwarf" = /datum/outfit/dwarf/hammerdwarf,
-	"Axedwarf" = /datum/outfit/dwarf/axedwarf
+	"Axedwarf" = /datum/outfit/dwarf/axedwarf,
+	"ShieldDwarf" = /datum/outfit/dwarf/shielddwarf
 ))
 
 /datum/preferences
