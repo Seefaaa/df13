@@ -189,18 +189,14 @@
 	if(!dresscode)
 		return
 
-	var/delete_pocket
 	var/mob/living/carbon/human/human_target
 	if(isobserver(target))
 		human_target = target.change_mob_type(/mob/living/carbon/human, delete_old_mob = TRUE)
 	else
 		human_target = target
-		if(human_target.l_store || human_target.r_store || human_target.s_store) //saves a lot of time for admins and coders alike
-			if(tgui_alert(usr,"Drop Items in Pockets? No will delete them.", "Robust quick dress shop", list("Yes", "No")) == "No")
-				delete_pocket = TRUE
 
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Select Equipment") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-	for(var/obj/item/item in human_target.get_equipped_items(delete_pocket))
+	for(var/obj/item/item in human_target.get_all_gear())
 		qdel(item)
 	if(dresscode != "Naked")
 		human_target.equipOutfit(dresscode)

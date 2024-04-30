@@ -1050,10 +1050,10 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 		var/mob/living/carbon/human/dummy/body = generate_or_wait_for_human_dummy(dummy_key)
 
 		if(prefs)
-			prefs.copy_to(body,TRUE,FALSE)
+			prefs.copy_to(body, TRUE, FALSE, equip_loadout=outfit_override ? FALSE : TRUE)
+
 		if (outfit_override)
 			body.equipOutfit(outfit_override,visualsOnly = TRUE)
-
 
 		var/icon/out_icon = icon('icons/effects/effects.dmi', "nothing")
 		COMPILE_OVERLAYS(body)
