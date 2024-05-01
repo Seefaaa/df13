@@ -329,4 +329,6 @@
 				qualtity_text = "exceptional"
 			if(6)
 				qualtity_text = "masterful"
+			else
+				qualtity_text = "masterful?"
 		. += "<br>\The [src] is [qualtity_text]."

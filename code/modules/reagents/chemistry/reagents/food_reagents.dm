@@ -199,9 +199,7 @@
 		if(ingot.progress_current == ingot.progress_need + 1)
 			for(var/i in 1 to rand(ingot.recipe.min_resulting, ingot.recipe.max_resulting))
 				if(ingot.grade >= 5)
-					ingot.grade = 5
-					if(prob(10))
-						ingot.grade = 6
+					ingot.grade = prob((ingot.grade - 5) * 10) ? 6 : 5
 				if(ingot.recipe.result_grade)
 					ingot.grade = ingot.recipe.result_grade
 				var/obj/item/O = new ingot.recipe.result(get_turf(holder.my_atom))
