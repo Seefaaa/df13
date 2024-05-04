@@ -119,13 +119,14 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 		return
 	var/turf/turf_below = SSmapping.get_turf_below(src)
 	if(isopenturf(turf_below))
-		if(do_after(user, 3 SECONDS, target = src))
+		if(do_after(user, 2 SECONDS * user.get_skill_modifier(/datum/skill/climbing, SKILL_SPEED_MODIFIER), target = src))
 			user.forceMove(turf_below)
 			to_chat(user, span_notice("You carefully climb down..."))
+			user.adjust_experience(/datum/skill/climbing, rand(15, 35))
 			if(!HAS_TRAIT(user, TRAIT_FREERUNNING))
 				if(ishuman(user))
 					var/mob/living/carbon/human/H = user
-					H.adjustStaminaLoss(60)
+					H.adjustStaminaLoss(rand(user.get_skill_modifier(/datum/skill/climbing, SKILL_AMOUNT_MIN_MODIFIER), user.get_skill_modifier(/datum/skill/climbing, SKILL_AMOUNT_MAX_MODIFIER)))
 
 /turf/open/openspace/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/stack/sheet/planks))

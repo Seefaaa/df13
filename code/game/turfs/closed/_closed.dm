@@ -77,24 +77,26 @@
 	playsound(src, 'sound/weapons/genhit.ogg', 25, TRUE)
 	add_fingerprint(user)
 	if(isopenspace(turf_one))
-		if(do_after(user, 3 SECONDS, target = src))
+		if(do_after(user, 2 SECONDS * user.get_skill_modifier(/datum/skill/climbing, SKILL_SPEED_MODIFIER), target = src))
 			if(isopenturf(turf_two))
 				user.forceMove(turf_two)
 				if(!HAS_TRAIT(user, TRAIT_FREERUNNING))
 					if(ishuman(user))
 						var/mob/living/carbon/human/H = user
-						H.adjustStaminaLoss(60)
+						H.adjustStaminaLoss(rand(user.get_skill_modifier(/datum/skill/climbing, SKILL_AMOUNT_MIN_MODIFIER), user.get_skill_modifier(/datum/skill/climbing, SKILL_AMOUNT_MAX_MODIFIER)))
 						H.set_resting(TRUE)
 					to_chat(user, span_notice("You climb up the wall..."))
+					user.adjust_experience(/datum/skill/climbing, rand(15, 35))
 					return
 			user.movement_type |= FLYING
 			user.forceMove(turf_one)
 			to_chat(user, span_notice("You carefully climb up the wall..."))
+			user.adjust_experience(/datum/skill/climbing, rand(5, 20))
 			var/time_to_fall = 1 SECONDS
 			if(!HAS_TRAIT(user, TRAIT_FREERUNNING))
 				if(ishuman(user))
 					var/mob/living/carbon/human/H = user
-					H.adjustStaminaLoss(60)
+					H.adjustStaminaLoss(rand(user.get_skill_modifier(/datum/skill/climbing, SKILL_AMOUNT_MIN_MODIFIER), user.get_skill_modifier(/datum/skill/climbing, SKILL_AMOUNT_MAX_MODIFIER)))
 			else
 				time_to_fall = 2 SECONDS
 			spawn(time_to_fall)
