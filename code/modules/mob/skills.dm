@@ -74,7 +74,7 @@
 ///Gets the player's current exp from the relevant skill
 /mob/proc/get_skill_exp(skill)
 	var/datum/skill/S = get_skill(skill)
-	return S?.experience ? S.experience : 0
+	return S ? S.experience : 0
 
 /mob/proc/get_skill_level_name(skill)
 	var/level = get_skill_level(skill)
