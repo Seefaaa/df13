@@ -56,6 +56,7 @@ GLOBAL_LIST_INIT(skill_types, subtypesof(/datum/skill))
  */
 /datum/skill/proc/level_gained(mob/user, new_level, old_level, silent=FALSE)//just for announcements (doesn't go off if the xp gain is silent)
 	if(!silent)
+		SEND_SIGNAL(user, COMSIG_ADD_MOOD_EVENT, name, /datum/mood_event/skill_levelup)
 		to_chat(user, levelUpMessages[new_level]) //new_level will be a value from 1 to 11, so we get appropriate message from the 11-element levelUpMessages list
 /**
  * level_lost: See level_gained, same idea but fires on skill level-down

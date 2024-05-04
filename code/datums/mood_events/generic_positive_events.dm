@@ -288,3 +288,7 @@
 	mood_change = 10
 	timeout = 5 MINUTES
 
+/datum/mood_event/skill_levelup
+	description = span_nicegreen("I improved one of my skills!\n")
+	mood_change = 3
+	timeout = 3 MINUTES
