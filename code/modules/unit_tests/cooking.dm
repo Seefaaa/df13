@@ -16,7 +16,7 @@
 	chef.put_in_hands(cake_pan)
 	oven.attackby(cake_pan, chef)
 
-	sleep(1)
+	sleep(5)
 
 	var/obj/item/resulting = locate(/obj/item) in get_turf(oven)
 	var/exp = chef.get_skill_exp(/datum/skill/cooking)
@@ -32,7 +32,7 @@
 	chef.put_in_hands(ruined_pan)
 	oven.attackby(ruined_pan, chef)
 
-	sleep(1)
+	sleep(5)
 
 	var/obj/badrecipe = locate(/obj/item/food/badrecipe) in get_turf(oven)
 	var/obj/container = locate(/obj/item/reagent_containers/glass/cake_pan) in get_turf(oven)
@@ -60,7 +60,7 @@
 	chef.put_in_hands(cooking_pot)
 	stove.attackby(cooking_pot, chef)
 
-	sleep(1)
+	sleep(5)
 
 	var/obj/item/resulting = locate(/obj/item) in get_turf(stove)
 	var/exp = chef.get_skill_exp(/datum/skill/cooking)
@@ -78,7 +78,7 @@
 	chef.put_in_hands(ruined_pot)
 	stove.attackby(ruined_pot, chef)
 
-	sleep(1)
+	sleep(5)
 
 	var/obj/badrecipe = locate(/obj/item/food/badrecipe) in get_turf(stove)
 	var/obj/container = locate(/obj/item/reagent_containers/glass/cooking_pot) in get_turf(stove)
@@ -99,7 +99,7 @@
 	chef.put_in_hands(pan)
 	stove.attackby_secondary(pan, chef)
 
-	sleep(1)
+	sleep(5)
 
 	resulting = locate(/obj/item) in get_turf(stove)
 
@@ -116,7 +116,7 @@
 	chef.put_in_hands(ruined_pan)
 	stove.attackby_secondary(ruined_pan, chef)
 
-	sleep(1)
+	sleep(5)
 
 	badrecipe = locate(/obj/item/food/badrecipe) in get_turf(stove)
 	container = locate(/obj/item/reagent_containers/glass/pan) in get_turf(stove)
