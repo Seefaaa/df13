@@ -30,6 +30,5 @@
 		"editor.rulers": [80]
 	},
 	"explorer.autoReveal": "focusNoScroll",
-	"dreammaker.tickOnCreate": true,
-	"dreammaker.debugServerDll": "debug_server.dll"
+	"dreammaker.tickOnCreate": true
 }
