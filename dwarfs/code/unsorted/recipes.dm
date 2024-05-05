@@ -133,6 +133,13 @@
 	result = /obj/item/reagent_containers/glass/cake_pan
 	cat = SMITHING_RECIPE_TOOLS
 
+/datum/smithing_recipe/handcuffs
+	name = "handcuffs"
+	result = /obj/item/restraints/handcuffs
+	max_resulting = 3
+	min_resulting = 2
+	cat = SMITHING_RECIPE_MISC
+
 /datum/smithing_recipe/frying_pan
 	name = "\[part\] frying pan"
 	result = /obj/item/partial/frying_pan

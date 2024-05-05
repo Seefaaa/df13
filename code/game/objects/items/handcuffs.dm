@@ -51,8 +51,12 @@
 	breakouttime = 30 SECONDS
 	breakoutchance = 50
 	custom_price = PAYCHECK_HARD * 0.35
+	materials = /datum/material/iron
 	var/cuffsound = 'sound/weapons/handcuffs.ogg'
 	var/trashtype = null //for disposable cuffs
+
+/obj/item/restraints/handcuffs/build_material_icon(_file, state)
+	return apply_palettes(..(), materials)
 
 /obj/item/restraints/handcuffs/attack(mob/living/carbon/C, mob/living/user)
 	if(!istype(C))
