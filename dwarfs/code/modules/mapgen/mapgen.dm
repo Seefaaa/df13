@@ -33,11 +33,11 @@ GLOBAL_VAR(surface_z)
 					turf_type = /turf/open/water
 				if(-0.7 to -0.45)
 					turf_type = /turf/open/floor/dirt
-					prob_queue(1, "mobs", list(x, y, T.z))
-					prob_queue(2, "plants", list(x, y, T.z))
-					prob_queue(0.5, "forest", list(x, y, T.z))
+					prob_queue(1, "mobs", x, y, T.z)
+					prob_queue(2, "plants", x, y, T.z)
+					prob_queue(0.5, "forest", x, y, T.z)
 				if(-0.45 to -0.3)
-					prob_queue(0.7, "mobs", list(x, y, T.z))
+					prob_queue(0.7, "mobs", x, y, T.z)
 					if(temp > 0)
 						turf_type = /turf/open/floor/rock
 						materials = /datum/material/sandstone
@@ -45,12 +45,12 @@ GLOBAL_VAR(surface_z)
 						turf_type = /turf/open/floor/rock
 						materials = /datum/material/stone
 				if(-0.3 to INFINITY)
-					prob_queue(1, "ore", list(x, y, T.z))
+					prob_queue(1, "ore", x, y, T.z)
 					if(temp > 0)
 						turf_type = /turf/closed/mineral/sand
 					else
 						turf_type = /turf/closed/mineral/stone
-						prob_queue(troll_chance, "troll_rock", list(x, y, T.z))
+						prob_queue(troll_chance, "troll_rock", x, y, T.z)
 			T.ChangeTurf(turf_type, new_materials=materials)
 
 /datum/map_generator/caves/generate_rest()
@@ -150,13 +150,13 @@ GLOBAL_VAR(surface_z)
 					turf_type = /turf/open/floor/sand
 				if(-0.45 to -0.3)
 					turf_type = /turf/open/floor/dirt
-					prob_queue(0.1, "mobs", list(x, y, T.z))
-					prob_queue(0.3, "plants", list(x, y, T.z))
+					prob_queue(0.1, "mobs", x, y, T.z)
+					prob_queue(0.3, "plants", x, y, T.z)
 				if(-0.3 to 0.4)
 					turf_type = /turf/open/floor/dirt/grass
-					prob_queue(0.1, "mobs", list(x, y, T.z))
-					prob_queue(0.5, "plants", list(x, y, T.z))
-					prob_queue(0.5, "forest", list(x, y, T.z))
+					prob_queue(0.1, "mobs", x, y, T.z)
+					prob_queue(0.5, "plants", x, y, T.z)
+					prob_queue(0.5, "forest", x, y, T.z)
 				if(0.4 to INFINITY)
 					turf_type = /turf/closed/mineral/stone
 			T.ChangeTurf(turf_type)

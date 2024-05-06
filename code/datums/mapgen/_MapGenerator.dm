@@ -24,8 +24,9 @@
 		post_queue[key] = list()
 	post_queue[key] += list(value)// wrap value in list to avoid adding value's items if it's a list. Otherwise works as intended
 
-/datum/map_generator/proc/prob_queue(chance, key, value)
+/datum/map_generator/proc/prob_queue(chance, key, ...)
 	if(prob(chance))
+		var/value = args.Copy(3)
 		queue(key, value)
 
 /// Main proc for starting generation
