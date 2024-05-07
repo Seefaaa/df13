@@ -1,7 +1,4 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
-"aa" = (
-/turf/closed/indestructible/black,
-/area/surface)
 "ab" = (
 /turf/open/genturf,
 /turf/open/genturf,
@@ -543657,7 +543654,7 @@ wz
 wz
 wz
 wz
-aa
+wz
 wz
 wz
 wz
