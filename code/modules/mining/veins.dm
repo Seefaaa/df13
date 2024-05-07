@@ -10,8 +10,7 @@
 	if(!ore_type)
 		CRASH("Tried to generate a vein withour ore type.")
 	if(ore_check)
-		var/list/nearby = circlerangeturfs(my_turf, 15)
-		for(var/turf/closed/mineral/M in nearby)
+		for(var/turf/closed/mineral/M in RANGE_TURFS(12, my_turf))
 			if(M.mineralType)
 				return FALSE
 	SSblackbox.record_feedback("tally", "veins_generated", 1, ore_type)
