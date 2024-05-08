@@ -80,12 +80,9 @@
 		if(!selected_blueprint)
 			to_chat(user, span_warning("[src] doesn't have a blueprint selected!"))
 			return
-		var/obj/structure/blueprint/B = new selected_blueprint
-		var/target_structure = B.target_structure
-		var/list/dimensions = B.dimensions
-		qdel(B)
+		var/target_structure = initial(selected_blueprint.target_structure)
 		if(!ispath(target_structure, /turf/open))
-			var/list/turfs = RECT_TURFS(dimensions[1], dimensions[2], O)
+			var/list/turfs = block(O.x, O.y, O.z, O.x+initial(selected_blueprint.x_size)-1, O.y+initial(selected_blueprint.y_size)-1, O.z)
 			for(var/turf/T in turfs)
 				if(T.is_blocked_turf())
 					to_chat(user, span_warning("You have to free the space required to place the blueprint first!"))

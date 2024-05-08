@@ -14,8 +14,10 @@
 	var/list/reqs = list()
 	///What materials are allowed or what is the user using
 	var/list/req_materials = list()
-	///The size of our blueprint = list(x,y)
-	var/list/dimensions = list(0,0)
+	///The size in x-direction
+	var/x_size = 1
+	///The size in y-direction
+	var/y_size = 1
 	///Blueprint category displayed in the ui
 	var/cat = BLUEPRINT_CAT_MISC
 	///How much exp the blueprint will award
@@ -266,7 +268,7 @@
 	desc = "That's some real construction going on in here."
 	icon = 'dwarfs/icons/structures/64x32.dmi'
 	icon_state = "blueprint"
-	dimensions = list(1,0)
+	x_size = 2
 
 /obj/structure/blueprint/large/brewery
 	name = "brewery blueprint"
