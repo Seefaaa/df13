@@ -106,18 +106,3 @@
 		return
 	var/mob/living/carbon/carbon_user = user.mob
 	carbon_user.throw_mode_off(THROW_MODE_HOLD)
-
-/datum/keybinding/carbon/give
-	hotkey_keys = list("G")
-	name = "Give_Item"
-	full_name = "Give item"
-	description = "Give the item you're currently holding"
-	keybind_signal = COMSIG_KB_CARBON_GIVEITEM_DOWN
-
-/datum/keybinding/carbon/give/down(client/user)
-	. = ..()
-	if(.)
-		return
-	var/mob/living/carbon/carbon_user = user.mob
-	carbon_user.give()
-	return TRUE

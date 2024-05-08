@@ -204,7 +204,7 @@
 
 	var/slap_volume = 50
 	var/datum/status_effect/offering/kiss_check = M.has_status_effect(STATUS_EFFECT_OFFERING)
-	if(kiss_check && istype(kiss_check.offered_item, /obj/item/kisser) && (user in kiss_check.possible_takers))
+	if(kiss_check && istype(kiss_check.offered_item, /obj/item/kisser) && (user == kiss_check.target))
 		user.visible_message(span_danger("[user] scoffs at [M]'s advance, winds up, and smacks [M.p_them()] hard to the ground!"),
 			span_notice("The nerve! You wind back your hand and smack [M] hard enough to knock [M.p_them()] over!"),
 			span_hear("You hear someone get the everloving shit smacked out of them!"), ignored_mobs = M)
