@@ -72,25 +72,10 @@
 #define COMSIG_KB_MOB_TARGETLEFTLEG_DOWN "keybinding_mob_targetleftleg_down"
 #define COMSIG_KB_MOB_BLOCKMOVEMENT_DOWN "keybinding_mob_blockmovement_down"
 
-//Robot
-#define COMSIG_KB_SILICON_TOGGLEMODULEONE_DOWN "keybinding_silicon_togglemoduleone_down"
-#define COMSIG_KB_SILICON_TOGGLEMODULETWO_DOWN "keybinding_silicon_togglemoduletwo_down"
-#define COMSIG_KB_SILICON_TOGGLEMODULETHREE_DOWN "keybinding_silicon_togglemodulethree_down"
-#define COMSIG_KB_SILICON_CYCLEINTENT_DOWN "keybinding_silicon_cycleintent_down"
-#define COMSIG_KB_SILICON_UNEQUIPMODULE_DOWN "keybinding_silicon_unequipmodule_down"
-
 //Movement
 #define COMSIG_KB_MOVEMENT_NORTH_DOWN "keybinding_movement_north_down"
 #define COMSIG_KB_MOVEMENT_SOUTH_DOWN "keybinding_movement_south_down"
 #define COMSIG_KB_MOVEMENT_WEST_DOWN "keybinding_movement_west_down"
 #define COMSIG_KB_MOVEMENT_EAST_DOWN "keybinding_movement_east_down"
-
-//White
-#define COMSIG_KB_MOB_SAY_DOWN "keybinding_mob_say_down"
-#define COMSIG_KB_MOB_ME_DOWN "keybinding_mob_me_down"
-
-#define COMSIG_KB_CLIENT_FULLSCREEN "keybinding_client_fullscreen"
-#define COMSIG_KB_CLIENT_WIDESCREEN "keybinding_client_widescreen"
-
-#define COMSIG_KB_CLIENT_MULTIZ_UP "multiz_up_hotkeys"
-#define COMSIG_KB_CLIENT_MULTIZ_DOWN "multiz_down_hotkeys"
+#define COMSIG_KB_CLIENT_MULTIZ_UP "keybinding_movement_multiz_up"
+#define COMSIG_KB_CLIENT_MULTIZ_DOWN "keybinding_movement_multiz_down"
