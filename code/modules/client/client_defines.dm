@@ -207,3 +207,5 @@
 	var/interviewee = FALSE
 	// Ambients
 	var/played = FALSE
+	/// Whether we are in fullscreen mode
+	var/fullscreen = FALSE

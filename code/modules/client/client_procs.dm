@@ -1159,3 +1159,18 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 
 	var/mob/dead/observer/observer = mob
 	observer.ManualFollow(target)
+
+/client/verb/toggle_fullscreen()
+	set name = "Toggle Fullscreen"
+	set category = "OOC"
+
+	fullscreen = !fullscreen
+
+	if (fullscreen)
+		winset(usr, "mainwindow", "menu=")
+		winset(usr, "mainwindow", "is-maximized=false")
+		winset(usr, "mainwindow", "is-fullscreen=true")
+	else
+		winset(usr, "mainwindow", "menu=menu")
+		winset(usr, "mainwindow", "is-fullscreen=false")
+		winset(usr, "mainwindow", "is-maximized=true")
