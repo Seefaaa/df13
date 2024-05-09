@@ -158,11 +158,14 @@
  *
  * This handles creating an alert and adding an overlay to it
  */
-/mob/living/carbon/verb/give(mob/living/carbon/target as mob in view(1) - usr)
+/mob/living/carbon/verb/give(mob/target as mob in view(1) - usr)
 	set name = "Give"
 	set category = "IC"
 
 	if(!target)
+		return
+
+	if(!target.can_hold_items())
 		return
 
 	var/obj/item/offered_item = get_active_held_item()
