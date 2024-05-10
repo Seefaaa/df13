@@ -12,6 +12,8 @@
 	baseturfs = /turf/open/lava //lava all the way down
 	slowdown = 2
 
+	liquid_border_material = /datum/material/stone
+
 	light_range = 2
 	light_power = 0.75
 	light_color = LIGHT_COLOR_LAVA
@@ -190,3 +192,19 @@
 			to_chat(user, span_warning("[I] has nothing to heat up."))
 	else
 		. = ..()
+
+/turf/open/lava/set_smoothed_icon_state(new_junction)
+	. = ..()
+	update_appearance(UPDATE_OVERLAYS)
+
+/turf/open/lava/update_overlays()
+	. = ..()
+	var/list/materials = list()
+	for(var/cardinal in GLOB.alldirs)
+		var/turf/T = get_step(src, cardinal)
+		var/used_material = null
+		if(T)
+			used_material = T.liquid_border_material || T.materials
+		materials += used_material
+	var/image/border = image(create_material_icon(null, 'dwarfs/icons/turf/lava_borders.dmi', null, materials), null, icon_state)
+	. += border

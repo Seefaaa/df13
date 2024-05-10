@@ -140,6 +140,7 @@
 	slowdown = 1
 	digging_tools = list(TOOL_PICKAXE, TOOL_SHOVEL)
 	debris_type = /obj/structure/debris/dirt
+	liquid_border_material = /datum/material/dirt
 	var/digged_up = FALSE
 
 /turf/open/floor/dirt/try_digdown(obj/item/I, mob/user)
@@ -197,6 +198,7 @@
 	slowdown = 1
 	digging_tools = list(TOOL_SHOVEL)
 	debris_type = /obj/structure/debris/dirt
+	liquid_border_material = /datum/material/dirt
 	var/waterlevel = 0
 	var/watermax = 100
 	var/waterrate = 1
@@ -354,11 +356,28 @@
 	smoothing_groups = list(SMOOTH_GROUP_TURF_OPEN, SMOOTH_GROUP_FLOOR_WATER)
 	canSmoothWith = list(SMOOTH_GROUP_FLOOR_WATER)
 	slowdown = 2
+	liquid_border_material = /datum/material/stone
 
 /turf/open/water/Initialize(mapload)
 	. = ..()
 	create_reagents(100, DRAINABLE)
 	reagents.add_reagent(/datum/reagent/water, 100)
+
+/turf/open/water/set_smoothed_icon_state(new_junction)
+	. = ..()
+	update_appearance(UPDATE_OVERLAYS)
+
+/turf/open/water/update_overlays()
+	. = ..()
+	var/list/materials = list()
+	for(var/cardinal in GLOB.alldirs)
+		var/turf/T = get_step(src, cardinal)
+		var/used_material = null
+		if(T)
+			used_material = T.liquid_border_material || T.materials
+		materials += used_material
+	var/image/border = image(create_material_icon(null, 'dwarfs/icons/turf/water_borders.dmi', null, materials), null, icon_state)
+	. += border
 
 /turf/open/water/attackby(obj/item/C, mob/user, params)
 	if(C.is_refillable())
@@ -418,6 +437,7 @@
 	materials = list(PART_PLANKS=/datum/material/wood/pine/treated)
 	digging_tools = list(TOOL_AXE=5 SECONDS)
 	debris_type = /obj/structure/debris/wood
+	liquid_border_material = /datum/material/dirt
 
 /turf/open/floor/wooden/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)

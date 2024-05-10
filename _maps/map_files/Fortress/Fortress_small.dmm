@@ -9,6 +9,9 @@
 /obj/effect/landmark/latejoin,
 /turf/open/floor/dirt/grass,
 /area/fortress/surface)
+"k" = (
+/turf/open/water,
+/area/fortress/surface)
 "o" = (
 /obj/effect/landmark/start/dwarf,
 /turf/open/floor/dirt/grass,
@@ -30,6 +33,9 @@
 "K" = (
 /obj/effect/landmark/start/new_player,
 /turf/open/floor/dirt/grass,
+/area/fortress/surface)
+"V" = (
+/turf/open/floor/sand,
 /area/fortress/surface)
 
 (1,1,1) = {"
@@ -8955,8 +8961,8 @@ z
 z
 z
 G
-G
-G
+k
+k
 G
 G
 G
@@ -8997,8 +9003,8 @@ z
 z
 z
 G
-G
-G
+k
+V
 G
 G
 G

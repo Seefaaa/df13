@@ -64,6 +64,9 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/hardness = 1
 	collapse_sound = 'dwarfs/sounds/effects/collapse.ogg'
 
+	/// What turf type do we sample when making dynamic water/lava borders
+	var/liquid_border_material = null
+
 
 /turf/vv_edit_var(var_name, new_value)
 	var/static/list/banned_edits = list("x", "y", "z")
@@ -634,3 +637,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	if(flags_cavein & CAVEIN_IGNORE)
 		return
 	ChangeTurf(/turf/open/openspace)
+
+/turf/apply_material(list/_materials)
+	. = ..()
+	QUEUE_SMOOTH_NEIGHBORS(src)

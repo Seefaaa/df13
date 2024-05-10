@@ -597,6 +597,11 @@
 	name = "leather"
 	// nothing else, it's just a cosmetic material
 
+/datum/material/dirt
+	name = "dirt"
+	palettes = list("dirt")
+	//cosmetic material used for water borders etc.
+
 #undef TOOLSPEED_MIN_VALUE
 #undef MELEE_CD_MIN_VALUE
 #undef SLOWDOWN_MIN_RELATIVE_VALUE
