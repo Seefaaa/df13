@@ -163,6 +163,18 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 
 	return W
 
+/// Quicker ChangeTurf used by mapgen.
+/// Since we don't really need all that functionality just to place turfs.
+/// Speeds up the turfgen part by ~2x compared to regular ChangeTurf.
+/turf/proc/ChangeTurfQuick(path, list/materials)
+	changing_turf = TRUE
+	qdel(src)
+	var/turf/W = new path(src)
+	if(materials)
+		W.apply_material(materials)
+	W.AfterChange(NONE, path)
+	return W
+
 /// Take off the top layer turf and replace it with the next baseturf down
 /turf/proc/ScrapeAway(amount=1, flags)
 	if(!amount)

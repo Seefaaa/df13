@@ -51,7 +51,7 @@ GLOBAL_VAR(surface_z)
 					else
 						turf_type = /turf/closed/mineral/stone
 						prob_queue(troll_chance, "troll_rock", x, y, T.z)
-			T.ChangeTurf(turf_type, new_materials=materials)
+			T.ChangeTurfQuick(turf_type, materials)
 
 /datum/map_generator/caves/generate_rest()
 	for(var/list/data in post_queue["forest"])
@@ -159,7 +159,7 @@ GLOBAL_VAR(surface_z)
 					prob_queue(0.5, "forest", x, y, T.z)
 				if(0.4 to INFINITY)
 					turf_type = /turf/closed/mineral/stone
-			T.ChangeTurf(turf_type)
+			T.ChangeTurfQuick(turf_type)
 
 /datum/map_generator/surface/generate_rest()
 	for(var/list/data in post_queue["forest"])
