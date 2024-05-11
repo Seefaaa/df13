@@ -340,21 +340,15 @@
 	while(!ispath(members[first_turf_index], /turf)) //find first /turf object in members
 		first_turf_index++
 
+	// ignore genturf turfs since they are meant as a template
+	if(members[first_turf_index] == /turf/open/genturf)
+		return
+
 	//turn off base new Initialization until the whole thing is loaded
 	SSatoms.map_loader_begin()
 	//instanciate the first /turf
-	var/turf/T
 	if(members[first_turf_index] != /turf/template_noop)
-		T = instance_atom(members[first_turf_index],members_attributes[first_turf_index],crds,no_changeturf,placeOnTop)
-
-	if(T)
-		//if others /turf are presents, simulates the underlays piling effect
-		index = first_turf_index + 1
-		while(index <= members.len - 1) // Last item is an /area
-			var/underlay = T.appearance
-			T = instance_atom(members[index],members_attributes[index],crds,no_changeturf,placeOnTop)//instance new turf
-			T.underlays += underlay
-			index++
+		instance_atom(members[first_turf_index],members_attributes[first_turf_index],crds,no_changeturf,placeOnTop)
 
 	//finally instance all remainings objects/mobs
 	for(index in 1 to first_turf_index-1)
