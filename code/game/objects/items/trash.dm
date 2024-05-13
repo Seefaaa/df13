@@ -78,11 +78,6 @@
 	icon_state = "tray"
 	resistance_flags = NONE
 
-/obj/item/trash/candle
-	name = "candle"
-	icon = 'icons/obj/candle.dmi'
-	icon_state = "candle4"
-
 /obj/item/trash/spacers_sidekick
 	name = "\improper Spacer's Sidekick packet"
 	icon_state = "spacers_sidekick"
