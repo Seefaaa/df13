@@ -841,6 +841,7 @@
 #include "code\modules\antagonists\_common\antag_helpers.dm"
 #include "code\modules\antagonists\_common\antag_hud.dm"
 #include "code\modules\antagonists\_common\antag_team.dm"
+#include "code\modules\antagonists\expedition_leader\expedition_leader.dm"
 #include "code\modules\asset_cache\asset_cache_client.dm"
 #include "code\modules\asset_cache\asset_cache_item.dm"
 #include "code\modules\asset_cache\asset_list.dm"

@@ -226,12 +226,24 @@ SUBSYSTEM_DEF(ticker)
 
 	CHECK_TICK
 
+	var/can_continue = mode.pre_setup()
+
+	CHECK_TICK
+
 	if(retrycap >= 4)
 		hide_mode = FALSE
 		mode = config.pick_mode("dwarfs")
 		to_chat(world, "<span class='notice big'>Enjoy your stay!</span>")
 	else
-		message_admins(span_notice("DEBUG: Bypassing start checks... Don't forget to disable Debug-Game after the game start!"))
+		if(!GLOB.Debug2)
+			if(!can_continue)
+				log_game("[mode.name] failed pre_setup, cause: [mode.setup_error]")
+				QDEL_NULL(mode)
+				retrycap++
+				to_chat(world, span_notice("Failed to start the game."))
+				return FALSE
+		else
+			message_admins(span_notice("DEBUG: Bypassing start checks... Don't forget to disable Debug-Game after the game start!"))
 
 	CHECK_TICK
 

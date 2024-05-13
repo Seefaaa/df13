@@ -212,6 +212,7 @@ GLOBAL_LIST_INIT(combat_loadout_choices, list(
 #define SETUP_NODE_RANDOM(label, random)		  	  		"[SETUP_START_NODE(label)][SETUP_GET_LINK_RANDOM(random)][SETUP_CLOSE_NODE]"
 #define SETUP_NODE_INPUT_RANDOM(label, pref, value, random) "[SETUP_START_NODE(label)][SETUP_GET_LINK(pref, "input", "task", value)][SETUP_GET_LINK_RANDOM(random)][SETUP_CLOSE_NODE]"
 #define SETUP_NODE_COLOR_RANDOM(label, pref, color, random) "[SETUP_START_NODE(label)][SETUP_COLOR_BOX(color)][SETUP_GET_LINK(pref, "input", "task", "Change")][SETUP_GET_LINK_RANDOM(random)][SETUP_CLOSE_NODE]"
+#define SETUP_NODE_ANTAG(label, role_id, min_hours)			"[SETUP_START_NODE(label)][SETUP_GET_LINK("be_special", parent.get_exp_living(TRUE) < min_hours ? null : role_id, "be_special_type", is_banned_from(parent.ckey, role_id) ? "BANNED" : parent.get_exp_living(TRUE) < min_hours ? "BLOCKED" : (role_id in be_special) ? "Yes" : "No")][SETUP_CLOSE_NODE]"
 
 #define SETUP_CLOSE_NODE 	  			  			  		"</div></div>"
 
@@ -346,6 +347,8 @@ GLOBAL_LIST_INIT(combat_loadout_choices, list(
 
 		if (2)
 			dat += "<div class='csetup_main'>"
+			dat += "<div class='csetup_content'><div class='csetup_header'>Antagonists</div>"
+			dat += SETUP_NODE_ANTAG("Expedition Leader", ROLE_EXPEDITION_LEADER, 10)
 			dat += "<div class='csetup_content'><div class='csetup_header'>Interface</div>"
 			dat += SETUP_NODE_INPUT("Style", "ui", UI_style)
 			dat += SETUP_NODE_SWITCH("Windows in TGUI", "tgui_lock", tgui_lock ? "Minimal" : "All")
@@ -544,6 +547,7 @@ GLOBAL_LIST_INIT(combat_loadout_choices, list(
 #undef SETUP_NODE_INPUT_RANDOM
 #undef SETUP_NODE_COLOR_RANDOM
 #undef SETUP_CLOSE_NODE
+#undef SETUP_NODE_ANTAG
 
 /datum/preferences/proc/CaptureKeybinding(mob/user, datum/keybinding/kb, old_key)
 	var/HTML = {"
@@ -1159,8 +1163,9 @@ GLOBAL_LIST_INIT(combat_loadout_choices, list(
 					var/be_special_type = href_list["be_special_type"]
 					if(be_special_type in be_special)
 						be_special -= be_special_type
-					else
-						be_special += be_special_type
+					if(is_banned_from(parent.ckey, be_special_type))
+						return
+					be_special += be_special_type
 
 				if("toggle_random")
 					var/random_type = href_list["random_type"]

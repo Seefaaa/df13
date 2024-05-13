@@ -6,6 +6,7 @@ GLOBAL_LIST_INIT(exp_specialmap, list(
 	EXP_TYPE_ANTAG = list(),
 	EXP_TYPE_SPECIAL = list(
 		ROLE_GHOST_ROLE,
+		ROLE_EXPEDITION_LEADER,
 		), // Ghost roles
 	EXP_TYPE_GHOST = list() // dead people, observers
 ))

@@ -42,7 +42,7 @@ GLOBAL_VAR_INIT(king, null)
 		if(!msg)
 			return
 		user.whisper("[msg]")
-		send_message(user, "<b>[user]</b>: [msg]")
+		send_message(user, "<b>\[K\][user]</b>: [msg]")
 		return
 	if(istype(actiontype,/datum/action/item_action/show_location))
 		show_location(user)

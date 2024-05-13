@@ -10,6 +10,7 @@ GLOBAL_LIST_EMPTY(antagonists)
 	var/can_coexist_with_others = TRUE			//Whether or not the person will be able to have more than one datum
 	var/list/typecache_datum_blacklist = list()	//List of datums this type can't coexist with
 	var/job_rank
+	var/hours_required = 0
 	var/replace_banned = TRUE //Should replace jobbanned player with ghosts if granted.
 	var/list/objectives = list()
 	var/antag_memory = ""//These will be removed with antag datum
@@ -225,7 +226,7 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 /datum/antagonist/proc/enabled_in_preferences(datum/mind/M)
 	if(job_rank)
-		if(M.current && M.current.client && (job_rank in M.current.client.prefs.be_special))
+		if(M.current && M.current.client && (job_rank in M.current.client.prefs.be_special) && M.current.client.get_exp_living(TRUE) >= hours_required)
 			return TRUE
 		else
 			return FALSE
