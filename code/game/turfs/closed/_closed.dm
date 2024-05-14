@@ -118,6 +118,8 @@
 	maptext_x = 4
 	maptext_y = 8
 
+INITIALIZE_IMMEDIATE(/turf/closed/indestructible/splashscreen)
+
 /turf/closed/indestructible/splashscreen/Initialize(mapload)
 	. = ..()
 	var/list/provisional_title_screens = flist("[global.config.directory]/title_screens/images/")
