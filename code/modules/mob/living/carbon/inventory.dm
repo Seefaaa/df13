@@ -161,6 +161,7 @@
 /mob/living/carbon/verb/give(mob/target as mob in view(1) - usr)
 	set name = "Give"
 	set category = "IC"
+	set src in view(1)
 
 	if(!target)
 		return
@@ -168,26 +169,28 @@
 	if(!target.can_hold_items())
 		return
 
-	var/obj/item/offered_item = get_active_held_item()
+	var/mob/living/user = usr
+
+	var/obj/item/offered_item = user.get_active_held_item()
 	if(!offered_item)
-		to_chat(src, span_warning("You're not holding anything to give!"))
+		to_chat(user, span_warning("You're not holding anything to give!"))
 		return
 
-	if(IS_DEAD_OR_INCAP(src))
-		to_chat(src, span_warning("You're unable to offer anything in your current state!"))
+	if(IS_DEAD_OR_INCAP(user))
+		to_chat(user, span_warning("You're unable to offer anything in your current state!"))
 		return
 
 	if(has_status_effect(STATUS_EFFECT_OFFERING))
-		to_chat(src, span_warning("You're already offering up something!"))
+		to_chat(user, span_warning("You're already offering up something!"))
 		return
 
-	if(offered_item.on_offered(src)) // see if the item interrupts with its own behavior
+	if(offered_item.on_offered(user)) // see if the item interrupts with its own behavior
 		return
 
-	to_chat(target, span_notice("<b>[src]</b> is offering you <b>[offered_item]</b>."))
-	to_chat(src, span_notice("You offer <b>[offered_item]</b> to <b>[target]</b>."))
+	to_chat(target, span_notice("<b>[user]</b> is offering you <b>[offered_item]</b>."))
+	to_chat(user, span_notice("You offer <b>[offered_item]</b> to <b>[target]</b>."))
 
-	apply_status_effect(STATUS_EFFECT_OFFERING, offered_item, target)
+	user.apply_status_effect(STATUS_EFFECT_OFFERING, offered_item, target)
 
 /**
  * Proc called when the player clicks the give alert
