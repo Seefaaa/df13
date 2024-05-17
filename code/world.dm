@@ -14,6 +14,7 @@
 	mob = /mob/dead/new_player
 	turf = /turf/open/genturf
 	area = /area/fortress
+	map_format = SIDE_MAP
 	view = "15x15"
 	hub = "Exadv1.spacestation13"
 	hub_password = "kMZy3U5jJHSiBQjr"
