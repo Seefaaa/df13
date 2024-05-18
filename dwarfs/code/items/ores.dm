@@ -6,6 +6,13 @@
 	max_amount = 1
 	init_materials = TRUE
 
+/obj/item/stack/ore/stone/apply_material(list/_materials)
+	. = ..()
+	if(ispath(materials, /datum/material/stone))
+		AddComponent(/datum/component/grindable, item_type=/obj/item/stack/sheet/flux)
+	else
+		AddComponent(/datum/component/grindable, item_type=/obj/item/stack/ore/smeltable/sand)
+
 /obj/item/stack/ore/stone/build_material_icon(_file, state)
 	return apply_palettes(..(), materials)
 

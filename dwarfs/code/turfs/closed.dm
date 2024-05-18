@@ -8,7 +8,7 @@
 /turf/closed/mineral/stone/gets_drilled(mob/user, give_exp)
 	if(prob(40))
 		for(var/i in 1 to rand(1, 4))
-			var/obj/O = new /obj/item/stack/ore/stone(src)
+			var/obj/O = new /obj/item/stack/ore/stone/stone(src)
 			O.apply_material(materials)
 	if(has_troll)
 		to_chat(user, span_userdanger("THIS ROCK APPEARS TO BE ESPECIALLY SOFT!"))
