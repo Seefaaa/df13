@@ -55,7 +55,7 @@
 			to_chat(user, span_notice("You finish carving stone floor."))
 			user.adjust_experience(/datum/skill/masonry, rand(3,6))
 			var/new_materials = materials
-			var/turf/floor = ChangeTurf(floor_type, baseturfs)
+			var/turf/floor = ChangeTurf(floor_type, baseturfs, baseturf_materials)
 			floor.apply_material(new_materials)
 	else
 		. = ..()
