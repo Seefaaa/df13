@@ -347,7 +347,7 @@ GLOBAL_LIST_INIT(combat_loadout_choices, list(
 
 		if (2)
 			dat += "<div class='csetup_main'>"
-			dat += "<div class='csetup_content'><div class='csetup_header'>Antagonists</div>"
+			dat += "<div class='csetup_content'><div class='csetup_header'>Special Roles</div>"
 			dat += SETUP_NODE_ANTAG("Expedition Leader", ROLE_EXPEDITION_LEADER, 10)
 			dat += "<div class='csetup_content'><div class='csetup_header'>Interface</div>"
 			dat += SETUP_NODE_INPUT("Style", "ui", UI_style)
