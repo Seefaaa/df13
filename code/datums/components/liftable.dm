@@ -3,6 +3,7 @@
 	lefthand_file = 'dwarfs/icons/mob/inhand/lefthand.dmi'
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	materials = TRUE
+	w_class = WEIGHT_CLASS_GIGANTIC
 
 /obj/item/liftable/Initialize()
 	. = ..()
