@@ -124,6 +124,8 @@
 		reagents.expose_temperature(hotness)
 		to_chat(user, span_notice("You heat [name] with [I]!"))
 		return TRUE
+	if(is_reagent_container(I))
+		return I.attack_obj(src, user, params)
 	. = ..()
 
 /*
