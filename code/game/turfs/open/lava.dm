@@ -202,9 +202,9 @@
 	var/list/materials = list()
 	for(var/cardinal in GLOB.alldirs)
 		var/turf/T = get_step(src, cardinal)
-		var/used_material = null
+		var/used_material = /datum/material/stone
 		if(T)
-			used_material = T.liquid_border_material || T.materials
+			used_material = T.liquid_border_material || T.materials || /datum/material/stone
 		materials += used_material
 	var/image/border = image(create_material_icon(null, 'dwarfs/icons/turf/lava_borders.dmi', null, materials), null, icon_state)
 	. += border
