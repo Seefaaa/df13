@@ -20,9 +20,6 @@ If you want to implement a lock, you need a few things.
 	RegisterSignal(parent, COMSIG_TRY_LOCKED_ACTION, PROC_REF(try_locked_action))
 	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
 
-/datum/component/lock/proc/try_attach(obj/I)
-	return
-
 ///Locking and unlocking action
 /datum/component/lock/proc/try_toggle_lock(atom/source, key_id, mob/user)
 	SIGNAL_HANDLER
@@ -70,7 +67,8 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 
 /obj/item/lock/attack_obj(obj/O, mob/living/user, params)
 	. = ..()
-	if(O._AddComponent(list(/datum/component/lock, lock_id)))
+	if(!O.GetComponent(/datum/component/lock))
+		O.AddComponent(/datum/component/lock, lock_id)
 		qdel(src)
 
 /obj/item/lock/attackby(obj/item/I, mob/user, params)
