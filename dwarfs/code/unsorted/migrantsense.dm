@@ -1,16 +1,3 @@
-GLOBAL_VAR_INIT(fort_center, null)
-
-/obj/effect/landmark/fort/center
-
-/obj/effect/landmark/fort/center/Initialize()
-	. = ..()
-	GLOB.fort_center = src
-
-/obj/effect/landmark/fort/center/Destroy()
-	. = ..()
-	if(GLOB.fort_center == src)
-		GLOB.fort_center = null
-
 /atom/movable/screen/alert/migrant
 	name = "Migration sense"
 	desc = "You know the fort would be this way."
@@ -35,7 +22,7 @@ GLOBAL_VAR_INIT(fort_center, null)
 /atom/movable/screen/alert/migrant/process()
 	if(!owner.mind)
 		return
-	var/turf/P = get_turf(GLOB.fort_center)
+	var/turf/P = locate(world.maxx/2, world.maxy/2, GLOB.surface_z)
 	if(!P)
 		return
 	var/turf/Q = get_turf(owner)
