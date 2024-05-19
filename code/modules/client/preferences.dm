@@ -212,7 +212,7 @@ GLOBAL_LIST_INIT(combat_loadout_choices, list(
 #define SETUP_NODE_RANDOM(label, random)		  	  		"[SETUP_START_NODE(label)][SETUP_GET_LINK_RANDOM(random)][SETUP_CLOSE_NODE]"
 #define SETUP_NODE_INPUT_RANDOM(label, pref, value, random) "[SETUP_START_NODE(label)][SETUP_GET_LINK(pref, "input", "task", value)][SETUP_GET_LINK_RANDOM(random)][SETUP_CLOSE_NODE]"
 #define SETUP_NODE_COLOR_RANDOM(label, pref, color, random) "[SETUP_START_NODE(label)][SETUP_COLOR_BOX(color)][SETUP_GET_LINK(pref, "input", "task", "Change")][SETUP_GET_LINK_RANDOM(random)][SETUP_CLOSE_NODE]"
-#define SETUP_NODE_ANTAG(label, role_id, min_hours)			"[SETUP_START_NODE(label)][SETUP_GET_LINK("be_special", parent.get_exp_living(TRUE) < min_hours ? null : role_id, "be_special_type", is_banned_from(parent.ckey, role_id) ? "BANNED" : parent.get_exp_living(TRUE) < min_hours ? "BLOCKED" : (role_id in be_special) ? "Yes" : "No")][SETUP_CLOSE_NODE]"
+#define SETUP_NODE_ANTAG(label, role_id, min_hours)			"[SETUP_START_NODE(label)][SETUP_GET_LINK("be_special", parent.get_exp_living(TRUE) < (min_hours * 60) ? null : role_id, "be_special_type", is_banned_from(parent.ckey, role_id) ? "BANNED" : parent.get_exp_living(TRUE) < (min_hours * 60) ? "BLOCKED" : (role_id in be_special) ? "Yes" : "No")][SETUP_CLOSE_NODE]"
 
 #define SETUP_CLOSE_NODE 	  			  			  		"</div></div>"
 
