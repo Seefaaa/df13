@@ -159,7 +159,7 @@
 	name = "cheese slice"
 	desc = "It's yellow."
 	icon_state = "cheese_slice"
-	mood_event_type = /datum/mood_event/ate_raw_food
-	mood_gain = -1
+	mood_event_type = /datum/mood_event/ate_meal
+	mood_gain = 1
 	mood_duration = 1 MINUTES
 	food_reagents = list(/datum/reagent/consumable/nutriment=2)

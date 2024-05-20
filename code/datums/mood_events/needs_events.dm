@@ -36,7 +36,6 @@
 	mood_change = -14
 	timeout = 5 MINUTES
 
-
 /datum/mood_event/ate_meal
 	description = span_green("I ate a meal.\n")
 	mood_change = 10
