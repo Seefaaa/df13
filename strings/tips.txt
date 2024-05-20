@@ -1,4 +1,4 @@
-The easiest way to get food is growing three plump helmets and raosting them on a stick.
+The easiest way to get food is growing three plump helmets and roasting them on a stick.
 Ores spawn in large veins with some space between them, if you find one, there isn't any other nearby.
 Cats are cute but also delicious!
 You can make any type of alcohol with only three structures and a farm.
@@ -6,15 +6,14 @@ Some materials are better at specific tasks.
 Petting cats can save your character from going insane.
 Lanterns can be refilled easier than torches.
 Be aware that goblins will sometimes raid the fortress.
-Only king has the means of communicating over long distance.
+Only king and expedition leader have the means of communicating over long distance.
 Don't be mean to your fellow dwarves, you're in this shithole together.
 Some food will give more mood buffs.
 You can use some weapons as tools.
 Tree sapplings need to be first grown in pots and then planted elsewhere.
 Signs can be changed using a chisel.
-Some structures may have different interactions depending if you alt click
 Being alone in the mine is dangerous, try to bring a friend along so you can keep eachother safe.
-The change of hitting a target with an weapon depends on the level you are in that weapon class.
+The chance of hitting a target with a weapon depends on the level you are in that weapon class.
 You can reforge iron bars to make them of higher quality, if you miss too much during the minigame the bar will dissapear. Misses carry over to the next stage.
-Spider bite's inject a potent venom. Do not fight them alone!
+Spider's bites inject a potent venom. Do not fight them alone!
 You can climb down by clicking on an open space with empty hands and climb back up by clicking on a wall with empty hands.
