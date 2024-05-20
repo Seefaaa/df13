@@ -7,6 +7,7 @@
 #define PART_STONE "stone"
 #define PART_LEATHER "leather"
 #define PART_CLOTH "cloth"
+#define PART_STRING "string"
 
 #define MATERIAL_STONE "stone"
 #define MATERIAL_WOOD "wood"

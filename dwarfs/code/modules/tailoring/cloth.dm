@@ -5,6 +5,7 @@
 	icon = 'dwarfs/icons/items/components.dmi'
 	icon_state = "cloth"
 	w_class = WEIGHT_CLASS_NORMAL
+	part_name = PART_CLOTH
 
 /obj/item/stack/sheet/cloth/get_fuel()
 	return amount*2
@@ -18,6 +19,7 @@
 	righthand_file = 'dwarfs/icons/mob/inhand/righthand.dmi'
 	icon_state = "string"
 	w_class = WEIGHT_CLASS_NORMAL
+	part_name = PART_STRING
 
 /obj/item/stack/sheet/string/get_fuel()
 	return amount

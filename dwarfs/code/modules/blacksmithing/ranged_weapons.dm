@@ -8,7 +8,7 @@
 	icon_state = "crossbow"
 	inhand_icon_state = "crossbow"
 	worn_icon_state = "crossbow"
-	materials = list(PART_PLANKS=/datum/material/wood/treated, PART_HEAD=/datum/material/iron, PART_CLOTH=/datum/material/cloth/pig_tail_cotton)
+	materials = list(PART_PLANKS=/datum/material/wood/treated, PART_HEAD=/datum/material/iron, PART_STRING=/datum/material/cloth/pig_tail_cotton)
 	dry_fire_sound = null
 	fire_sound = 'dwarfs/sounds/tools/crossbow/shot.wav'
 	ranged_skill = /datum/skill/ranged/crossbow
@@ -18,7 +18,7 @@
 	AddComponent(/datum/component/two_handed, use_grades=TRUE, inhand_icon_wielded="crossbow_w")
 
 /obj/item/gun/crossbow/build_material_icon(_file, state)
-	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_HEAD], materials[PART_CLOTH]))
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_HEAD], materials[PART_STRING]))
 
 /obj/item/gun/crossbow/attackby(obj/item/I, mob/living/user, params)
 	if(istype(I, /obj/item/ammo_casing))
@@ -139,7 +139,7 @@
 	icon_state = "bow"
 	inhand_icon_state = "bow"
 	worn_icon_state = "bow"
-	materials = list(PART_PLANKS=/datum/material/wood/treated, PART_CLOTH=/datum/material/cloth/pig_tail_cotton)
+	materials = list(PART_PLANKS=/datum/material/wood/treated, PART_STRING=/datum/material/cloth/pig_tail_cotton)
 	dry_fire_sound = null
 	fire_sound = 'dwarfs/sounds/tools/bow/shot.wav'
 	ranged_skill = /datum/skill/ranged/bow
@@ -149,7 +149,7 @@
 	AddComponent(/datum/component/two_handed, use_grades=TRUE)
 
 /obj/item/gun/bow/build_material_icon(_file, state)
-	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_CLOTH]))
+	return apply_palettes(..(), list(materials[PART_PLANKS], materials[PART_STRING]))
 
 /obj/item/gun/bow/attackby(obj/item/I, mob/living/user, params)
 	if(istype(I, /obj/item/ammo_casing))
