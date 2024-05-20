@@ -265,10 +265,6 @@
 "wz" = (
 /turf/closed/indestructible/black,
 /area/fortress/surface)
-"HZ" = (
-/obj/effect/landmark/fort/center,
-/turf/open/floor/dirt/grass,
-/area/fortress/surface)
 "XE" = (
 /turf/open/genturf,
 /area/cavesgen)
@@ -497524,7 +497520,7 @@ bk
 bk
 bk
 bk
-HZ
+bk
 bk
 bk
 bk
