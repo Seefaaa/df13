@@ -125,7 +125,10 @@ BOMBCAP 20
 #NATIVE_FOV
 
 ## Uncomment this to enable world gen
-#ENABLE_GENERATION
+ENABLE_GENERATION
 
 ## Uncomment this to enable chatter sound
 #ENABLE_CHATTER
+
+## Preserve instant round end
+CONTINUOUS DWARF_FORTRESS
