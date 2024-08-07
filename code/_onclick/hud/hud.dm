@@ -6,10 +6,10 @@
 
 // The default UI style is the first one in the list
 GLOBAL_LIST_INIT(available_ui_styles, list(
+	"Midnight" = 'icons/hud/screen_midnight.dmi',
 	"Oxide" = 'icons/hud/screen_oxide.dmi',
 	"Cyberspess" = 'icons/hud/screen_cyberspess.dmi',
 	"Bassboosted" = 'icons/hud/screen_bassboosted.dmi',
-	"Midnight" = 'icons/hud/screen_midnight.dmi',
 	"Retro" = 'icons/hud/screen_retro.dmi',
 	"Plasmafire" = 'icons/hud/screen_plasmafire.dmi',
 	"Slimecore" = 'icons/hud/screen_slimecore.dmi',
