@@ -7,6 +7,7 @@
 	icon_state = "chicken_brown"
 	maxHealth = 25
 	health = 25
+	faction = list("surface")
 	butcher_results = list(/obj/item/food/meat/slab=list(1,4))
 	childtype = list(/mob/living/simple_animal/chicken/baby)
 	animal_species = /mob/living/simple_animal/chicken

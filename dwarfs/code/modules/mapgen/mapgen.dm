@@ -264,7 +264,7 @@ GLOBAL_VAR(surface_z)
 	var/list/possible_animals = list(
 		/mob/living/simple_animal/chicken=60,
 		/mob/living/simple_animal/goat=40,
-		/mob/living/simple_animal/hostile/bear=20
+		/mob/living/simple_animal/hostile/bear=15
 	)
 	var/animal_type = pickweight(possible_animals)
 	//hostile mobs spawn alone; other mobs can spawn in a group

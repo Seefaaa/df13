@@ -8,6 +8,7 @@
 	icon_state = "goat_brown_m"
 	maxHealth = 50
 	health = 50
+	faction = list("surface")
 	childtype = list(/mob/living/simple_animal/goat/baby)
 	animal_species = /mob/living/simple_animal/goat
 	butcher_results = list(/obj/item/food/meat/slab = list(2,3), /obj/item/stack/sheet/tallow = list(1,4))
