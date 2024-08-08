@@ -61,7 +61,7 @@
 		// if(hardness_mod >= 2)
 		// 	to_chat(user, span_warning("\The [pick] is too soft to mine [src]."))
 		// 	return
-		var/time = 3 SECONDS * hardness_mod
+		var/time = 2 SECONDS * hardness_mod
 		if(last_act + time > world.time)//prevents message spam
 			return
 		last_act = world.time

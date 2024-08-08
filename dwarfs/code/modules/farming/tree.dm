@@ -24,7 +24,7 @@
 	/// `pixel_y` offset for the chop mask for each growthstage
 	var/list/chop_offsets = list(0, 0, 0, 0, 0, 0, 0)
 	/// Time between each chop
-	var/cutting_time = 4 SECONDS
+	var/cutting_time = 2 SECONDS
 
 /obj/structure/plant/tree/spawn_debris()
 	chop_tree(get_turf(src))
