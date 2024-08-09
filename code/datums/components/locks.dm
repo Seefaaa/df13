@@ -79,6 +79,12 @@ returns TRUE if its locked(this is because if comp doesnt exist it will return f
 			if(answer != "Yes")
 				return
 			src.lock_id = L.lock_id
+		else if(istype(user.get_inactive_held_item(), /obj/item/key))
+			var/obj/item/key/K = user.get_inactive_held_item()
+			var/answer = tgui_alert(user, "Do you want to assign this lock to [K]?", "Assign Key", list("Yes", "No"))
+			if(answer != "Yes")
+				return
+			src.lock_id = K.key_id
 	else
 		. = ..()
 
