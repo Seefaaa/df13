@@ -265,6 +265,13 @@
 	max_resulting = 4
 	cat = SMITHING_RECIPE_MISC
 
+/datum/smithing_recipe/keyring
+	name = "key rings"
+	result = /obj/item/keyring
+	min_resulting = 2
+	max_resulting = 4
+	cat = SMITHING_RECIPE_MISC
+
 /datum/smithing_recipe/flask
 	name = "flask"
 	result = /obj/item/reagent_containers/glass/flask
